@@ -25,6 +25,8 @@ export const metadata: Metadata = {
   },
 };
 
+import Header from "../components/layout/Header";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -35,7 +37,10 @@ export default function RootLayout({
       lang="en"
       className={`${cormorant.variable} ${inter.variable} antialiased`}
     >
-      <body>{children}</body>
+      <body>
+        <Header />
+        {children}
+      </body>
     </html>
   );
 }

@@ -44,10 +44,6 @@ export default function HeroSection() {
         initial="hidden"
         animate="visible"
       >
-        <motion.div className="hero__label" variants={fadeUp}>
-          HOUSE OF DÉCOR
-        </motion.div>
-
         <motion.div className="hero__heading-wrapper" variants={fadeUp}>
           <h1 className="hero__heading">
             Handwoven
@@ -70,12 +66,6 @@ export default function HeroSection() {
           <a href="#book" className="hero__cta hero__cta--primary">
             Book Consultation
           </a>
-        </motion.div>
-
-        <motion.div className="hero__meta" variants={fadeUp}>
-          <span className="hero__meta-item">Est. 2024</span>
-          <span className="hero__meta-divider">&mdash;</span>
-          <span className="hero__meta-item">Handmade with precision</span>
         </motion.div>
       </motion.div>
 
