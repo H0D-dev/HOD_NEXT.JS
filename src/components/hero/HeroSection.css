@@ -1,13 +1,21 @@
 /* ═══════════════════════════════════════════════════════════
    Hero Section — House of Décor
-   Luxury minimalist split layout (45% / 55%)
+   Premium Editorial Layout
    ═══════════════════════════════════════════════════════════ */
 
 .hero {
   display: flex;
   min-height: 100vh;
   width: 100%;
-  background: var(--bg-primary);
+  background-color: #FAFAF8; /* Warm off-white */
+  
+  /* Subtle thread-like background grid to evoke textile craftsmanship */
+  background-image: 
+    linear-gradient(to right, rgba(0,0,0,0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0,0,0,0.03) 1px, transparent 1px);
+  background-size: 120px 120px;
+  background-position: center;
+  
   position: relative;
   overflow: hidden;
 }
@@ -18,17 +26,9 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: var(--space-7) var(--space-6) var(--space-7) var(--space-7);
+  padding: var(--space-7) var(--space-6) var(--space-7) var(--space-8);
   position: relative;
   z-index: 2;
-}
-
-/* ── Vertical divider between left and right ── */
-.hero__vertical-line {
-  width: 1px;
-  background: var(--border-secondary);
-  align-self: stretch;
-  flex-shrink: 0;
 }
 
 /* ── Right Showcase ── */
@@ -37,15 +37,15 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  background: var(--bg-secondary);
+  background: transparent; /* Removed split background */
 }
 
 /* ── Brand label ── */
 .hero__label {
   font-family: var(--font-inter), 'Inter', sans-serif;
-  font-size: var(--text-xs);
+  font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.28em;
+  letter-spacing: 0.3em;
   color: var(--text-muted);
   text-transform: uppercase;
   margin-bottom: var(--space-5);
@@ -54,25 +54,28 @@
 /* ── Main heading ── */
 .hero__heading {
   font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
-  font-size: clamp(52px, 5.5vw, 92px);
+  font-size: clamp(64px, 7vw, 110px); /* Larger size */
   font-weight: 300;
-  line-height: 1.02;
-  letter-spacing: -0.025em;
+  line-height: 0.95; /* Tighter line height */
+  letter-spacing: -0.03em; /* Tighter letter spacing */
   color: var(--text-primary);
   margin-bottom: var(--space-4);
+  text-transform: uppercase;
 }
 
 .hero__heading-accent {
   font-style: italic;
-  font-weight: 400;
+  font-weight: 300;
+  text-transform: none; /* Keep the second line elegant, mixed case or lower */
+  display: block;
 }
 
 /* ── Horizontal accent divider ── */
 .hero__divider {
-  width: 72px;
-  height: 2px;
-  background: var(--accent-primary);
-  margin-bottom: var(--space-4);
+  width: 60px;
+  height: 1px;
+  background: var(--text-primary);
+  margin-bottom: var(--space-5);
 }
 
 /* ── Description ── */
@@ -80,16 +83,17 @@
   font-family: var(--font-inter), 'Inter', sans-serif;
   font-size: var(--text-md);
   font-weight: 400;
-  line-height: 1.75;
+  line-height: 1.8;
   color: var(--text-secondary);
-  max-width: 380px;
-  margin-bottom: var(--space-5);
+  max-width: 360px;
+  margin-bottom: var(--space-6);
 }
 
 /* ── CTA group ── */
 .hero__cta-group {
   display: flex;
-  gap: var(--space-2);
+  align-items: center;
+  gap: var(--space-4);
   margin-bottom: var(--space-6);
 }
 
@@ -97,39 +101,48 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 16px 32px;
+  padding: 18px 36px;
   font-family: var(--font-inter), 'Inter', sans-serif;
-  font-size: var(--text-sm);
+  font-size: 12px;
   font-weight: 500;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
-  transition: background 0.5s var(--ease-premium),
-              color 0.5s var(--ease-premium),
-              border-color 0.5s var(--ease-premium);
+  transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .hero__cta--primary {
   background: var(--text-primary);
   color: var(--bg-primary);
-  border: 1px solid var(--border-primary);
+  border: 1px solid var(--text-primary);
 }
 
 .hero__cta--primary:hover {
-  background: var(--accent-primary);
-  color: var(--text-primary);
-  border-color: var(--accent-primary);
-}
-
-.hero__cta--secondary {
   background: transparent;
   color: var(--text-primary);
-  border: 1px solid var(--border-primary);
 }
 
-.hero__cta--secondary:hover {
-  background: var(--bg-secondary);
+.hero__cta--link {
+  padding: 0;
+  background: transparent;
+  color: var(--text-primary);
+  position: relative;
+}
+
+.hero__cta--link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0%;
+  height: 1px;
+  background: var(--text-primary);
+  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hero__cta--link:hover::after {
+  width: 100%;
 }
 
 /* ── Meta line (Est. year + tagline) ── */
@@ -137,13 +150,14 @@
   display: flex;
   align-items: center;
   gap: var(--space-2);
+  margin-top: auto;
 }
 
 .hero__meta-item {
   font-family: var(--font-inter), 'Inter', sans-serif;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 400;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--text-muted);
 }
@@ -170,12 +184,11 @@
   }
 
   .hero__heading {
-    font-size: clamp(42px, 5vw, 64px);
+    font-size: clamp(52px, 6vw, 72px);
   }
 
   .hero__cta {
-    padding: 14px 24px;
-    font-size: 13px;
+    padding: 16px 28px;
   }
 }
 
@@ -187,36 +200,24 @@
 
   .hero__left {
     width: 100%;
-    padding: var(--space-7) var(--space-3) var(--space-5);
+    padding: var(--space-7) var(--space-4) var(--space-5);
     align-items: flex-start;
     min-height: 55vh;
-  }
-
-  .hero__vertical-line {
-    display: none;
   }
 
   .hero__right {
     width: 100%;
     min-height: 520px;
-    border-top: 1px solid var(--border-secondary);
+    border-top: 1px solid rgba(0,0,0,0.05);
   }
 
   .hero__heading {
-    font-size: clamp(38px, 10vw, 56px);
+    font-size: clamp(48px, 10vw, 64px);
   }
 
   .hero__cta-group {
     flex-direction: column;
-    width: 100%;
-  }
-
-  .hero__cta {
-    width: 100%;
-    text-align: center;
-  }
-
-  .hero__meta {
-    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: var(--space-3);
   }
 }

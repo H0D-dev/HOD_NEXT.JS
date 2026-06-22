@@ -46,29 +46,29 @@ const rugSets = [
 const cardConfig = [
   {
     className: "rug-showcase__card--top",
-    parallaxMultiplier: 0.03,
+    parallaxMultiplier: 0.05,
     animation: {
-      initial: { opacity: 0, x: 60, y: -50, scale: 0.88 },
+      initial: { opacity: 0, x: 80, y: -60, scale: 0.9 },
       animate: { opacity: 1, x: 0, y: 0, scale: 1 },
-      exit: { opacity: 0, x: 60, y: -50, scale: 0.88 },
+      exit: { opacity: 0, x: 80, y: -60, scale: 0.9 },
     },
   },
   {
     className: "rug-showcase__card--center",
-    parallaxMultiplier: 0.015,
+    parallaxMultiplier: 0.02,
     animation: {
-      initial: { opacity: 0, y: 40, scale: 0.92 },
+      initial: { opacity: 0, y: 60, scale: 0.95 },
       animate: { opacity: 1, y: 0, scale: 1 },
-      exit: { opacity: 0, y: -30, scale: 0.92 },
+      exit: { opacity: 0, y: -40, scale: 0.95 },
     },
   },
   {
     className: "rug-showcase__card--bottom",
-    parallaxMultiplier: 0.04,
+    parallaxMultiplier: 0.08,
     animation: {
-      initial: { opacity: 0, x: -60, y: 50, scale: 0.88 },
+      initial: { opacity: 0, x: -80, y: 60, scale: 0.9 },
       animate: { opacity: 1, x: 0, y: 0, scale: 1 },
-      exit: { opacity: 0, x: -60, y: 50, scale: 0.88 },
+      exit: { opacity: 0, x: -80, y: 60, scale: 0.9 },
     },
   },
 ];
@@ -120,7 +120,7 @@ export default function RugShowcase() {
 
   return (
     <div className="rug-showcase" ref={containerRef}>
-      {/* ── Card area ── */}
+      {/* ── Card area ── */ }
       <div className="rug-showcase__cards">
         <AnimatePresence mode="wait">
           <motion.div
@@ -145,9 +145,9 @@ export default function RugShowcase() {
                   animate={cfg.animation.animate}
                   exit={cfg.animation.exit}
                   transition={{
-                    duration: 0.9 + i * 0.15,
+                    duration: 1.2 + i * 0.15, /* Slower, cinematic transition */
                     ease: easing,
-                    delay: i * 0.1,
+                    delay: i * 0.15, /* More staggered delay */
                   }}
                 >
                   <RugCard
@@ -168,10 +168,10 @@ export default function RugShowcase() {
           <AnimatePresence mode="wait">
             <motion.span
               key={currentSet.id}
-              initial={{ opacity: 0, y: 8 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.5, ease: easing }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.8, ease: easing }}
               className="rug-showcase__label-text"
             >
               {currentSet.label}
@@ -187,16 +187,16 @@ export default function RugShowcase() {
             id="hero-prev-btn"
           >
             <svg
-              width="18"
-              height="18"
-              viewBox="0 0 20 20"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M13 4L7 10L13 16"
+                d="M15 4L7 12L15 20"
                 stroke="currentColor"
-                strokeWidth="1.2"
+                strokeWidth="1"
                 strokeLinecap="square"
               />
             </svg>
@@ -218,16 +218,16 @@ export default function RugShowcase() {
             id="hero-next-btn"
           >
             <svg
-              width="18"
-              height="18"
-              viewBox="0 0 20 20"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M7 4L13 10L7 16"
+                d="M9 4L17 12L9 20"
                 stroke="currentColor"
-                strokeWidth="1.2"
+                strokeWidth="1"
                 strokeLinecap="square"
               />
             </svg>

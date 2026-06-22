@@ -4,15 +4,14 @@ import { motion } from "framer-motion";
 import RugShowcase from "./RugShowcase";
 import "./HeroSection.css";
 
-/* ── Animation config ── */
-const ease = [0.22, 1, 0.36, 1] as const;
-
+/* ── Animation Variants ── */
 const containerVariants = {
-  hidden: {},
+  hidden: { opacity: 0 },
   visible: {
+    opacity: 1,
     transition: {
-      staggerChildren: 0.12,
-      delayChildren: 0.3,
+      staggerChildren: 0.15,
+      delayChildren: 0.2,
     },
   },
 };
@@ -22,23 +21,16 @@ const fadeUp = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.9, ease },
-  },
-};
-
-const fadeIn = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { duration: 1.2, ease },
+    transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] },
   },
 };
 
 const lineReveal = {
-  hidden: { scaleX: 0 },
+  hidden: { scaleX: 0, opacity: 0 },
   visible: {
     scaleX: 1,
-    transition: { duration: 1.0, ease },
+    opacity: 1,
+    transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] },
   },
 };
 
@@ -52,10 +44,13 @@ export default function HeroSection() {
         initial="hidden"
         animate="visible"
       >
+        <motion.div className="hero__label" variants={fadeUp}>
+          HOUSE OF DÉCOR
+        </motion.div>
+
         <motion.div className="hero__heading-wrapper" variants={fadeUp}>
           <h1 className="hero__heading">
             Handwoven
-            <br />
             <span className="hero__heading-accent">Excellence</span>
           </h1>
         </motion.div>
@@ -72,26 +67,24 @@ export default function HeroSection() {
         </motion.p>
 
         <motion.div className="hero__cta-group" variants={fadeUp}>
-          <a href="#collections" className="hero__cta hero__cta--primary" id="hero-explore-btn">
-            Explore Collection
-          </a>
-          <a href="#contact" className="hero__cta hero__cta--secondary" id="hero-book-btn">
-            Book Appointment
+          <a href="#book" className="hero__cta hero__cta--primary">
+            Book Consultation
           </a>
         </motion.div>
 
         <motion.div className="hero__meta" variants={fadeUp}>
           <span className="hero__meta-item">Est. 2024</span>
-          <span className="hero__meta-divider">—</span>
+          <span className="hero__meta-divider">&mdash;</span>
           <span className="hero__meta-item">Handmade with precision</span>
         </motion.div>
       </motion.div>
+
       {/* ── Right Showcase ── */}
       <motion.div
         className="hero__right"
-        variants={fadeIn}
-        initial="hidden"
-        animate="visible"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 0.4 }}
       >
         <RugShowcase />
       </motion.div>
