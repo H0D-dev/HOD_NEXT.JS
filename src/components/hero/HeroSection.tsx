@@ -20,7 +20,7 @@ const maskReveal = {
   hidden: { y: "120%" },
   visible: {
     y: "0%",
-    transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] as any },
   },
 };
 
@@ -29,7 +29,7 @@ const fadeUp = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] as any },
   },
 };
 
@@ -38,7 +38,7 @@ const lineReveal = {
   visible: {
     scaleX: 1,
     opacity: 1,
-    transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] as any },
   },
 };
 
@@ -74,7 +74,7 @@ export default function HeroSection() {
           <motion.div
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any }}
           >
             <a href="#book" className="hero__cta hero__cta--primary">
               Book Consultation
@@ -88,7 +88,7 @@ export default function HeroSection() {
         className="hero__right"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 0.4 }}
+        transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] as any, delay: 0.4 }}
       >
         <RugShowcase />
       </motion.div>
