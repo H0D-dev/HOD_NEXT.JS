@@ -113,7 +113,7 @@ export default function FeaturedProducts() {
           </div>
         </div>
 
-        <motion.div 
+        <motion.div
           className="featured__grid"
           ref={scrollRef}
           onScroll={handleScroll}
@@ -129,8 +129,8 @@ export default function FeaturedProducts() {
           }}
         >
           {DUMMY_PRODUCTS.map((product) => (
-            <motion.div 
-              key={product.id} 
+            <motion.div
+              key={product.id}
               className="featured__card"
               variants={{
                 hidden: { opacity: 0, y: 30 },
@@ -139,18 +139,15 @@ export default function FeaturedProducts() {
             >
               <div className="featured__card-image-wrapper">
                 <img src={product.image} alt={product.name} className="featured__card-image" />
-                <div className="featured__card-gradient" />
-                
-                <div className="featured__card-content">
-                  <p className="featured__card-category font-sans">{product.category}</p>
-                  <div className="featured__card-info">
-                    <h3 className="featured__card-title font-serif">{product.name}</h3>
-                    <p className="featured__card-price font-sans">{product.price}</p>
-                  </div>
-                </div>
-
                 <div className="featured__card-overlay">
                   <span className="featured__card-cta font-sans">Explore &rarr;</span>
+                </div>
+              </div>
+              <div className="featured__card-content">
+                <p className="featured__card-category font-sans">{product.category}</p>
+                <div className="featured__card-info">
+                  <h3 className="featured__card-title font-serif">{product.name}</h3>
+                  <p className="featured__card-price font-sans">{product.price}</p>
                 </div>
               </div>
             </motion.div>
@@ -159,20 +156,20 @@ export default function FeaturedProducts() {
 
         <div className="featured__controls">
           <div className="featured__progress-bar">
-            <div 
-              className="featured__progress-indicator" 
-              style={{ width: `${Math.max(5, scrollProgress)}%` }} 
+            <div
+              className="featured__progress-indicator"
+              style={{ width: `${Math.max(5, scrollProgress)}%` }}
             />
           </div>
           <div className="featured__nav-buttons">
-            <button 
+            <button
               className="featured__nav-btn featured__nav-btn--prev"
               onClick={() => scroll('left')}
               aria-label="Previous products"
             >
               &larr;
             </button>
-            <button 
+            <button
               className="featured__nav-btn featured__nav-btn--next"
               onClick={() => scroll('right')}
               aria-label="Next products"
