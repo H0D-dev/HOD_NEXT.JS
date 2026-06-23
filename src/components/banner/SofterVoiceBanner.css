@@ -1,0 +1,50 @@
+.softer-voice {
+  width: 100%;
+  background: linear-gradient(135deg, var(--bg-tertiary) 0%, var(--bg-secondary) 100%);
+  border-top: var(--border-thin);
+  border-bottom: var(--border-thin);
+  overflow: hidden;
+}
+
+.softer-voice__container {
+  max-width: var(--container-md);
+  margin: 0 auto;
+  padding: 120px var(--space-4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.softer-voice__heading {
+  color: var(--text-secondary);
+  line-height: 1.15;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+}
+
+.softer-voice__line-1 {
+  font-family: var(--font-inter), sans-serif;
+  font-size: clamp(36px, 5vw, 68px);
+  font-weight: 300;
+  display: block;
+  margin-bottom: var(--space-2);
+}
+
+.softer-voice__line-2 {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-size: clamp(42px, 6vw, 76px);
+  font-weight: 300;
+  font-style: italic;
+  display: inline-block;
+}
+
+.softer-voice__line-2 em {
+  font-style: italic;
+}
+
+@media (min-width: 768px) {
+  .softer-voice__container {
+    padding: 180px var(--space-6);
+  }
+}

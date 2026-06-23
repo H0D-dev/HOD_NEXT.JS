@@ -107,14 +107,22 @@ export default function RugShowcase() {
   }, []);
 
   /* ── Navigation ── */
-  const navigate = (dir: number) => {
+  const navigate = useCallback((dir: number) => {
     setActiveIndex((prev) => {
       const next = prev + dir;
       if (next < 0) return rugSets.length - 1;
       if (next >= rugSets.length) return 0;
       return next;
     });
-  };
+  }, []);
+
+  /* ── Auto-play slideshow ── */
+  useEffect(() => {
+    const interval = setInterval(() => {
+      navigate(1);
+    }, 5000); // 5 seconds per slide
+    return () => clearInterval(interval);
+  }, [navigate]);
 
   const currentSet = rugSets[activeIndex];
 

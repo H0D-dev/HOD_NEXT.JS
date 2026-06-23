@@ -1,0 +1,120 @@
+.collections {
+  background-color: var(--bg-primary);
+  width: 100%;
+  /* border-top: var(--border-thin); */
+}
+
+.collections__container {
+  max-width: var(--container-lg);
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-4);
+}
+
+.collections__header {
+  margin-bottom: 140px;
+  /* Huge white space */
+  text-align: left;
+}
+
+.collections__heading {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-size: clamp(54px, 7vw, 110px);
+  /* Even larger text */
+  font-weight: 300;
+  color: var(--text-primary);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.collections__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .collections__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-5);
+  }
+}
+
+.collections__card {
+  background-color: var(--bg-primary);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border-bottom: var(--border-thin);
+}
+
+.collections__card-image-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+}
+
+.collections__card-image {
+  object-fit: cover;
+  transition: transform var(--duration-slow) var(--ease-premium);
+}
+
+.collections__card:hover .collections__card-image {
+  transform: scale(1.03);
+}
+
+.collections__card-content {
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-grow: 1;
+  transition: transform var(--duration-medium) var(--ease-premium);
+}
+
+.collections__card:hover .collections__card-content {
+  transform: translateY(-4px);
+}
+
+.collections__card-text {
+  margin-bottom: var(--space-3);
+}
+
+.collections__card-title {
+  font-size: var(--text-2xl);
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0;
+}
+
+.collections__card-description {
+  font-size: var(--text-md);
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.collections__card-cta {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-primary);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  transition: opacity 0.4s ease;
+}
+
+.collections__card-cta:hover {
+  opacity: 0.6;
+}
+
+@media (min-width: 768px) {
+  .collections__container {
+    padding: var(--space-8) var(--space-6);
+  }
+
+  .collections__card-image-wrapper {
+    aspect-ratio: 3 / 4;
+  }
+}

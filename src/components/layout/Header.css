@@ -9,11 +9,14 @@
   left: 0;
   width: 100%;
   z-index: 100;
-  /* Minimal translucent background to ensure text is readable while scrolling */
-  background: rgba(250, 250, 248, 0.85);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  background: transparent;
+  border-bottom: 1px solid transparent;
   transition: all 0.4s var(--ease-premium);
+}
+
+.header--scrolled {
+  background: var(--bg-primary);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .header__container {
@@ -21,10 +24,14 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  max-width: var(--container-lg);
-  margin: 0 auto;
-  padding: 20px var(--space-8);
-  /* Perfect balanced height */
+  max-width: 100%;
+  padding: 20px 4vw;
+}
+
+.header__left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-7); /* wide gap between logo and nav */
 }
 
 /* ── Left Side: Navigation ── */
@@ -39,14 +46,10 @@
 
 .header__nav-link {
   font-family: var(--font-inter), 'Inter', sans-serif;
-  font-size: 11px;
-  /* Slightly larger but much lighter */
+  font-size: 14px;
   font-weight: 400;
-  /* Lighter weight for elegance */
-  letter-spacing: 0.18em;
-  /* Much wider tracking */
-  text-transform: uppercase;
-  color: var(--text-secondary);
+  letter-spacing: 0.05em;
+  color: #333333;
   text-decoration: none;
   position: relative;
   transition: color 0.4s var(--ease-premium);
@@ -76,24 +79,27 @@
 .header__logo {
   display: flex;
   align-items: center;
-}
-
-.header__logo-link {
-  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
-  font-size: 26px;
-  /* Slightly increased for more presence */
-  font-weight: 300;
-  /* Ultra-light elegant weight */
-  letter-spacing: 0.22em;
-  /* Widened for luxury aesthetic */
-  color: var(--text-primary);
-  text-transform: uppercase;
+  gap: var(--space-2);
   text-decoration: none;
   transition: opacity 0.4s var(--ease-premium);
 }
 
-.header__logo-link:hover {
-  opacity: 0.7;
+.header__logo:hover {
+  opacity: 0.8;
+}
+
+.header__logo-text {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-size: 26px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  color: var(--text-primary);
+}
+
+/* ── Right Side ── */
+.header__right {
+  display: flex;
+  align-items: center;
 }
 
 .header__cart-btn {
@@ -105,8 +111,6 @@
   justify-content: center;
   cursor: pointer;
   transition: opacity 0.4s var(--ease-premium), transform 0.4s var(--ease-premium);
-  margin-left: var(--space-4);
-  /* Ensure gap from nav links */
 }
 
 .header__cart-btn:hover {

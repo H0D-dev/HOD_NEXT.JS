@@ -15,9 +15,11 @@
     --text-secondary: #4A4A4A;
     --text-muted: #777777;
     --border-primary: #111111;
-    --border-secondary: #D9D9D9;
+    --border-secondary: #DDDDDD;
+    --border-thin: 1px solid var(--border-secondary);
     --accent-primary: #F7F77E;
     --accent-secondary: #ECEC8D;
+    --highlight-color: #007bff;
     --surface-primary: #FFFFFF;
     --surface-secondary: #FAFAFA;
     /* ── Typography Scale ── */
@@ -44,7 +46,6 @@
     --container-md: 1200px;
     --container-lg: 1440px;
     /* ── Borders ── */
-    --border-thin: 1px solid var(--border-primary);
     /* ── Radius (minimal) ── */
     --radius-sm: 0px;
     --radius-md: 2px;
@@ -70,6 +71,7 @@
     --border-secondary: #333333;
     --accent-primary: #F7F77E;
     --accent-secondary: #D9D96A;
+    --highlight-color: #007bff;
     --surface-primary: #111111;
     --surface-secondary: #181818;
     --background: #0D0D0D;
@@ -119,8 +121,8 @@
 
     /* ── Selection ── */
     ::selection {
-        background: var(--accent-primary);
-        color: var(--text-primary);
+        background: var(--highlight-color);
+        color: #FFFFFF;
     }
 
     /* ── Utility: Serif font ── */
