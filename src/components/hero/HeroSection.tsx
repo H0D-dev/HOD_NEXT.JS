@@ -16,6 +16,14 @@ const containerVariants = {
   },
 };
 
+const maskReveal = {
+  hidden: { y: "120%" },
+  visible: {
+    y: "0%",
+    transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
   visible: {
@@ -44,12 +52,12 @@ export default function HeroSection() {
         initial="hidden"
         animate="visible"
       >
-        <motion.div className="hero__heading-wrapper" variants={fadeUp}>
-          <h1 className="hero__heading">
+        <div className="hero__heading-wrapper" >
+          <motion.h1 className="hero__heading" variants={maskReveal}>
             Handwoven
             <span className="hero__heading-accent">Excellence</span>
-          </h1>
-        </motion.div>
+          </motion.h1>
+        </div>
 
         <motion.div
           className="hero__divider"
@@ -63,9 +71,15 @@ export default function HeroSection() {
         </motion.p>
 
         <motion.div className="hero__cta-group" variants={fadeUp}>
-          <a href="#book" className="hero__cta hero__cta--primary">
-            Book Consultation
-          </a>
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <a href="#book" className="hero__cta hero__cta--primary">
+              Book Consultation
+            </a>
+          </motion.div>
         </motion.div>
       </motion.div>
 

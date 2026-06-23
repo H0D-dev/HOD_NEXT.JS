@@ -22,39 +22,46 @@
 .rug-showcase__card-wrapper {
   position: absolute;
   overflow: hidden;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.08); /* Subtle float shadow */
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  /* Subtle float shadow */
 }
 
-/* Third Image (Top-down) — 15% scale, top-right */
+/* Third Image (Top-down) — Top Right, Behind */
 .rug-showcase__card--top {
-  width: 18%; /* slightly bumped from 15% for visibility */
+  width: 18%;
+  /* Scaled down for hierarchy */
   aspect-ratio: 3 / 4;
-  max-width: 160px;
+  max-width: 220px;
   top: 10%;
-  right: 12%;
+  right: 5%;
+  z-index: 1;
+}
+
+/* Center Image (Room) — Dominant, Middle Layer */
+.rug-showcase__card--center {
+  width: 58%;
+  /* Scaled up for hierarchy */
+  aspect-ratio: 1.1 / 1;
+  /* Slightly taller aspect ratio to extend it downwards */
+  max-width: 520px;
+  top: 48%;
+  left: 55%;
+  margin-top: -20%;
+  margin-left: -29%;
+  /* Adjusted for new 58% width */
   z-index: 2;
 }
 
-/* Center Image (Room) — 65% dominance, massive */
-.rug-showcase__card--center {
-  width: 65%;
-  aspect-ratio: 4 / 5;
-  max-width: 500px;
-  top: 48%;
-  left: 50%;
-  margin-top: -35%; /* Adjust for absolute centering roughly */
-  margin-left: -32.5%;
-  z-index: 1; /* Sits behind for deep overlap */
-}
-
-/* Secondary Image (Texture) — 20% scale, overlapping bottom */
+/* Secondary Image (Texture) — Bottom Left, Front */
 .rug-showcase__card--bottom {
-  width: 25%; /* slightly bumped from 20% for visibility */
-  aspect-ratio: 3 / 4;
-  max-width: 200px;
+  width: 22%;
+  /* Scaled down for hierarchy */
+  aspect-ratio: 4 / 5;
+  /* Changed from 3/4 to make it slightly less tall */
+  max-width: 260px;
   bottom: 12%;
-  left: 15%;
-  z-index: 3; /* Overlaps strongly */
+  left: 12%;
+  z-index: 3;
 }
 
 /* ── Footer bar ── */
@@ -63,7 +70,8 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--space-3) var(--space-5);
-  border-top: 1px solid rgba(0,0,0,0.05); /* Subtle thin line */
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  /* Subtle thin line */
   flex-shrink: 0;
 }
 
@@ -75,7 +83,8 @@
 
 .rug-showcase__label-text {
   font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
-  font-size: 24px; /* Slightly larger, more premium */
+  font-size: 24px;
+  /* Slightly larger, more premium */
   font-weight: 400;
   font-style: italic;
   color: var(--text-primary);
@@ -129,26 +138,62 @@
 
 /* ── Responsive ── */
 @media (max-width: 1200px) {
-  .rug-showcase__card--top { max-width: 140px; }
-  .rug-showcase__card--center { max-width: 420px; }
-  .rug-showcase__card--bottom { max-width: 180px; }
+  .rug-showcase__card--top {
+    max-width: 140px;
+  }
+
+  .rug-showcase__card--center {
+    max-width: 420px;
+  }
+
+  .rug-showcase__card--bottom {
+    max-width: 180px;
+  }
 }
 
 @media (max-width: 1024px) {
-  .rug-showcase__card--top { max-width: 120px; }
-  .rug-showcase__card--center { max-width: 360px; margin-top: -30%; }
-  .rug-showcase__card--bottom { max-width: 150px; left: 10%; }
-  .rug-showcase__footer { padding: var(--space-3); }
+  .rug-showcase__card--top {
+    max-width: 120px;
+  }
+
+  .rug-showcase__card--center {
+    max-width: 360px;
+    margin-top: -30%;
+  }
+
+  .rug-showcase__card--bottom {
+    max-width: 150px;
+    left: 10%;
+  }
+
+  .rug-showcase__footer {
+    padding: var(--space-3);
+  }
 }
 
 @media (max-width: 768px) {
   .rug-showcase__cards {
     min-height: 440px;
   }
-  
-  .rug-showcase__card--top { width: 22%; top: 5%; right: 5%; z-index: 3;}
-  .rug-showcase__card--center { width: 75%; margin-left: -37.5%; margin-top: -45%; }
-  .rug-showcase__card--bottom { width: 30%; bottom: 5%; left: 5%; }
+
+  .rug-showcase__card--top {
+    width: 22%;
+    top: 5%;
+    right: 5%;
+    z-index: 3;
+  }
+
+  .rug-showcase__card--center {
+    width: 75%;
+    margin-left: -37.5%;
+    margin-top: -45%;
+  }
+
+  .rug-showcase__card--bottom {
+    width: 30%;
+    bottom: 5%;
+    left: 5%;
+  }
 
   .rug-showcase__footer {
     flex-direction: column;

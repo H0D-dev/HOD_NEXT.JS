@@ -17,26 +17,26 @@ const rugSets = [
     ],
   },
   {
-    id: "geometric",
-    label: "Modern Geometric",
+    id: "silk-persian",
+    label: "Silk Emerald",
     cards: [
-      { src: "/carpets/set2-full.png", alt: "Geometric rug — full view" },
-      { src: "/carpets/set2-room.png", alt: "Geometric rug — room placement" },
+      { src: "/carpets/set2-full.png", alt: "Emerald Silk Persian rug — full view" },
+      { src: "/carpets/set2-room.png", alt: "Emerald Silk Persian rug — room placement" },
       {
         src: "/carpets/set2-texture.png",
-        alt: "Geometric rug — texture detail",
+        alt: "Emerald Silk Persian rug — texture detail",
       },
     ],
   },
   {
-    id: "natural",
-    label: "Handwoven Natural",
+    id: "vintage-oushak",
+    label: "Vintage Oushak",
     cards: [
-      { src: "/carpets/set3-full.png", alt: "Natural rug — full view" },
-      { src: "/carpets/set3-room.png", alt: "Natural rug — room placement" },
+      { src: "/carpets/set3-full.png", alt: "Vintage Oushak rug — full view" },
+      { src: "/carpets/set3-room.png", alt: "Vintage Oushak rug — room placement" },
       {
         src: "/carpets/set3-texture.png",
-        alt: "Natural rug — texture detail",
+        alt: "Vintage Oushak rug — texture detail",
       },
     ],
   },
@@ -145,9 +145,9 @@ export default function RugShowcase() {
                   animate={cfg.animation.animate}
                   exit={cfg.animation.exit}
                   transition={{
-                    duration: 1.2 + i * 0.15, /* Slower, cinematic transition */
+                    duration: 0.8 + i * 0.1, /* Faster, more responsive transition */
                     ease: easing,
-                    delay: i * 0.15, /* More staggered delay */
+                    delay: i * 0.1, /* Tighter staggered delay */
                   }}
                 >
                   <RugCard

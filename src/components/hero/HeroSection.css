@@ -7,15 +7,16 @@
   display: flex;
   min-height: 100vh;
   width: 100%;
-  background-color: #FAFAF8; /* Warm off-white */
-  
+  background-color: #FAFAF8;
+  /* Warm off-white */
+
   /* Subtle thread-like background grid to evoke textile craftsmanship */
-  background-image: 
-    linear-gradient(to right, rgba(0,0,0,0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0,0,0,0.03) 1px, transparent 1px);
+  background-image:
+    linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
   background-size: 120px 120px;
   background-position: center;
-  
+
   position: relative;
   overflow: hidden;
 }
@@ -25,8 +26,8 @@
   width: 45%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: var(--space-7) var(--space-6) var(--space-7) var(--space-8);
+  justify-content: flex-start;
+  padding: 15vh 2vw 0 6vw; /* Shifted slightly upwards and clean alignment */
   position: relative;
   z-index: 2;
 }
@@ -37,7 +38,8 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  background: transparent; /* Removed split background */
+  background: transparent;
+  /* Removed split background */
 }
 
 /* ── Brand label ── */
@@ -54,19 +56,22 @@
 /* ── Main heading ── */
 .hero__heading {
   font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
-  font-size: clamp(64px, 7vw, 110px); /* Larger size */
-  font-weight: 300;
-  line-height: 0.95; /* Tighter line height */
-  letter-spacing: -0.03em; /* Tighter letter spacing */
+  font-size: clamp(54px, 6vw, 94px); /* Reduced by ~15% for elegance */
+  font-weight: 400; /* Increased from 300 for slightly stronger presence */
+  line-height: 0.95;
+  /* Tighter line height */
+  letter-spacing: -0.05em; /* Tighter letter spacing */
   color: var(--text-primary);
-  margin-bottom: var(--space-4);
+  margin-bottom: 48px; /* Mathematically precise spacing */
   text-transform: uppercase;
+  max-width: 90%; /* Reduces width slightly to balance left side */
 }
 
 .hero__heading-accent {
   font-style: italic;
   font-weight: 300;
-  text-transform: none; /* Keep the second line elegant, mixed case or lower */
+  text-transform: none;
+  /* Keep the second line elegant, mixed case or lower */
   display: block;
 }
 
@@ -75,7 +80,7 @@
   width: 60px;
   height: 1px;
   background: var(--text-primary);
-  margin-bottom: var(--space-5);
+  margin-bottom: 32px; /* Reduced spacing to paragraph */
 }
 
 /* ── Description ── */
@@ -86,7 +91,7 @@
   line-height: 1.8;
   color: var(--text-secondary);
   max-width: 360px;
-  margin-bottom: var(--space-6);
+  margin-bottom: 56px; /* Mathematically precise spacing */
 }
 
 /* ── CTA group ── */
@@ -113,14 +118,16 @@
 }
 
 .hero__cta--primary {
-  background: var(--text-primary);
-  color: var(--bg-primary);
-  border: 1px solid var(--text-primary);
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid rgba(17, 17, 17, 0.6); /* Refined, stronger border contrast */
 }
 
 .hero__cta--primary:hover {
-  background: transparent;
-  color: var(--text-primary);
+  background: var(--text-primary);
+  color: #FAFAF8;
+  border-color: var(--text-primary);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1); /* Elevated luxury hover feel */
 }
 
 .hero__cta--link {
@@ -184,7 +191,7 @@
   }
 
   .hero__heading {
-    font-size: clamp(52px, 6vw, 72px);
+    font-size: clamp(44px, 6vw, 64px); /* Reduced responsive size */
   }
 
   .hero__cta {
@@ -208,11 +215,11 @@
   .hero__right {
     width: 100%;
     min-height: 520px;
-    border-top: 1px solid rgba(0,0,0,0.05);
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
   }
 
   .hero__heading {
-    font-size: clamp(48px, 10vw, 64px);
+    font-size: clamp(40px, 9vw, 56px); /* Reduced mobile size */
   }
 
   .hero__cta-group {
