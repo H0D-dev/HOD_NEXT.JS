@@ -18,7 +18,7 @@ const DUMMY_PRODUCTS = [
     name: "Oasis Weave",
     category: "Flat Weave",
     price: "From ₹12,499",
-    image: "https://images.unsplash.com/photo-1595428774223-ef52624120d2?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1600166898405-da9535204843?auto=format&fit=crop&q=80&w=800",
     slug: "oasis-weave"
   },
   {
@@ -26,7 +26,7 @@ const DUMMY_PRODUCTS = [
     name: "Modern Minimalist",
     category: "Hand Tufted",
     price: "From ₹18,999",
-    image: "https://images.unsplash.com/photo-1575414003593-0a3014c27807?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1600166898405-da9535204843?auto=format&fit=crop&q=80&w=800",
     slug: "modern-minimalist"
   },
   {
@@ -34,7 +34,7 @@ const DUMMY_PRODUCTS = [
     name: "Vintage Anatolian",
     category: "Hand Knotted",
     price: "From ₹32,000",
-    image: "https://images.unsplash.com/photo-1534889445100-2d887a2d8157?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1600166898405-da9535204843?auto=format&fit=crop&q=80&w=800",
     slug: "vintage-anatolian"
   },
   {
@@ -42,7 +42,7 @@ const DUMMY_PRODUCTS = [
     name: "Nomad Tribal",
     category: "Flat Weave",
     price: "From ₹15,499",
-    image: "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1600166898405-da9535204843?auto=format&fit=crop&q=80&w=800",
     slug: "nomad-tribal"
   },
   {
@@ -50,7 +50,7 @@ const DUMMY_PRODUCTS = [
     name: "Silk Cascade",
     category: "Hand Tufted",
     price: "From ₹45,000",
-    image: "https://images.unsplash.com/photo-1581428982868-e410dd127ed4?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1600166898405-da9535204843?auto=format&fit=crop&q=80&w=800",
     slug: "silk-cascade"
   },
   {
@@ -58,7 +58,7 @@ const DUMMY_PRODUCTS = [
     name: "Desert Dune",
     category: "Hand Knotted",
     price: "From ₹28,500",
-    image: "https://images.unsplash.com/photo-1595428774880-9b48cce63c1a?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1600166898405-da9535204843?auto=format&fit=crop&q=80&w=800",
     slug: "desert-dune"
   },
   {
@@ -139,15 +139,17 @@ export default function FeaturedProducts() {
             >
               <div className="featured__card-image-wrapper">
                 <img src={product.image} alt={product.name} className="featured__card-image" />
+                
+                <div className="featured__card-content">
+                  <p className="featured__card-category font-sans">{product.category}</p>
+                  <div className="featured__card-info">
+                    <h3 className="featured__card-title font-serif">{product.name}</h3>
+                    <p className="featured__card-price font-sans">{product.price}</p>
+                  </div>
+                </div>
+
                 <div className="featured__card-overlay">
                   <span className="featured__card-cta font-sans">Explore &rarr;</span>
-                </div>
-              </div>
-              <div className="featured__card-content">
-                <p className="featured__card-category font-sans">{product.category}</p>
-                <div className="featured__card-info">
-                  <h3 className="featured__card-title font-serif">{product.name}</h3>
-                  <p className="featured__card-price font-sans">{product.price}</p>
                 </div>
               </div>
             </motion.div>
