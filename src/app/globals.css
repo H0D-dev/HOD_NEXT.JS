@@ -92,6 +92,7 @@
     }
 }
 
+@layer base {
     /* ── Global Reset & Base ── */
     *,
     *::before,
@@ -124,6 +125,7 @@
         background: var(--highlight-color);
         color: #FFFFFF;
     }
+}
 
     /* ── Utility: Serif font ── */
     .font-serif {

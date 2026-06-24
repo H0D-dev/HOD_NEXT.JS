@@ -3,6 +3,8 @@ import CollectionCategories from "@/src/components/collections/CollectionCategor
 import SofterVoiceBanner from "@/src/components/banner/SofterVoiceBanner";
 import FeaturedProducts from "@/src/components/products/FeaturedProducts";
 import ProcessSection from "@/src/components/process/ProcessSection";
+import ProjectsSection from "@/src/components/projects/ProjectsSection";
+import AboutSection from "@/src/components/about/AboutSection";
 
 export default function Home() {
   return (
@@ -12,6 +14,8 @@ export default function Home() {
       <SofterVoiceBanner />
       <FeaturedProducts />
       <ProcessSection />
+      <ProjectsSection />
+      <AboutSection />
     </main>
   );
 }
