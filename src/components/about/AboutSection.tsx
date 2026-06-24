@@ -22,6 +22,7 @@ export default function AboutSection() {
                     src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80&w=800"
                     alt="House of Decor Living Room"
                     fill
+                    sizes="(max-width: 1024px) 50vw, 25vw"
                     className="object-cover"
                   />
                 </div>
@@ -30,6 +31,7 @@ export default function AboutSection() {
                     src="https://images.unsplash.com/photo-1595428774223-ef52624120d2?auto=format&fit=crop&q=80&w=800"
                     alt="House of Decor Interior Style"
                     fill
+                    sizes="(max-width: 1024px) 50vw, 25vw"
                     className="object-cover"
                   />
                 </div>
@@ -42,6 +44,7 @@ export default function AboutSection() {
                     src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&q=80&w=800"
                     alt="Handmade Rug Details"
                     fill
+                    sizes="(max-width: 1024px) 50vw, 25vw"
                     className="object-cover"
                   />
                 </div>
@@ -50,6 +53,7 @@ export default function AboutSection() {
                     src="https://images.unsplash.com/photo-1600607686527-6fb886090705?auto=format&fit=crop&q=80&w=800"
                     alt="Rolled Premium Rug"
                     fill
+                    sizes="(max-width: 1024px) 50vw, 25vw"
                     className="object-cover"
                   />
                 </div>
@@ -67,7 +71,7 @@ export default function AboutSection() {
               From classic to contemporary styles, each piece is thoughtfully designed to elevate your home or office with beauty, comfort, and enduring craftsmanship.
             </p>
 
-            <button className="px-10 py-5 border border-[var(--border-primary)] bg-transparent text-[var(--text-primary)] uppercase text-xs tracking-[0.2em] font-medium hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-all duration-500 w-max">
+            <button className="px-10 py-5 border border-[var(--accent-primary)] bg-[var(--accent-primary)] text-black uppercase text-xs tracking-[0.2em] font-medium hover:bg-black hover:border-black hover:text-white transition-all duration-500 w-max">
               Book Appointment
             </button>
           </div>

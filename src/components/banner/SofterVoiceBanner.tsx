@@ -18,23 +18,23 @@ export default function SofterVoiceBanner() {
           <span className="softer-voice__line-1 relative w-fit">
             Give Your Home
             <svg
-              className="absolute -top-10 -right-10 md:-top-16 md:-right-20 w-16 h-16 md:w-24 md:h-24 drop-shadow-sm"
+              className="absolute -top-6 -right-6 w-10 h-10 sm:-top-10 sm:-right-10 sm:w-16 sm:h-16 md:-top-16 md:-right-20 md:w-24 md:h-24 drop-shadow-sm"
               viewBox="0 0 100 100"
               fill="none"
-              stroke="#2A2A2A"
+              stroke="currentColor"
               strokeWidth="5"
               strokeLinecap="round"
               strokeLinejoin="round"
             >
               {/* Base */}
-              <path d="M 20 53 C 20 75 25 90 35 90 C 45 90 55 90 65 90 C 75 90 80 75 80 53 Z" fill="#FF8A9B" />
+              <path d="M 20 53 C 20 75 25 90 35 90 C 45 90 55 90 65 90 C 75 90 80 75 80 53 Z" fill="var(--bg-primary)" />
               {/* Inner Window/Door */}
-              <path d="M 33 55 C 33 70 38 75 45 75 C 52 75 55 70 55 55 Z" fill="#C5EAF7" />
+              <path d="M 33 55 C 33 70 38 75 45 75 C 52 75 55 70 55 55 Z" fill="none" />
               {/* Awning/Roof */}
-              <path d="M 25 20 C 35 15 65 15 75 20 C 85 30 95 45 90 55 C 85 60 75 58 65 50 C 55 60 45 60 35 50 C 25 58 15 60 10 55 C 5 45 15 30 25 20 Z" fill="#FF8A9B" />
+              <path d="M 25 20 C 35 15 65 15 75 20 C 85 30 95 45 90 55 C 85 60 75 58 65 50 C 55 60 45 60 35 50 C 25 58 15 60 10 55 C 5 45 15 30 25 20 Z" fill="var(--bg-primary)" />
               {/* Highlights */}
-              <path d="M 20 40 C 25 25 40 22 55 22" stroke="#FFAEC0" strokeWidth="4" fill="none" />
-              <path d="M 37 60 C 37 70 40 72 46 72" stroke="#E5F6FD" strokeWidth="3" fill="none" />
+              <path d="M 20 40 C 25 25 40 22 55 22" stroke="currentColor" strokeWidth="4" fill="none" />
+              <path d="M 37 60 C 37 70 40 72 46 72" stroke="currentColor" strokeWidth="3" fill="none" />
             </svg>
           </span>
           <div className="softer-voice__bottom-row">

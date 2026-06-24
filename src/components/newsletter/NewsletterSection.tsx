@@ -48,9 +48,9 @@ export default function NewsletterSection() {
   };
 
   return (
-    <section className="min-h-[100dvh] flex flex-col justify-center py-16 bg-[#111111] text-white overflow-hidden">
+    <section className="min-h-[100dvh] flex flex-col justify-center py-16 md:py-24 bg-[var(--bg-primary)] text-[var(--text-primary)] border-t border-[var(--border-secondary)] overflow-hidden">
       <div className="max-w-[var(--container-lg)] mx-auto px-6 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16 lg:gap-24 items-center">
           
           {/* LEFT SIDE: Content + Form */}
           <div className="flex flex-col">
@@ -63,21 +63,22 @@ export default function NewsletterSection() {
             >
             <motion.span 
               variants={itemVariants}
-              className="uppercase text-xs tracking-[0.2em] text-[#D0D0D0] mb-6 block font-sans"
+              className="uppercase text-xs tracking-[0.2em] text-[var(--text-muted)] mb-6 block font-sans"
             >
               Stay Inspired
             </motion.span>
             
             <motion.h2 
               variants={itemVariants}
-              className="font-serif text-4xl md:text-5xl lg:text-6xl mb-8 leading-[1.1]"
+              className="font-sans text-4xl md:text-5xl lg:text-6xl mb-8 tracking-[-0.04em] leading-[0.9] text-[var(--text-primary)] relative inline-flex flex-wrap items-start"
             >
-              Bring Luxury Home
+              <span>Bring Luxury Home</span>
+              <sup className="text-xl md:text-2xl font-light ml-2 mt-1 tracking-normal text-[var(--text-secondary)]">(06)</sup>
             </motion.h2>
             
             <motion.p 
               variants={itemVariants}
-              className="text-[#D0D0D0] text-lg leading-relaxed mb-12 font-sans font-light"
+              className="text-[var(--text-secondary)] text-lg leading-relaxed mb-12 font-sans font-light"
             >
               Get exclusive access to new collections, design inspiration, and bespoke interior insights curated for refined living.
             </motion.p>
@@ -86,10 +87,10 @@ export default function NewsletterSection() {
               <motion.div 
                 initial={{ opacity: 0 }} 
                 animate={{ opacity: 1 }} 
-                className="p-8 border border-[#333333] bg-[#161616] text-center"
+                className="p-8 border border-[var(--border-secondary)] bg-[var(--bg-secondary)] text-center"
               >
-                <h3 className="font-serif text-2xl mb-2 text-[#F7F77E]">Welcome to the Community</h3>
-                <p className="text-[#D0D0D0] font-light">Thank you for joining. We will be in touch soon.</p>
+                <h3 className="font-sans text-2xl mb-2 text-[var(--accent-primary)] font-medium">Welcome to the Community</h3>
+                <p className="text-[var(--text-secondary)] font-light">Thank you for joining. We will be in touch soon.</p>
               </motion.div>
             ) : (
               <motion.form 
@@ -105,7 +106,7 @@ export default function NewsletterSection() {
                       id="firstName" 
                       name="firstName" 
                       placeholder="First Name" 
-                      className="w-full px-6 py-4 bg-[#181818] text-white border border-[#333333] focus:outline-none focus:border-[#F7F77E] transition-colors font-sans placeholder-[#8C8C8C] rounded-none"
+                      className="w-full px-6 py-4 bg-[var(--bg-secondary)] text-[var(--text-primary)] border border-[var(--border-secondary)] focus:outline-none focus:border-[var(--accent-primary)] transition-colors font-sans placeholder-[var(--text-muted)] rounded-none"
                     />
                   </div>
                   <div className="flex flex-col">
@@ -115,7 +116,7 @@ export default function NewsletterSection() {
                       id="lastName" 
                       name="lastName" 
                       placeholder="Last Name" 
-                      className="w-full px-6 py-4 bg-[#181818] text-white border border-[#333333] focus:outline-none focus:border-[#F7F77E] transition-colors font-sans placeholder-[#8C8C8C] rounded-none"
+                      className="w-full px-6 py-4 bg-[var(--bg-secondary)] text-[var(--text-primary)] border border-[var(--border-secondary)] focus:outline-none focus:border-[var(--accent-primary)] transition-colors font-sans placeholder-[var(--text-muted)] rounded-none"
                     />
                   </div>
                 </div>
@@ -127,19 +128,19 @@ export default function NewsletterSection() {
                     id="email" 
                     name="email" 
                     placeholder="Email Address" 
-                    className="w-full px-6 py-4 bg-[#181818] text-white border border-[#333333] focus:outline-none focus:border-[#F7F77E] transition-colors font-sans placeholder-[#8C8C8C] rounded-none"
+                    className="w-full px-6 py-4 bg-[var(--bg-secondary)] text-[var(--text-primary)] border border-[var(--border-secondary)] focus:outline-none focus:border-[var(--accent-primary)] transition-colors font-sans placeholder-[var(--text-muted)] rounded-none"
                   />
                 </div>
 
                 <button 
                   type="submit" 
                   disabled={isSubmitting}
-                  className="mt-4 px-10 py-5 bg-[#F7F77E] text-[#111111] border border-[#F7F77E] uppercase text-xs tracking-[0.2em] font-medium hover:bg-[#E0E065] hover:border-[#E0E065] transition-all duration-300 w-full rounded-none disabled:opacity-70 disabled:cursor-not-allowed"
+                  className="mt-4 px-10 py-5 bg-[var(--accent-primary)] text-black border border-[var(--accent-primary)] uppercase text-xs tracking-[0.2em] font-medium hover:bg-black hover:border-black hover:text-white transition-all duration-500 w-full rounded-none disabled:opacity-70 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? "Joining..." : "Join Our Community \u2192"}
                 </button>
 
-                <p className="text-xs text-[#8C8C8C] mt-2 text-center tracking-wide">
+                <p className="text-xs text-[var(--text-muted)] mt-2 text-center tracking-wide">
                   We respect your privacy. Unsubscribe anytime.
                 </p>
               </motion.form>
@@ -148,7 +149,7 @@ export default function NewsletterSection() {
         </div>
 
         {/* RIGHT SIDE: Image */}
-        <div className="relative w-full h-[50vh] md:h-[60vh] lg:h-[75vh] max-h-[700px] overflow-hidden group">
+        <div className="relative w-full h-[350px] sm:h-[450px] lg:h-[75vh] max-h-[700px] overflow-hidden group">
           <motion.div
             variants={imageVariants}
             initial="hidden"

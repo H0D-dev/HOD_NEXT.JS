@@ -27,7 +27,8 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  padding: 22vh 2vw 0 10vw; /* Increased breathing space from top and left */
+  padding: 22vh 2vw 0 10vw;
+  /* Increased breathing space from top and left */
   position: relative;
   z-index: 2;
 }
@@ -58,13 +59,13 @@
   font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
   font-style: normal;
   font-size: clamp(54px, 6vw, 94px);
-  font-weight: 300; 
+  font-weight: 300;
   line-height: 0.95;
-  letter-spacing: -0.02em; 
+  letter-spacing: -0.02em;
   color: var(--text-primary);
-  margin-bottom: 24px; 
+  margin-bottom: 24px;
   text-transform: none;
-  max-width: 90%; 
+  max-width: 90%;
 }
 
 .hero__heading-accent {
@@ -81,7 +82,8 @@
   width: 60px;
   height: 1px;
   background: var(--text-primary);
-  margin-bottom: 24px; /* Reduced spacing */
+  margin-bottom: 24px;
+  /* Reduced spacing */
 }
 
 /* ── Description ── */
@@ -92,7 +94,8 @@
   line-height: 1.8;
   color: var(--text-secondary);
   max-width: 360px;
-  margin-bottom: 40px; /* Reduced spacing */
+  margin-bottom: 40px;
+  /* Reduced spacing */
 }
 
 /* ── CTA group ── */
@@ -128,7 +131,8 @@
   background: var(--text-primary);
   color: var(--bg-primary);
   border-color: var(--text-primary);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1); /* Elevated luxury hover feel */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  /* Elevated luxury hover feel */
 }
 
 .hero__cta--link {
@@ -192,7 +196,8 @@
   }
 
   .hero__heading {
-    font-size: clamp(44px, 6vw, 64px); /* Reduced responsive size */
+    font-size: clamp(44px, 6vw, 64px);
+    /* Reduced responsive size */
   }
 
   .hero__cta {
@@ -220,7 +225,8 @@
   }
 
   .hero__heading {
-    font-size: clamp(40px, 9vw, 56px); /* Reduced mobile size */
+    font-size: clamp(40px, 9vw, 56px);
+    /* Reduced mobile size */
   }
 
   .hero__cta-group {

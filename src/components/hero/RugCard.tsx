@@ -35,7 +35,7 @@ export default function RugCard({
         fill
         sizes="(max-width: 768px) 50vw, 25vw"
         style={{ objectFit: "cover" }}
-        loading="eager"
+        priority
       />
     </motion.div>
   );

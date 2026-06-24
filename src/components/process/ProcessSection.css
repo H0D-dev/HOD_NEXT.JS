@@ -82,9 +82,9 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  background-color: transparent;
-  color: var(--text-primary);
-  border: 1px solid var(--border-primary);
+  background-color: var(--accent-primary);
+  color: #000000;
+  border: 1px solid var(--accent-primary);
   padding: 16px 32px;
   font-size: var(--text-sm);
   font-weight: 500;
@@ -97,9 +97,9 @@
 }
 
 .process__cta:hover {
-  background-color: var(--accent-primary);
-  border-color: var(--accent-primary);
-  color: var(--text-primary);
+  background-color: #000000;
+  border-color: #000000;
+  color: #ffffff;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
