@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 
 export type Project = {
   id: string;
@@ -46,13 +46,13 @@ export default function ProjectsSection({ projects = DUMMY_PROJECTS }: ProjectsS
   const activeProject = projects[activeIndex];
 
   // Motion variants for smooth transitions
-  const contentVariants = {
+  const contentVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } },
     exit: { opacity: 0, y: -20, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }
   };
 
-  const imageVariants = {
+  const imageVariants: Variants = {
     hidden: { opacity: 0, scale: 1.05 },
     visible: { opacity: 1, scale: 1, transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] } },
     exit: { opacity: 0, scale: 0.95, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } }
