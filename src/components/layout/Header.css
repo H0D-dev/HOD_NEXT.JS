@@ -106,12 +106,22 @@
   display: none;
 }
 
+.header__logo-img--desktop {
+  display: none;
+  height: 28px;
+  width: auto;
+  object-fit: contain;
+}
+
 @media (min-width: 768px) {
   .header__logo-text--mobile {
     display: none;
   }
   .header__logo-text--desktop {
-    display: inline;
+    display: none;
+  }
+  .header__logo-img--desktop {
+    display: block;
   }
   .header__logo-text {
     font-size: 32px;

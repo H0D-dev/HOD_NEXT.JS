@@ -70,7 +70,13 @@ export default function Header() {
           <div className="header__left">
             {/* ── Logo ── */}
             <Link href="/" className="header__logo">
-              <span className="header__logo-text header__logo-text--desktop">House of Décor</span>
+              <Image 
+                src="/logo/HOD_LOGO.webp" 
+                alt="House of Décor" 
+                width={160} 
+                height={36} 
+                className="header__logo-img--desktop"
+              />
               <span className="header__logo-text header__logo-text--mobile">HOD</span>
             </Link>
 
