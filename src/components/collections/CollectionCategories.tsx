@@ -67,9 +67,12 @@ export default function CollectionCategories() {
             },
           }}
         >
-          <h2 className="collections__heading font-serif">
-            Collection Categories
-          </h2>
+          <div className="flex justify-between items-end">
+            <h2 className="collections__heading font-sans relative inline-flex">
+              Collections
+              <sup className="text-2xl md:text-4xl font-light ml-2 md:ml-4 mt-2 md:mt-6 tracking-normal text-[var(--text-secondary)]">(02)</sup>
+            </h2>
+          </div>
         </motion.div>
 
         <motion.div

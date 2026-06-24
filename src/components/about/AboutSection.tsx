@@ -7,13 +7,13 @@ export default function AboutSection() {
     <section className="py-24 lg:py-32 bg-[var(--bg-secondary)] text-[var(--text-primary)]">
       <div className="max-w-[var(--container-lg)] mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-8 items-center">
-          
+
           {/* LEFT SIDE: Heading & Staggered Image Grid */}
           <div className="flex flex-col lg:col-span-5">
             <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl mb-12 leading-none tracking-wide">
               About Us
             </h2>
-            
+
             <div className="grid grid-cols-2 gap-4 md:gap-6">
               {/* Column 1 - No offset */}
               <div className="flex flex-col gap-4 md:gap-6">
@@ -34,7 +34,7 @@ export default function AboutSection() {
                   />
                 </div>
               </div>
-              
+
               {/* Column 2 - Offset downwards */}
               <div className="flex flex-col gap-4 md:gap-6 mt-12 md:mt-20">
                 <div className="relative aspect-square w-full overflow-hidden">
@@ -62,16 +62,16 @@ export default function AboutSection() {
             <p className="text-[var(--text-secondary)] text-lg md:text-xl leading-relaxed md:leading-loose mb-8 font-sans font-light">
               Welcome to House Of Decor, where premium craftsmanship meets timeless design. Our handmade rugs and carpets are expertly crafted by skilled artisans using the finest materials, bringing warmth, elegance, and lasting quality to every space.
             </p>
-            
+
             <p className="text-[var(--text-secondary)] text-lg md:text-xl leading-relaxed md:leading-loose mb-12 font-sans font-light">
               From classic to contemporary styles, each piece is thoughtfully designed to elevate your home or office with beauty, comfort, and enduring craftsmanship.
             </p>
-            
+
             <button className="px-10 py-5 border border-[var(--border-primary)] bg-transparent text-[var(--text-primary)] uppercase text-xs tracking-[0.2em] font-medium hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-all duration-500 w-max">
               Book Appointment
             </button>
           </div>
-          
+
         </div>
       </div>
     </section>

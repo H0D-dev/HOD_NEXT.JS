@@ -218,6 +218,24 @@ Primary recommendation:
 
 ---
 
+## Monumental Section Headings
+
+For major architectural section breaks (like the Collections grid):
+
+Use:
+
+* Massive Sans-Serif font (Inter)
+* Extreme dynamic scaling (e.g., `clamp(64px, 14vw, 180px)`)
+* Medium weight (`400`) to retain structural solidity
+* Compressed tracking (`-0.04em`)
+* Compact line-height (`0.9`)
+* Small superscript counters (`(02)`) top-aligned to the shoulder of the text
+* Immense isolation whitespace (120px+ padding above, 180px+ margin below)
+
+This establishes a brutalist-luxury, art-gallery exhibition feel.
+
+---
+
 # Typography Scale
 
 ```css

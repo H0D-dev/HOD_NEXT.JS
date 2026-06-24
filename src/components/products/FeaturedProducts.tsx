@@ -105,8 +105,13 @@ export default function FeaturedProducts() {
     <section className="featured">
       <div className="featured__container">
         <div className="featured__top">
-          <div className="featured__top-left">
-            <h2 className="featured__heading">Featured Products</h2>
+          <div className="featured__top-left flex flex-col gap-6">
+            <div className="flex justify-between items-end">
+              <h2 className="featured__heading font-sans relative inline-flex">
+                Featured
+                <sup className="text-2xl md:text-4xl font-light ml-2 md:ml-4 mt-2 md:mt-6 tracking-normal text-[var(--text-secondary)]">(04)</sup>
+              </h2>
+            </div>
             <p className="featured__description font-sans">
               Explore our curated collection of handcrafted rugs designed for luxury interiors.
             </p>

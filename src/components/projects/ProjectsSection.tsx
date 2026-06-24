@@ -53,9 +53,9 @@ export default function ProjectsSection({ projects = DUMMY_PROJECTS }: ProjectsS
   };
 
   const imageVariants: Variants = {
-    hidden: { opacity: 0, scale: 1.05 },
-    visible: { opacity: 1, scale: 1, transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] } },
-    exit: { opacity: 0, scale: 0.95, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } }
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] } },
+    exit: { opacity: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } }
   };
 
   if (!projects || projects.length === 0) return null;
@@ -65,18 +65,21 @@ export default function ProjectsSection({ projects = DUMMY_PROJECTS }: ProjectsS
       <div className="max-w-[var(--container-lg)] mx-auto px-6">
         
         {/* TOP ROW */}
-        <div className="flex flex-col md:flex-row justify-between md:items-end mb-16 border-b border-[var(--border-secondary)] pb-8 gap-6">
-          <h2 className="font-serif text-4xl md:text-6xl tracking-wide leading-none">Projects</h2>
-          <button className="text-sm font-medium hover:text-[var(--text-muted)] transition-colors uppercase tracking-[0.2em] flex items-center gap-2">
+        <div className="flex flex-col md:flex-row justify-between md:items-end pt-[80px] lg:pt-[120px] mb-[100px] lg:mb-[180px] gap-8 text-left">
+          <h2 className="font-sans text-[clamp(64px,14vw,180px)] font-normal tracking-[-0.04em] leading-[0.9] text-[var(--text-primary)] relative inline-flex m-0">
+            Projects
+            <sup className="text-2xl md:text-4xl font-light ml-2 md:ml-4 mt-2 md:mt-6 tracking-normal text-[var(--text-secondary)]">(05)</sup>
+          </h2>
+          <button className="text-sm font-medium hover:text-[var(--text-muted)] transition-colors uppercase tracking-[0.2em] flex items-center gap-2 pb-2 md:pb-6">
             Explore All <span>&rarr;</span>
           </button>
         </div>
 
         {/* MAIN AREA - Split Layout */}
-        <div className="flex flex-col lg:flex-row min-h-[500px] border border-[var(--border-secondary)]">
+        <div className="flex flex-col lg:flex-row h-auto lg:h-[580px] border border-[var(--border-secondary)]">
           
           {/* LEFT SIDE: Content */}
-          <div className="w-full lg:w-1/3 p-8 lg:p-12 flex flex-col justify-center border-b lg:border-b-0 lg:border-r border-[var(--border-secondary)] relative overflow-hidden bg-[var(--bg-secondary)]">
+          <div className="w-full lg:w-1/3 p-8 lg:p-12 flex flex-col justify-center border-b lg:border-b-0 lg:border-r border-[var(--border-secondary)] relative overflow-hidden bg-[var(--bg-secondary)] min-h-[400px] lg:min-h-0 lg:h-full">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeProject.id}
@@ -99,7 +102,7 @@ export default function ProjectsSection({ projects = DUMMY_PROJECTS }: ProjectsS
                 </p>
                 
                 <div className="mt-auto pt-8">
-                  <button className="px-10 py-5 border border-[var(--border-primary)] bg-transparent text-[var(--text-primary)] uppercase text-xs tracking-[0.2em] font-medium hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-all duration-500 w-max">
+                  <button className="px-10 py-5 border border-[var(--border-primary)] bg-transparent text-[var(--text-primary)] uppercase text-xs tracking-[0.2em] font-medium hover:bg-[var(--accent-primary)] hover:border-[var(--accent-primary)] transition-all duration-500 w-max">
                     View Project
                   </button>
                 </div>
@@ -108,7 +111,7 @@ export default function ProjectsSection({ projects = DUMMY_PROJECTS }: ProjectsS
           </div>
 
           {/* RIGHT SIDE: Image */}
-          <div className="w-full lg:w-2/3 relative h-[500px] lg:h-auto overflow-hidden bg-[var(--bg-tertiary)]">
+          <div className="w-full lg:w-2/3 relative h-[400px] lg:h-full overflow-hidden bg-[var(--bg-tertiary)]">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeProject.id}
@@ -133,16 +136,16 @@ export default function ProjectsSection({ projects = DUMMY_PROJECTS }: ProjectsS
         </div>
 
         {/* BOTTOM: Tabs */}
-        <div className="flex flex-wrap border-x border-b border-[var(--border-secondary)]">
+        <div className="flex flex-col md:flex-row border-x border-b border-[var(--border-secondary)]">
           {projects.map((proj, idx) => {
             const isActive = activeIndex === idx;
             return (
               <button
                 key={proj.id}
                 onClick={() => setActiveIndex(idx)}
-                className={`flex-1 min-w-[120px] py-5 text-center text-xs tracking-[0.15em] uppercase font-medium transition-all duration-500 border-r last:border-r-0 border-[var(--border-secondary)] 
+                className={`w-full md:flex-1 py-4 md:py-5 text-center text-xs tracking-[0.15em] uppercase font-medium transition-all duration-500 border-b md:border-b-0 md:border-r last:border-0 border-[var(--border-secondary)] 
                   ${isActive 
-                    ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]' 
+                    ? 'bg-[var(--accent-primary)] text-[var(--text-primary)]' 
                     : 'hover:bg-[var(--bg-secondary)] text-[var(--text-secondary)]'
                   }`}
               >

@@ -12,10 +12,12 @@
 }
 
 .featured__top {
+  padding-top: 120px;
+  margin-bottom: 180px;
   display: flex;
   flex-direction: column;
   gap: var(--space-5);
-  margin-bottom: 100px;
+  text-align: left;
 }
 
 @media (min-width: 768px) {
@@ -23,8 +25,6 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-end;
-    margin-bottom: 140px;
-    /* Huge white space */
   }
 }
 
@@ -33,13 +33,13 @@
 }
 
 .featured__heading {
-  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
-  font-size: clamp(54px, 7vw, 110px);
-  font-weight: 300;
+  font-family: var(--font-inter), 'Inter', sans-serif;
+  font-size: clamp(64px, 14vw, 180px);
+  font-weight: 400;
   color: var(--text-primary);
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  margin-bottom: var(--space-3);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  margin-bottom: 0;
 }
 
 .featured__description {

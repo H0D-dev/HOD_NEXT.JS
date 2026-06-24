@@ -11,19 +11,18 @@
 }
 
 .collections__header {
-  margin-bottom: 140px;
-  /* Huge white space */
+  padding-top: 120px;
+  margin-bottom: 180px;
   text-align: left;
 }
 
 .collections__heading {
-  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
-  font-size: clamp(54px, 7vw, 110px);
-  /* Even larger text */
-  font-weight: 300;
+  font-family: var(--font-inter), 'Inter', sans-serif;
+  font-size: clamp(64px, 14vw, 180px);
+  font-weight: 400;
   color: var(--text-primary);
-  line-height: 1.1;
-  letter-spacing: -0.02em;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
 }
 
 .collections__grid {
@@ -44,13 +43,13 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  border-bottom: var(--border-thin);
+  border: var(--border-thin);
 }
 
 .collections__card-image-wrapper {
   position: relative;
   width: 100%;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 1 / 1;
   overflow: hidden;
 }
 
@@ -115,6 +114,6 @@
   }
 
   .collections__card-image-wrapper {
-    aspect-ratio: 3 / 4;
+    aspect-ratio: 1 / 1;
   }
 }

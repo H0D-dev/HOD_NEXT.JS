@@ -7,36 +7,53 @@
 }
 
 .softer-voice__container {
-  max-width: var(--container-md);
+  max-width: var(--container-lg);
   margin: 0 auto;
   padding: 120px var(--space-4);
   display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+  justify-content: flex-start;
+  align-items: flex-start;
+  text-align: left;
 }
 
 .softer-voice__heading {
-  color: var(--text-secondary);
-  line-height: 1.15;
-  font-weight: 300;
-  letter-spacing: 0.02em;
+  color: var(--text-primary);
+  line-height: 0.9;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  display: flex;
+  flex-direction: column;
 }
 
 .softer-voice__line-1 {
   font-family: var(--font-inter), sans-serif;
-  font-size: clamp(36px, 5vw, 68px);
-  font-weight: 300;
+  font-size: clamp(54px, 10vw, 140px);
+  font-weight: 400;
   display: block;
-  margin-bottom: var(--space-2);
+}
+
+.softer-voice__bottom-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  margin-top: var(--space-2);
+}
+
+.softer-voice__arrow {
+  width: clamp(60px, 12vw, 140px);
+  height: clamp(60px, 12vw, 140px);
+  color: var(--text-muted);
+  flex-shrink: 0;
+  margin-top: clamp(10px, 3vw, 40px);
+  margin-left: clamp(20px, 5vw, 100px);
 }
 
 .softer-voice__line-2 {
   font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
-  font-size: clamp(42px, 6vw, 76px);
+  font-size: clamp(64px, 12vw, 160px);
   font-weight: 300;
   font-style: italic;
-  display: inline-block;
+  letter-spacing: -0.02em;
 }
 
 .softer-voice__line-2 em {
