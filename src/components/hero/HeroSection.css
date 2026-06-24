@@ -12,8 +12,8 @@
 
   /* Subtle thread-like background grid to evoke textile craftsmanship */
   background-image:
-    linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+    linear-gradient(to right, rgba(0, 0, 0, 0.015) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.015) 1px, transparent 1px);
   background-size: 120px 120px;
   background-position: center;
 
@@ -55,24 +55,24 @@
 
 /* ── Main heading ── */
 .hero__heading {
-  font-family: var(--font-dm-serif), serif;
-  font-style: italic;
-  font-size: clamp(54px, 6vw, 94px); /* Reduced by ~15% for elegance */
-  font-weight: 300; /* Reduced font weight */
+  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-style: normal;
+  font-size: clamp(54px, 6vw, 94px);
+  font-weight: 300; 
   line-height: 0.95;
-  /* Tighter line height */
-  letter-spacing: -0.05em; /* Tighter letter spacing */
+  letter-spacing: -0.02em; 
   color: var(--text-primary);
-  margin-bottom: 48px; /* Mathematically precise spacing */
-  text-transform: uppercase;
-  max-width: 90%; /* Reduces width slightly to balance left side */
+  margin-bottom: 24px; 
+  text-transform: none;
+  max-width: 90%; 
 }
 
 .hero__heading-accent {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
   font-style: italic;
   font-weight: 300;
+  font-size: clamp(60px, 7vw, 102px);
   text-transform: none;
-  /* Keep the second line elegant, mixed case or lower */
   display: block;
 }
 
@@ -81,7 +81,7 @@
   width: 60px;
   height: 1px;
   background: var(--text-primary);
-  margin-bottom: 32px; /* Reduced spacing to paragraph */
+  margin-bottom: 24px; /* Reduced spacing */
 }
 
 /* ── Description ── */
@@ -92,7 +92,7 @@
   line-height: 1.8;
   color: var(--text-secondary);
   max-width: 360px;
-  margin-bottom: 56px; /* Mathematically precise spacing */
+  margin-bottom: 40px; /* Reduced spacing */
 }
 
 /* ── CTA group ── */

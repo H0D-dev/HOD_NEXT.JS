@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 
 export default function Footer() {
@@ -14,7 +15,15 @@ export default function Footer() {
           
           {/* Column 1: Brand */}
           <div className="flex flex-col lg:pr-8">
-            <h3 className="font-serif text-3xl mb-6">House of Décor</h3>
+            <Link href="/" className="mb-8 inline-block">
+              <Image 
+                src="/logo/HOD_LOGO.webp" 
+                alt="House of Décor" 
+                width={180} 
+                height={40} 
+                className="h-10 w-auto object-contain brightness-0 invert opacity-90"
+              />
+            </Link>
             <p className="text-[#D0D0D0] text-sm leading-relaxed font-light mb-8 max-w-sm">
               Premium handwoven rugs and carpets crafted with timeless artistry and delivered with excellence.
             </p>

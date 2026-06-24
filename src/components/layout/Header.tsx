@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import "./Header.css";
 
 /* ── Navigation Links Data ── */
@@ -36,7 +37,14 @@ export default function Header() {
         <div className="header__left">
           {/* ── Logo ── */}
           <Link href="/" className="header__logo">
-            <span className="header__logo-text">HOUSE OF DÉCOR</span>
+            <Image 
+              src="/logo/HOD_LOGO.webp" 
+              alt="House of Décor" 
+              width={180} 
+              height={40} 
+              className="header__logo-img"
+              priority 
+            />
           </Link>
 
           {/* ── Navigation Links ── */}

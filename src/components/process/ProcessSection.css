@@ -234,7 +234,7 @@
 }
 
 .process__quote-icon {
-  font-family: var(--font-sans), sans-serif;
+  font-family: var(--font-inter), 'Inter', sans-serif;
   font-size: 24px;
   font-weight: 700;
   color: var(--text-primary);

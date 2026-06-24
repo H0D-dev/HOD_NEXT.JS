@@ -88,12 +88,16 @@
   opacity: 0.8;
 }
 
-.header__logo-text {
-  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
-  font-size: 26px;
-  font-weight: 400;
-  letter-spacing: 0.1em;
-  color: var(--text-primary);
+.header__logo-img {
+  height: 32px;
+  width: auto;
+  object-fit: contain;
+}
+
+@media (min-width: 1024px) {
+  .header__logo-img {
+    height: 38px;
+  }
 }
 
 /* ── Right Side ── */
