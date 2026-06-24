@@ -68,6 +68,7 @@
 }
 
 .featured__card {
+  position: relative;
   min-width: 80vw;
   flex: 0 0 auto;
   scroll-snap-align: start;
@@ -144,6 +145,10 @@
   flex-direction: column;
   z-index: 4;
   pointer-events: none;
+}
+
+.featured__card-mobile-cta {
+  display: none;
 }
 
 .featured__card-category {
@@ -251,4 +256,92 @@
 
 .featured__nav-btn--next:hover {
   opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+  .featured {
+    padding-top: var(--space-4);
+  }
+
+  .featured__top {
+    padding-top: 0px;
+    margin-bottom: 56px;
+  }
+
+  .featured__heading {
+    font-family: var(--font-bodoni), 'Cormorant Garamond', serif !important;
+    font-size: clamp(46px, 11vw, 54px) !important;
+  }
+
+  .featured__heading sup {
+    font-family: var(--font-inter), 'Inter', sans-serif !important;
+    font-size: 20px !important;
+    font-weight: 300 !important;
+    margin-left: 8px !important;
+    margin-top: 0 !important;
+    vertical-align: baseline !important;
+    top: auto !important;
+  }
+
+  /* Mobile Card Polish */
+  .featured__card {
+    min-width: 92vw;
+    border: none;
+  }
+
+  .featured__card-image-wrapper {
+    border-bottom: none;
+    aspect-ratio: 16 / 10;
+  }
+
+  .featured__card-content {
+    position: relative;
+    padding: 24px 0 0 0;
+    pointer-events: auto;
+  }
+
+  .featured__card-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .featured__card-title {
+    color: var(--text-primary) !important;
+    font-size: 28px !important;
+    font-family: var(--font-bodoni), serif !important;
+    order: 1;
+  }
+
+  .featured__card-category {
+    color: var(--text-secondary) !important;
+    font-size: 15px !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    order: 2;
+    margin-bottom: 0 !important;
+  }
+
+  .featured__card-price {
+    display: none;
+  }
+
+  .featured__card-mobile-cta {
+    display: block !important;
+    margin-top: 24px;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 500;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--text-primary);
+    padding-bottom: 2px;
+    width: max-content;
+  }
+
+  .featured__controls {
+    margin-top: 8px;
+    padding-top: 12px;
+  }
 }

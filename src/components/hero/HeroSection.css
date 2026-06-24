@@ -56,7 +56,7 @@
 
 /* ── Main heading ── */
 .hero__heading {
-  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-family: var(--font-bodoni), 'Cormorant Garamond', serif;
   font-style: normal;
   font-size: clamp(54px, 6vw, 94px);
   font-weight: 300;
@@ -69,7 +69,7 @@
 }
 
 .hero__heading-accent {
-  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-family: var(--font-bodoni), 'Cormorant Garamond', serif;
   font-style: italic;
   font-weight: 300;
   font-size: clamp(60px, 7vw, 102px);
@@ -192,7 +192,8 @@
 
 @media (max-width: 1024px) {
   .hero__left {
-    padding: var(--space-5) var(--space-4) var(--space-5) var(--space-5);
+    /* Increased top padding to clear fixed header and add breathing room */
+    padding: 180px var(--space-4) var(--space-5) var(--space-6);
   }
 
   .hero__heading {
@@ -211,27 +212,53 @@
     min-height: auto;
   }
 
-  .hero__left {
-    width: 100%;
-    padding: var(--space-7) var(--space-4) var(--space-5);
-    align-items: flex-start;
-    min-height: 55vh;
+  .hero__grid {
+    opacity: 0.01;
   }
 
-  .hero__right {
+  .hero__left {
     width: 100%;
-    min-height: 520px;
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 80px 24px 0px;
+    align-items: flex-start;
+    min-height: auto;
   }
 
   .hero__heading {
-    font-size: clamp(40px, 9vw, 56px);
-    /* Reduced mobile size */
+    font-size: clamp(54px, 12vw, 62px);
+    line-height: 1.05;
+    margin-bottom: 16px;
+  }
+
+  .hero__heading-accent {
+    font-size: clamp(44px, 10vw, 52px);
+    margin-top: 4px;
+  }
+
+  .hero__divider {
+    margin-bottom: 16px;
+  }
+
+  .hero__description {
+    max-width: 100%;
+    font-size: 16px;
+    margin-bottom: 24px;
   }
 
   .hero__cta-group {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
+    width: 100%;
     gap: var(--space-3);
+  }
+
+  .hero__cta {
+    padding: 16px 32px;
+    width: 100%;
+  }
+
+  .hero__right {
+    width: 100%;
+    min-height: auto;
+    border-top: none;
   }
 }

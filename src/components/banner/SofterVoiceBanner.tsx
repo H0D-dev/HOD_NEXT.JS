@@ -18,7 +18,7 @@ export default function SofterVoiceBanner() {
           <span className="softer-voice__line-1 relative w-fit">
             Give Your Home
             <svg
-              className="absolute -top-6 -right-6 w-10 h-10 sm:-top-10 sm:-right-10 sm:w-16 sm:h-16 md:-top-16 md:-right-20 md:w-24 md:h-24 drop-shadow-sm"
+              className="absolute -top-8 -right-8 w-10 h-10 sm:-top-10 sm:-right-10 sm:w-16 sm:h-16 md:-top-16 md:-right-20 md:w-24 md:h-24 drop-shadow-sm"
               viewBox="0 0 100 100"
               fill="none"
               stroke="currentColor"

@@ -17,12 +17,21 @@
 }
 
 .collections__heading {
-  font-family: var(--font-inter), 'Inter', sans-serif;
+  font-family: var(--font-bodoni), 'Cormorant Garamond', serif;
   font-size: clamp(64px, 14vw, 180px);
   font-weight: 400;
   color: var(--text-primary);
   line-height: 0.9;
   letter-spacing: -0.04em;
+}
+
+.collections__count {
+  font-family: var(--font-inter), 'Inter', sans-serif;
+  font-size: clamp(24px, 4vw, 40px);
+  font-weight: 300;
+  color: var(--text-secondary);
+  margin-left: 12px;
+  letter-spacing: normal;
 }
 
 .collections__grid {
@@ -35,6 +44,31 @@
   .collections__grid {
     grid-template-columns: repeat(2, 1fr);
     gap: var(--space-5);
+  }
+}
+
+@media (max-width: 768px) {
+  .collections__container {
+    padding: 24px 4vw;
+  }
+  
+  .collections__header {
+    padding-top: 40px;
+    margin-bottom: 56px;
+  }
+
+  .collections__heading {
+    font-size: clamp(46px, 11vw, 54px);
+  }
+
+  .collections__count {
+    font-size: 20px;
+    margin-left: 8px;
+  }
+
+  .collections__card-title {
+    font-size: 24px;
+    max-width: 100%;
   }
 }
 

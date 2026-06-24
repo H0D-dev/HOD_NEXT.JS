@@ -68,9 +68,8 @@ export default function CollectionCategories() {
           }}
         >
           <div className="flex justify-between items-end">
-            <h2 className="collections__heading font-sans relative inline-flex">
-              Collections
-              <sup className="text-2xl md:text-4xl font-light ml-2 md:ml-4 mt-2 md:mt-6 tracking-normal text-[var(--text-secondary)]">(02)</sup>
+            <h2 className="collections__heading relative inline-flex">
+              Collections <span className="collections__count">(02)</span>
             </h2>
           </div>
         </motion.div>
@@ -93,6 +92,7 @@ export default function CollectionCategories() {
                   src={category.image}
                   alt={category.title}
                   fill
+                  priority
                   className="collections__card-image"
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />

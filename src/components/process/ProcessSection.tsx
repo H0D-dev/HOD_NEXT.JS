@@ -70,25 +70,54 @@ export default function ProcessSection() {
           }}
         >
           <motion.div className="process__step process__step--active" variants={fadeInUp}>
+            <span className="process__step-number font-serif">01</span>
             <h3 className="process__step-title font-sans">Discover & Consult</h3>
             <p className="process__step-desc font-sans">
               Browse our curated collection or book a free 30-minute consultation with one of our design experts. Tell us your vision and we listen.
             </p>
+            <div className="process__step-mobile-image">
+              <img src={DUMMY_IMAGES.tall} alt="Discover & Consult" />
+            </div>
           </motion.div>
 
           <motion.div className="process__step" variants={fadeInUp}>
+            <span className="process__step-number font-serif">02</span>
             <h3 className="process__step-title font-sans">Design & Customise</h3>
             <p className="process__step-desc font-sans">
               We take precise measurements, recommend materials and weaves, craft a bespoke piece tailored exactly to your space and taste.
             </p>
+            <div className="process__step-mobile-image">
+              <img src={DUMMY_IMAGES.topCenter} alt="Design & Customise" />
+            </div>
           </motion.div>
 
           <motion.div className="process__step" variants={fadeInUp}>
+            <span className="process__step-number font-serif">03</span>
             <h3 className="process__step-title font-sans">Delivered & Installed</h3>
             <p className="process__step-desc font-sans">
               Your handcrafted rug is delivered and installed by our team. We don't leave until you're completely delighted with the result.
             </p>
+            <div className="process__step-mobile-image">
+              <img src={DUMMY_IMAGES.bottomCenter} alt="Delivered & Installed" />
+            </div>
           </motion.div>
+        </motion.div>
+
+        {/* Mobile Testimonial (Hidden on Desktop) */}
+        <motion.div 
+          className="process__mobile-testimonial"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={fadeInUp}
+        >
+          <div className="process__testimonial">
+            <div className="process__quote-icon">“</div>
+            <p className="process__quote-text">
+              The <em>Quality</em>, the feel, the entire experience was exceptional
+            </p>
+            <span className="process__quote-author font-sans">Manish Suthar</span>
+          </div>
         </motion.div>
 
         {/* Media & Testimonial Grid */}

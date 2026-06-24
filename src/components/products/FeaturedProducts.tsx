@@ -78,7 +78,15 @@ export default function FeaturedProducts() {
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
       const { scrollLeft, clientWidth } = scrollRef.current;
-      const scrollAmount = clientWidth * 0.8;
+      
+      // Get the exact width of a single card to ensure flawless snapping
+      const firstCard = scrollRef.current.firstElementChild as HTMLElement;
+      let scrollAmount = clientWidth * 0.8; // Fallback
+      if (firstCard) {
+        const gap = 16; // var(--space-4)
+        scrollAmount = firstCard.clientWidth + gap;
+      }
+
       scrollRef.current.scrollTo({
         left: direction === 'left' ? scrollLeft - scrollAmount : scrollLeft + scrollAmount,
         behavior: 'smooth'
@@ -144,17 +152,19 @@ export default function FeaturedProducts() {
             >
               <div className="featured__card-image-wrapper">
                 <img src={product.image} alt={product.name} className="featured__card-image" />
-                
-                <div className="featured__card-content">
-                  <p className="featured__card-category font-sans">{product.category}</p>
-                  <div className="featured__card-info">
-                    <h3 className="featured__card-title font-serif">{product.name}</h3>
-                    <p className="featured__card-price font-sans">{product.price}</p>
-                  </div>
-                </div>
-
                 <div className="featured__card-overlay">
                   <span className="featured__card-cta font-sans">Explore &rarr;</span>
+                </div>
+              </div>
+
+              <div className="featured__card-content">
+                <p className="featured__card-category font-sans">{product.category}</p>
+                <div className="featured__card-info">
+                  <h3 className="featured__card-title font-serif">{product.name}</h3>
+                  <p className="featured__card-price font-sans">{product.price}</p>
+                </div>
+                <div className="featured__card-mobile-cta font-sans">
+                  Explore Product &rarr;
                 </div>
               </div>
             </motion.div>

@@ -75,8 +75,50 @@ export default function ProjectsSection({ projects = DUMMY_PROJECTS }: ProjectsS
           </button>
         </div>
 
-        {/* MAIN AREA - Split Layout */}
-        <div className="flex flex-col lg:flex-row h-auto lg:h-[580px] border border-[var(--border-secondary)]">
+        {/* MOBILE VIEW - Swipeable Cards (Hidden on Desktop) */}
+        <div className="lg:hidden flex overflow-x-auto snap-x snap-mandatory gap-6 pb-12 w-[calc(100%+3rem)] -ml-6 px-6" style={{ scrollbarWidth: 'none' }}>
+          {projects.map((proj) => (
+            <div key={proj.id} className="min-w-[88vw] snap-center flex flex-col border border-[var(--border-secondary)] bg-[var(--bg-secondary)] pb-8">
+              
+              {/* Large Project Image */}
+              <div className="relative w-full h-[280px] mb-8">
+                <Image
+                  src={proj.image}
+                  alt={proj.title}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 90vw"
+                />
+              </div>
+
+              {/* Category Label */}
+              <span className="px-6 uppercase text-[11px] tracking-[0.2em] text-[var(--text-muted)] mb-3 block font-sans">
+                {proj.category}
+              </span>
+
+              {/* Project Title with better wrapping */}
+              <h3 className="px-6 font-serif text-3xl mb-5 leading-tight pr-4">
+                {proj.title}
+              </h3>
+
+              {/* Description */}
+              <p className="px-6 text-[var(--text-secondary)] text-base leading-relaxed mb-10 font-sans font-light">
+                {proj.description}
+              </p>
+
+              {/* View Project Button */}
+              <div className="px-6 mt-auto">
+                <button className="py-2 border-b border-[var(--text-primary)] bg-transparent text-[var(--text-primary)] uppercase text-[11px] tracking-[0.2em] font-medium w-max">
+                  View Project
+                </button>
+              </div>
+              
+            </div>
+          ))}
+        </div>
+
+        {/* MAIN AREA - Split Layout (Hidden on Mobile) */}
+        <div className="hidden lg:flex flex-col lg:flex-row h-auto lg:h-[580px] border border-[var(--border-secondary)]">
           
           {/* LEFT SIDE: Content */}
           <div className="w-full lg:w-1/3 p-8 lg:p-12 flex flex-col justify-center border-b lg:border-b-0 lg:border-r border-[var(--border-secondary)] relative overflow-hidden bg-[var(--bg-secondary)] min-h-[400px] lg:min-h-0 lg:h-full">
@@ -135,8 +177,8 @@ export default function ProjectsSection({ projects = DUMMY_PROJECTS }: ProjectsS
           
         </div>
 
-        {/* BOTTOM: Tabs */}
-        <div className="flex flex-col md:flex-row border-x border-b border-[var(--border-secondary)]">
+        {/* BOTTOM: Tabs (Hidden on Mobile) */}
+        <div className="hidden lg:flex flex-col md:flex-row border-x border-b border-[var(--border-secondary)]">
           {projects.map((proj, idx) => {
             const isActive = activeIndex === idx;
             return (

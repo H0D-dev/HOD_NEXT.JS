@@ -62,16 +62,16 @@ export default function AboutSection() {
           </div>
 
           {/* RIGHT SIDE: Text Content & CTA */}
-          <div className="flex flex-col justify-center lg:col-span-6 lg:col-start-7 lg:pl-8">
-            <p className="text-[var(--text-secondary)] text-lg md:text-xl leading-relaxed md:leading-loose mb-8 font-sans font-light">
+          <div className="flex flex-col justify-center lg:col-span-6 lg:col-start-7 lg:pl-8 mt-8 md:mt-0">
+            <p className="text-[var(--text-secondary)] text-[15px] md:text-xl leading-[1.8] md:leading-loose mb-6 md:mb-8 font-sans font-light">
               Welcome to House Of Decor, where premium craftsmanship meets timeless design. Our handmade rugs and carpets are expertly crafted by skilled artisans using the finest materials, bringing warmth, elegance, and lasting quality to every space.
             </p>
 
-            <p className="text-[var(--text-secondary)] text-lg md:text-xl leading-relaxed md:leading-loose mb-12 font-sans font-light">
+            <p className="text-[var(--text-secondary)] text-[15px] md:text-xl leading-[1.8] md:leading-loose mb-10 md:mb-12 font-sans font-light">
               From classic to contemporary styles, each piece is thoughtfully designed to elevate your home or office with beauty, comfort, and enduring craftsmanship.
             </p>
 
-            <button className="px-10 py-5 border border-[var(--accent-primary)] bg-[var(--accent-primary)] text-black uppercase text-xs tracking-[0.2em] font-medium hover:bg-black hover:border-black hover:text-white transition-all duration-500 w-max">
+            <button className="px-8 py-4 md:px-10 md:py-5 border border-[var(--accent-primary)] bg-[var(--accent-primary)] text-black uppercase text-[10px] md:text-xs tracking-[0.2em] font-medium hover:bg-black hover:border-black hover:text-white transition-all duration-500 w-full md:w-max">
               Book Appointment
             </button>
           </div>

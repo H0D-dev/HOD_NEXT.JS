@@ -70,16 +70,8 @@ export default function Header() {
           <div className="header__left">
             {/* ── Logo ── */}
             <Link href="/" className="header__logo">
-              <Image 
-                src="/logo/HOD_LOGO.webp" 
-                alt="House of Décor" 
-                width={180} 
-                height={40} 
-                className="header__logo-img"
-                style={{ width: "auto" }}
-                priority
-                loading="eager"
-              />
+              <span className="header__logo-text header__logo-text--desktop">House of Décor</span>
+              <span className="header__logo-text header__logo-text--mobile">HOD</span>
             </Link>
 
             {/* ── Navigation Links ── */}
@@ -91,7 +83,7 @@ export default function Header() {
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                 </button>
               </div>
@@ -128,7 +120,7 @@ export default function Header() {
               onClick={() => setIsMobileMenuOpen(true)}
             >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </button>
           </div>

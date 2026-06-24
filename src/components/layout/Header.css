@@ -89,15 +89,32 @@
   opacity: 0.8;
 }
 
-.header__logo-img {
-  height: 32px;
-  width: auto;
-  object-fit: contain;
+.header__logo-text {
+  font-family: var(--font-bodoni), 'Cormorant Garamond', serif;
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  text-decoration: none;
 }
 
-@media (min-width: 1024px) {
-  .header__logo-img {
-    height: 38px;
+.header__logo-text--mobile {
+  display: inline;
+}
+
+.header__logo-text--desktop {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .header__logo-text--mobile {
+    display: none;
+  }
+  .header__logo-text--desktop {
+    display: inline;
+  }
+  .header__logo-text {
+    font-size: 32px;
   }
 }
 
