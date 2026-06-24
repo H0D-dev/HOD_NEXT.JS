@@ -5,6 +5,7 @@ import FeaturedProducts from "@/src/components/products/FeaturedProducts";
 import ProcessSection from "@/src/components/process/ProcessSection";
 import ProjectsSection from "@/src/components/projects/ProjectsSection";
 import AboutSection from "@/src/components/about/AboutSection";
+import NewsletterSection from "@/src/components/newsletter/NewsletterSection";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
       <ProcessSection />
       <ProjectsSection />
       <AboutSection />
+      <NewsletterSection />
     </main>
   );
 }
