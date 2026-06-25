@@ -1,17 +1,12 @@
 import { Metadata } from "next";
-import ProductPresentation, { Product } from "../../../components/product-presentation/ProductPresentation";
+import ProductPresentation, { Product } from "../../../../components/product-presentation/ProductPresentation";
 import { notFound } from "next/navigation";
 
 // Simulate a fetch function that would eventually hit WooCommerce/Shopify APIs
 async function getProductBySlug(slug: string): Promise<Product | null> {
-  // In a real application, this would be an API call:
-  // const res = await fetch(`https://api.example.com/products/${slug}`);
-  // return res.json();
-  
   // Dummy implementation for now based on instructions
   if (slug !== "grace-geometric") {
     // Return a default product for testing, but ideally we'd handle 404
-    // return null; 
   }
 
   return {
