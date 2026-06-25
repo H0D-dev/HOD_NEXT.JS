@@ -15,8 +15,8 @@ export default function ProductDetailsArea({ product, activeColor, onColorChange
   return (
     <div className="relative w-full h-full flex flex-col lg:block bg-white lg:bg-transparent">
       
-      {/* Mobile: Inline Product Info Card | Desktop: Floating Card */}
-      <div className="w-full lg:absolute lg:right-[var(--space-6)] xl:right-[var(--space-8)] lg:top-8 lg:w-auto z-10 px-0 lg:px-0">
+      {/* Mobile: Inline Product Info Card */}
+      <div className="w-full z-10 px-0 lg:hidden relative">
         <ProductInfoCard 
           product={product} 
           activeColor={activeColor} 

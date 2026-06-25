@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import ProductTextureView from "./ProductTextureView";
 import ProductDetailsArea from "./ProductDetailsArea";
 import ProductSpecifications from "./ProductSpecifications";
+import ProductInfoCard from "./ProductInfoCard";
+import ExploreMore from "./ExploreMore";
 
 export type ProductColor = {
   id: string;
@@ -52,12 +54,19 @@ export default function ProductPresentation({ product }: ProductPresentationProp
 
   return (
     <>
-      <section className="w-full min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)] pt-20 lg:pt-24">
-        {/* 
-          Desktop: 45/55 split 
-          Tablet: 50/50 split 
-          Mobile: single column 
-        */}
+      <div className="relative w-full">
+      {/* Sticky Card overlay (Desktop only) spanning across Hero and Specs */}
+      <div className="absolute inset-y-0 right-0 w-full pointer-events-none z-30 hidden lg:block">
+        <div className="sticky top-[104px] lg:top-28 flex justify-end px-[var(--space-6)] xl:px-[var(--space-8)] pointer-events-auto">
+          <ProductInfoCard 
+            product={product} 
+            activeColor={activeColor} 
+            onColorChange={setActiveColor} 
+          />
+        </div>
+      </div>
+
+      <section className="w-full min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)] pt-20 lg:pt-24 relative z-10">
         <div className="flex flex-col lg:grid lg:grid-cols-[45%_55%] min-h-[calc(100vh-6rem)]">
           <ProductTextureView activeColor={activeColor} />
           <ProductDetailsArea 
@@ -69,7 +78,12 @@ export default function ProductPresentation({ product }: ProductPresentationProp
       </section>
 
       {/* New Specifications Section Below */}
-      <ProductSpecifications product={product} />
+      <div className="relative z-20">
+        <ProductSpecifications product={product} />
+      </div>
+    </div>
+    
+    <ExploreMore />
     </>
   );
 }
