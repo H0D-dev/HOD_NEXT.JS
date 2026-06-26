@@ -97,8 +97,8 @@
 /* Responsive */
 @media (max-width: 1023px) {
   .cart-page__layout {
-    grid-template-columns: 6fr 4fr;
-    gap: var(--space-4);
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
   }
 }
 
