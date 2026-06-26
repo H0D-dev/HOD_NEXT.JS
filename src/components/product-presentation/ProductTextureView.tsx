@@ -26,7 +26,7 @@ export default function ProductTextureView({ activeColor }: ProductTextureViewPr
               exit={{ opacity: 0, scale: 1.05 }}
               transition={{
                 duration: 0.8,
-                ease: [0.22, 1, 0.36, 1], // ease-premium
+                ease: [0.22, 1, 0.36, 1] as any, // ease-premium
               }}
               className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
             />
@@ -75,7 +75,7 @@ export default function ProductTextureView({ activeColor }: ProductTextureViewPr
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
-              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] as any }}
               className="relative w-full max-w-5xl aspect-video bg-black flex items-center justify-center"
             >
               {/* Dummy Video Placeholder */}

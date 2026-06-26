@@ -38,7 +38,7 @@ export default function TradeExpertService() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any }}
           className="text-center mb-20 md:mb-32"
         >
           <span className="block text-[var(--text-muted)] font-sans text-xs uppercase tracking-widest mb-6">
@@ -65,7 +65,7 @@ export default function TradeExpertService() {
                   initial={{ opacity: 0, x: isReversed ? 40 : -40 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] as any }}
                   className="flex-1 w-full aspect-[4/5] md:aspect-square relative overflow-hidden bg-[var(--bg-secondary)]"
                 >
                   <Image
@@ -81,7 +81,7 @@ export default function TradeExpertService() {
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] as any }}
                   className="flex-1 w-full flex flex-col justify-center"
                 >
                   <span className="font-sans text-xs text-[var(--text-muted)] tracking-widest mb-4">

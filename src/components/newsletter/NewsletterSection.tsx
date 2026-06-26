@@ -34,7 +34,7 @@ export default function NewsletterSection() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
+      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] as any },
     },
   };
 
@@ -43,7 +43,7 @@ export default function NewsletterSection() {
     visible: {
       opacity: 1,
       scale: 1,
-      transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] },
+      transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] as any },
     },
   };
 

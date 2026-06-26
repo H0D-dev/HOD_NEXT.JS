@@ -46,7 +46,7 @@ export default function ProductInfoCard({ product, activeColor, onColorChange }:
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any, delay: 0.2 }}
       className="bg-white w-full lg:w-[480px] xl:w-[500px] p-[var(--space-3)] lg:p-[var(--space-4)] shadow-none lg:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] border-0 lg:border-t lg:border-l lg:border-b border-[var(--border-secondary)] lg:rounded-l-sm z-10 max-h-[calc(100vh-8rem)] overflow-y-auto hide-scrollbar flex flex-col"
     >
       {/* 1. Product Name */}

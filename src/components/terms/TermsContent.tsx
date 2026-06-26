@@ -220,7 +220,7 @@ export default function TermsContent() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any }}
               className="scroll-mt-32"
             >
               <h2 className="font-serif text-3xl md:text-4xl text-[var(--text-primary)] mb-8 pb-4 border-b border-[var(--border-secondary)]">

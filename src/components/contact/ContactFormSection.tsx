@@ -48,7 +48,7 @@ export default function ContactFormSection() {
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any }}
           >
             <span className="block text-[var(--text-muted)] font-sans text-xs uppercase tracking-widest mb-6 md:mb-8">
               Get in Touch
@@ -69,7 +69,7 @@ export default function ContactFormSection() {
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any }}
             className="bg-[var(--surface-primary)] border border-[var(--border-secondary)] p-6 md:p-8"
           >
             <form onSubmit={handleSubmit} className="flex flex-col gap-5">

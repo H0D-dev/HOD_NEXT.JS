@@ -10,7 +10,7 @@ export default function TradeCTA() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] as any }}
           className="max-w-3xl flex flex-col items-center"
         >
           <span className="block text-[#8C8C8C] font-sans text-xs uppercase tracking-widest mb-8">
