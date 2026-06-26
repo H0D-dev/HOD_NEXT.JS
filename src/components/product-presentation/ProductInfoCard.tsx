@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ProductColor, Product } from "./ProductPresentation";
+import { useCartStore } from "@/src/lib/store/useCartStore";
 
 interface ProductInfoCardProps {
   product: Product & { sizes?: string[] };
@@ -16,6 +17,30 @@ export default function ProductInfoCard({ product, activeColor, onColorChange }:
   // Default sizes if none provided by API
   const sizes = product.sizes || ["170 x 240 cm", "200 x 300 cm", "250 x 350 cm", "300 x 400 cm", "Custom size"];
   const [activeSize, setActiveSize] = useState<string>(sizes[0]);
+
+  const { addItem, openDrawer } = useCartStore();
+
+  const handleAddToCart = () => {
+    // Generate a price for demo purposes if none exists
+    const price = product.price || 24999;
+    const isRug = product.category?.toLowerCase().includes("rug") ?? true;
+
+    addItem({
+      id: `${product.id}-${activeColor.id}-${activeSize}`,
+      slug: product.id,
+      name: product.name,
+      category: isRug ? "rug" : "curtain",
+      image: activeColor.textureUrl || product.image || "/rugs/set1-room.png",
+      price,
+      quantity: 1,
+      variant: {
+        color: activeColor.name,
+        size: activeSize,
+        material: "Premium Blend",
+      }
+    });
+    openDrawer();
+  };
 
   return (
     <motion.div 
@@ -94,8 +119,11 @@ export default function ProductInfoCard({ product, activeColor, onColorChange }:
         <button className="flex-1 py-3 border border-[var(--border-primary)] bg-white text-[var(--text-primary)] font-medium text-[var(--text-sm)] transition-all duration-300 hover:bg-[var(--bg-secondary)]">
           Visualise
         </button>
-        <button className="flex-1 py-3 border border-[var(--border-primary)] bg-[var(--text-primary)] text-white font-medium text-[var(--text-sm)] transition-all duration-300 hover:bg-black/80 hover:shadow-lg">
-          Order Samples
+        <button 
+          onClick={handleAddToCart}
+          className="flex-1 py-3 border border-[var(--border-primary)] bg-[var(--accent-primary)] text-[#111] font-medium text-[var(--text-sm)] transition-all duration-300 hover:bg-[var(--accent-secondary)]"
+        >
+          Add to Cart
         </button>
       </div>
 

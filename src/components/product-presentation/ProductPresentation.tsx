@@ -25,6 +25,9 @@ export type Product = {
   design: string;
   colors: ProductColor[];
   sizes?: string[];
+  price?: number;
+  category?: string;
+  image?: string;
   details?: {
     material: string;
     construction: string;

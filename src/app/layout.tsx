@@ -35,6 +35,7 @@ export const metadata: Metadata = {
 
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
+import CartDrawer from "../components/cart/CartDrawer";
 
 export default function RootLayout({
   children,
@@ -48,6 +49,7 @@ export default function RootLayout({
     >
       <body>
         <Header />
+        <CartDrawer />
         {children}
         <Footer />
       </body>

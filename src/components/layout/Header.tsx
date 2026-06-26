@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { useCartStore } from "@/src/lib/store/useCartStore";
 import "./Header.css";
 
 /* ── Navigation Links Data ── */
@@ -19,6 +20,13 @@ export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+  
+  const { openDrawer, totalItems } = useCartStore();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Close menu on route change
   useEffect(() => {
@@ -103,10 +111,15 @@ export default function Header() {
                 ))}
               </ul>
               <div className="header__mobile-cart">
-                <button className="header__cart-btn" aria-label="Open cart">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke="currentColor" strokeWidth="1" strokeLinecap="square" />
-                  </svg>
+                <button className="header__cart-btn" aria-label="Open cart" onClick={openDrawer}>
+                  <div className="header__cart-icon-wrapper">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke="currentColor" strokeWidth="1" strokeLinecap="square" />
+                    </svg>
+                    {mounted && totalItems > 0 && (
+                      <span className="header__cart-badge">{totalItems}</span>
+                    )}
+                  </div>
                   <span className="header__mobile-cart-label">Cart</span>
                 </button>
               </div>
@@ -115,10 +128,15 @@ export default function Header() {
 
           {/* ── Right Group ── */}
           <div className="header__right">
-            <button className="header__cart-btn header__desktop-cart-btn" aria-label="Open cart">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke="currentColor" strokeWidth="1" strokeLinecap="square" />
-              </svg>
+            <button className="header__cart-btn header__desktop-cart-btn" aria-label="Open cart" onClick={openDrawer}>
+              <div className="header__cart-icon-wrapper">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke="currentColor" strokeWidth="1" strokeLinecap="square" />
+                </svg>
+                {mounted && totalItems > 0 && (
+                  <span className="header__cart-badge">{totalItems}</span>
+                )}
+              </div>
             </button>
             <button 
               className="header__hamburger-btn" 
