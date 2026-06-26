@@ -38,7 +38,7 @@ export default function Footer() {
               />
             </Link>
             <p className="text-[#D0D0D0] text-sm leading-relaxed font-light mb-8 max-w-sm">
-              Premium handwoven rugs and carpets crafted with timeless artistry and delivered with excellence.
+              Premium handwoven rugs and curtains crafted with timeless artistry and delivered with excellence.
             </p>
           </div>
 
@@ -141,7 +141,7 @@ export default function Footer() {
             />
           </Link>
           <p className="text-[#b8b8b8] text-sm leading-relaxed font-sans font-light">
-            Premium handwoven rugs and carpets crafted with timeless artistry and delivered with excellence.
+            Premium handwoven rugs and curtains crafted with timeless artistry and delivered with excellence.
           </p>
         </div>
 

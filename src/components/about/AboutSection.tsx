@@ -64,7 +64,7 @@ export default function AboutSection() {
           {/* RIGHT SIDE: Text Content & CTA */}
           <div className="flex flex-col justify-center lg:col-span-6 lg:col-start-7 lg:pl-8 mt-8 md:mt-0">
             <p className="text-[var(--text-secondary)] text-[15px] md:text-xl leading-[1.8] md:leading-loose mb-6 md:mb-8 font-sans font-light">
-              Welcome to House Of Decor, where premium craftsmanship meets timeless design. Our handmade rugs and carpets are expertly crafted by skilled artisans using the finest materials, bringing warmth, elegance, and lasting quality to every space.
+              Welcome to House Of Decor, where premium craftsmanship meets timeless design. Our handmade rugs and curtains are expertly crafted by skilled artisans using the finest materials, bringing warmth, elegance, and lasting quality to every space.
             </p>
 
             <p className="text-[var(--text-secondary)] text-[15px] md:text-xl leading-[1.8] md:leading-loose mb-10 md:mb-12 font-sans font-light">

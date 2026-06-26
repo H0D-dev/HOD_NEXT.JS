@@ -25,12 +25,7 @@ export default function ProductCard({ product, baseRoute }: ProductCardProps) {
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
         />
         
-        {/* Hover action overlay */}
-        <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-center pb-6">
-          <span className="translate-y-4 group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] text-[var(--bg-primary)] bg-[var(--text-primary)] px-6 py-2 text-[var(--text-sm)] font-sans font-medium tracking-wide">
-            View Product &rarr;
-          </span>
-        </div>
+
       </div>
 
       <div className="flex flex-col items-start px-2">

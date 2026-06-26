@@ -77,7 +77,7 @@ export const RUGS_CONFIG: CatalogConfig = {
       collectionName: "SIGNATURE",
       category: "Hand-knotted",
       color: "Pewter Grey",
-      image: "/carpets/set1-full.png"
+      image: "/rugs/set1-full.png"
     },
     {
       id: "rug-2",
@@ -86,7 +86,7 @@ export const RUGS_CONFIG: CatalogConfig = {
       collectionName: "GEOMETRIC",
       category: "Flat weave",
       color: "Ivory",
-      image: "/carpets/set2-full.png"
+      image: "/rugs/set2-full.png"
     },
     {
       id: "rug-3",
@@ -95,7 +95,7 @@ export const RUGS_CONFIG: CatalogConfig = {
       collectionName: "ESSENTIALS",
       category: "Hand-tufted",
       color: "Ochre",
-      image: "/carpets/set3-full.png"
+      image: "/rugs/set3-full.png"
     },
     {
       id: "rug-4",
@@ -104,7 +104,7 @@ export const RUGS_CONFIG: CatalogConfig = {
       collectionName: "SIGNATURE",
       category: "Hand-knotted",
       color: "Charcoal",
-      image: "/carpets/set1-texture.png"
+      image: "/rugs/set1-texture.png"
     },
     {
       id: "rug-5",
@@ -113,7 +113,7 @@ export const RUGS_CONFIG: CatalogConfig = {
       collectionName: "GEOMETRIC",
       category: "Hand-knotted",
       color: "Cream",
-      image: "/carpets/set2-texture.png"
+      image: "/rugs/set2-texture.png"
     },
     {
       id: "rug-6",
@@ -122,31 +122,31 @@ export const RUGS_CONFIG: CatalogConfig = {
       collectionName: "ESSENTIALS",
       category: "Flat weave",
       color: "Sage Green",
-      image: "/carpets/set3-texture.png"
+      image: "/rugs/set3-texture.png"
     }
   ]
 };
 
-export const CARPETS_CONFIG: CatalogConfig = {
-  title: "Explore Carpets",
-  subtitle: "Luxury flooring solutions for refined spaces",
+export const CURTAINS_CONFIG: CatalogConfig = {
+  title: "Explore Curtains",
+  subtitle: "Luxury window solutions for refined spaces",
   filters: [
     {
       id: "type",
       label: "Product Type",
       options: [
-        { label: "Wall-to-wall", value: "wall-to-wall" },
-        { label: "Broadloom", value: "broadloom" },
-        { label: "Tiles", value: "tiles" }
+        { label: "Drapes", value: "drapes" },
+        { label: "Sheers", value: "sheers" },
+        { label: "Blackout", value: "blackout" }
       ]
     },
     {
       id: "material",
       label: "Material",
       options: [
-        { label: "Wool", value: "wool" },
-        { label: "Nylon", value: "nylon" },
-        { label: "Blend", value: "blend" }
+        { label: "Silk", value: "silk" },
+        { label: "Linen", value: "linen" },
+        { label: "Velvet", value: "velvet" }
       ]
     },
     {
@@ -159,58 +159,58 @@ export const CARPETS_CONFIG: CatalogConfig = {
       ]
     },
     {
-      id: "acoustic",
-      label: "Acoustic Rating",
+      id: "light",
+      label: "Light Filtering",
       options: [
-        { label: "High (Class A/B)", value: "high" },
-        { label: "Standard (Class C/D)", value: "standard" }
+        { label: "Sheer", value: "sheer" },
+        { label: "Room Darkening", value: "room-darkening" }
       ]
     },
     {
-      id: "fire",
-      label: "Fire Classification",
+      id: "installation",
+      label: "Installation Type",
       options: [
-        { label: "Bfl-s1", value: "bfl-s1" },
-        { label: "Cfl-s1", value: "cfl-s1" }
+        { label: "Rod Pocket", value: "rod-pocket" },
+        { label: "Grommet", value: "grommet" }
       ]
     }
   ],
   products: [
     {
-      id: "cpt-1",
+      id: "cur-1",
       slug: "highline-abstract",
       title: "Abstract Flow",
       collectionName: "HIGHLINE",
-      category: "Wall-to-wall",
+      category: "Drapes",
       color: "Green",
-      image: "/carpets/set3-room.png"
+      image: "/curtains/set3-room.png"
     },
     {
-      id: "cpt-2",
+      id: "cur-2",
       slug: "eco-trust",
       title: "Eco Trust Loop",
       collectionName: "SUSTAINABLE",
-      category: "Broadloom",
+      category: "Sheers",
       color: "Charcoal",
-      image: "/carpets/set1-room.png"
+      image: "/curtains/set1-room.png"
     },
     {
-      id: "cpt-3",
+      id: "cur-3",
       slug: "velvet-plush",
       title: "Velvet Plush",
       collectionName: "HOSPITALITY",
-      category: "Wall-to-wall",
+      category: "Blackout",
       color: "Deep Blue",
-      image: "/carpets/set2-room.png"
+      image: "/curtains/set2-room.png"
     },
     {
-      id: "cpt-4",
+      id: "cur-4",
       slug: "classic-weave",
       title: "Classic Weave",
       collectionName: "RESIDENTIAL",
-      category: "Broadloom",
+      category: "Drapes",
       color: "Beige",
-      image: "/carpets/set3-texture.png"
+      image: "/curtains/set3-texture.png"
     }
   ]
 };

@@ -18,7 +18,7 @@ const DUMMY_PROJECTS: Project[] = [
     id: "proj-1",
     category: "Residential",
     title: "Living Spaces That Breathe",
-    description: "Custom rugs, carpets, and curtains tailored to elevate modern and timeless homes.",
+    description: "Custom rugs, drapes, and curtains tailored to elevate modern and timeless homes.",
     image: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80&w=2000"
   },
   {

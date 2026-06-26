@@ -13,7 +13,7 @@ async function getProductBySlug(slug: string): Promise<Product | null> {
     id: "prod_1",
     name: "Grace",
     slug: slug,
-    description: "Handcrafted premium carpet designed for sophisticated modern interiors. A quiet testament to artisanal excellence and timeless luxury.",
+    description: "Handcrafted premium curtain designed for sophisticated modern interiors. A quiet testament to artisanal excellence and timeless luxury.",
     collection: "Signature",
     design: "Geometric",
     details: {

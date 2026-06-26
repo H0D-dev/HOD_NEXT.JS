@@ -5,16 +5,16 @@ import CatalogHeader from "./CatalogHeader";
 import CatalogControls from "./CatalogControls";
 import ProductGrid from "./ProductGrid";
 import FilterDrawer from "./FilterDrawer";
-import { RUGS_CONFIG, CARPETS_CONFIG } from "../../lib/catalogConfig";
+import { RUGS_CONFIG, CURTAINS_CONFIG } from "../../lib/catalogConfig";
 
 interface ProductCatalogLayoutProps {
-  category: "rugs" | "carpets";
+  category: "rugs" | "curtains";
 }
 
 export default function ProductCatalogLayout({ category }: ProductCatalogLayoutProps) {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-  const config = category === "rugs" ? RUGS_CONFIG : CARPETS_CONFIG;
+  const config = category === "rugs" ? RUGS_CONFIG : CURTAINS_CONFIG;
   const baseRoute = `/products/${category}`;
 
   return (

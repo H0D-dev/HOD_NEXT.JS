@@ -9,25 +9,25 @@ const EXPLORE_PRODUCTS = [
     id: "prod-1",
     name: "Aura Weave",
     collection: "Signature",
-    image: "/carpets/set1-full.png",
+    image: "/curtains/set1-full.png",
   },
   {
     id: "prod-2",
     name: "Lumina Grid",
     collection: "Geometric",
-    image: "/carpets/set2-full.png",
+    image: "/curtains/set2-full.png",
   },
   {
     id: "prod-3",
     name: "Velvet Dune",
     collection: "Essentials",
-    image: "/carpets/set3-full.png",
+    image: "/curtains/set3-full.png",
   },
   {
     id: "prod-4",
     name: "Onyx Shadow",
     collection: "Signature",
-    image: "/carpets/set1-texture.png",
+    image: "/curtains/set1-texture.png",
   },
 ];
 

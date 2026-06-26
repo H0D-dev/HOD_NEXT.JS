@@ -27,7 +27,7 @@ const bodoni = Bodoni_Moda({
 export const metadata: Metadata = {
   title: "House of Décor — Handwoven Luxury Rugs & Bespoke Interiors",
   description:
-    "Tailoring luxury, one thread at a time. Discover premium handmade rugs, bespoke carpets, and curated interior solutions by House of Décor.",
+    "Tailoring luxury, one thread at a time. Discover premium handmade rugs, bespoke curtains, and curated interior solutions by House of Décor.",
   icons: {
     icon: "/logo.png",
   },

@@ -31,7 +31,7 @@ export default function ProductInfoCard({ product, activeColor, onColorChange }:
 
       {/* 2. Product Description */}
       <p className="font-sans text-[var(--text-sm)] text-[var(--text-secondary)] leading-relaxed mb-4 shrink-0">
-        {product.description || "Handcrafted premium carpet designed for sophisticated modern interiors. A quiet testament to artisanal excellence and timeless luxury."}
+        {product.description || "Handcrafted premium curtain designed for sophisticated modern interiors. A quiet testament to artisanal excellence and timeless luxury."}
       </p>
 
       {/* Product Meta Section Removed */}

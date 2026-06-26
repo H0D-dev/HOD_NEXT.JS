@@ -17,15 +17,15 @@ const dummyCategories: CategoryData[] = [
     title: "Premium Artisan Rugs",
     description:
       "Hand-knotted, hand-tufted, and bespoke rugs crafted with timeless artistry.",
-    image: "/carpets/set1-room.png",
-    slug: "artisan-rugs",
+    image: "/rugs/set1-room.png",
+    slug: "rugs",
   },
   {
     title: "Premium Luxury Curtains",
     description:
       "Elegant curtains and window treatments tailored for modern luxury interiors.",
-    image: "/carpets/set2-room.png",
-    slug: "luxury-curtains",
+    image: "/curtains/set2-room.png",
+    slug: "curtains",
   },
 ];
 
@@ -104,7 +104,7 @@ export default function CollectionCategories() {
                   </h3>
                 </div>
                 <a
-                  href={`/collections/${category.slug}`}
+                  href={`/products/${category.slug}`}
                   className="collections__card-cta font-sans"
                 >
                   Explore Collection &rarr;

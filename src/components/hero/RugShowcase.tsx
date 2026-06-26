@@ -5,38 +5,25 @@ import { motion, AnimatePresence } from "framer-motion";
 import RugCard from "./RugCard";
 import "./RugShowcase.css";
 
-/* ── Rug data: 3 sets × 3 views ── */
-const rugSets = [
+const showcaseSets = [
   {
-    id: "persian",
-    label: "Persian Heritage",
+    id: "premium-curtains",
+    label: "Premium Curtains",
     cards: [
-      { src: "/carpets/set1-full.png", alt: "Persian rug — full view" },
-      { src: "/carpets/set1-room.png", alt: "Persian rug — room placement" },
-      { src: "/carpets/set1-texture.png", alt: "Persian rug — texture detail" },
+      { src: "/curtains/set1-full.png", alt: "Premium Curtain — full view" },
+      { src: "/curtains/set1-room.png", alt: "Premium Curtain — room placement" },
+      { src: "/curtains/set1-texture.png", alt: "Premium Curtain — texture detail" },
     ],
   },
   {
-    id: "silk-persian",
-    label: "Silk Emerald",
+    id: "artisan-rugs",
+    label: "Artisan Rugs",
     cards: [
-      { src: "/carpets/set2-full.png", alt: "Emerald Silk Persian rug — full view" },
-      { src: "/carpets/set2-room.png", alt: "Emerald Silk Persian rug — room placement" },
+      { src: "/rugs/set1-full.png", alt: "Artisan Rug — full view" },
+      { src: "/rugs/set1-room.png", alt: "Artisan Rug — room placement" },
       {
-        src: "/carpets/set2-texture.png",
-        alt: "Emerald Silk Persian rug — texture detail",
-      },
-    ],
-  },
-  {
-    id: "vintage-oushak",
-    label: "Vintage Oushak",
-    cards: [
-      { src: "/carpets/set3-full.png", alt: "Vintage Oushak rug — full view" },
-      { src: "/carpets/set3-room.png", alt: "Vintage Oushak rug — room placement" },
-      {
-        src: "/carpets/set3-texture.png",
-        alt: "Vintage Oushak rug — texture detail",
+        src: "/rugs/set1-texture.png",
+        alt: "Artisan Rug — texture detail",
       },
     ],
   },
@@ -98,7 +85,7 @@ export default function RugShowcase() {
 
   /* ── Preload all images on mount ── */
   useEffect(() => {
-    rugSets.forEach((set) => {
+    showcaseSets.forEach((set) => {
       set.cards.forEach((card) => {
         const img = new window.Image();
         img.src = card.src;
@@ -110,8 +97,8 @@ export default function RugShowcase() {
   const navigate = useCallback((dir: number) => {
     setActiveIndex((prev) => {
       const next = prev + dir;
-      if (next < 0) return rugSets.length - 1;
-      if (next >= rugSets.length) return 0;
+      if (next < 0) return showcaseSets.length - 1;
+      if (next >= showcaseSets.length) return 0;
       return next;
     });
   }, []);
@@ -124,7 +111,7 @@ export default function RugShowcase() {
     return () => clearInterval(interval);
   }, [navigate]);
 
-  const currentSet = rugSets[activeIndex];
+  const currentSet = showcaseSets[activeIndex];
 
   return (
     <div className="rug-showcase" ref={containerRef}>
@@ -211,7 +198,7 @@ export default function RugShowcase() {
           </button>
 
           <div className="rug-showcase__dots">
-            {rugSets.map((_, i) => (
+            {showcaseSets.map((_, i) => (
               <span
                 key={i}
                 className={`rug-showcase__dot ${i === activeIndex ? "rug-showcase__dot--active" : ""}`}
