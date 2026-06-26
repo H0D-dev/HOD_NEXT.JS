@@ -64,19 +64,19 @@ export default function Footer() {
             <h4 className="font-sans font-medium text-sm tracking-[0.15em] uppercase mb-8">Resources</h4>
             <ul className="flex flex-col gap-4">
               {[
-                'Create Your Rug',
-                'Know Your Rug',
-                'Designer Trade Program',
-                'Size & Fitting Guide',
-                'Care & Cleaning',
-                'Terms & Conditions'
+                { label: 'Create Your Rug', href: '#' },
+                { label: 'Know Your Rug', href: '#' },
+                { label: 'Designer Trade Program', href: '/designer-trade-program' },
+                { label: 'Size & Fitting Guide', href: '/size-fitting-guide' },
+                { label: 'Care & Cleaning', href: '#' },
+                { label: 'Terms & Conditions', href: '/terms-conditions' }
               ].map((link) => (
-                <li key={link}>
+                <li key={link.label}>
                   <Link
-                    href={`#`}
+                    href={link.href}
                     className="text-[#8C8C8C] hover:text-white transition-colors duration-300 font-light text-sm"
                   >
-                    {link}
+                    {link.label}
                   </Link>
                 </li>
               ))}
