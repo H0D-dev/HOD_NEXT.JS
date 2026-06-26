@@ -1,7 +1,7 @@
 import HeroSection from "@/src/components/hero/HeroSection";
 import CollectionCategories from "@/src/components/collections/CollectionCategories";
 import SofterVoiceBanner from "@/src/components/banner/SofterVoiceBanner";
-import FeaturedProducts from "@/src/components/products/FeaturedProducts";
+import FeaturedProductsSection from "@/src/components/products/featured/FeaturedProductsSection";
 import ProcessSection from "@/src/components/process/ProcessSection";
 import ProjectsSection from "@/src/components/projects/ProjectsSection";
 import AboutSection from "@/src/components/about/AboutSection";
@@ -13,7 +13,7 @@ export default function Home() {
       <HeroSection />
       <CollectionCategories />
       <SofterVoiceBanner />
-      <FeaturedProducts />
+      <FeaturedProductsSection />
       <ProcessSection />
       <ProjectsSection />
       <AboutSection />

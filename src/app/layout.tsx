@@ -36,6 +36,7 @@ export const metadata: Metadata = {
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import CartDrawer from "../components/cart/CartDrawer";
+import CustomCursor from "../components/layout/CustomCursor";
 
 export default function RootLayout({
   children,
@@ -48,6 +49,7 @@ export default function RootLayout({
       className={`${cormorant.variable} ${inter.variable} ${bodoni.variable} antialiased`}
     >
       <body>
+        <CustomCursor />
         <Header />
         <CartDrawer />
         {children}

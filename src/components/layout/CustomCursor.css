@@ -1,0 +1,23 @@
+.custom-cursor {
+  pointer-events: none;
+  will-change: transform, width, height, background-color, border-color, opacity;
+}
+
+body.dragging * {
+  user-select: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html, body {
+    cursor: none !important;
+  }
+  
+  a, button, input, textarea, select, [role="button"] {
+    cursor: none !important;
+  }
+  
+  /* Override Framer Motion grab cursors globally if any */
+  * {
+    cursor: none !important;
+  }
+}
