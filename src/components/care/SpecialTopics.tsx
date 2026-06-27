@@ -1,6 +1,11 @@
 "use client";
 
-import { motion } from "framer-motion";
+import React, { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const specialTopics = [
   {
@@ -20,54 +25,59 @@ const specialTopics = [
   },
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15 },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] as any },
-  },
-};
-
 export default function SpecialTopics() {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    gsap.fromTo(
+      ".special-header",
+      { opacity: 0, x: -30 },
+      {
+        opacity: 1,
+        x: 0,
+        duration: 1,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top 80%",
+        },
+      }
+    );
+
+    gsap.fromTo(
+      ".special-card",
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: ".special-grid",
+          start: "top 85%",
+        },
+      }
+    );
+  }, { scope: containerRef });
+
   return (
-    <section className="w-full py-24 md:py-32 px-6 md:px-16 lg:px-24 bg-[var(--bg-secondary)] border-t border-[var(--border-secondary)]">
-      <div className="max-w-[var(--container-lg)] mx-auto">
-        <motion.div
-          initial={{ opacity: 0, x: -30 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any }}
-          className="mb-16 md:mb-24 max-w-2xl"
-        >
+    <section ref={containerRef} className="w-full py-24 md:py-32 px-4 md:px-8 bg-[var(--bg-secondary)] border-t border-[var(--border-secondary)]">
+      <div className="max-w-[1440px] mx-auto">
+        <div className="special-header mb-16 md:mb-24 max-w-2xl">
           <span className="block text-[var(--text-muted)] font-sans text-xs uppercase tracking-widest mb-6">
             Expert Knowledge
           </span>
           <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-[var(--text-primary)] tracking-tight">
             Special Topics
           </h2>
-        </motion.div>
+        </div>
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12"
-        >
+        <div className="special-grid grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
           {specialTopics.map((topic) => (
-            <motion.div
+            <div
               key={topic.id}
-              variants={itemVariants}
-              className="flex flex-col pt-8 border-t border-[var(--border-secondary)]"
+              className="special-card flex flex-col pt-8 border-t border-[var(--border-secondary)]"
             >
               <h3 className="font-serif text-2xl text-[var(--text-primary)] mb-6">
                 {topic.title}
@@ -75,9 +85,9 @@ export default function SpecialTopics() {
               <p className="font-sans text-[var(--text-secondary)] text-base leading-relaxed">
                 {topic.description}
               </p>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

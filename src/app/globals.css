@@ -5,8 +5,6 @@
    Based on style.md specification
    ═══════════════════════════════════════════════════════════ */
 :root {
-    /* --background: #ffffff;
-    --foreground: #171717; */
     /* ── Color System (Light Mode) ── */
     --bg-primary: #FFFFFF;
     --bg-secondary: #F8F8F6;
@@ -109,9 +107,6 @@
     }
 
     body {
-        background: var(--background);
-        color: var(--foreground);
-        font-family: Arial, Helvetica, sans-serif;
         background: var(--bg-primary);
         color: var(--text-primary);
         font-family: var(--font-inter), 'Inter', system-ui, -apple-system, sans-serif;
@@ -122,139 +117,12 @@
 
     /* ── Selection ── */
     ::selection {
-        background: var(--highlight-color);
-        color: #FFFFFF;
-    }
-}
-@import "tailwindcss";
-
-/* ═══════════════════════════════════════════════════════════
-   House of Décor — Design System Tokens
-   Based on style.md specification
-   ═══════════════════════════════════════════════════════════ */
-:root {
-    /* --background: #ffffff;
-    --foreground: #171717; */
-    /* ── Color System (Light Mode) ── */
-    --bg-primary: #FFFFFF;
-    --bg-secondary: #F8F8F6;
-    --bg-tertiary: #F3F1EC;
-    --text-primary: #111111;
-    --text-secondary: #4A4A4A;
-    --text-muted: #777777;
-    --border-primary: #111111;
-    --border-secondary: #DDDDDD;
-    --border-thin: 1px solid var(--border-secondary);
-    --accent-primary: #F7F77E;
-    --accent-secondary: #ECEC8D;
-    --highlight-color: #007bff;
-    --surface-primary: #FFFFFF;
-    --surface-secondary: #FAFAFA;
-    /* ── Typography Scale ── */
-    --text-xs: 12px;
-    --text-sm: 14px;
-    --text-md: 16px;
-    --text-lg: 20px;
-    --text-xl: 24px;
-    --text-2xl: 32px;
-    --text-3xl: 48px;
-    --text-4xl: 64px;
-    --text-5xl: 96px;
-    /* ── Spacing (8px scale) ── */
-    --space-1: 8px;
-    --space-2: 16px;
-    --space-3: 24px;
-    --space-4: 32px;
-    --space-5: 48px;
-    --space-6: 64px;
-    --space-7: 96px;
-    --space-8: 128px;
-    /* ── Container Widths ── */
-    --container-sm: 768px;
-    --container-md: 1200px;
-    --container-lg: 1440px;
-    /* ── Borders ── */
-    /* ── Radius (minimal) ── */
-    --radius-sm: 0px;
-    --radius-md: 2px;
-    /* ── Motion ── */
-    --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
-    --duration-fast: 0.6s;
-    --duration-medium: 0.8s;
-    --duration-slow: 1.2s;
-    /* ── Legacy compatibility ── */
-    --background: #FFFFFF;
-    --foreground: #111111;
-}
-
-/* ── Dark Mode ── */
-[data-theme="dark"] {
-    --bg-primary: #0D0D0D;
-    --bg-secondary: #161616;
-    --bg-tertiary: #202020;
-    --text-primary: #FFFFFF;
-    --text-secondary: #D0D0D0;
-    --text-muted: #8C8C8C;
-    --border-primary: #FFFFFF;
-    --border-secondary: #333333;
-    --accent-primary: #F7F77E;
-    --accent-secondary: #D9D96A;
-    --highlight-color: #007bff;
-    --surface-primary: #111111;
-    --surface-secondary: #181818;
-    --background: #0D0D0D;
-    --foreground: #FFFFFF;
-}
-
-@theme inline {
-    --color-background: var(--background);
-    --color-foreground: var(--foreground);
-    --font-sans: var(--font-inter);
-    --font-serif: var(--font-cormorant);
-}
-
-@media (prefers-color-scheme: dark) {
-    :root {
-        --background: #0a0a0a;
-        --foreground: #ededed;
+        background: var(--text-primary);
+        color: var(--bg-primary);
     }
 }
 
-@layer base {
-    /* ── Global Reset & Base ── */
-    *,
-    *::before,
-    *::after {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    html {
-        scroll-behavior: smooth;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-    }
-
-    body {
-        background: var(--background);
-        color: var(--foreground);
-        font-family: Arial, Helvetica, sans-serif;
-        background: var(--bg-primary);
-        color: var(--text-primary);
-        font-family: var(--font-inter), 'Inter', system-ui, -apple-system, sans-serif;
-        font-size: var(--text-md);
-        line-height: 1.6;
-        overflow-x: hidden;
-    }
-
-    /* ── Selection ── */
-    ::selection {
-        background: var(--highlight-color);
-        color: #FFFFFF;
-    }
-}
-
+@layer utilities {
     /* ── Utility: Serif font ── */
     .font-serif {
         font-family: var(--font-cormorant), 'Cormorant Garamond', 'Georgia', serif;
@@ -273,3 +141,4 @@
         -ms-overflow-style: none;
         scrollbar-width: none;
     }
+}

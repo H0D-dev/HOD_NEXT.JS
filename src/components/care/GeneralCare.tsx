@@ -1,7 +1,12 @@
 "use client";
 
-import { motion } from "framer-motion";
+import React, { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Wind, ShieldCheck, RefreshCw, Scissors } from "lucide-react";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const generalCareTopics = [
   {
@@ -30,55 +35,60 @@ const generalCareTopics = [
   },
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15 },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] as any },
-  },
-};
-
 export default function GeneralCare() {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    gsap.fromTo(
+      ".gen-care-header",
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top 80%",
+        },
+      }
+    );
+
+    gsap.fromTo(
+      ".gen-care-card",
+      { opacity: 0, y: 40 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: ".gen-care-grid",
+          start: "top 85%",
+        },
+      }
+    );
+  }, { scope: containerRef });
+
   return (
-    <section className="w-full py-24 md:py-32 px-6 md:px-16 lg:px-24 bg-[var(--bg-secondary)]">
-      <div className="max-w-[var(--container-lg)] mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any }}
-          className="text-center mb-16 md:mb-24"
-        >
+    <section ref={containerRef} className="w-full py-24 md:py-32 px-4 md:px-8 bg-[var(--bg-secondary)]">
+      <div className="max-w-[1440px] mx-auto">
+        <div className="gen-care-header text-center mb-16 md:mb-24">
           <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-[var(--text-primary)] tracking-tight">
             General Maintenance
           </h2>
-        </motion.div>
+        </div>
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-[var(--border-secondary)] border border-[var(--border-secondary)]"
-        >
+        <div className="gen-care-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-[var(--border-secondary)] border border-[var(--border-secondary)]">
           {generalCareTopics.map((topic) => {
             const Icon = topic.icon;
             return (
-              <motion.div
+              <div
                 key={topic.id}
-                variants={itemVariants}
-                className="bg-[var(--surface-primary)] p-8 md:p-10 hover:bg-[var(--bg-tertiary)] transition-colors duration-[0.6s] ease-[cubic-bezier(0.22,1,0.36,1)] flex flex-col group h-full"
+                className="gen-care-card bg-[var(--surface-primary)] p-8 md:p-10 hover:bg-[var(--bg-tertiary)] transition-colors duration-500 flex flex-col group h-full"
               >
-                <div className="mb-8 p-4 bg-[var(--bg-secondary)] rounded-full text-[var(--text-primary)] group-hover:bg-[var(--accent-primary)] group-hover:text-[var(--bg-primary)] transition-colors duration-[0.6s] self-start">
+                <div className="mb-8 p-4 bg-[var(--bg-secondary)] rounded-full text-[var(--text-primary)] group-hover:bg-[var(--accent-primary)] group-hover:text-black transition-colors duration-500 self-start">
                   <Icon size={24} strokeWidth={1.5} />
                 </div>
                 <h3 className="font-serif text-2xl text-[var(--text-primary)] mb-4">
@@ -87,10 +97,10 @@ export default function GeneralCare() {
                 <p className="font-sans text-[var(--text-secondary)] text-sm leading-relaxed mt-auto">
                   {topic.description}
                 </p>
-              </motion.div>
+              </div>
             );
           })}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

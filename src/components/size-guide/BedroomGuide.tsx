@@ -1,91 +1,148 @@
 "use client";
 
-import { motion } from "framer-motion";
-import Image from "next/image";
+import React, { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Link from "next/link";
 
-const bedroomGuides = [
-  {
-    id: "A",
-    title: "All On",
-    description: "The bed and all nightstands are placed entirely on the rug. This luxurious layout requires the largest rug size and grounds the entire sleeping area.",
-    image: "/rugs/set1-room.png",
-  },
-  {
-    id: "B",
-    title: "Partially On",
-    description: "The lower two-thirds of the bed rests on the rug, leaving the nightstands off. A classic, balanced approach that adds softness where you step out.",
-    image: "/rugs/set2-room.png",
-  },
-  {
-    id: "C",
-    title: "Runners",
-    description: "Using runners on either side of the bed (and optionally at the foot). An excellent solution for spaces where a large rug isn't feasible.",
-    image: "/rugs/set3-room.png",
-  },
-];
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.2 },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 40 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 1, ease: [0.22, 1, 0.36, 1] as any },
-  },
-};
+gsap.registerPlugin(ScrollTrigger);
 
 export default function BedroomGuide() {
-  return (
-    <section className="w-full py-24 md:py-32 px-6 md:px-16 lg:px-24 bg-[var(--bg-secondary)]">
-      <div className="max-w-[var(--container-lg)] mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any }}
-          className="mb-16 md:mb-24 text-center"
-        >
-          <span className="block text-[var(--text-muted)] font-sans text-xs uppercase tracking-widest mb-6">
-            Room Guide
-          </span>
-          <h2 className="font-serif text-5xl md:text-6xl lg:text-7xl text-[var(--text-primary)] tracking-tight">
-            Bedrooms
-          </h2>
-        </motion.div>
+  const sectionRef = useRef<HTMLDivElement>(null);
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12"
-        >
-          {bedroomGuides.map((guide) => (
-            <motion.div key={guide.id} variants={itemVariants} className="flex flex-col group">
-              <div className="w-full aspect-[4/3] relative overflow-hidden bg-[var(--surface-primary)] border border-[var(--border-secondary)] mb-8">
-                <Image
-                  src={guide.image}
-                  alt={`Bedroom layout ${guide.id}`}
-                  fill
-                  className="object-cover transition-transform duration-[1.5s] group-hover:scale-105 ease-[cubic-bezier(0.22,1,0.36,1)]"
-                />
-              </div>
-              <h3 className="font-serif text-2xl md:text-3xl text-[var(--text-primary)] mb-4">
-                {guide.title}
+  useGSAP(() => {
+    // Fade up heading
+    gsap.fromTo(
+      ".bed-header",
+      { opacity: 0, y: 40 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 80%",
+        },
+      }
+    );
+
+    // Stagger cards
+    gsap.fromTo(
+      ".bed-card",
+      { opacity: 0, y: 40 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        stagger: 0.15,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: ".bed-cards-container",
+          start: "top 85%",
+        },
+      }
+    );
+  }, { scope: sectionRef });
+
+  return (
+    <section id="bedroom" ref={sectionRef} className="w-full py-24 md:py-32 px-4 md:px-8 bg-[var(--bg-secondary)]">
+      <div className="max-w-[1440px] mx-auto">
+        <div className="bed-header text-center mb-16">
+          <h2 className="font-serif text-4xl md:text-6xl text-[var(--text-primary)]">
+            Bedroom
+          </h2>
+        </div>
+
+        {/* Large Hero Image */}
+        <div className="w-full aspect-[21/9] mb-24 overflow-hidden border border-[var(--border-secondary)]">
+          <img 
+            src="/images/size-guide/bedroom_hero_1782565501415.png" 
+            alt="Bedroom rug placement hero" 
+            className="w-full h-full object-cover"
+          />
+        </div>
+
+        {/* Layout Cards */}
+        <div className="bed-cards-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          
+          {/* Card A */}
+          <div className="bed-card flex flex-col border border-[var(--border-secondary)] bg-[var(--surface-primary)]">
+            <div className="aspect-[4/3] w-full overflow-hidden border-b border-[var(--border-secondary)]">
+              <img 
+                src="/images/size-guide/bedroom_full_1782565454914.png" 
+                alt="Large rug under bed" 
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="p-8 flex-1 flex flex-col">
+              <h3 className="font-serif text-2xl text-[var(--text-primary)] mb-4">
+                Full Frame
               </h3>
-              <p className="font-sans text-[var(--text-secondary)] text-base leading-relaxed">
-                {guide.description}
+              <p className="font-sans text-sm md:text-base text-[var(--text-secondary)] leading-relaxed mb-8 flex-1">
+                A large rug extending well beyond the sides and foot of the bed offers maximum comfort and a truly grand, luxurious feel to the master suite.
               </p>
-            </motion.div>
-          ))}
-        </motion.div>
+              <Link 
+                href="/products?category=bedroom" 
+                className="font-sans text-xs tracking-wider uppercase text-[var(--text-primary)] hover:text-[var(--accent-primary)] transition-colors underline underline-offset-4"
+              >
+                Shop Bedroom Rugs &rarr;
+              </Link>
+            </div>
+          </div>
+
+          {/* Card B */}
+          <div className="bed-card flex flex-col border border-[var(--border-secondary)] bg-[var(--surface-primary)]">
+            <div className="aspect-[4/3] w-full overflow-hidden border-b border-[var(--border-secondary)]">
+              <img 
+                src="/images/size-guide/bedroom_runners_1782565467316.png" 
+                alt="Bedside runners" 
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="p-8 flex-1 flex flex-col">
+              <h3 className="font-serif text-2xl text-[var(--text-primary)] mb-4">
+                Bedside Runners
+              </h3>
+              <p className="font-sans text-sm md:text-base text-[var(--text-secondary)] leading-relaxed mb-8 flex-1">
+                For smaller spaces or asymmetrical rooms, two runners placed on either side of the bed provide targeted warmth where you step first.
+              </p>
+              <Link 
+                href="/products?category=bedroom" 
+                className="font-sans text-xs tracking-wider uppercase text-[var(--text-primary)] hover:text-[var(--accent-primary)] transition-colors underline underline-offset-4"
+              >
+                Explore Runners &rarr;
+              </Link>
+            </div>
+          </div>
+
+          {/* Card C */}
+          <div className="bed-card flex flex-col border border-[var(--border-secondary)] bg-[var(--surface-primary)]">
+            <div className="aspect-[4/3] w-full overflow-hidden border-b border-[var(--border-secondary)]">
+              <img 
+                src="/images/size-guide/bedroom_foot_1782565488826.png" 
+                alt="Foot of bed rug" 
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="p-8 flex-1 flex flex-col">
+              <h3 className="font-serif text-2xl text-[var(--text-primary)] mb-4">
+                Foot of the Bed
+              </h3>
+              <p className="font-sans text-sm md:text-base text-[var(--text-secondary)] leading-relaxed mb-8 flex-1">
+                A medium-sized rug placed horizontally at the foot of the bed accents a bench or seating area, adding a touch of tailored elegance.
+              </p>
+              <Link 
+                href="/products?category=bedroom" 
+                className="font-sans text-xs tracking-wider uppercase text-[var(--text-primary)] hover:text-[var(--accent-primary)] transition-colors underline underline-offset-4"
+              >
+                Shop Accent Rugs &rarr;
+              </Link>
+            </div>
+          </div>
+
+        </div>
       </div>
     </section>
   );
