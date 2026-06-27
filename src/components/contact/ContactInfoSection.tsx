@@ -73,19 +73,25 @@ export default function ContactInfoSection() {
                 <div className="mb-8 text-[var(--text-muted)] group-hover:text-[var(--text-primary)] transition-colors duration-[0.6s]">
                   <Icon size={32} strokeWidth={1} />
                 </div>
-                <div className="mt-auto">
+                <div className="mt-auto flex flex-col gap-2">
                   <h3 className="font-sans text-xs uppercase tracking-widest text-[var(--text-muted)] mb-3">
                     {card.title}
                   </h3>
-                  <p className="font-sans text-lg md:text-xl font-medium text-[var(--text-primary)] break-words">
-                    {card.value}
-                  </p>
+                  {card.action ? (
+                    <a href={card.action} className="font-sans text-lg md:text-xl font-medium text-[var(--text-primary)] hover:text-[var(--text-muted)] break-all transition-colors duration-300">
+                      {card.value}
+                    </a>
+                  ) : (
+                    <p className="font-sans text-lg md:text-xl font-medium text-[var(--text-primary)] break-all">
+                      {card.value}
+                    </p>
+                  )}
                   {card.extraCTA && (
                     <a
                       href={card.extraAction}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-block mt-4 font-sans text-sm font-medium text-[var(--text-primary)] hover:text-[var(--text-muted)] transition-colors duration-300"
+                      className="inline-block mt-2 font-sans text-sm font-medium text-[var(--text-primary)] hover:text-[var(--text-muted)] transition-colors duration-300 w-fit"
                     >
                       {card.extraCTA}
                     </a>
@@ -96,13 +102,7 @@ export default function ContactInfoSection() {
 
             return (
               <motion.div key={card.id} variants={cardVariants} className="h-full">
-                {card.action ? (
-                  <a href={card.action} className="block h-full cursor-pointer">
-                    {CardContent}
-                  </a>
-                ) : (
-                  CardContent
-                )}
+                {CardContent}
               </motion.div>
             );
           })}

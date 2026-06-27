@@ -38,6 +38,7 @@ import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import CartDrawer from "../components/cart/CartDrawer";
 import CustomCursor from "../components/layout/CustomCursor";
+import ScrollToTop from "../components/layout/ScrollToTop";
 
 export default function RootLayout({
   children,
@@ -50,6 +51,7 @@ export default function RootLayout({
       className={`${cormorant.variable} ${inter.variable} ${bodoni.variable} antialiased`}
     >
       <body>
+        <ScrollToTop />
         <CustomCursor />
         <Header />
         <CartDrawer />

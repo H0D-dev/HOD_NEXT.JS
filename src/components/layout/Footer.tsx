@@ -34,6 +34,7 @@ export default function Footer() {
                 alt="House of Décor"
                 width={180}
                 height={40}
+                style={{ width: "auto", height: "auto" }}
                 className="h-10 w-auto object-contain brightness-0 invert opacity-90"
               />
             </Link>
@@ -46,13 +47,19 @@ export default function Footer() {
           <div className="flex flex-col">
             <h4 className="font-sans font-medium text-sm tracking-[0.15em] uppercase mb-8">About Us</h4>
             <ul className="flex flex-col gap-4">
-              {['About', 'Services', 'Rugs', 'Contact', 'Blog'].map((link) => (
-                <li key={link}>
+              {[
+                { label: 'About', href: '/about' },
+                { label: 'Services', href: '/services' },
+                { label: 'Rugs', href: '/products/rugs' },
+                { label: 'Contact', href: '/contact' },
+                { label: 'Blog', href: '/blog' }
+              ].map((link) => (
+                <li key={link.label}>
                   <Link
-                    href={`/${link.toLowerCase()}`}
+                    href={link.href}
                     className="text-[#8C8C8C] hover:text-white transition-colors duration-300 font-light text-sm"
                   >
-                    {link}
+                    {link.label}
                   </Link>
                 </li>
               ))}
@@ -64,11 +71,11 @@ export default function Footer() {
             <h4 className="font-sans font-medium text-sm tracking-[0.15em] uppercase mb-8">Resources</h4>
             <ul className="flex flex-col gap-4">
               {[
-                { label: 'Create Your Rug', href: '#' },
-                { label: 'Know Your Rug', href: '#' },
+                { label: 'Create Your Rug', href: '/create-your-own-rug' },
+                { label: 'Know Your Rug', href: '/know-your-rug' },
                 { label: 'Designer Trade Program', href: '/designer-trade-program' },
                 { label: 'Size & Fitting Guide', href: '/size-fitting-guide' },
-                { label: 'Care & Cleaning', href: '#' },
+                { label: 'Care & Cleaning', href: '/care-cleaning' },
                 { label: 'Terms & Conditions', href: '/terms-conditions' }
               ].map((link) => (
                 <li key={link.label}>
@@ -137,6 +144,7 @@ export default function Footer() {
               alt="House of Décor"
               width={160}
               height={36}
+              style={{ width: "auto", height: "auto" }}
               className="h-8 w-auto object-contain brightness-0 invert opacity-90"
             />
           </Link>
@@ -147,7 +155,7 @@ export default function Footer() {
 
         {/* 2. Footer Links (Stacked) */}
         <div className="flex flex-col gap-10 mb-10 border-t border-[#222222] pt-10">
-          
+
           {/* ABOUT US */}
           <div className="flex flex-col">
             <h4 className="font-sans font-medium text-xs tracking-[0.15em] uppercase text-[#f5f3ef] mb-6">About Us</h4>
@@ -167,16 +175,16 @@ export default function Footer() {
             <h4 className="font-sans font-medium text-xs tracking-[0.15em] uppercase text-[#f5f3ef] mb-6">Resources</h4>
             <ul className="flex flex-col gap-4">
               {[
-                'Create Your Rug',
-                'Know Your Rug',
-                'Designer Trade Program',
-                'Size & Fitting Guide',
-                'Care & Cleaning',
-                'Terms & Conditions'
+                { label: 'Create Your Rug', href: '/create-your-own-rug' },
+                { label: 'Know Your Rug', href: '/know-your-rug' },
+                { label: 'Designer Trade Program', href: '/designer-trade-program' },
+                { label: 'Size & Fitting Guide', href: '/size-fitting-guide' },
+                { label: 'Care & Cleaning', href: '/care-cleaning' },
+                { label: 'Terms & Conditions', href: '/terms-conditions' }
               ].map((link) => (
-                <li key={link}>
-                  <Link href={`#`} className="text-[#b8b8b8] hover:text-[#d4b06a] font-sans font-light text-sm transition-colors">
-                    {link}
+                <li key={link.label}>
+                  <Link href={link.href} className="text-[#b8b8b8] hover:text-[#d4b06a] font-sans font-light text-sm transition-colors">
+                    {link.label}
                   </Link>
                 </li>
               ))}

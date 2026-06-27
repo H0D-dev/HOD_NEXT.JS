@@ -32,7 +32,7 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
 
         {/* Load More Button - Static for demo */}
         <div className="w-full flex justify-center mt-16 lg:mt-24">
-          <button className="border border-[var(--border-primary)] bg-transparent px-12 py-4 font-sans text-[var(--text-sm)] uppercase tracking-widest text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-colors">
+          <button className="bg-[var(--accent-primary)] text-[#111] px-12 py-4 font-sans text-[var(--text-sm)] uppercase tracking-widest hover:bg-[var(--accent-secondary)] transition-colors border-none">
             Load More
           </button>
         </div>
