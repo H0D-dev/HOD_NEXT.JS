@@ -1,9 +1,10 @@
 import { notFound } from "next/navigation";
-import { blogs, getBlogBySlug } from "../../../lib/data/blogs";
 import BlogContent from "../../../components/blog/BlogContent";
+import { getPosts, getPostBySlug } from "../../../services/Posts";
 
-// Generate static params so Next.js knows which dynamic routes exist at build time
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const blogs = await getPosts();
+  if (!blogs || !Array.isArray(blogs)) return [];
   return blogs.map((blog) => ({
     slug: blog.slug,
   }));
@@ -11,9 +12,10 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const blog = getBlogBySlug(slug);
+  const blog = await getPostBySlug(slug);
+  
   if (!blog) {
-    return { title: "Blog Not Found" };
+    return { title: "House of Décor" };
   }
   return {
     title: `${blog.title} — House of Décor`,
@@ -23,7 +25,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const blog = getBlogBySlug(slug);
+  const blog = await getPostBySlug(slug);
   
   if (!blog) {
     notFound();

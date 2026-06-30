@@ -10,7 +10,8 @@ export interface Blog {
   date: string;
   excerpt: string;
   image: string;
-  sections: BlogSection[];
+  sections?: BlogSection[];
+  content?: string;
 }
 
 export const blogs: Blog[] = [

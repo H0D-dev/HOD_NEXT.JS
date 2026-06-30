@@ -6,7 +6,7 @@ import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { Blog } from "../../lib/data/blogs";
 
-export default function BlogList({ blogs }: { blogs: Blog[] }) {
+export default function BlogList({ blogs = [] }: { blogs?: Blog[] }) {
   return (
     <section className="w-full pt-32 pb-24 md:pt-48 md:pb-32 px-6 md:px-16 lg:px-24 bg-[var(--bg-primary)]">
       <div className="max-w-[var(--container-lg)] mx-auto flex flex-col gap-16 md:gap-24">
