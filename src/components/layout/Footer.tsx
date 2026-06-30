@@ -71,7 +71,7 @@ export default function Footer() {
             <h4 className="font-sans font-medium text-sm tracking-[0.15em] uppercase mb-8">Resources</h4>
             <ul className="flex flex-col gap-4">
               {[
-                { label: 'Create Your Rug', href: '/create-your-own-rug' },
+                { label: 'Bespoke Rugs & Textiles', href: '/bespoke' },
                 { label: 'Know Your Rug', href: '/know-your-rug' },
                 { label: 'Designer Trade Program', href: '/designer-trade-program' },
                 { label: 'Size & Fitting Guide', href: '/size-fitting-guide' },
