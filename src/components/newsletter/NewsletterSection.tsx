@@ -137,7 +137,7 @@ export default function NewsletterSection() {
                 <button 
                   type="submit" 
                   disabled={isSubmitting}
-                  className="mt-2 h-[54px] px-10 bg-[var(--accent-primary)] text-black border border-[var(--accent-primary)] uppercase text-xs tracking-[0.2em] font-medium hover:bg-black hover:border-black hover:text-white transition-all duration-500 w-full rounded-none disabled:opacity-70 disabled:cursor-not-allowed"
+                  className="mt-2 h-[54px] px-10 bg-[var(--accent-primary)] text-black border border-[var(--accent-primary)] uppercase text-xs tracking-[0.2em] font-medium hover:bg-[var(--accent-secondary)] hover:border-[var(--accent-secondary)] hover:text-[var(--bg-primary)] transition-all duration-500 w-full rounded-none disabled:opacity-70 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? "Joining..." : "Join Our Community \u2192"}
                 </button>

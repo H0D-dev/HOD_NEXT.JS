@@ -28,7 +28,7 @@ export default function TradeCTA() {
               href="https://wa.me/971521236888?text=I%20would%20like%20to%20chat%20about%20the%20Designer%20Trade%20Program."
               target="_blank"
               rel="noopener noreferrer"
-              className="px-10 py-5 bg-white text-[#0D0D0D] border border-white font-sans font-medium text-sm tracking-widest uppercase hover:bg-transparent hover:text-white transition-all duration-[0.6s] ease-[cubic-bezier(0.22,1,0.36,1)] w-full sm:w-auto text-center"
+              className="px-10 py-5 bg-white text-[#0D0D0D] border border-white font-sans font-medium text-sm tracking-widest uppercase hover:bg-transparent hover:text-[var(--bg-primary)] transition-all duration-[0.6s] ease-[cubic-bezier(0.22,1,0.36,1)] w-full sm:w-auto text-center"
             >
               Chat Now
             </a>

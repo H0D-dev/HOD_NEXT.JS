@@ -23,7 +23,7 @@ export default function GuideCTA() {
           <div className="flex flex-col sm:flex-row items-center gap-6 w-full sm:w-auto">
             <a 
               href="/contact"
-              className="px-10 py-5 border border-[var(--border-primary)] bg-transparent text-[var(--text-primary)] font-sans font-medium text-sm tracking-widest uppercase hover:bg-[var(--accent-primary)] transition-all duration-[0.6s] ease-[cubic-bezier(0.22,1,0.36,1)] w-full sm:w-auto text-center"
+              className="px-10 py-5 border border-[var(--border-primary)] bg-transparent text-[var(--text-primary)] font-sans font-medium text-sm tracking-widest uppercase hover:bg-[var(--accent-secondary)] transition-all duration-[0.6s] ease-[cubic-bezier(0.22,1,0.36,1)] w-full sm:w-auto text-center"
             >
               Contact Us
             </a>

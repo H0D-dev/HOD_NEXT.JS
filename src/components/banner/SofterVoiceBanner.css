@@ -2,7 +2,7 @@
   width: 100%;
   background: linear-gradient(135deg, var(--bg-tertiary) 0%, var(--bg-secondary) 100%);
   border-top: var(--border-thin);
-  border-bottom: var(--border-thin);
+  border-bottom: none;
   overflow: hidden;
   margin-top: 64px;
 }

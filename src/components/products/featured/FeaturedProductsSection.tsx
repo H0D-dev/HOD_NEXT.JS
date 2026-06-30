@@ -61,7 +61,7 @@ export default function FeaturedProductsSection() {
 
   return (
     <section 
-      className="featured-section relative w-full overflow-hidden bg-[var(--bg-primary)] py-[var(--space-8)] border-t border-[var(--border-thin)]"
+      className="featured-section relative w-full overflow-hidden bg-[var(--bg-primary)] py-[var(--space-8)]"
       onMouseEnter={() => setCursorMode("default")}
     >
       

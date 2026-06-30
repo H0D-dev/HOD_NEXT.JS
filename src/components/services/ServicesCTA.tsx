@@ -26,7 +26,7 @@ export default function ServicesCTA() {
           </div>
           <Link
             href="/designer-trade-program"
-            className="group flex items-center gap-4 bg-[var(--surface-secondary)] border border-[var(--border-primary)] text-[var(--text-primary)] px-8 py-4 rounded-full font-sans text-sm tracking-widest uppercase transition-all duration-300 hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] mt-auto"
+            className="group flex items-center gap-4 bg-[var(--surface-secondary)] border border-[var(--border-primary)] text-[var(--text-primary)] px-8 py-4 rounded-full font-sans text-sm tracking-widest uppercase transition-all duration-300 hover:bg-[var(--accent-secondary)] hover:text-[var(--bg-primary)] mt-auto"
           >
             Find Out More
             <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />

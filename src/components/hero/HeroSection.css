@@ -128,9 +128,9 @@
 }
 
 .hero__cta--primary:hover {
-  background: var(--text-primary);
+  background: var(--accent-secondary);
   color: var(--bg-primary);
-  border-color: var(--text-primary);
+  border-color: var(--accent-secondary);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   /* Elevated luxury hover feel */
 }

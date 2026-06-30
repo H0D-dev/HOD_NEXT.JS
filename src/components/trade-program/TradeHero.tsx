@@ -23,7 +23,7 @@ export default function TradeHero() {
           <p className="font-sans text-[var(--text-secondary)] text-lg md:text-xl leading-relaxed mb-12 max-w-md">
             Exclusively for interior design professionals working on private residences and commercial spaces. Elevate your projects with our premium handmade rugs and bespoke curtains.
           </p>
-          <button className="px-8 py-4 border border-[var(--border-primary)] text-[var(--text-primary)] bg-transparent font-sans font-medium text-sm md:text-base hover:bg-[var(--accent-primary)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] w-full sm:w-auto">
+          <button className="px-8 py-4 border border-[var(--border-primary)] text-[var(--text-primary)] bg-transparent font-sans font-medium text-sm md:text-base hover:bg-[var(--accent-secondary)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] w-full sm:w-auto">
             Apply Now
           </button>
         </motion.div>

@@ -126,7 +126,7 @@ export default function LivingRoomGuide() {
             </p>
             <Link 
               href="/products?category=living-room" 
-              className="inline-block font-sans text-sm tracking-wider uppercase px-8 py-4 border border-[var(--border-primary)] text-[var(--text-primary)] hover:bg-[var(--accent-primary)] hover:text-black transition-colors duration-500 ease-out"
+              className="inline-block font-sans text-sm tracking-wider uppercase px-8 py-4 border border-[var(--border-primary)] text-[var(--text-primary)] hover:bg-[var(--accent-secondary)] hover:text-[var(--bg-primary)] transition-colors duration-500 ease-out"
             >
               Browse Living Room Rugs &rarr;
             </Link>

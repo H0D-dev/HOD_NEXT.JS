@@ -27,7 +27,7 @@ export default function ContactHero() {
             href="https://wa.me/971521236888?text=Hello,%20I%20would%20like%20to%20inquire%20about%20your%20products%20and%20book%20a%20consultation." 
             target="_blank" 
             rel="noopener noreferrer"
-            className="inline-block text-center px-8 py-4 border border-[var(--border-primary)] text-[var(--text-primary)] bg-transparent font-sans font-medium text-sm md:text-base hover:bg-[var(--accent-primary)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] w-full sm:w-auto"
+            className="inline-block text-center px-8 py-4 border border-[var(--border-primary)] text-[var(--text-primary)] bg-transparent font-sans font-medium text-sm md:text-base hover:bg-[var(--accent-secondary)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] w-full sm:w-auto"
           >
             Book Consultation
           </a>

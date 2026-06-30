@@ -47,7 +47,7 @@ export default function FinalCTA() {
           </Link>
           <Link 
             href="/services" 
-            className="font-sans text-sm tracking-wider uppercase px-8 py-4 bg-[var(--bg-primary)] text-[var(--text-primary)] hover:bg-[var(--accent-primary)] border border-transparent transition-colors duration-500 ease-out w-full md:w-auto text-center"
+            className="font-sans text-sm tracking-wider uppercase px-8 py-4 bg-[var(--bg-primary)] text-[var(--text-primary)] hover:bg-[var(--accent-secondary)] border border-transparent transition-colors duration-500 ease-out w-full md:w-auto text-center"
           >
             Book Consultation
           </Link>

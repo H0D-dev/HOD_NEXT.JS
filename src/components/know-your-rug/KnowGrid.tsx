@@ -77,7 +77,7 @@ export default function KnowGrid() {
               </p>
               <Link 
                 href={`/know-your-rug/${topic.id}`} 
-                className="inline-block mt-auto font-sans font-medium text-xs tracking-[0.2em] uppercase text-[var(--text-primary)] border-b border-[var(--text-primary)] pb-1 w-max hover:text-[var(--accent-primary)] hover:border-[var(--accent-primary)] transition-colors duration-300"
+                className="inline-block mt-auto font-sans font-medium text-xs tracking-[0.2em] uppercase text-[var(--text-primary)] border-b border-[var(--text-primary)] pb-1 w-max hover:text-[var(--accent-primary)] hover:border-[var(--accent-secondary)] transition-colors duration-300"
               >
                 Learn More
               </Link>

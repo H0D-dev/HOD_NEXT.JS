@@ -144,7 +144,7 @@ export default function ProjectsSection({ projects = DUMMY_PROJECTS }: ProjectsS
                 </p>
                 
                 <div className="mt-auto pt-8">
-                  <button className="px-10 py-5 border border-[var(--border-primary)] bg-transparent text-[var(--text-primary)] uppercase text-xs tracking-[0.2em] font-medium hover:bg-[var(--accent-primary)] hover:border-[var(--accent-primary)] transition-all duration-500 w-max">
+                  <button className="px-10 py-5 border border-[var(--border-primary)] bg-transparent text-[var(--text-primary)] uppercase text-xs tracking-[0.2em] font-medium hover:bg-[var(--accent-secondary)] hover:border-[var(--accent-secondary)] transition-all duration-500 w-max">
                     View Project
                   </button>
                 </div>

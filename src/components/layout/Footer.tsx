@@ -57,7 +57,7 @@ export default function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-[#8C8C8C] hover:text-white transition-colors duration-300 font-light text-sm"
+                    className="text-[#8C8C8C] hover:text-[var(--bg-primary)] transition-colors duration-300 font-light text-sm"
                   >
                     {link.label}
                   </Link>
@@ -81,7 +81,7 @@ export default function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-[#8C8C8C] hover:text-white transition-colors duration-300 font-light text-sm"
+                    className="text-[#8C8C8C] hover:text-[var(--bg-primary)] transition-colors duration-300 font-light text-sm"
                   >
                     {link.label}
                   </Link>
@@ -100,7 +100,7 @@ export default function Footer() {
                   key={social.name}
                   href={`#${social.name}`}
                   aria-label={social.name}
-                  className="w-10 h-10 border border-[#333333] flex items-center justify-center rounded-none text-[#D0D0D0] hover:bg-[#F7F77E] hover:text-[#111111] hover:border-[#F7F77E] transition-colors duration-300 group"
+                  className="w-10 h-10 border border-[#333333] flex items-center justify-center rounded-none text-[#D0D0D0] hover:bg-[var(--accent-secondary)] hover:text-[var(--bg-primary)] hover:border-[var(--accent-secondary)] transition-colors duration-300 group"
                 >
                   <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
                     <path d={social.path} />
@@ -121,7 +121,7 @@ export default function Footer() {
               <Link
                 key={link}
                 href="#"
-                className="text-[#8C8C8C] hover:text-white transition-colors duration-300 text-xs tracking-wide"
+                className="text-[#8C8C8C] hover:text-[var(--bg-primary)] transition-colors duration-300 text-xs tracking-wide"
               >
                 {link}
               </Link>

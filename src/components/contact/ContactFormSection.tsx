@@ -146,7 +146,7 @@ export default function ContactFormSection() {
               <button
                 type="submit"
                 disabled={status === "loading"}
-                className="w-full mt-2 px-8 py-4 border border-[var(--border-primary)] bg-transparent text-[var(--text-primary)] hover:bg-[var(--accent-primary)] font-sans font-medium text-sm tracking-wider uppercase transition-all duration-[0.6s] ease-[cubic-bezier(0.22,1,0.36,1)] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+                className="w-full mt-2 px-8 py-4 border border-[var(--border-primary)] bg-transparent text-[var(--text-primary)] hover:bg-[var(--accent-secondary)] font-sans font-medium text-sm tracking-wider uppercase transition-all duration-[0.6s] ease-[cubic-bezier(0.22,1,0.36,1)] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent"
               >
                 {status === "loading" ? "Sending..." : "Send Message →"}
               </button>

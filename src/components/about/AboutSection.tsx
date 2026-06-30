@@ -71,7 +71,7 @@ export default function AboutSection() {
               From classic to contemporary styles, each piece is thoughtfully designed to elevate your home or office with beauty, comfort, and enduring craftsmanship.
             </p>
 
-            <button className="px-8 py-4 md:px-10 md:py-5 border border-[var(--accent-primary)] bg-[var(--accent-primary)] text-black uppercase text-[10px] md:text-xs tracking-[0.2em] font-medium hover:bg-black hover:border-black hover:text-white transition-all duration-500 w-full md:w-max">
+            <button className="px-8 py-4 md:px-10 md:py-5 border border-[var(--accent-primary)] bg-[var(--accent-primary)] text-black uppercase text-[10px] md:text-xs tracking-[0.2em] font-medium hover:bg-[var(--accent-secondary)] hover:border-[var(--accent-secondary)] hover:text-[var(--bg-primary)] transition-all duration-500 w-full md:w-max">
               Book Appointment
             </button>
           </div>

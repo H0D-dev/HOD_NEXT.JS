@@ -6,20 +6,20 @@
    ═══════════════════════════════════════════════════════════ */
 :root {
     /* ── Color System (Light Mode) ── */
-    --bg-primary: #FFFFFF;
-    --bg-secondary: #F8F8F6;
-    --bg-tertiary: #F3F1EC;
-    --text-primary: #111111;
-    --text-secondary: #4A4A4A;
-    --text-muted: #777777;
-    --border-primary: #111111;
-    --border-secondary: #DDDDDD;
+    --bg-primary: #F5F2EC;
+    --bg-secondary: #EAE3D8;
+    --bg-tertiary: #DFD6C9;
+    --text-primary: #2B2B2B;
+    --text-secondary: #595959;
+    --text-muted: #8C857E;
+    --border-primary: #2B2B2B;
+    --border-secondary: #D4CFC6;
     --border-thin: 1px solid var(--border-secondary);
-    --accent-primary: #F7F77E;
-    --accent-secondary: #ECEC8D;
-    --highlight-color: #007bff;
-    --surface-primary: #FFFFFF;
-    --surface-secondary: #FAFAFA;
+    --accent-primary: #B08A57;
+    --accent-secondary: #6B5646;
+    --highlight-color: #B08A57;
+    --surface-primary: #F5F2EC;
+    --surface-secondary: #EAE3D8;
     /* ── Typography Scale ── */
     --text-xs: 12px;
     --text-sm: 14px;
@@ -53,8 +53,8 @@
     --duration-medium: 0.8s;
     --duration-slow: 1.2s;
     /* ── Legacy compatibility ── */
-    --background: #FFFFFF;
-    --foreground: #111111;
+    --background: #F5F2EC;
+    --foreground: #2B2B2B;
 }
 
 /* ── Dark Mode ── */
@@ -91,6 +91,7 @@
 }
 
 @layer base {
+
     /* ── Global Reset & Base ── */
     *,
     *::before,
@@ -123,6 +124,7 @@
 }
 
 @layer utilities {
+
     /* ── Utility: Serif font ── */
     .font-serif {
         font-family: var(--font-cormorant), 'Cormorant Garamond', 'Georgia', serif;
@@ -137,6 +139,7 @@
     .hide-scrollbar::-webkit-scrollbar {
         display: none;
     }
+
     .hide-scrollbar {
         -ms-overflow-style: none;
         scrollbar-width: none;

@@ -78,7 +78,7 @@ export default function TradeBenefits() {
                 variants={itemVariants}
                 className="bg-[var(--surface-primary)] border border-[var(--border-secondary)] p-8 md:p-10 transition-all duration-[0.6s] ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-2 hover:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.05)] hover:border-[var(--border-primary)] flex flex-col items-start group"
               >
-                <div className="mb-8 p-4 bg-[var(--bg-secondary)] rounded-full text-[var(--text-primary)] group-hover:bg-[var(--accent-primary)] transition-colors duration-[0.6s]">
+                <div className="mb-8 p-4 bg-[var(--bg-secondary)] rounded-full text-[var(--text-primary)] group-hover:bg-[var(--accent-secondary)] transition-colors duration-[0.6s]">
                   <Icon size={28} strokeWidth={1.5} />
                 </div>
                 <h3 className="font-sans text-lg font-medium text-[var(--text-primary)] mb-4">

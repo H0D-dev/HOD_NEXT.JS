@@ -76,7 +76,7 @@ export default function CreateSteps() {
             <motion.div
               key={step.num}
               variants={itemVariants}
-              className="bg-[var(--surface-primary)] p-8 lg:p-10 border border-[var(--border-secondary)] hover:border-[var(--accent-primary)] transition-colors duration-500 flex flex-col gap-6 group"
+              className="bg-[var(--surface-primary)] p-8 lg:p-10 border border-[var(--border-secondary)] hover:border-[var(--accent-secondary)] transition-colors duration-500 flex flex-col gap-6 group"
             >
               <div className="flex justify-between items-start">
                 <div className="text-[var(--text-secondary)] group-hover:text-[var(--accent-primary)] transition-colors duration-500">
