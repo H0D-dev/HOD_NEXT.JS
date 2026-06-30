@@ -1,3 +1,6 @@
+/**
+ * @param {number|string|null} [categoryId=null]
+ */
 export async function getProducts(categoryId = null) {
     try {
         let url = '/api/products';
