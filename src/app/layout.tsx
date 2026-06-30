@@ -49,8 +49,9 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${cormorant.variable} ${inter.variable} ${bodoni.variable} antialiased`}
+      suppressHydrationWarning
     >
-      <body>
+      <body suppressHydrationWarning>
         <ScrollToTop />
         <CustomCursor />
         <Header />

@@ -6,6 +6,8 @@ import CatalogControls from "./CatalogControls";
 import ProductGrid from "./ProductGrid";
 import FilterDrawer from "./FilterDrawer";
 import { RUGS_CONFIG, CURTAINS_CONFIG } from "../../lib/catalogConfig";
+import { getProducts } from "../../services/Product";
+import { useEffect } from "react";
 
 interface ProductCatalogLayoutProps {
   category: "rugs" | "curtains";
@@ -13,6 +15,20 @@ interface ProductCatalogLayoutProps {
 
 export default function ProductCatalogLayout({ category }: ProductCatalogLayoutProps) {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true);
+      const categoryId = category === "rugs" ? 16 : 17;
+      const data = await getProducts(categoryId);
+      setProducts(data);
+      setLoading(false);
+      console.log(data);
+    };
+    fetchProducts();
+  }, [category])
 
   const config = category === "rugs" ? RUGS_CONFIG : CURTAINS_CONFIG;
   const baseRoute = `/products/${category}`;
@@ -20,14 +36,14 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
   return (
     <div className="w-full bg-[var(--bg-primary)] min-h-screen pt-20">
       <div className="max-w-[var(--container-lg)] mx-auto px-[var(--space-4)] lg:px-[var(--space-8)] pb-24">
-        
+
         <CatalogHeader title={config.title} subtitle={config.subtitle} />
-        
-        <CatalogControls 
-          onFilterClick={() => setIsFilterOpen(true)} 
-          resultCount={config.products.length} 
+
+        <CatalogControls
+          onFilterClick={() => setIsFilterOpen(true)}
+          resultCount={config.products.length}
         />
-        
+
         <ProductGrid products={config.products} baseRoute={baseRoute} />
 
         {/* Load More Button - Static for demo */}
@@ -39,10 +55,10 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
 
       </div>
 
-      <FilterDrawer 
-        isOpen={isFilterOpen} 
-        onClose={() => setIsFilterOpen(false)} 
-        filters={config.filters} 
+      <FilterDrawer
+        isOpen={isFilterOpen}
+        onClose={() => setIsFilterOpen(false)}
+        filters={config.filters}
       />
     </div>
   );
