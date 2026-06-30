@@ -29,10 +29,16 @@ export type Product = {
   category?: string;
   image?: string;
   details?: {
-    material: string;
-    construction: string;
-    origin: string;
-    weaveType: string;
+    material?: string;
+    construction?: string;
+    origin?: string;
+    weaveType?: string;
+    careInstructions?: string;
+    dimensions?: string;
+    weight?: string;
+    petFriendly?: string;
+    washable?: string;
+    [key: string]: string | undefined;
   };
 };
 

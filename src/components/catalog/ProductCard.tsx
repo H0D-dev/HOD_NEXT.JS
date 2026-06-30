@@ -36,7 +36,15 @@ export default function ProductCard({ product, baseRoute }: ProductCardProps) {
           {product.title}
         </h3>
         <p className="font-sans text-[var(--text-sm)] text-[var(--text-secondary)]">
-          {product.color} &bull; {product.category}
+          {product.price ? (
+            <>
+              {product.price} &bull; {product.category}
+            </>
+          ) : (
+            <>
+              {product.color} &bull; {product.category}
+            </>
+          )}
         </p>
       </div>
     </Link>

@@ -3,9 +3,11 @@ import React from "react";
 interface CatalogControlsProps {
   onFilterClick: () => void;
   resultCount: number;
+  sortOption: string;
+  onSortChange: (value: string) => void;
 }
 
-export default function CatalogControls({ onFilterClick, resultCount }: CatalogControlsProps) {
+export default function CatalogControls({ onFilterClick, resultCount, sortOption, onSortChange }: CatalogControlsProps) {
   return (
     <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-center py-4 gap-4">
       <button 
@@ -31,7 +33,11 @@ export default function CatalogControls({ onFilterClick, resultCount }: CatalogC
       </span>
 
       <div className="relative w-full md:w-auto">
-        <select className="appearance-none w-full md:w-auto border border-[var(--border-secondary)] bg-transparent px-6 py-3 pr-12 font-sans text-[var(--text-sm)] text-[var(--text-primary)] cursor-pointer hover:border-[var(--border-primary)] transition-colors outline-none rounded-none focus:border-[var(--border-primary)]">
+        <select 
+          value={sortOption}
+          onChange={(e) => onSortChange(e.target.value)}
+          className="appearance-none w-full md:w-auto border border-[var(--border-secondary)] bg-transparent px-6 py-3 pr-12 font-sans text-[var(--text-sm)] text-[var(--text-primary)] cursor-pointer hover:border-[var(--border-primary)] transition-colors outline-none rounded-none focus:border-[var(--border-primary)]"
+        >
           <option value="default">Sort by: Default</option>
           <option value="newest">Sort by: Newest</option>
           <option value="popular">Sort by: Popular</option>

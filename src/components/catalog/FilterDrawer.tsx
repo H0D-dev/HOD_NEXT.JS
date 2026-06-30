@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FilterCategory } from "../../lib/catalogConfig";
 
@@ -8,34 +8,23 @@ interface FilterDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   filters: FilterCategory[];
+  selectedFilters: Record<string, string[]>;
+  toggleFilter: (categoryId: string, value: string) => void;
+  clearAll: () => void;
 }
 
-export default function FilterDrawer({ isOpen, onClose, filters }: FilterDrawerProps) {
+export default function FilterDrawer({ isOpen, onClose, filters, selectedFilters, toggleFilter, clearAll }: FilterDrawerProps) {
   // Simple state to manage expanded accordion sections
-  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>(
-    filters.reduce((acc, f) => ({ ...acc, [f.id]: true }), {})
-  );
-  
-  // State to manage selected filters
-  const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({});
+  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
+
+  useEffect(() => {
+    setExpandedSections(
+      filters.reduce((acc, f) => ({ ...acc, [f.id]: true }), {})
+    );
+  }, [filters]);
 
   const toggleSection = (id: string) => {
     setExpandedSections(prev => ({ ...prev, [id]: !prev[id] }));
-  };
-
-  const toggleFilter = (categoryId: string, value: string) => {
-    setSelectedFilters(prev => {
-      const current = prev[categoryId] || [];
-      if (current.includes(value)) {
-        return { ...prev, [categoryId]: current.filter(v => v !== value) };
-      } else {
-        return { ...prev, [categoryId]: [...current, value] };
-      }
-    });
-  };
-
-  const clearAll = () => {
-    setSelectedFilters({});
   };
 
   return (
@@ -48,7 +37,7 @@ export default function FilterDrawer({ isOpen, onClose, filters }: FilterDrawerP
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] as any }}
-            className="fixed inset-0 bg-black/40 z-40 backdrop-blur-sm"
+            className="fixed inset-0 bg-black/40 z-[1050] backdrop-blur-sm"
             onClick={onClose}
           />
 
@@ -58,7 +47,7 @@ export default function FilterDrawer({ isOpen, onClose, filters }: FilterDrawerP
             animate={{ x: 0 }}
             exit={{ x: "-100%" }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] as any }}
-            className="fixed top-0 left-0 h-full w-full max-w-[420px] bg-[var(--bg-primary)] z-50 flex flex-col border-r border-[var(--border-secondary)] shadow-2xl"
+            className="fixed top-0 left-0 h-full w-full max-w-[420px] bg-[var(--bg-primary)] z-[1060] flex flex-col border-r border-[var(--border-secondary)] shadow-2xl"
           >
             {/* Drawer Header */}
             <div className="flex justify-between items-center p-6 lg:p-8 border-b border-[var(--border-secondary)]">

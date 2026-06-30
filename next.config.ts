@@ -8,6 +8,10 @@ const nextConfig: NextConfig = {
                 protocol: "https",
                 hostname: "images.unsplash.com",
             },
+            {
+                protocol: "https",
+                hostname: "mediumslateblue-grasshopper-769837.hostingersite.com",
+            },
         ],
     },
 };
