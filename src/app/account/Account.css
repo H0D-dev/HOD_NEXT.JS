@@ -1,0 +1,118 @@
+.account-page {
+  min-height: 100vh;
+  padding: 120px var(--space-4);
+  background-color: var(--bg-primary);
+}
+
+.account-container {
+  width: 100%;
+  max-width: var(--container-md);
+  margin: 0 auto;
+}
+
+.account-header {
+  margin-bottom: var(--space-6);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: var(--border-thin);
+  padding-bottom: var(--space-3);
+}
+
+.account-title {
+  font-family: var(--font-playfair), serif;
+  font-size: var(--text-4xl);
+  font-weight: 400;
+  margin: 0;
+}
+
+.account-logout {
+  font-family: var(--font-inter), sans-serif;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.account-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+}
+
+@media (min-width: 768px) {
+  .account-content {
+    grid-template-columns: 300px 1fr;
+  }
+}
+
+.account-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.account-info {
+  background-color: var(--surface-secondary);
+  padding: var(--space-4);
+  border: var(--border-thin);
+}
+
+.account-info h3 {
+  font-family: var(--font-inter), sans-serif;
+  font-size: var(--text-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-2);
+  color: var(--text-secondary);
+}
+
+.account-info p {
+  font-family: var(--font-inter), sans-serif;
+  font-size: var(--text-md);
+  margin-bottom: 4px;
+}
+
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.order-card {
+  border: var(--border-thin);
+  padding: var(--space-4);
+  background-color: var(--surface-primary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.order-details h4 {
+  font-family: var(--font-inter), sans-serif;
+  font-size: var(--text-md);
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.order-details p {
+  font-family: var(--font-inter), sans-serif;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.order-status {
+  font-family: var(--font-inter), sans-serif;
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 6px 12px;
+  background-color: var(--bg-secondary);
+  border: var(--border-thin);
+}

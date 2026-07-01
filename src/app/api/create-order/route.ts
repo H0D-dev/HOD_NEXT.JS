@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 import { API_CONFIG } from "@/src/lib/api/api";
+import { verifyAuthToken } from "@/src/lib/auth/jwt";
 
 interface LineItem {
   product_id: number;
@@ -105,8 +107,25 @@ export async function POST(request: Request) {
       bacs: "Direct Bank Transfer",
     };
 
+    // --- Check for authenticated user ---
+    let customerId = 0;
+    try {
+      const cookieStore = await cookies();
+      const token = cookieStore.get("auth_token")?.value;
+      if (token) {
+        const payload = await verifyAuthToken(token);
+        if (payload) {
+          const userData = (payload as any).data?.user || payload;
+          customerId = userData.id || userData.user_id || (payload as any).user_id || (payload as any).sub || 0;
+        }
+      }
+    } catch (err) {
+      console.warn("Failed to extract customer ID from token", err);
+    }
+
     // --- Build Woo order payload ---
     const orderPayload = {
+      customer_id: customerId,
       payment_method: body.payment_method,
       payment_method_title: paymentTitles[body.payment_method] || body.payment_method,
       set_paid: false,

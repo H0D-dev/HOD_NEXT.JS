@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { useCartStore } from "@/src/lib/store/useCartStore";
+import { useAuthStore } from "@/src/lib/store/useAuthStore";
 import "./Checkout.css";
 
 interface FormData {
@@ -132,6 +133,7 @@ function generateSessionId() {
 export default function CheckoutPage() {
   const router = useRouter();
   const { items, subtotal, clearCart } = useCartStore();
+  const { user } = useAuthStore();
   const [isClient, setIsClient] = useState(false);
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [formErrors, setFormErrors] = useState<FormErrors>({});
@@ -143,7 +145,16 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     setIsClient(true);
-  }, []);
+    // Prepopulate user data if authenticated
+    if (user) {
+      setFormData((prev) => ({
+        ...prev,
+        first_name: prev.first_name || user.first_name || "",
+        last_name: prev.last_name || user.last_name || "",
+        email: prev.email || user.email || "",
+      }));
+    }
+  }, [user]);
 
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -323,6 +334,12 @@ export default function CheckoutPage() {
         <div className="checkout__layout">
           {/* ── Left: Form ── */}
           <div className="checkout__form-column">
+            {!user && (
+              <div className="checkout__login-prompt" style={{ marginBottom: "2rem", padding: "1rem", backgroundColor: "var(--bg-secondary)", borderRadius: "var(--radius-md)", border: "1px solid var(--border-color)", fontSize: "0.95rem" }}>
+                Returning customer? <Link href="/login?redirect=/checkout" style={{ color: "var(--accent-color)", fontWeight: "500", textDecoration: "underline" }}>Click here to login</Link>
+              </div>
+            )}
+
             {/* Billing */}
             <div className="checkout__section">
               <h2 className="checkout__section-title">Billing Details</h2>

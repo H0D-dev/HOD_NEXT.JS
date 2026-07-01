@@ -3,8 +3,9 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useCartStore } from "@/src/lib/store/useCartStore";
+import { useAuthStore } from "@/src/lib/store/useAuthStore";
 import "./Header.css";
 
 /* ── Navigation Links Data ── */
@@ -20,8 +21,10 @@ export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
   
   const { openDrawer, totalItems } = useCartStore();
+  const { isAuthenticated } = useAuthStore();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -48,6 +51,19 @@ export default function Header() {
     } else {
       document.body.style.overflow = "";
     }
+  }, [isMobileMenuOpen]);
+
+  const handleProfileClick = () => {
+    if (isAuthenticated) {
+      router.push("/account");
+    } else {
+      router.push("/register");
+    }
+    // Close mobile menu if it's open
+    setIsMobileMenuOpen(false);
+  };
+
+  useEffect(() => {
     return () => {
       document.body.style.overflow = "";
     };
@@ -122,6 +138,15 @@ export default function Header() {
                   </div>
                   <span className="header__mobile-cart-label">Cart</span>
                 </button>
+                <button className="header__cart-btn" aria-label="Profile" onClick={handleProfileClick} style={{ marginTop: "1rem" }}>
+                  <div className="header__cart-icon-wrapper">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" strokeWidth="1" strokeLinecap="square" />
+                      <circle cx="12" cy="7" r="4" stroke="currentColor" strokeWidth="1" strokeLinecap="square" />
+                    </svg>
+                  </div>
+                  <span className="header__mobile-cart-label">Profile</span>
+                </button>
               </div>
             </nav>
           </div>
@@ -136,6 +161,14 @@ export default function Header() {
                 {mounted && totalItems > 0 && (
                   <span className="header__cart-badge">{totalItems}</span>
                 )}
+              </div>
+            </button>
+            <button className="header__cart-btn header__desktop-cart-btn" aria-label="Profile" onClick={handleProfileClick}>
+              <div className="header__cart-icon-wrapper">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" strokeWidth="1" strokeLinecap="square" />
+                  <circle cx="12" cy="7" r="4" stroke="currentColor" strokeWidth="1" strokeLinecap="square" />
+                </svg>
               </div>
             </button>
             <button 
