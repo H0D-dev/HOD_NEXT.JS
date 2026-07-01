@@ -64,7 +64,7 @@ export default function CartItem({ item, context = "drawer" }: CartItemProps) {
 
         <div className="cart-item__bottom">
           <div className="cart-item__price">
-            ₹{item.price.toLocaleString("en-IN")}
+            AED {item.price.toLocaleString()}
           </div>
 
           <div className="cart-item__actions">

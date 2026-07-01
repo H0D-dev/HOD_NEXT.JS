@@ -24,9 +24,11 @@ export default function ProductInfoCard({ product, activeColor, onColorChange }:
     // Generate a price for demo purposes if none exists
     const price = product.price || 24999;
     const isRug = product.category?.toLowerCase().includes("rug") ?? true;
+    const numericId = typeof product.id === "string" ? parseInt(product.id, 10) : Number(product.id);
 
     addItem({
       id: `${product.id}-${activeColor.id}-${activeSize}`,
+      productId: numericId || 0,
       slug: product.id,
       name: product.name,
       category: isRug ? "rug" : "curtain",
@@ -58,11 +60,6 @@ export default function ProductInfoCard({ product, activeColor, onColorChange }:
       <p className="font-sans text-[var(--text-sm)] text-[var(--text-secondary)] leading-relaxed mb-4 shrink-0">
         {product.description || "Handcrafted premium curtain designed for sophisticated modern interiors. A quiet testament to artisanal excellence and timeless luxury."}
       </p>
-
-      {/* Product Meta Section Removed */}
-
-      {/* Type Selector Removed */}
-
       {/* 4. Colour Selector */}
       <div className="mb-4 shrink-0">
         <div className="flex justify-between items-end mb-2">
@@ -119,7 +116,7 @@ export default function ProductInfoCard({ product, activeColor, onColorChange }:
         <button className="flex-1 py-3 border border-[var(--border-primary)] bg-white text-[var(--text-primary)] font-medium text-[var(--text-sm)] transition-all duration-300 hover:bg-[var(--bg-secondary)]">
           Visualise
         </button>
-        <button 
+        <button
           onClick={handleAddToCart}
           className="flex-1 py-3 bg-[var(--accent-primary)] text-[#111] font-medium text-[var(--text-sm)] transition-all duration-300 hover:bg-[var(--accent-secondary)]"
         >

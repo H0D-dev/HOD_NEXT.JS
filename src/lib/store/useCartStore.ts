@@ -3,6 +3,7 @@ import { persist } from "zustand/middleware";
 
 export interface CartItem {
   id: string;
+  productId: number; // Woo product ID for order creation
   slug: string;
   name: string;
   category: "rug" | "curtain";

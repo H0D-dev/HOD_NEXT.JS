@@ -1,0 +1,109 @@
+.order-success {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4) var(--space-2);
+  background: var(--bg-primary);
+}
+
+.order-success__container {
+  text-align: center;
+  max-width: 520px;
+}
+
+.order-success__icon {
+  margin-bottom: var(--space-3);
+  color: #27ae60;
+}
+
+.order-success__icon svg {
+  display: inline-block;
+}
+
+.order-success__title {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-size: var(--text-3xl);
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: var(--space-1);
+}
+
+.order-success__subtitle {
+  font-size: var(--text-md);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-4);
+  line-height: 1.6;
+}
+
+.order-success__details {
+  background: white;
+  border: 1px solid var(--border-secondary);
+  padding: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.order-success__detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+}
+
+.order-success__detail-label {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+.order-success__detail-value {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.order-success__note {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  margin-top: var(--space-2);
+  padding-top: var(--space-2);
+  border-top: var(--border-thin);
+}
+
+.order-success__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  align-items: center;
+}
+
+.order-success__btn {
+  display: inline-block;
+  padding: 14px 40px;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.3s var(--ease-premium);
+  width: 100%;
+  text-align: center;
+}
+
+.order-success__btn--primary {
+  background: var(--text-primary);
+  color: var(--bg-primary);
+}
+
+.order-success__btn--primary:hover {
+  opacity: 0.85;
+}
+
+.order-success__btn--secondary {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--border-secondary);
+}
+
+.order-success__btn--secondary:hover {
+  border-color: var(--text-primary);
+}

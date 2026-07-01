@@ -1,0 +1,197 @@
+import { NextResponse } from "next/server";
+import { API_CONFIG } from "@/src/lib/api/api";
+
+interface LineItem {
+  product_id: number;
+  quantity: number;
+}
+
+interface CreateOrderBody {
+  billing: {
+    first_name: string;
+    last_name: string;
+    email: string;
+    phone: string;
+  };
+  shipping: {
+    address_1: string;
+    address_2?: string;
+    city: string;
+    state?: string;
+    country: string;
+    postcode?: string;
+  };
+  payment_method: string;
+  cart: LineItem[];
+  order_notes?: string;
+  checkout_session_id?: string;
+}
+
+// Simple in-memory idempotency store (resets on server restart)
+// In production, use Redis or database
+const processedSessions = new Map<string, { orderId: number; orderKey: string }>();
+
+export async function POST(request: Request) {
+  try {
+    const body: CreateOrderBody = await request.json();
+
+    // --- Idempotency check ---
+    if (body.checkout_session_id) {
+      const existing = processedSessions.get(body.checkout_session_id);
+      if (existing) {
+        return NextResponse.json({
+          success: true,
+          orderId: existing.orderId,
+          orderKey: existing.orderKey,
+          duplicate: true,
+        });
+      }
+    }
+
+    // --- Validate required fields ---
+    if (!body.billing?.first_name || !body.billing?.email || !body.billing?.phone) {
+      return NextResponse.json(
+        { success: false, error: "Missing required billing fields" },
+        { status: 400 }
+      );
+    }
+
+    if (!body.shipping?.address_1 || !body.shipping?.city || !body.shipping?.country) {
+      return NextResponse.json(
+        { success: false, error: "Missing required shipping fields" },
+        { status: 400 }
+      );
+    }
+
+    if (!body.cart || body.cart.length === 0) {
+      return NextResponse.json(
+        { success: false, error: "Cart is empty" },
+        { status: 400 }
+      );
+    }
+
+    // --- Re-validate stock server-side before creating order ---
+    for (const item of body.cart) {
+      const productUrl = `${API_CONFIG.baseUrl}/wp-json/wc/v3/products/${item.product_id}?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&_fields=id,stock_status,stock_quantity,manage_stock,status`;
+      const productRes = await fetch(productUrl, { cache: "no-store" });
+
+      if (!productRes.ok) {
+        return NextResponse.json(
+          { success: false, error: `Product ${item.product_id} is unavailable` },
+          { status: 400 }
+        );
+      }
+
+      const product = await productRes.json();
+
+      if (product.status !== "publish" || product.stock_status === "outofstock") {
+        return NextResponse.json(
+          { success: false, error: `Product ${item.product_id} is out of stock` },
+          { status: 400 }
+        );
+      }
+
+      if (product.manage_stock && product.stock_quantity !== null && product.stock_quantity < item.quantity) {
+        return NextResponse.json(
+          { success: false, error: `Only ${product.stock_quantity} units available for product ${item.product_id}` },
+          { status: 400 }
+        );
+      }
+    }
+
+    // --- Payment method title mapping ---
+    const paymentTitles: Record<string, string> = {
+      online: "Online Payment",
+      bacs: "Direct Bank Transfer",
+    };
+
+    // --- Build Woo order payload ---
+    const orderPayload = {
+      payment_method: body.payment_method,
+      payment_method_title: paymentTitles[body.payment_method] || body.payment_method,
+      set_paid: false,
+      billing: {
+        first_name: body.billing.first_name,
+        last_name: body.billing.last_name || "",
+        email: body.billing.email,
+        phone: body.billing.phone,
+        address_1: body.shipping.address_1,
+        address_2: body.shipping.address_2 || "",
+        city: body.shipping.city,
+        state: body.shipping.state || "",
+        country: body.shipping.country,
+        postcode: body.shipping.postcode || "",
+      },
+      shipping: {
+        first_name: body.billing.first_name,
+        last_name: body.billing.last_name || "",
+        address_1: body.shipping.address_1,
+        address_2: body.shipping.address_2 || "",
+        city: body.shipping.city,
+        state: body.shipping.state || "",
+        country: body.shipping.country,
+        postcode: body.shipping.postcode || "",
+      },
+      line_items: body.cart.map((item) => ({
+        product_id: item.product_id,
+        quantity: item.quantity,
+      })),
+      customer_note: body.order_notes || "",
+    };
+
+    // --- Create order in WooCommerce ---
+    const wooUrl = `${API_CONFIG.baseUrl}/wp-json/wc/v3/orders?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}`;
+
+    const wooRes = await fetch(wooUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(orderPayload),
+    });
+
+    if (!wooRes.ok) {
+      const errorText = await wooRes.text();
+      console.error("WooCommerce order creation failed:", errorText);
+      return NextResponse.json(
+        { success: false, error: "Failed to create order" },
+        { status: 500 }
+      );
+    }
+
+    const wooOrder = await wooRes.json();
+
+    // --- Store idempotency ---
+    if (body.checkout_session_id) {
+      processedSessions.set(body.checkout_session_id, {
+        orderId: wooOrder.id,
+        orderKey: wooOrder.order_key,
+      });
+
+      // Clean up old sessions after 1 hour
+      setTimeout(() => {
+        processedSessions.delete(body.checkout_session_id!);
+      }, 3600000);
+    }
+
+    // --- Build payment URL for online payments ---
+    let paymentUrl: string | null = null;
+    if (body.payment_method === "online") {
+      paymentUrl = `${API_CONFIG.baseUrl}/checkout/order-pay/${wooOrder.id}/?pay_for_order=true&key=${wooOrder.order_key}`;
+    }
+
+    return NextResponse.json({
+      success: true,
+      orderId: wooOrder.id,
+      orderKey: wooOrder.order_key,
+      total: wooOrder.total,
+      currency: wooOrder.currency,
+      status: wooOrder.status,
+      paymentUrl,
+    });
+  } catch (error) {
+    console.error("Create order error:", error);
+    return NextResponse.json(
+      { success: false, error: "Internal server error" },
+      { status: 500 }
+    );
+  }
+}

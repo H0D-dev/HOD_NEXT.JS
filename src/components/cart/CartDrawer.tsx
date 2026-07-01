@@ -56,8 +56,8 @@ export default function CartDrawer() {
           >
             <div className="cart-drawer__header">
               <h2 className="cart-drawer__title">Your Cart ({totalItems})</h2>
-              <button 
-                className="cart-drawer__close" 
+              <button
+                className="cart-drawer__close"
                 onClick={closeDrawer}
                 aria-label="Close cart"
               >
@@ -88,16 +88,16 @@ export default function CartDrawer() {
               <div className="cart-drawer__footer">
                 <div className="cart-drawer__summary">
                   <span className="cart-drawer__summary-label">Subtotal</span>
-                  <span className="cart-drawer__summary-value">₹{subtotal.toLocaleString("en-IN")}</span>
+                  <span className="cart-drawer__summary-value">AED {subtotal.toLocaleString()}</span>
                 </div>
                 <p className="cart-drawer__shipping-note">Shipping and taxes calculated at checkout.</p>
                 <div className="cart-drawer__actions">
                   <Link href="/cart" className="cart-drawer__btn cart-drawer__btn--secondary" onClick={closeDrawer}>
                     View Cart
                   </Link>
-                  <button className="cart-drawer__btn cart-drawer__btn--primary">
+                  <Link href="/checkout" className="cart-drawer__btn cart-drawer__btn--primary" onClick={closeDrawer}>
                     Checkout
-                  </button>
+                  </Link>
                 </div>
               </div>
             )}

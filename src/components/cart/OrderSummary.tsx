@@ -16,7 +16,7 @@ export default function OrderSummary() {
       <div className="order-summary__line-items">
         <div className="order-summary__line">
           <span className="order-summary__label">Subtotal</span>
-          <span className="order-summary__value">₹{subtotal.toLocaleString("en-IN")}</span>
+          <span className="order-summary__value">AED {subtotal.toLocaleString()}</span>
         </div>
         <div className="order-summary__line">
           <span className="order-summary__label">Shipping</span>
@@ -30,12 +30,12 @@ export default function OrderSummary() {
 
       <div className="order-summary__total-line">
         <span className="order-summary__total-label">Total</span>
-        <span className="order-summary__total-value">₹{subtotal.toLocaleString("en-IN")}</span>
+        <span className="order-summary__total-value">AED {subtotal.toLocaleString()}</span>
       </div>
 
-      <button className="order-summary__checkout-btn">
+      <Link href="/checkout" className="order-summary__checkout-btn">
         Proceed to Checkout
-      </button>
+      </Link>
       <Link href="/products" className="order-summary__continue-btn">
         Continue Shopping
       </Link>
