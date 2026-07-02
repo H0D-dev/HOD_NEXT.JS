@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState, useMemo } from "react";
+import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { ProductColor, Product } from "./ProductPresentation";
+import { ProductColor, Product, ProductVariation } from "./ProductPresentation";
 import { useCartStore } from "@/src/lib/store/useCartStore";
 
 interface ProductInfoCardProps {
@@ -13,37 +13,111 @@ interface ProductInfoCardProps {
 }
 
 export default function ProductInfoCard({ product, activeColor, onColorChange }: ProductInfoCardProps) {
-  const [detailsExpanded, setDetailsExpanded] = useState(false);
   const router = useRouter();
-
-  // Default sizes if none provided by API
-  const sizes = product.sizes || ["170 x 240 cm", "200 x 300 cm", "250 x 350 cm", "300 x 400 cm", "Custom size"];
-  const [activeSize, setActiveSize] = useState<string>(sizes[0]);
-
   const { addItem, openDrawer } = useCartStore();
 
-  const handleAddToCart = () => {
-    // Generate a price for demo purposes if none exists
-    const price = product.price || 24999;
-    const isRug = product.category?.toLowerCase().includes("rug") ?? true;
-    const numericId = typeof product.id === "string" ? parseInt(product.id, 10) : Number(product.id);
+  const isVariable = product.productType === "variable" && Array.isArray(product.variations) && product.variations.length > 0;
 
-    addItem({
-      id: `${product.id}-${activeColor.id}-${activeSize}`,
+  // --- Size / Variation state ---
+  const [selectedVariation, setSelectedVariation] = useState<ProductVariation | null>(null);
+
+  const parentSizeLabel = useMemo(() => {
+    return product.details?.dimensions || "Standard Size";
+  }, [product.details?.dimensions]);
+
+  // Fallback sizes for simple products with no variations
+  const fallbackSizes = product.sizes || ["170 x 240 cm", "200 x 300 cm", "250 x 350 cm", "300 x 400 cm", "Custom size"];
+  const [activeSize, setActiveSize] = useState<string>(fallbackSizes[0]);
+
+  // --- Derived display values ---
+  const displayPrice = useMemo(() => {
+    if (isVariable && selectedVariation) {
+      const vPrice = selectedVariation.price || selectedVariation.regularPrice || 0;
+      if (vPrice > 0) return vPrice;
+    }
+    return product.price ?? product.regularPrice;
+  }, [isVariable, selectedVariation, product.price, product.regularPrice]);
+
+  const displayRegularPrice = useMemo(() => {
+    if (isVariable && selectedVariation) {
+      const vRegPrice = selectedVariation.regularPrice || 0;
+      if (vRegPrice > 0) return vRegPrice;
+    }
+    return product.regularPrice;
+  }, [isVariable, selectedVariation, product.regularPrice]);
+
+  const displayOnSale = useMemo(() => {
+    if (isVariable && selectedVariation) {
+      return selectedVariation.onSale;
+    }
+    return product.onSale;
+  }, [isVariable, selectedVariation, product.onSale]);
+
+  const displayDimensions = useMemo(() => {
+    if (isVariable && selectedVariation && selectedVariation.dimensions) {
+      return selectedVariation.dimensions;
+    }
+    return product.details?.dimensions;
+  }, [isVariable, selectedVariation, product.details?.dimensions]);
+
+  const displaySku = useMemo(() => {
+    if (isVariable && selectedVariation && selectedVariation.sku) {
+      return selectedVariation.sku;
+    }
+    return product.sku || activeColor.code;
+  }, [isVariable, selectedVariation, product.sku, activeColor.code]);
+
+  const displayWeight = useMemo(() => {
+    if (isVariable && selectedVariation && selectedVariation.weight) {
+      return selectedVariation.weight;
+    }
+    return product.details?.weight;
+  }, [isVariable, selectedVariation, product.details?.weight]);
+
+  // --- Handlers ---
+  const handleSizeClick = (variation: ProductVariation) => {
+    setSelectedVariation(variation);
+  };
+
+  const handleAddToCart = () => {
+    const numericId = typeof product.id === "string" ? parseInt(product.id, 10) : Number(product.id);
+    const isRug = product.category?.toLowerCase().includes("rug") ?? true;
+
+    const cartItem: any = {
+      id: isVariable && selectedVariation
+        ? `${product.id}-${selectedVariation.id}-${activeColor.id}`
+        : `${product.id}-${activeColor.id}-${isVariable ? parentSizeLabel : activeSize}`,
       productId: numericId || 0,
-      slug: product.id,
+      slug: product.slug,
       name: product.name,
       category: isRug ? "rug" : "curtain",
       image: activeColor.textureUrl || product.image || "/rugs/set1-room.png",
-      price,
+      price: displayPrice,
       quantity: 1,
       variant: {
         color: activeColor.name,
-        size: activeSize,
-        material: "Premium Blend",
-      }
-    });
+        size: isVariable && selectedVariation ? selectedVariation.label : (isVariable ? parentSizeLabel : activeSize),
+        material: product.details?.material || "Premium Blend",
+      },
+    };
+
+    // Include variation ID for WooCommerce order accuracy.
+    // id: 0 is a synthetic parent-size entry — no variation_id needed.
+    if (isVariable && selectedVariation && selectedVariation.id > 0) {
+      cartItem.variationId = selectedVariation.id;
+    }
+
+    addItem(cartItem);
     openDrawer();
+  };
+
+  // --- Price formatting ---
+  const formatPrice = (p: number) => {
+    return new Intl.NumberFormat("en-AE", {
+      style: "currency",
+      currency: "AED",
+      maximumFractionDigits: 0,
+    }).format(p);
   };
 
   return (
@@ -55,20 +129,32 @@ export default function ProductInfoCard({ product, activeColor, onColorChange }:
     >
       {/* 1. Product Name */}
       <h1 className="font-serif text-[var(--text-xl)] lg:text-[var(--text-2xl)] leading-tight text-[var(--text-primary)] mb-2 shrink-0">
-        {product.name} — {activeColor.name.split(' ')[0]}
+        {product.name}
       </h1>
 
-      {/* 2. Product Description */}
+      {/* 2. Price */}
+      {displayPrice !== undefined && (
+        <div className="flex items-baseline gap-2 mb-2 shrink-0">
+          <span className="font-serif text-[var(--text-lg)] text-[var(--text-primary)] font-semibold">
+            {formatPrice(displayPrice)}
+          </span>
+          {displayOnSale && displayRegularPrice && displayRegularPrice > displayPrice && (
+            <span className="text-[var(--text-sm)] text-[var(--text-muted)] line-through">
+              {formatPrice(displayRegularPrice)}
+            </span>
+          )}
+        </div>
+      )}
+
+      {/* 3. Product Description */}
       <p className="font-sans text-[var(--text-sm)] text-[var(--text-secondary)] leading-relaxed mb-4 shrink-0">
-        {product.description || "Handcrafted premium curtain designed for sophisticated modern interiors. A quiet testament to artisanal excellence and timeless luxury."}
+        {product.description || "Handcrafted premium product designed for sophisticated modern interiors."}
       </p>
+
       {/* 4. Colour Selector */}
       <div className="mb-4 shrink-0">
         <div className="flex justify-between items-end mb-2">
           <h3 className="text-[var(--text-sm)] font-semibold text-[var(--text-primary)]">Colour</h3>
-          <div className="text-right">
-            <p className="text-[var(--text-sm)] text-[var(--text-primary)] font-medium truncate w-32">{activeColor.name}</p>
-          </div>
         </div>
 
         <div className="flex gap-2 overflow-x-auto pb-1 snap-x hide-scrollbar">
@@ -76,7 +162,6 @@ export default function ProductInfoCard({ product, activeColor, onColorChange }:
             <button
               key={color.id}
               onClick={() => {
-                // If the variant has a slug and it's a different product, navigate
                 if (color.slug && color.slug !== product.slug && product.categorySlug) {
                   router.push(`/products/${product.categorySlug}/${color.slug}`);
                 } else {
@@ -94,33 +179,66 @@ export default function ProductInfoCard({ product, activeColor, onColorChange }:
           ))}
           {product.colors && product.colors.length > 5 && (
             <button className="flex-shrink-0 w-10 h-10 border border-[var(--border-secondary)] flex items-center justify-center text-[9px] text-[var(--text-secondary)] transition-colors hover:border-[var(--border-primary)] snap-center">
-              +20
+              +{product.colors.length - 5}
             </button>
           )}
         </div>
       </div>
 
       {/* 5. Size Selector */}
-      <div className="mb-6 shrink-0">
-        <div className="flex justify-between items-end mb-2">
-          <h3 className="text-[var(--text-sm)] font-semibold text-[var(--text-primary)]">Size</h3>
-          <p className="text-[var(--text-xs)] text-[var(--text-muted)] underline cursor-pointer hover:text-[var(--text-primary)] transition-colors">Size guide</p>
-        </div>
+      {isVariable && (
+        <div className="mb-6 shrink-0">
+          <div className="flex justify-between items-end mb-2">
+            <h3 className="text-[var(--text-sm)] font-semibold text-[var(--text-primary)]">Size</h3>
+            <p className="text-[var(--text-xs)] text-[var(--text-muted)] underline cursor-pointer hover:text-[var(--text-primary)] transition-colors">Size guide</p>
+          </div>
 
-        <div className="grid grid-cols-2 gap-2">
-          {sizes.map((size) => (
+          <div className="grid grid-cols-2 gap-2">
+            {/* Parent Product Size (Default) */}
             <button
-              key={size}
-              onClick={() => setActiveSize(size)}
-              className={`py-2 px-3 text-center text-[var(--text-sm)] font-medium transition-colors duration-300 border ${activeSize === size ? "border-[var(--border-primary)] bg-[var(--bg-secondary)] text-[var(--text-primary)]" : "border-[var(--border-secondary)] text-[var(--text-secondary)] hover:border-[var(--text-muted)]"}`}
+              onClick={() => setSelectedVariation(null)}
+              className={`py-2 px-3 text-center text-[var(--text-sm)] font-medium transition-colors duration-300 border ${
+                  selectedVariation === null
+                    ? "border-[var(--border-primary)] bg-[var(--bg-secondary)] text-[var(--text-primary)]"
+                    : "border-[var(--border-secondary)] text-[var(--text-secondary)] hover:border-[var(--text-muted)]"
+                }`}
             >
-              {size}
+              {parentSizeLabel}
             </button>
-          ))}
-        </div>
-      </div>
 
-      {/* 6. Action Buttons */}
+            {product.variations!.map((variation) => {
+              const isActive = selectedVariation?.id === variation.id;
+              const isOutOfStock = variation.stockStatus === "outofstock";
+              return (
+                <button
+                  key={variation.id}
+                  onClick={() => !isOutOfStock && handleSizeClick(variation)}
+                  disabled={isOutOfStock}
+                  className={`py-2 px-3 text-center text-[var(--text-sm)] font-medium transition-colors duration-300 border ${isOutOfStock
+                      ? "border-[var(--border-secondary)] text-[var(--text-muted)] opacity-50 cursor-not-allowed line-through"
+                      : isActive
+                        ? "border-[var(--border-primary)] bg-[var(--bg-secondary)] text-[var(--text-primary)]"
+                        : "border-[var(--border-secondary)] text-[var(--text-secondary)] hover:border-[var(--text-muted)]"
+                    }`}
+                >
+                  {variation.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* 6. Quick Specs (dimensions/weight/sku from selected variation) */}
+      {(displayDimensions || displaySku) && (
+        <div className="mb-4 shrink-0 flex flex-wrap gap-x-6 gap-y-1 text-[var(--text-xs)] text-[var(--text-muted)]">
+          {!isVariable && displayDimensions && <span>Dimensions: {displayDimensions}</span>}
+          {!isVariable && displayWeight && <span>Weight: {displayWeight}</span>}
+          {displaySku && <span>SKU: {displaySku}</span>}
+        </div>
+      )}
+
+      {/* 7. Action Buttons */}
       <div className="flex gap-2 mt-auto shrink-0 pt-2 lg:pt-0">
         <button className="flex-1 py-3 border border-[var(--border-primary)] bg-white text-[var(--text-primary)] font-medium text-[var(--text-sm)] transition-all duration-300 hover:bg-[var(--bg-secondary)]">
           Visualise

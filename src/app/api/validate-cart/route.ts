@@ -3,6 +3,7 @@ import { API_CONFIG } from "@/src/lib/api/api";
 
 interface CartItemInput {
   product_id: number;
+  variation_id?: number;
   quantity: number;
   frontend_price: number;
 }
@@ -37,7 +38,9 @@ export async function POST(request: Request) {
 
     // Fetch each product from WooCommerce to validate
     for (const item of cartItems) {
-      const url = `${API_CONFIG.baseUrl}/wp-json/wc/v3/products/${item.product_id}?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&_fields=id,name,price,regular_price,sale_price,stock_status,stock_quantity,manage_stock,status`;
+      const url = item.variation_id
+        ? `${API_CONFIG.baseUrl}/wp-json/wc/v3/products/${item.product_id}/variations/${item.variation_id}?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&_fields=id,name,price,regular_price,sale_price,stock_status,stock_quantity,manage_stock,status`
+        : `${API_CONFIG.baseUrl}/wp-json/wc/v3/products/${item.product_id}?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&_fields=id,name,price,regular_price,sale_price,stock_status,stock_quantity,manage_stock,status`;
 
       const res = await fetch(url, { cache: "no-store" });
 
@@ -52,8 +55,8 @@ export async function POST(request: Request) {
 
       const product = await res.json();
 
-      // Check if product is published
-      if (product.status !== "publish") {
+      // Check if product is published (skip for variations — they inherit parent status)
+      if (!item.variation_id && product.status !== "publish") {
         errors.push({
           product_id: item.product_id,
           type: "unavailable",

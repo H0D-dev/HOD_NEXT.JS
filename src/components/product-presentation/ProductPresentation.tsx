@@ -17,6 +17,21 @@ export type ProductColor = {
   slug?: string;
 };
 
+export type ProductVariation = {
+  id: number;
+  sku: string;
+  price: number;
+  regularPrice: number;
+  salePrice?: number;
+  onSale: boolean;
+  stockStatus: string;
+  dimensions: string;
+  weight?: string;
+  attributes: { name: string; option: string }[];
+  /** Computed label like "200 x 300 cm" from variation attributes */
+  label: string;
+};
+
 export type Product = {
   id: string;
   name: string;
@@ -27,9 +42,15 @@ export type Product = {
   colors: ProductColor[];
   sizes?: string[];
   price?: number;
+  regularPrice?: number;
+  salePrice?: number;
+  onSale?: boolean;
+  sku?: string;
   category?: string;
   categorySlug?: string;
   image?: string;
+  productType?: "simple" | "variable" | "grouped" | "external";
+  variations?: ProductVariation[];
   details?: {
     material?: string;
     construction?: string;

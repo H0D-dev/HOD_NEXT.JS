@@ -201,6 +201,7 @@ export default function CheckoutPage() {
         body: JSON.stringify({
           items: items.map((item) => ({
             product_id: item.productId,
+            variation_id: item.variationId,
             quantity: item.quantity,
             frontend_price: item.price,
           })),
@@ -245,6 +246,7 @@ export default function CheckoutPage() {
           payment_method: formData.payment_method,
           cart: items.map((item) => ({
             product_id: item.productId,
+            variation_id: item.variationId,
             quantity: item.quantity,
           })),
           order_notes: formData.order_notes,

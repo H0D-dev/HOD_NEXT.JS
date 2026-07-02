@@ -5,6 +5,7 @@ import { verifyAuthToken } from "@/src/lib/auth/jwt";
 
 interface LineItem {
   product_id: number;
+  variation_id?: number;
   quantity: number;
 }
 
@@ -74,7 +75,9 @@ export async function POST(request: Request) {
 
     // --- Re-validate stock server-side before creating order ---
     for (const item of body.cart) {
-      const productUrl = `${API_CONFIG.baseUrl}/wp-json/wc/v3/products/${item.product_id}?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&_fields=id,stock_status,stock_quantity,manage_stock,status`;
+      const productUrl = item.variation_id
+        ? `${API_CONFIG.baseUrl}/wp-json/wc/v3/products/${item.product_id}/variations/${item.variation_id}?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&_fields=id,stock_status,stock_quantity,manage_stock,status`
+        : `${API_CONFIG.baseUrl}/wp-json/wc/v3/products/${item.product_id}?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&_fields=id,stock_status,stock_quantity,manage_stock,status`;
       const productRes = await fetch(productUrl, { cache: "no-store" });
 
       if (!productRes.ok) {
@@ -86,9 +89,13 @@ export async function POST(request: Request) {
 
       const product = await productRes.json();
 
-      if (product.status !== "publish" || product.stock_status === "outofstock") {
+      // For variations, only check stock (they inherit parent's publish status)
+      const isOutOfStock = product.stock_status === "outofstock";
+      const isUnavailable = !item.variation_id && product.status !== "publish";
+
+      if (isUnavailable || isOutOfStock) {
         return NextResponse.json(
-          { success: false, error: `Product ${item.product_id} is out of stock` },
+          { success: false, error: `Product ${item.product_id} is out of stock or unavailable` },
           { status: 400 }
         );
       }
@@ -153,6 +160,7 @@ export async function POST(request: Request) {
       },
       line_items: body.cart.map((item) => ({
         product_id: item.product_id,
+        ...(item.variation_id && { variation_id: item.variation_id }),
         quantity: item.quantity,
       })),
       customer_note: body.order_notes || "",

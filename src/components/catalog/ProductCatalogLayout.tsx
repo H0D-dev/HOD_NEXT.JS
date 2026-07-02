@@ -187,7 +187,7 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
       category: String(p.acf?.construction || p.categories?.[0]?.name || ""),
       color: colorVal, 
       image: p.mainImage?.src || (category === "rugs" ? "/rugs/set1-full.png" : "/curtains/set1-room.png"),
-      price: p.regularPrice ? `$${p.regularPrice}` : (p.price ? `$${p.price}` : "")
+      price: p.regularPrice ? `AED ${p.regularPrice}` : (p.price ? `AED ${p.price}` : "")
     };
   });
 

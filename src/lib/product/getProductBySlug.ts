@@ -1,11 +1,12 @@
 import { API_CONFIG } from "@/src/lib/api/api";
-import { Product, ProductColor } from "@/src/components/product-presentation/ProductPresentation";
+import { Product, ProductColor, ProductVariation } from "@/src/components/product-presentation/ProductPresentation";
 
 /** Raw Woo product shape (subset we care about) */
 interface WooProduct {
   id: number;
   name: string;
   slug: string;
+  type: string;
   description: string;
   price: string;
   regular_price: string;
@@ -19,7 +20,21 @@ interface WooProduct {
   categories: { id: number; name: string; slug: string }[];
   images: { id: number; src: string; alt: string }[];
   attributes: { id: number; name: string; options: string[] }[];
+  variations: number[];
   meta_data: { key: string; value: any }[];
+}
+
+interface WooVariation {
+  id: number;
+  sku: string;
+  price: string;
+  regular_price: string;
+  sale_price: string;
+  on_sale: boolean;
+  stock_status: string;
+  weight: string;
+  dimensions: { length: string; width: string; height: string };
+  attributes: { id: number; name: string; option: string }[];
 }
 
 function extractAcf(metaData: WooProduct["meta_data"]): Record<string, any> {
@@ -34,7 +49,7 @@ function extractAcf(metaData: WooProduct["meta_data"]): Record<string, any> {
 
 /**
  * Build a ProductColor entry from a raw Woo product.
- * Color is sourced from ACF product_color field (NOT Woo attributes).
+ * Color is sourced from ACF product_color field.
  */
 function buildColorEntry(p: WooProduct): ProductColor {
   const acf = extractAcf(p.meta_data);
@@ -54,17 +69,71 @@ function buildColorEntry(p: WooProduct): ProductColor {
     code: p.sku || "N/A",
     textureUrl: textureImg,
     lifestyleUrl: lifestyleImg,
-    hex: color.startsWith("#") ? color : "#8C8D8E", 
+    hex: color.startsWith("#") ? color : "#8C8D8E",
     slug: p.slug,
   };
 }
 
+function formatDimensions(d: { length: string; width: string; height: string }): string {
+  const parts = [d.width, d.length].filter(v => v && v !== "0" && v !== "");
+  if (parts.length === 0) return "";
+  return parts.join("x");
+}
+
+/**
+ * Fetch variations for a variable product from WooCommerce.
+ */
+async function fetchVariations(productId: number): Promise<ProductVariation[]> {
+  try {
+    const url = `${API_CONFIG.baseUrl}/wp-json/wc/v3/products/${productId}/variations?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&per_page=100`;
+    const res = await fetch(url, { cache: "no-store" });
+    const data: WooVariation[] = await res.json();
+
+    if (!Array.isArray(data) || data.length === 0) return [];
+
+    // Filter out catch-all "Any" variations that WooCommerce auto-creates.
+    // These have no attributes and no price — they aren't real selectable sizes.
+    const usableVariations = data.filter((v) => {
+      const hasAttributes = Array.isArray(v.attributes) && v.attributes.length > 0;
+      const hasPrice = v.price !== "" && v.price !== "0";
+      return hasAttributes || hasPrice;
+    });
+
+    return usableVariations.map((v) => {
+      const dims = formatDimensions(v.dimensions);
+      // Build a human-readable label from attributes (e.g. "200 x 300 cm")
+      const label = v.attributes.map(a => a.option).join(" / ") || dims || `Variation ${v.id}`;
+
+      return {
+        id: v.id,
+        sku: v.sku || "",
+        price: parseFloat(v.price) || 0,
+        regularPrice: parseFloat(v.regular_price) || 0,
+        salePrice: v.sale_price ? parseFloat(v.sale_price) : undefined,
+        onSale: v.on_sale,
+        stockStatus: v.stock_status,
+        dimensions: dims,
+        weight: v.weight || undefined,
+        attributes: v.attributes.map(a => ({ name: a.name, option: a.option })),
+        label,
+      };
+    });
+  } catch (error) {
+    console.error("Failed to fetch variations:", error);
+    return [];
+  }
+}
+
 /**
  * Transform a raw Woo product into the frontend Product shape.
- * All ACF fields are normalized to camelCase.
  */
-function transformProduct(p: WooProduct, colors: ProductColor[]): Product {
+function transformProduct(
+  p: WooProduct,
+  colors: ProductColor[],
+  variations: ProductVariation[]
+): Product {
   const acf = extractAcf(p.meta_data);
+  const isVariable = p.type === "variable" && variations.length > 0;
 
   return {
     id: p.id.toString(),
@@ -78,6 +147,12 @@ function transformProduct(p: WooProduct, colors: ProductColor[]): Product {
       "Signature",
     design: p.categories?.[0]?.name || "Modern",
     price: p.price ? parseFloat(p.price) : undefined,
+    regularPrice: p.regular_price ? parseFloat(p.regular_price) : undefined,
+    salePrice: p.sale_price ? parseFloat(p.sale_price) : undefined,
+    onSale: p.on_sale,
+    sku: p.sku || undefined,
+    productType: (isVariable ? "variable" : p.type) as Product["productType"],
+    variations: isVariable ? variations : undefined,
     details: {
       material: acf.construction || "100% Wool",
       construction: acf.construction || "Hand-knotted",
@@ -108,21 +183,14 @@ function transformProduct(p: WooProduct, colors: ProductColor[]): Product {
 }
 
 /**
- * Fetch a single product by slug and resolve its color family.
- *
- * 1. Fetch product by slug from Woo
- * 2. Extract product_family_id from ACF meta
- * 3. If family ID exists, fetch sibling products in same category, filter by family ID
- * 4. Build color variants from ACF product_color (NOT Woo attributes)
- * 5. If no family ID, product is standalone — single-color array
+ * Fetch a single product by slug, resolve color family, and fetch variations if variable.
  */
 export async function getProductBySlug(
   slug: string
 ): Promise<Product | null> {
   try {
-    // Step 1: Fetch current product
     const fields =
-      "id,name,slug,description,price,regular_price,sale_price,on_sale,sku,categories,images,attributes,meta_data,permalink,dimensions,stock_status,weight";
+      "id,name,slug,type,description,price,regular_price,sale_price,on_sale,sku,categories,images,attributes,variations,meta_data,permalink,dimensions,stock_status,weight";
     const productUrl = `${API_CONFIG.baseUrl}/wp-json/wc/v3/products?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&slug=${slug}&_fields=${fields}`;
 
     const res = await fetch(productUrl, { cache: "no-store" });
@@ -133,18 +201,14 @@ export async function getProductBySlug(
     }
 
     const p: WooProduct = data[0];
-
     const acf = extractAcf(p.meta_data);
     const familyId: string | undefined = acf.product_family_id;
 
-    // Step 2: Resolve color variants
+    // --- Resolve color variants ---
     let colors: ProductColor[] = [];
 
     if (familyId) {
-      // Fetch products in the same category to find siblings
-      // Prioritize the top-level categories 'Curtains' or 'Rugs' if they exist,
-      // to ensure we get all siblings regardless of their sub-category ordering.
-      const mainCategory = p.categories?.find(c => 
+      const mainCategory = p.categories?.find(c =>
         c.name.toLowerCase() === 'curtains' || c.name.toLowerCase() === 'rugs'
       );
       const categoryId = mainCategory ? mainCategory.id : p.categories?.[0]?.id;
@@ -155,21 +219,17 @@ export async function getProductBySlug(
         const allProducts: WooProduct[] = await siblingRes.json();
 
         if (Array.isArray(allProducts)) {
-          // Filter siblings by matching family ID
           const familyProducts = allProducts.filter((prod) => {
             const prodAcf = extractAcf(prod.meta_data);
             return prodAcf.product_family_id === familyId;
           });
 
-          // Build color entries — current product first, then siblings
-          // Deduplicate by color name
           const currentEntry = buildColorEntry(p);
           const siblingEntries = familyProducts
             .filter((prod) => prod.id !== p.id)
             .map(buildColorEntry);
 
           const allEntries = [currentEntry, ...siblingEntries];
-          // Deduplicate by color
           colors = allEntries.filter(
             (item, index, self) =>
               index === self.findIndex((c) => c.name === item.name)
@@ -178,12 +238,17 @@ export async function getProductBySlug(
       }
     }
 
-    // Fallback: no family → single color from current product
     if (colors.length === 0) {
       colors = [buildColorEntry(p)];
     }
 
-    return transformProduct(p, colors);
+    // --- Fetch variations if variable product ---
+    let variations: ProductVariation[] = [];
+    if (p.type === "variable" && Array.isArray(p.variations) && p.variations.length > 0) {
+      variations = await fetchVariations(p.id);
+    }
+
+    return transformProduct(p, colors, variations);
   } catch (error) {
     console.error("Failed to fetch product by slug:", error);
     return null;

@@ -4,6 +4,7 @@ import { persist } from "zustand/middleware";
 export interface CartItem {
   id: string;
   productId: number; // Woo product ID for order creation
+  variationId?: number; // Woo variation ID for variable products
   slug: string;
   name: string;
   category: "rug" | "curtain";
