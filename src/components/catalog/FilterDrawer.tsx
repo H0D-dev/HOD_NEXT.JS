@@ -91,24 +91,35 @@ export default function FilterDrawer({ isOpen, onClose, filters, selectedFilters
                         transition={{ duration: 0.3, ease: "easeInOut" }}
                         className="overflow-hidden"
                       >
-                        <div className="pt-4 flex flex-col gap-3">
+                        <div className={`pt-4 flex ${filter.id === "color" ? "flex-row flex-wrap gap-4" : "flex-col gap-3"}`}>
                           {filter.options.map(opt => {
                             const isSelected = (selectedFilters[filter.id] || []).includes(opt.value);
                             return (
                               <div 
                                 key={opt.value} 
-                                className="flex items-center gap-3 cursor-pointer group"
+                                className={`flex items-center gap-3 cursor-pointer group`}
                                 onClick={() => toggleFilter(filter.id, opt.value)}
                               >
-                                <div className={`w-4 h-4 border flex items-center justify-center transition-colors ${isSelected ? "bg-[var(--accent-primary)] border-[var(--accent-primary)]" : "border-[var(--border-primary)] group-hover:bg-[var(--bg-secondary)]"}`}>
-                                  {/* Checkmark */}
-                                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={isSelected ? "#111111" : "transparent"} strokeWidth="3" className={!isSelected ? "group-hover:stroke-[var(--text-muted)]" : ""}>
-                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                  </svg>
-                                </div>
-                                <span className={`font-sans text-[var(--text-sm)] transition-colors ${isSelected ? "text-[var(--text-primary)] font-medium" : "text-[var(--text-secondary)] group-hover:text-[var(--text-primary)]"}`}>
-                                  {opt.label}
-                                </span>
+                                {filter.id !== "color" && (
+                                  <>
+                                    <div className={`w-4 h-4 border flex items-center justify-center transition-colors ${isSelected ? "bg-[var(--accent-primary)] border-[var(--accent-primary)]" : "border-[var(--border-primary)] group-hover:bg-[var(--bg-secondary)]"}`}>
+                                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={isSelected ? "#111111" : "transparent"} strokeWidth="3" className={!isSelected ? "group-hover:stroke-[var(--text-muted)]" : ""}>
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                      </svg>
+                                    </div>
+                                    <span className={`font-sans text-[var(--text-sm)] transition-colors ${isSelected ? "text-[var(--text-primary)] font-medium" : "text-[var(--text-secondary)] group-hover:text-[var(--text-primary)]"}`}>
+                                      {opt.label}
+                                    </span>
+                                  </>
+                                )}
+
+                                {filter.id === "color" && (
+                                  <span 
+                                    className={`w-8 h-8 rounded-sm inline-block shrink-0 shadow-sm transition-all duration-200 ${isSelected ? "scale-110 border-2 border-black outline outline-2 outline-offset-1 outline-[var(--text-primary)]" : "border border-black/20 hover:scale-105"}`} 
+                                    style={{ backgroundColor: opt.label.startsWith("#") ? opt.label : opt.value }} 
+                                    aria-label={`Color ${opt.label}`}
+                                  />
+                                )}
                               </div>
                             );
                           })}

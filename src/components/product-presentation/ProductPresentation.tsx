@@ -14,6 +14,7 @@ export type ProductColor = {
   textureUrl: string;
   lifestyleUrl: string;
   hex: string;
+  slug?: string;
 };
 
 export type Product = {
@@ -27,6 +28,7 @@ export type Product = {
   sizes?: string[];
   price?: number;
   category?: string;
+  categorySlug?: string;
   image?: string;
   details?: {
     material?: string;
@@ -47,6 +49,9 @@ interface ProductPresentationProps {
 }
 
 export default function ProductPresentation({ product }: ProductPresentationProps) {
+  // Log the product to the browser console for debugging
+  console.log("Current Product data:", product);
+
   // Ensure we handle missing data gracefully
   const [activeColor, setActiveColor] = useState<ProductColor | null>(
     product?.colors?.[0] || null

@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
 import { ProductColor, Product } from "./ProductPresentation";
 import { useCartStore } from "@/src/lib/store/useCartStore";
 
@@ -13,6 +14,7 @@ interface ProductInfoCardProps {
 
 export default function ProductInfoCard({ product, activeColor, onColorChange }: ProductInfoCardProps) {
   const [detailsExpanded, setDetailsExpanded] = useState(false);
+  const router = useRouter();
 
   // Default sizes if none provided by API
   const sizes = product.sizes || ["170 x 240 cm", "200 x 300 cm", "250 x 350 cm", "300 x 400 cm", "Custom size"];
@@ -73,7 +75,14 @@ export default function ProductInfoCard({ product, activeColor, onColorChange }:
           {product.colors && product.colors.map((color) => (
             <button
               key={color.id}
-              onClick={() => onColorChange(color)}
+              onClick={() => {
+                // If the variant has a slug and it's a different product, navigate
+                if (color.slug && color.slug !== product.slug && product.categorySlug) {
+                  router.push(`/products/${product.categorySlug}/${color.slug}`);
+                } else {
+                  onColorChange(color);
+                }
+              }}
               className={`relative flex-shrink-0 w-10 h-10 rounded-none transition-transform duration-300 hover:scale-105 snap-center ${activeColor.id === color.id ? 'p-[2px] border border-[var(--border-primary)]' : 'border border-transparent'}`}
               aria-label={`Select color ${color.name}`}
             >

@@ -22,18 +22,36 @@ export async function GET(request) {
         }
 
         const products = rawProducts.map(product => {
-            // Clean up ACF metadata: filter out keys starting with '_'
-            const acf = product.meta_data ? product.meta_data.reduce((acc, meta) => {
+            // Extract raw ACF metadata
+            const rawAcf = product.meta_data ? product.meta_data.reduce((acc, meta) => {
                 if (!meta.key.startsWith('_')) {
                     acc[meta.key] = meta.value;
                 }
                 return acc;
             }, {}) : {};
 
+            // Normalize ACF to camelCase — single source of truth for frontend
+            const acf = {
+                productFamilyId: rawAcf.product_family_id || null,
+                productColor: rawAcf.product_color || null,
+                designId: rawAcf.design_id || null,
+                itemNumber: rawAcf.item_number || null,
+                construction: rawAcf.construction || null,
+                countryOfOrigin: rawAcf.country_of_origin || null,
+                washable: rawAcf.washable || null,
+                petFriendly: rawAcf.pet_friendly || null,
+                careInstructions: rawAcf.care_instructions || null,
+                exactWidthCm: rawAcf.exact_width_cm || null,
+                exactLengthCm: rawAcf.exact_length_cm || null,
+                exactHeightCm: rawAcf.exact_height_cm || null,
+                weightKg: rawAcf.weight_kg || null,
+            };
+
             return {
                 id: product.id,
                 name: product.name,
                 slug: product.slug,
+                sku: product.sku || null,
                 permalink: product.permalink,
                 description: product.description,
                 
@@ -44,11 +62,9 @@ export async function GET(request) {
                 onSale: product.on_sale,
                 taxStatus: product.tax_status,
                 
-                // --- Your requested fields ---
                 stockStatus: product.stock_status,
                 weight: product.weight,
                 dimensions: product.dimensions,
-                // -----------------------------
                 
                 categories: product.categories,
                 variations: product.variations,
@@ -58,7 +74,7 @@ export async function GET(request) {
                 galleryImages: product.images || [], 
                 
                 attributes: product.attributes,
-                acf: acf // Your custom fields neatly grouped here
+                acf
             };
         });
 

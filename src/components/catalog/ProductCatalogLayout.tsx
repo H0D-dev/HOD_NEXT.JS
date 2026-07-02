@@ -84,18 +84,18 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
       });
     }
 
-    // Standard exhaustive lists for Color and Size
-    const ALL_COLORS = ["Beige", "Ivory", "White", "Grey", "Charcoal", "Black", "Blue", "Navy", "Sage Green", "Ochre", "Red", "Brown"];
+    // Color (dynamically built from ACF productColor)
+    const colorOptions = getUniqueValues(p => p.acf?.productColor);
+    if (colorOptions.length > 0) {
+      filters.push({
+        id: "color",
+        label: "Color",
+        options: colorOptions
+      });
+    }
+
+    // Size Category
     const ALL_SIZE_CATEGORIES = ["Small", "Medium", "Large", "Runner", "Oversized"];
-
-    // Color (Always show all options)
-    filters.push({
-      id: "color",
-      label: "Color",
-      options: ALL_COLORS.map(c => ({ label: c, value: c.toLowerCase() }))
-    });
-
-    // Size Category (Always show all options)
     filters.push({
       id: "size-category",
       label: "Size",
@@ -107,7 +107,7 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
 
 
     // Country of Origin (from ACF)
-    const countries = getUniqueValues(p => p.acf?.country_of_origin);
+    const countries = getUniqueValues(p => p.acf?.countryOfOrigin);
     if (countries.length > 0) {
       filters.push({
         id: "country",
@@ -132,23 +132,22 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
            matchFound = p.categories?.some((c: any) => selectedValues.includes(c.name.toLowerCase()));
            if (!matchFound) return false;
            continue; 
-        } else if (filterId === "color") {
-           const colorAttr = p.attributes?.find((a: any) => a.name === 'Color');
-           matchFound = colorAttr?.options?.some((opt: string) => selectedValues.includes(opt.toLowerCase()));
-           if (!matchFound) return false;
+         } else if (filterId === "color") {
+           const productColor = p.acf?.productColor?.toLowerCase() || "";
+           if (!selectedValues.includes(productColor)) return false;
            continue;
         } else if (filterId === "size-category") {
            const sizeAttr = p.attributes?.find((a: any) => a.name === 'Size Category');
            matchFound = sizeAttr?.options?.some((opt: string) => selectedValues.includes(opt.toLowerCase()));
            if (!matchFound) return false;
            continue;
-        } else if (filterId === "construction") {
-           productValue = p.acf?.construction?.toLowerCase() || "";
-        } else if (filterId === "country") {
-           productValue = p.acf?.country_of_origin?.toLowerCase() || "";
-        } else if (filterId === "size") {
-           const width = p.acf?.exact_width_cm;
-           const length = p.acf?.exact_length_cm;
+         } else if (filterId === "construction") {
+           productValue = String(p.acf?.construction || "").toLowerCase();
+         } else if (filterId === "country") {
+           productValue = String(p.acf?.countryOfOrigin || "").toLowerCase();
+         } else if (filterId === "size") {
+           const width = p.acf?.exactWidthCm;
+           const length = p.acf?.exactLengthCm;
            productValue = width && length ? `${width}x${length} cm`.toLowerCase() : "";
         }
         
@@ -178,15 +177,14 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
 
   // 3. Map filtered products to ProductStub for the UI
   const displayProducts: ProductStub[] = filteredProducts.map(p => {
-    const colorAttr = p.attributes?.find((a: any) => a.name === 'Color');
-    const colorVal = colorAttr?.options?.[0] || "";
+    const colorVal = p.acf?.productColor || "";
 
     return {
       id: p.id.toString(),
       slug: p.slug,
       title: p.name,
-      collectionName: p.acf?.country_of_origin?.toUpperCase() || "",
-      category: p.acf?.construction || p.categories?.[0]?.name || "",
+      collectionName: String(p.acf?.countryOfOrigin || "").toUpperCase(),
+      category: String(p.acf?.construction || p.categories?.[0]?.name || ""),
       color: colorVal, 
       image: p.mainImage?.src || (category === "rugs" ? "/rugs/set1-full.png" : "/curtains/set1-room.png"),
       price: p.regularPrice ? `$${p.regularPrice}` : (p.price ? `$${p.price}` : "")

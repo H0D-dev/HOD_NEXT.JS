@@ -26,6 +26,7 @@ export async function getProduct(id) {
             throw new Error(`Failed to fetch product ${id}`);
         }
         const { product } = await res.json()
+        console.log(products)
         return product
     } catch (error) {
         return { error: `Failed to fetch product ${id}` }
