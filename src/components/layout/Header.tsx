@@ -11,7 +11,7 @@ import "./Header.css";
 /* ── Navigation Links Data ── */
 const NAV_LINKS = [
   { label: "Home", href: "/" },
-  { label: "Collections", href: "/collections" },
+  { label: "Products", href: "/products" },
   { label: "Projects", href: "/projects" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },

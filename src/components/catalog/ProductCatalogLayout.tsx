@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import CatalogHeader from "./CatalogHeader";
 import CatalogControls from "./CatalogControls";
 import ProductGrid from "./ProductGrid";
@@ -14,11 +15,18 @@ interface ProductCatalogLayoutProps {
 
 export default function ProductCatalogLayout({ category }: ProductCatalogLayoutProps) {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const searchParams = useSearchParams();
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Filter state
-  const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({});
+  const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>(() => {
+    const categoryParam = searchParams?.get("category");
+    if (categoryParam) {
+      return { category: [categoryParam.toLowerCase()] };
+    }
+    return {};
+  });
   const [sortOption, setSortOption] = useState("default");
 
   useEffect(() => {

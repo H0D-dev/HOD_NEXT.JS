@@ -32,3 +32,20 @@ export async function getProduct(id) {
         return { error: `Failed to fetch product ${id}` }
     }
 }
+
+export async function getCategories(parentId = null) {
+    try {
+        let url = '/api/categories';
+        if (parentId) {
+            url += `?parent=${parentId}`;
+        }
+        const res = await fetch(url, { cache: 'no-store' });
+        if (!res.ok) {
+            throw new Error("Failed to fetch categories");
+        }
+        const { categories } = await res.json();
+        return categories;
+    } catch (error) {
+        return [];
+    }
+}
