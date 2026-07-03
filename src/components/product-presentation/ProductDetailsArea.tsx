@@ -3,15 +3,17 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ProductInfoCard from "./ProductInfoCard";
-import { ProductColor, Product } from "./ProductPresentation";
+import { ProductColor, Product, ProductVariation } from "./ProductPresentation";
 
 interface ProductDetailsAreaProps {
   product: Product;
   activeColor: ProductColor;
   onColorChange: (color: ProductColor) => void;
+  selectedVariation: ProductVariation | null;
+  onVariationChange: (variation: ProductVariation | null) => void;
 }
 
-export default function ProductDetailsArea({ product, activeColor, onColorChange }: ProductDetailsAreaProps) {
+export default function ProductDetailsArea({ product, activeColor, onColorChange, selectedVariation, onVariationChange }: ProductDetailsAreaProps) {
   return (
     <div className="relative w-full h-full flex flex-col lg:block bg-white lg:bg-transparent">
       
@@ -21,6 +23,8 @@ export default function ProductDetailsArea({ product, activeColor, onColorChange
           product={product} 
           activeColor={activeColor} 
           onColorChange={onColorChange} 
+          selectedVariation={selectedVariation}
+          onVariationChange={onVariationChange}
         />
       </div>
 

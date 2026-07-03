@@ -10,20 +10,16 @@ interface ProductInfoCardProps {
   product: Product & { sizes?: string[] };
   activeColor: ProductColor;
   onColorChange: (color: ProductColor) => void;
+  selectedVariation: ProductVariation | null;
+  onVariationChange: (variation: ProductVariation | null) => void;
 }
 
-export default function ProductInfoCard({ product, activeColor, onColorChange }: ProductInfoCardProps) {
+export default function ProductInfoCard({ product, activeColor, onColorChange, selectedVariation, onVariationChange }: ProductInfoCardProps) {
   const router = useRouter();
   const { addItem, openDrawer } = useCartStore();
 
   const isVariable = product.productType === "variable" && Array.isArray(product.variations) && product.variations.length > 0;
 
-  // --- Size / Variation state ---
-  const [selectedVariation, setSelectedVariation] = useState<ProductVariation | null>(null);
-
-  const parentSizeLabel = useMemo(() => {
-    return product.details?.dimensions || "Standard Size";
-  }, [product.details?.dimensions]);
 
   // Fallback sizes for simple products with no variations
   const fallbackSizes = product.sizes || ["170 x 240 cm", "200 x 300 cm", "250 x 350 cm", "300 x 400 cm", "Custom size"];
@@ -76,7 +72,7 @@ export default function ProductInfoCard({ product, activeColor, onColorChange }:
 
   // --- Handlers ---
   const handleSizeClick = (variation: ProductVariation) => {
-    setSelectedVariation(variation);
+    onVariationChange(variation);
   };
 
   const handleAddToCart = () => {
@@ -86,7 +82,7 @@ export default function ProductInfoCard({ product, activeColor, onColorChange }:
     const cartItem: any = {
       id: isVariable && selectedVariation
         ? `${product.id}-${selectedVariation.id}-${activeColor.id}`
-        : `${product.id}-${activeColor.id}-${isVariable ? parentSizeLabel : activeSize}`,
+        : `${product.id}-${activeColor.id}-${isVariable ? (product.details?.dimensions || "Standard Size") : activeSize}`,
       productId: numericId || 0,
       slug: product.slug,
       name: product.name,
@@ -96,7 +92,7 @@ export default function ProductInfoCard({ product, activeColor, onColorChange }:
       quantity: 1,
       variant: {
         color: activeColor.name,
-        size: isVariable && selectedVariation ? selectedVariation.label : (isVariable ? parentSizeLabel : activeSize),
+        size: isVariable && selectedVariation ? selectedVariation.label : (product.details?.dimensions || activeSize),
         material: product.details?.material || "Premium Blend",
       },
     };
@@ -194,18 +190,6 @@ export default function ProductInfoCard({ product, activeColor, onColorChange }:
           </div>
 
           <div className="grid grid-cols-2 gap-2">
-            {/* Parent Product Size (Default) */}
-            <button
-              onClick={() => setSelectedVariation(null)}
-              className={`py-2 px-3 text-center text-[var(--text-sm)] font-medium transition-colors duration-300 border ${
-                  selectedVariation === null
-                    ? "border-[var(--border-primary)] bg-[var(--bg-secondary)] text-[var(--text-primary)]"
-                    : "border-[var(--border-secondary)] text-[var(--text-secondary)] hover:border-[var(--text-muted)]"
-                }`}
-            >
-              {parentSizeLabel}
-            </button>
-
             {product.variations!.map((variation) => {
               const isActive = selectedVariation?.id === variation.id;
               const isOutOfStock = variation.stockStatus === "outofstock";
@@ -232,8 +216,8 @@ export default function ProductInfoCard({ product, activeColor, onColorChange }:
       {/* 6. Quick Specs (dimensions/weight/sku from selected variation) */}
       {(displayDimensions || displaySku) && (
         <div className="mb-4 shrink-0 flex flex-wrap gap-x-6 gap-y-1 text-[var(--text-xs)] text-[var(--text-muted)]">
-          {!isVariable && displayDimensions && <span>Dimensions: {displayDimensions}</span>}
-          {!isVariable && displayWeight && <span>Weight: {displayWeight}</span>}
+          {displayDimensions && <span>Dimensions: {displayDimensions}</span>}
+          {displayWeight && <span>Weight: {displayWeight}</span>}
           {displaySku && <span>SKU: {displaySku}</span>}
         </div>
       )}

@@ -63,6 +63,7 @@ export type Product = {
     washable?: string;
     [key: string]: string | undefined;
   };
+  defaultVariationId?: number;
 };
 
 interface ProductPresentationProps {
@@ -77,6 +78,18 @@ export default function ProductPresentation({ product }: ProductPresentationProp
   const [activeColor, setActiveColor] = useState<ProductColor | null>(
     product?.colors?.[0] || null
   );
+
+  // Initialize selected variation to the default from WooCommerce, or the first valid variation
+  const [selectedVariation, setSelectedVariation] = useState<ProductVariation | null>(() => {
+    if (product?.productType === "variable" && product.variations && product.variations.length > 0) {
+      if (product.defaultVariationId) {
+        const def = product.variations.find((v) => v.id === product.defaultVariationId);
+        if (def) return def;
+      }
+      return product.variations[0];
+    }
+    return null;
+  });
 
   // Fallback UI for missing data
   if (!product || !activeColor) {
@@ -97,6 +110,8 @@ export default function ProductPresentation({ product }: ProductPresentationProp
             product={product} 
             activeColor={activeColor} 
             onColorChange={setActiveColor} 
+            selectedVariation={selectedVariation}
+            onVariationChange={setSelectedVariation}
           />
         </div>
       </div>
@@ -108,13 +123,15 @@ export default function ProductPresentation({ product }: ProductPresentationProp
             product={product} 
             activeColor={activeColor} 
             onColorChange={setActiveColor} 
+            selectedVariation={selectedVariation}
+            onVariationChange={setSelectedVariation}
           />
         </div>
       </section>
 
       {/* New Specifications Section Below */}
       <div className="relative z-20">
-        <ProductSpecifications product={product} />
+        <ProductSpecifications product={product} selectedVariation={selectedVariation} />
       </div>
     </div>
     

@@ -22,6 +22,7 @@ interface WooProduct {
   attributes: { id: number; name: string; options: string[] }[];
   variations: number[];
   meta_data: { key: string; value: any }[];
+  default_attributes?: { id: number; name: string; option: string }[];
 }
 
 interface WooVariation {
@@ -135,6 +136,21 @@ function transformProduct(
   const acf = extractAcf(p.meta_data);
   const isVariable = p.type === "variable" && variations.length > 0;
 
+  let defaultVariationId: number | undefined = undefined;
+  if (isVariable && Array.isArray(p.default_attributes) && p.default_attributes.length > 0) {
+    const defVar = variations.find((v) => {
+      return p.default_attributes!.every((defAttr) => {
+        return v.attributes.some((vAttr) => 
+          vAttr.name.toLowerCase() === defAttr.name.toLowerCase() && 
+          vAttr.option.toLowerCase() === defAttr.option.toLowerCase()
+        );
+      });
+    });
+    if (defVar) {
+      defaultVariationId = defVar.id;
+    }
+  }
+
   return {
     id: p.id.toString(),
     name: p.name,
@@ -153,6 +169,7 @@ function transformProduct(
     sku: p.sku || undefined,
     productType: (isVariable ? "variable" : p.type) as Product["productType"],
     variations: isVariable ? variations : undefined,
+    defaultVariationId,
     details: {
       material: acf.construction || "100% Wool",
       construction: acf.construction || "Hand-knotted",
@@ -190,7 +207,7 @@ export async function getProductBySlug(
 ): Promise<Product | null> {
   try {
     const fields =
-      "id,name,slug,type,description,price,regular_price,sale_price,on_sale,sku,categories,images,attributes,variations,meta_data,permalink,dimensions,stock_status,weight";
+      "id,name,slug,type,description,price,regular_price,sale_price,on_sale,sku,categories,images,attributes,variations,meta_data,permalink,dimensions,stock_status,weight,default_attributes";
     const productUrl = `${API_CONFIG.baseUrl}/wp-json/wc/v3/products?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&slug=${slug}&_fields=${fields}`;
 
     const res = await fetch(productUrl, { cache: "no-store" });
