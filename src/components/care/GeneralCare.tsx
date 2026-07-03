@@ -88,7 +88,7 @@ export default function GeneralCare() {
                 key={topic.id}
                 className="gen-care-card bg-[var(--surface-primary)] p-8 md:p-10 hover:bg-[var(--bg-tertiary)] transition-colors duration-500 flex flex-col group h-full"
               >
-                <div className="mb-8 p-4 bg-[var(--bg-secondary)] rounded-full text-[var(--text-primary)] group-hover:bg-[var(--accent-secondary)] group-hover:text-[var(--bg-primary)] transition-colors duration-500 self-start">
+                <div className="mb-8 p-4 bg-transparent border border-[var(--border-primary)] rounded-none text-[var(--text-primary)] group-hover:bg-[var(--text-primary)] group-hover:text-[var(--bg-primary)] transition-colors duration-500 self-start">
                   <Icon size={24} strokeWidth={1.5} />
                 </div>
                 <h3 className="font-serif text-2xl text-[var(--text-primary)] mb-4">

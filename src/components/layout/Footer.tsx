@@ -19,7 +19,7 @@ export default function Footer() {
 
   return (
     <footer className="bg-[#080808] md:bg-[#111111] text-[#f5f3ef] md:text-white pt-16 md:pt-20 lg:pt-32 pb-8 border-t border-[#222222] md:border-[#333333]">
-      <div className="max-w-[var(--container-lg)] mx-auto px-6">
+      <div className="max-w-[var(--container-lg)] mx-auto px-8 md:px-6">
 
         {/* ================================================== */}
         {/* DESKTOP FOOTER (min-width: 768px)                  */}
@@ -134,10 +134,10 @@ export default function Footer() {
       {/* ================================================== */}
       {/* MOBILE FOOTER (max-width: 768px)                   */}
       {/* ================================================== */}
-      <div className="md:hidden flex flex-col w-full">
+      <div className="md:hidden flex flex-col w-full px-8">
 
         {/* 1. Brand Block */}
-        <div className="flex flex-col mb-10">
+        <div className="flex flex-col items-center text-center mb-10">
           <Link href="/" className="mb-6 inline-block">
             <Image
               src="/logo/HOD_LOGO.webp"
@@ -145,10 +145,10 @@ export default function Footer() {
               width={160}
               height={36}
               style={{ width: "auto", height: "auto" }}
-              className="h-8 w-auto object-contain brightness-0 invert opacity-90"
+              className="h-10 w-auto object-contain brightness-0 invert opacity-90"
             />
           </Link>
-          <p className="text-[#b8b8b8] text-sm leading-relaxed font-sans font-light">
+          <p className="text-[#b8b8b8] text-sm leading-relaxed font-sans font-light max-w-[280px]">
             Premium handwoven rugs and curtains crafted with timeless artistry and delivered with excellence.
           </p>
         </div>
@@ -157,38 +157,66 @@ export default function Footer() {
         <div className="flex flex-col gap-10 mb-10 border-t border-[#222222] pt-10">
 
           {/* ABOUT US */}
-          <div className="flex flex-col">
-            <h4 className="font-sans font-medium text-xs tracking-[0.15em] uppercase text-[#f5f3ef] mb-6">About Us</h4>
-            <ul className="flex flex-col gap-4">
-              {['About', 'Services', 'Rugs', 'Contact', 'Blog'].map((link) => (
-                <li key={link}>
-                  <Link href={`/${link.toLowerCase()}`} className="text-[#b8b8b8] hover:text-[#d4b06a] font-sans font-light text-sm transition-colors">
-                    {link}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+          <div className="flex flex-col border-b border-[#222222]">
+            <button 
+              onClick={() => setMobileAboutOpen(!mobileAboutOpen)}
+              className="flex justify-between items-center w-full py-4"
+            >
+              <h4 className="font-sans font-medium text-xs tracking-[0.15em] uppercase text-[#f5f3ef]">About Us</h4>
+              <span className="text-[#f5f3ef] text-lg font-light leading-none">
+                {mobileAboutOpen ? '−' : '+'}
+              </span>
+            </button>
+            <div 
+              className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                mobileAboutOpen ? 'max-h-64 pb-6 opacity-100' : 'max-h-0 opacity-0'
+              }`}
+            >
+              <ul className="flex flex-col gap-4">
+                {['About', 'Services', 'Rugs', 'Contact', 'Blog'].map((link) => (
+                  <li key={link}>
+                    <Link href={`/${link.toLowerCase()}`} className="text-[#b8b8b8] hover:text-[#d4b06a] font-sans font-light text-sm transition-colors block">
+                      {link}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
           {/* RESOURCES */}
-          <div className="flex flex-col">
-            <h4 className="font-sans font-medium text-xs tracking-[0.15em] uppercase text-[#f5f3ef] mb-6">Resources</h4>
-            <ul className="flex flex-col gap-4">
-              {[
-                { label: 'Create Your Rug', href: '/create-your-own-rug' },
-                { label: 'Know Your Rug', href: '/know-your-rug' },
-                { label: 'Designer Trade Program', href: '/designer-trade-program' },
-                { label: 'Size & Fitting Guide', href: '/size-fitting-guide' },
-                { label: 'Care & Cleaning', href: '/care-cleaning' },
-                { label: 'Terms & Conditions', href: '/terms-conditions' }
-              ].map((link) => (
-                <li key={link.label}>
-                  <Link href={link.href} className="text-[#b8b8b8] hover:text-[#d4b06a] font-sans font-light text-sm transition-colors">
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+          <div className="flex flex-col border-b border-[#222222]">
+            <button 
+              onClick={() => setMobileResourcesOpen(!mobileResourcesOpen)}
+              className="flex justify-between items-center w-full py-4"
+            >
+              <h4 className="font-sans font-medium text-xs tracking-[0.15em] uppercase text-[#f5f3ef]">Resources</h4>
+              <span className="text-[#f5f3ef] text-lg font-light leading-none">
+                {mobileResourcesOpen ? '−' : '+'}
+              </span>
+            </button>
+            <div 
+              className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                mobileResourcesOpen ? 'max-h-64 pb-6 opacity-100' : 'max-h-0 opacity-0'
+              }`}
+            >
+              <ul className="flex flex-col gap-4">
+                {[
+                  { label: 'Create Your Rug', href: '/create-your-own-rug' },
+                  { label: 'Know Your Rug', href: '/know-your-rug' },
+                  { label: 'Designer Trade Program', href: '/designer-trade-program' },
+                  { label: 'Size & Fitting Guide', href: '/size-fitting-guide' },
+                  { label: 'Care & Cleaning', href: '/care-cleaning' },
+                  { label: 'Terms & Conditions', href: '/terms-conditions' }
+                ].map((link) => (
+                  <li key={link.label}>
+                    <Link href={link.href} className="text-[#b8b8b8] hover:text-[#d4b06a] font-sans font-light text-sm transition-colors block">
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
 

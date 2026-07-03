@@ -218,19 +218,19 @@
 
   .hero__left {
     width: 100%;
-    padding: 80px 24px 0px;
+    padding: var(--space-7) var(--space-4) var(--space-4);
     align-items: flex-start;
     min-height: auto;
   }
 
   .hero__heading {
-    font-size: clamp(54px, 12vw, 62px);
+    font-size: clamp(40px, 10vw, 62px);
     line-height: 1.05;
-    margin-bottom: 16px;
+    margin-bottom: var(--space-2);
   }
 
   .hero__heading-accent {
-    font-size: clamp(44px, 10vw, 52px);
+    font-size: clamp(36px, 9vw, 52px);
     margin-top: 4px;
   }
 

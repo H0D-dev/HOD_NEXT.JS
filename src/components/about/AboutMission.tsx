@@ -35,10 +35,10 @@ export default function AboutMission() {
         >
           <Link
             href="/services"
-            className="group flex items-center gap-4 bg-[var(--text-primary)] text-[var(--bg-primary)] px-8 py-4 rounded-full font-sans text-sm tracking-widest uppercase transition-transform hover:scale-105 duration-300 mt-8"
+            className="group flex items-center justify-center gap-4 bg-transparent border border-[var(--border-primary)] text-[var(--text-primary)] px-8 py-4 font-sans text-xs tracking-widest uppercase transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-[var(--accent-primary)] hover:border-[var(--accent-primary)] mt-8"
           >
             View Services
-            <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+            <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]" />
           </Link>
         </motion.div>
 
