@@ -33,6 +33,9 @@ export async function getProduct(id) {
     }
 }
 
+/**
+ * @param {number|string|null} [parentId=null]
+ */
 export async function getCategories(parentId = null) {
     try {
         let url = '/api/categories';

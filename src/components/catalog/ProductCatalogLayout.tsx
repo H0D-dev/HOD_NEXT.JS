@@ -25,7 +25,7 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
     if (categoryParam) {
       return { category: [categoryParam.toLowerCase()] };
     }
-    return {};
+    return {} as Record<string, string[]>;
   });
   const [sortOption, setSortOption] = useState("default");
 
