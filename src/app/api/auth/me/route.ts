@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verifyAuthToken } from "@/src/lib/auth/jwt";
+import { API_CONFIG } from "@/src/lib/api/api";
 
 export async function GET() {
   try {
@@ -18,15 +19,34 @@ export async function GET() {
     }
 
     // Attempt to extract user data from WP JWT payload structure
-    // Depends on miniOrange JWT format
     const userData = (payload as any).data?.user || payload; 
     
-    const user = {
+    let user: any = {
       id: userData.id || userData.user_id || (payload as any).user_id || (payload as any).sub || 0,
       email: userData.email || userData.user_email || (payload as any).user_email || "",
       first_name: userData.first_name || userData.user_display_name || (payload as any).user_display_name || (payload as any).name || "",
       last_name: userData.last_name || "",
     };
+
+    // Safely attempt to fetch full customer details from WooCommerce
+    if (user.id) {
+      try {
+        const wooUrl = `${API_CONFIG.baseUrl}/wp-json/wc/v3/customers/${user.id}?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}`;
+        const wooRes = await fetch(wooUrl, { cache: "no-store" });
+        if (wooRes.ok) {
+          const wooCustomer = await wooRes.json();
+          user = {
+            ...user,
+            first_name: wooCustomer.first_name || user.first_name,
+            last_name: wooCustomer.last_name || user.last_name,
+            billing: wooCustomer.billing || {},
+            shipping: wooCustomer.shipping || {}
+          };
+        }
+      } catch (wooError) {
+        console.error("Failed to fetch WC customer details, falling back to JWT data:", wooError);
+      }
+    }
 
     return NextResponse.json({
       authenticated: true,
