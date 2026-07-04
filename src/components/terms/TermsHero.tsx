@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export default function TermsHero() {
   return (
-    <section className="w-full pt-32 pb-16 md:pt-48 md:pb-24 px-6 md:px-16 lg:px-24 bg-[var(--bg-primary)] border-b border-[var(--border-secondary)]">
+    <section className="w-full pt-32 pb-16 md:pt-40 md:pb-32 px-6 md:px-16 lg:px-24 bg-[var(--bg-primary)] border-b border-[var(--border-secondary)]">
       <div className="max-w-[var(--container-md)] mx-auto flex flex-col items-center text-center">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

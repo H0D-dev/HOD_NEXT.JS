@@ -68,7 +68,7 @@ export default function BlogContent({ blog }: { blog: Blog }) {
       </section>
 
       {/* Featured Image */}
-      <div className="w-full aspect-[21/9] min-h-[40vh] max-h-[70vh] relative bg-[var(--surface-primary)]">
+      <div className="w-full aspect-[4/3] md:aspect-[16/9] lg:aspect-[21/9] min-h-[40vh] max-h-[70vh] relative bg-[var(--surface-primary)]">
         <Image
           src={blog.image}
           alt={blog.title}

@@ -41,7 +41,7 @@ export default function BespokeProcess() {
   }, { scope: containerRef });
 
   return (
-    <section id="process" ref={containerRef} className="py-24 md:py-32 bg-[var(--bg-secondary)] border-b border-[var(--border-secondary)] overflow-hidden">
+    <section id="process" ref={containerRef} className="py-32 md:py-48 bg-[var(--bg-secondary)] border-b border-[var(--border-secondary)] overflow-hidden">
       <div className="container mx-auto px-6 max-w-[1600px]">
         <h2 className="process-item font-sans text-sm tracking-[0.2em] md:text-base mb-24 text-[var(--text-primary)] text-center uppercase font-medium">
           The Bespoke Process
@@ -66,9 +66,6 @@ export default function BespokeProcess() {
                   <h3 className="font-serif font-medium text-[16px] mb-3 text-[var(--text-primary)] leading-tight">
                     {step.title}
                   </h3>
-                  <p className="text-[var(--text-secondary)] font-sans text-[12px] font-light leading-relaxed max-w-[200px]">
-                    {step.desc}
-                  </p>
                 </div>
               </div>
 

@@ -18,7 +18,7 @@ export default function CareHero() {
   return (
     <section 
       ref={containerRef}
-      className="w-full pt-32 pb-16 md:pt-48 md:pb-24 px-4 md:px-8 bg-[var(--bg-primary)] border-b border-[var(--border-secondary)]"
+      className="w-full pt-32 pb-16 md:pt-40 md:pb-32 px-4 md:px-8 bg-[var(--bg-primary)] border-b border-[var(--border-secondary)]"
     >
       <div className="max-w-[1440px] mx-auto flex flex-col items-center text-center">
         <span className="care-hero-el block text-[var(--text-muted)] font-sans text-xs md:text-sm uppercase tracking-widest mb-6 md:mb-8 font-medium">
@@ -31,11 +31,11 @@ export default function CareHero() {
           Designed for Real Life
         </h2>
         <p className="care-hero-el font-sans text-[var(--text-secondary)] text-lg md:text-xl leading-relaxed max-w-2xl mx-auto mb-16">
-          Our pieces are handcrafted to last generations. With proper care and understanding of the natural materials, your House of Décor products will age gracefully, becoming even more beautiful over time.
+          With proper care and understanding of natural materials, your House of Décor pieces will age gracefully for generations.
         </p>
 
         {/* Hero Image */}
-        <div className="care-hero-el w-full max-w-[1200px] aspect-[21/9] overflow-hidden border border-[var(--border-secondary)]">
+        <div className="care-hero-el w-full max-w-[1200px] aspect-[4/3] md:aspect-[16/9] lg:aspect-[21/9] overflow-hidden border border-[var(--border-secondary)]">
           <img 
             src="/images/care/care_hero_1782566445248.png" 
             alt="Care and cleaning luxury rug" 

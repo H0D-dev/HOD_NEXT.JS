@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export default function TechniqueHero() {
   return (
-    <section className="w-full pt-32 pb-16 md:pt-48 md:pb-24 px-6 md:px-16 lg:px-24 bg-[var(--bg-primary)]">
+    <section className="w-full pt-20 pb-12 md:pt-48 md:pb-24 px-6 md:px-16 lg:px-24 bg-[var(--bg-primary)]">
       <div className="max-w-[var(--container-md)] mx-auto text-center flex flex-col items-center">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -18,9 +18,11 @@ export default function TechniqueHero() {
           <h1 className="font-serif text-[clamp(48px,8vw,80px)] leading-[1.05] tracking-tight text-[var(--text-primary)] mb-12">
             Weaving Techniques
           </h1>
-          <p className="font-sans text-[var(--text-secondary)] text-lg md:text-xl leading-relaxed text-left md:text-center">
-            Explore the artistry behind our rugs with a deep dive into various weaving techniques. Each method, from traditional hand-knotting to innovative flat weaves, contributes to the unique texture, design, and durability of our pieces. Discover how skilled artisans use their craftsmanship to create stunning rugs that not only enhance your space but also tell a story of cultural heritage and craftsmanship. Whether you’re interested in intricate patterns or versatile styles, our rug weaving techniques offer something for every aesthetic.
-          </p>
+          <div className="flex flex-col gap-8 text-center max-w-2xl mx-auto">
+            <p className="font-sans text-[var(--text-secondary)] text-lg md:text-xl leading-relaxed font-light">
+              Discover the artistry and heritage behind each knot, tuft, and weave.
+            </p>
+          </div>
         </motion.div>
       </div>
     </section>

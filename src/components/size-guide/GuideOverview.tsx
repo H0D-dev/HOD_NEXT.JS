@@ -29,17 +29,17 @@ export default function GuideOverview() {
   }, { scope: sectionRef });
 
   return (
-    <section id="overview" ref={sectionRef} className="w-full py-24 md:py-32 px-4 md:px-8 bg-[var(--bg-primary)]">
-      <div className="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24">
+    <section id="overview" ref={sectionRef} className="w-full py-16 md:py-32 px-4 md:px-8 bg-[var(--bg-primary)]">
+      <div className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 md:gap-24">
         {/* Left Column */}
-        <div className="md:col-span-5 overview-item">
-          <h2 className="font-serif text-3xl md:text-5xl leading-tight text-[var(--text-primary)]">
+        <div className="lg:col-span-5 overview-item">
+          <h2 className="font-serif text-[clamp(32px,5vw,64px)] leading-tight text-[var(--text-primary)]">
             Choosing the Right Fit
           </h2>
         </div>
 
         {/* Right Column */}
-        <div className="md:col-span-7 flex flex-col">
+        <div className="lg:col-span-7 flex flex-col">
           {/* Content Block 1 */}
           <div className="overview-item py-8 border-t border-[var(--border-secondary)]">
             <h3 className="font-sans text-sm md:text-base font-semibold tracking-widest uppercase mb-4 text-[var(--text-primary)]">

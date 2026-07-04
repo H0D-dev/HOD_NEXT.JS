@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export default function TradeHero() {
   return (
-    <section className="w-full min-h-[90vh] flex flex-col md:flex-row bg-[var(--bg-primary)] pt-24 md:pt-32">
+    <section className="w-full min-h-[90vh] flex flex-col lg:flex-row bg-[var(--bg-primary)] pt-20 lg:pt-32">
       {/* Left Content */}
       <div className="flex-1 flex flex-col justify-center px-6 py-12 md:px-16 lg:px-24 xl:px-32 relative z-10">
         <motion.div
@@ -21,16 +21,21 @@ export default function TradeHero() {
             Designer Trade Program
           </h1>
           <p className="font-sans text-[var(--text-secondary)] text-lg md:text-xl leading-relaxed mb-12 max-w-md">
-            Exclusively for interior design professionals working on private residences and commercial spaces. Elevate your projects with our premium handmade rugs and bespoke curtains.
+            Exclusive benefits for interior design professionals. Elevate your spaces with our premium handmade rugs and bespoke curtains.
           </p>
-          <button className="px-8 py-4 border border-[var(--border-primary)] text-[var(--text-primary)] bg-transparent font-sans font-medium text-sm md:text-base hover:bg-[var(--accent-secondary)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] w-full sm:w-auto">
+          <a 
+            href="https://wa.me/971521236888?text=I%20would%20like%20to%20apply%20for%20the%20Designer%20Trade%20Program."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-8 py-4 border border-[var(--border-primary)] text-[var(--text-primary)] bg-transparent font-sans font-medium text-sm md:text-base hover:bg-[var(--accent-secondary)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] w-full sm:w-auto inline-block text-center"
+          >
             Apply Now
-          </button>
+          </a>
         </motion.div>
       </div>
 
       {/* Right Image */}
-      <div className="flex-1 relative min-h-[50vh] md:min-h-full p-6 md:p-12 lg:p-16 flex items-center justify-center">
+      <div className="flex-1 relative min-h-[50vh] lg:min-h-full p-6 md:p-12 lg:p-16 flex items-center justify-center">
         <motion.div
           initial={{ opacity: 0, scale: 1.05 }}
           animate={{ opacity: 1, scale: 1 }}

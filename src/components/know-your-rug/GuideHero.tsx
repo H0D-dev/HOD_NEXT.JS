@@ -1,6 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronDown } from "lucide-react";
 
 const selectionQuestions = [
   {
@@ -35,8 +37,14 @@ const selectionQuestions = [
 ];
 
 export default function GuideHero() {
+  const [openAccordion, setOpenAccordion] = useState<number | null>(0);
+
+  const handleAccordionClick = (index: number) => {
+    setOpenAccordion(openAccordion === index ? null : index);
+  };
+
   return (
-    <section className="w-full pt-32 pb-24 md:pt-48 md:pb-32 px-6 md:px-16 lg:px-24 bg-[var(--bg-primary)] border-b border-[var(--border-secondary)]">
+    <section className="w-full pt-20 pb-16 md:pt-48 md:pb-32 px-6 md:px-16 lg:px-24 bg-[var(--bg-primary)] border-b border-[var(--border-secondary)]">
       <div className="max-w-[var(--container-lg)] mx-auto flex flex-col items-center">
         {/* Hero Header */}
         <motion.div
@@ -57,7 +65,7 @@ export default function GuideHero() {
         </motion.div>
 
         {/* Selection Guide Section */}
-        <div className="w-full">
+        <div className="w-full max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -65,7 +73,7 @@ export default function GuideHero() {
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] as any }}
             className="mb-12 text-center"
           >
-            <h3 className="font-serif text-3xl md:text-4xl text-[var(--text-primary)] mb-6">
+            <h3 className="font-serif text-[clamp(24px,5vw,40px)] text-[var(--text-primary)] mb-6">
               Guide to Choosing the Right Rug
             </h3>
             <p className="font-sans text-[var(--text-secondary)] text-lg">
@@ -73,7 +81,7 @@ export default function GuideHero() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 mt-16">
+          <div className="flex flex-col border-t border-[var(--border-secondary)] mt-16">
             {selectionQuestions.map((item, idx) => (
               <motion.div
                 key={idx}
@@ -81,21 +89,43 @@ export default function GuideHero() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.6, delay: idx * 0.1, ease: [0.22, 1, 0.36, 1] as any }}
-                className="bg-[var(--surface-primary)] p-8 md:p-10 border border-[var(--border-secondary)]"
+                className="border-b border-[var(--border-secondary)]"
               >
-                <h4 className="font-serif text-2xl text-[var(--text-primary)] mb-8 pb-4 border-b border-[var(--border-secondary)]">
+                <button
+                  onClick={() => handleAccordionClick(idx)}
+                  className="w-full py-8 flex items-center justify-between font-serif text-[clamp(20px,4vw,28px)] text-[var(--text-primary)] text-left"
+                >
                   {item.question}
-                </h4>
-                <ul className="flex flex-col gap-6">
-                  {item.points.map((pt, i) => (
-                    <li key={i} className="font-sans text-base leading-relaxed text-[var(--text-secondary)]">
-                      <strong className="text-[var(--text-primary)] font-medium block mb-1">
-                        {pt.bold}
-                      </strong>
-                      {pt.text}
-                    </li>
-                  ))}
-                </ul>
+                  <ChevronDown
+                    className={`shrink-0 transition-transform duration-300 ${openAccordion === idx ? 'rotate-180' : ''}`}
+                    size={28}
+                    strokeWidth={1}
+                  />
+                </button>
+                <AnimatePresence>
+                  {openAccordion === idx && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] as any }}
+                      className="overflow-hidden"
+                    >
+                      <div className="pb-8">
+                        <ul className="flex flex-col gap-6 bg-[var(--surface-primary)] p-6 md:p-8 border-l-2 border-[var(--accent-primary)]">
+                          {item.points.map((pt, i) => (
+                            <li key={i} className="font-sans text-base md:text-lg leading-relaxed text-[var(--text-secondary)]">
+                              <strong className="text-[var(--text-primary)] font-medium mr-2">
+                                {pt.bold}:
+                              </strong>
+                              {pt.text}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </motion.div>
             ))}
           </div>

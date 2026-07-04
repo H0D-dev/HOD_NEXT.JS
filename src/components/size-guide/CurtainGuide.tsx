@@ -58,10 +58,10 @@ export default function CurtainGuide() {
   }, { scope: containerRef });
 
   return (
-    <section id="curtains" ref={containerRef} className="w-full py-24 md:py-32 px-4 md:px-8 bg-[var(--bg-secondary)] border-t border-[var(--border-secondary)]">
+    <section id="curtains" ref={containerRef} className="w-full py-16 md:py-32 px-4 md:px-8 bg-[var(--bg-secondary)] border-t border-[var(--border-secondary)]">
       <div className="max-w-[1440px] mx-auto">
         <div className="text-center max-w-[800px] mx-auto mb-24">
-          <h2 className="font-serif text-4xl md:text-6xl text-[var(--text-primary)] mb-6">
+          <h2 className="font-serif text-[clamp(32px,5vw,64px)] text-[var(--text-primary)] mb-6">
             Curtains & Windows
           </h2>
           <p className="font-sans text-base md:text-lg text-[var(--text-secondary)] font-light">
@@ -70,9 +70,9 @@ export default function CurtainGuide() {
         </div>
 
         {/* Part 1: Curtain Length */}
-        <div className="curtain-section grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center mb-32">
-          <div className="curtain-text order-2 md:order-1">
-            <h3 className="font-serif text-3xl md:text-4xl text-[var(--text-primary)] mb-6">
+        <div className="curtain-section grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center mb-32">
+          <div className="curtain-text order-2 lg:order-1">
+            <h3 className="font-serif text-[clamp(24px,5vw,40px)] text-[var(--text-primary)] mb-6">
               Curtain Length
             </h3>
             <div className="space-y-6">
@@ -90,7 +90,7 @@ export default function CurtainGuide() {
               </div>
             </div>
           </div>
-          <div className="curtain-image-container overflow-hidden order-1 md:order-2 aspect-[3/4] bg-[var(--bg-primary)] border border-[var(--border-secondary)]">
+          <div className="curtain-image-container overflow-hidden order-1 lg:order-2 aspect-square bg-[var(--bg-primary)] border border-[var(--border-secondary)]">
             <img 
               src="/images/size-guide/curtain_length_1782565958694.png" 
               alt="Curtain lengths illustration" 
@@ -100,8 +100,8 @@ export default function CurtainGuide() {
         </div>
 
         {/* Part 2: Curtain Width */}
-        <div className="curtain-section grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center mb-32">
-          <div className="curtain-image-container overflow-hidden aspect-[3/4] bg-[var(--bg-primary)] border border-[var(--border-secondary)]">
+        <div className="curtain-section grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center mb-32">
+          <div className="curtain-image-container overflow-hidden aspect-square bg-[var(--bg-primary)] border border-[var(--border-secondary)]">
             <img 
               src="/images/size-guide/curtain_width_1782565971656.png" 
               alt="Curtain width illustration" 
@@ -109,7 +109,7 @@ export default function CurtainGuide() {
             />
           </div>
           <div className="curtain-text">
-            <h3 className="font-serif text-3xl md:text-4xl text-[var(--text-primary)] mb-6">
+            <h3 className="font-serif text-[clamp(24px,5vw,40px)] text-[var(--text-primary)] mb-6">
               Curtain Width
             </h3>
             <p className="font-sans text-sm md:text-base text-[var(--text-secondary)] leading-relaxed mb-6">
@@ -122,9 +122,9 @@ export default function CurtainGuide() {
         </div>
 
         {/* Part 3: Rod Placement */}
-        <div className="curtain-section grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center">
-          <div className="curtain-text order-2 md:order-1">
-            <h3 className="font-serif text-3xl md:text-4xl text-[var(--text-primary)] mb-6">
+        <div className="curtain-section grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+          <div className="curtain-text order-2 lg:order-1">
+            <h3 className="font-serif text-[clamp(24px,5vw,40px)] text-[var(--text-primary)] mb-6">
               Rod Placement
             </h3>
             <p className="font-sans text-sm md:text-base text-[var(--text-secondary)] leading-relaxed mb-10">
@@ -137,7 +137,7 @@ export default function CurtainGuide() {
               Explore Curtains &rarr;
             </Link>
           </div>
-          <div className="curtain-image-container overflow-hidden order-1 md:order-2 aspect-[3/4] bg-[var(--bg-primary)] border border-[var(--border-secondary)]">
+          <div className="curtain-image-container overflow-hidden order-1 lg:order-2 aspect-square bg-[var(--bg-primary)] border border-[var(--border-secondary)]">
             <img 
               src="/images/size-guide/curtain_rod_1782565984150.png" 
               alt="Rod placement architectural" 

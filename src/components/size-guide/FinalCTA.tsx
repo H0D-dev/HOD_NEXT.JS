@@ -30,9 +30,9 @@ export default function FinalCTA() {
   }, { scope: ctaRef });
 
   return (
-    <section ref={ctaRef} className="w-full py-32 md:py-48 px-4 md:px-8 bg-[var(--text-primary)] text-[var(--bg-primary)] flex justify-center items-center">
+    <section ref={ctaRef} className="w-full py-16 md:py-32 px-4 md:px-8 bg-[var(--text-primary)] text-[var(--bg-primary)] flex justify-center items-center">
       <div className="max-w-[800px] mx-auto flex flex-col items-center text-center">
-        <h2 className="cta-element font-serif text-4xl md:text-5xl lg:text-7xl mb-8">
+        <h2 className="cta-element font-serif text-[clamp(32px,5vw,64px)] mb-8">
           Need Expert Guidance?
         </h2>
         <p className="cta-element font-sans text-sm md:text-base font-light leading-relaxed max-w-[500px] mb-12 text-[var(--bg-secondary)] opacity-90">
@@ -45,12 +45,14 @@ export default function FinalCTA() {
           >
             Contact Us
           </Link>
-          <Link 
-            href="/services" 
+          <a 
+            href="https://wa.me/971521236888?text=Hello,%20I%20need%20help%20with%20sizing%20for%20my%20space."
+            target="_blank"
+            rel="noopener noreferrer"
             className="font-sans text-sm tracking-wider uppercase px-8 py-4 bg-[var(--bg-primary)] text-[var(--text-primary)] hover:bg-[var(--accent-secondary)] border border-transparent transition-colors duration-500 ease-out w-full md:w-auto text-center"
           >
-            Book Consultation
-          </Link>
+            Need Help in Size?
+          </a>
         </div>
       </div>
     </section>

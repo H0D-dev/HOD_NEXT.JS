@@ -56,18 +56,22 @@ UI should support imagery—not overpower it.
 
 ---
 
-### 3. Luxury Through Simplicity
+### 3. Luxury Through Simplicity (Less Text, More Visuals)
 
-Luxury is communicated through restraint.
+Luxury is communicated through restraint and visual breathing room. The website theme strongly dictates **less text and more visuals**. Let the typography and imagery do the heavy lifting.
 
 Use:
 
-* Large whitespace
-* Minimal copy
-* Strong typography
-* Clean sections
+* Immense, intentional whitespace
+* Highly minimal, punchy copy (remove paragraphs of descriptive text where possible)
+* Bold, scalable typography
+* Large, high-quality visuals taking center stage
 
-Avoid clutter.
+Avoid:
+
+* Long paragraphs of text
+* Cluttered or overly verbose explanations
+* Cramping imagery with text blocks
 
 ---
 
@@ -252,6 +256,20 @@ This establishes a brutalist-luxury, art-gallery exhibition feel.
 
 ---
 
+## Fluid Typography & Responsive Consistency
+
+To maintain the luxury aesthetic across all devices (mobile, tablet, desktop), **never use abrupt font size jumps**. 
+Use CSS `clamp()` for all major headings and large text elements to ensure perfectly fluid scaling that doesn't break the layout on smaller screens.
+
+**Examples:**
+* **Hero/Monumental Headings:** `text-[clamp(48px,8vw,96px)]`
+* **Section Headings:** `text-[clamp(32px,5vw,64px)]` or `text-[clamp(40px,6vw,80px)]`
+* **Large Quotes:** `text-[clamp(24px,5vw,56px)]`
+
+This guarantees that typography always feels perfectly proportioned, whether on a 320px phone or a 4K display.
+
+---
+
 # Layout System
 
 ## Container Widths
@@ -319,6 +337,24 @@ Avoid rounded-heavy modern SaaS look.
 --space-7: 96px;
 --space-8: 128px;
 ```
+
+---
+
+## Responsive Whitespace & Padding
+
+Whitespace is a primary structural element of luxury design. It must scale appropriately depending on the device:
+
+1. **Desktop (Luxurious Breathing Room):**
+   * Use immense section padding to create a gallery-like feel.
+   * *Example:* `py-32 md:py-48` or `py-40 md:py-56`
+   * Allow empty spaces to act as visual rests.
+
+2. **Mobile & Tablet (Restrained but Clean):**
+   * Reduce massive paddings to prevent "endless scrolling" through blank space, but retain enough padding to maintain the minimalist aesthetic.
+   * *Example:* Reduce `py-40` on desktop to `py-16` or `py-24` on mobile.
+   * Ensure fixed-height containers (e.g., image wrappers, sliders) are reduced on mobile to prevent huge empty gaps (e.g., `h-[300px] md:h-[500px] lg:h-[800px]`).
+
+Never let content feel cramped on mobile, but avoid leaving large 300px empty vertical voids.
 
 ---
 
@@ -465,5 +501,6 @@ When generating UI or code:
 * Avoid excessive shadows
 * Keep visuals premium and minimal
 * Product imagery must remain central
+* Strongly prefer less text and more visual breathing room (remove verbose paragraphs)
 
 The website must feel like a luxury design studio, not a typical e-commerce store.

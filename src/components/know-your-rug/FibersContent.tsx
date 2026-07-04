@@ -10,9 +10,7 @@ const fiberData = [
     title: "Wool",
     subtitle: "A Timeless Choice for Rugs",
     description: [
-      "Durable, sustainable, and versatile, wool is a globally cherished rug material. Renowned for its longevity, wool is sourced from shearing sheep and occasionally from other animals like alpacas, goats, and llamas. The fibers undergo a meticulous process of cleaning, sorting, carding, and spinning into yarn.",
-      "Wool is graded based on the length and origin of the fibers, with the finest wool typically coming from the neck, belly, and underbelly of the sheep, where the fibers are softer and longer. Factors like climate and habitat significantly influence wool quality, and most of Jaipur Rugs’ collection is sourced from India, New Zealand, and 18 other countries.",
-      "The carding and spinning processes can be done by hand or machine. Machine-spun fibers are uniform but may lack durability, while hand-spun yarn offers unique character and enhanced strength."
+      "Durable, sustainable, and versatile, wool is a globally cherished rug material. Renowned for its longevity and natural soil resistance, it is spun from the finest fleeces to create long-lasting, plush luxury."
     ],
     benefits: [
       { name: "Moisture Absorption", desc: "Wool effectively absorbs moisture and dust, helping to create a healthier indoor environment." },
@@ -36,8 +34,7 @@ const fiberData = [
     title: "Silk",
     subtitle: "The Ultimate Luxurious Choice",
     description: [
-      "A source of pride for owners and a coveted treasure for others, silk is regarded as one of the finest materials for rugs, historically linked to royalty. This exquisite natural protein fiber is harvested from the cocoons of cultivated or wild silkworms.",
-      "Silk’s delicate and even fibers lend themselves to intricate detailing, requiring exceptional craftsmanship to weave. Its legendary softness and stunning aesthetic make it a truly desirable choice."
+      "Regarded as one of the finest materials for rugs, silk provides unmatched luster and a legendary softness. Its delicate, even fibers lend themselves to intricate detailing and sophisticated elegance."
     ],
     benefits: [
       { name: "Lustre & Shine", desc: "Silk rugs boast a natural glow that enhances any space." },
@@ -57,8 +54,7 @@ const fiberData = [
     title: "Bamboo Silk",
     subtitle: "The Affordable Luxury",
     description: [
-      "Looks and feels like silk, but without the high price tag! Bamboo Silk is a blend of wood pulp and natural fibers derived from the bamboo plant, offering a cost-effective alternative that beautifully mimics the elegance of silk.",
-      "The viscose fibers create a stunning visual effect, with shiny tips that add depth to your carpets. Additionally, bamboo silk boasts antimicrobial properties, promoting a healthier home environment with every step."
+      "Looks and feels like silk, but without the high price tag. Bamboo Silk is derived from natural plant fibers, offering a stunning visual shimmer and a plush, deep texture."
     ],
     benefits: [
       { name: "Lustre & Shine", desc: "Adds a radiant shimmer to your designs." },
@@ -104,8 +100,7 @@ const fiberData = [
     title: "Cotton",
     subtitle: "The Versatile Classic",
     description: [
-      "Cotton is one of the most trusted and widely used fabrics, derived from the soft fibers that grow around the seeds of the cotton plant.",
-      "Often found in flatweave designs like dhurries and kilims, cotton offers a versatile décor option that is easy to use and store. Its breathable quality and washability make it suitable for both indoor and outdoor spaces."
+      "Breathable, lightweight, and incredibly versatile. Cotton is a classic choice, perfect for flatweaves like dhurries and kilims, offering a relaxed aesthetic."
     ],
     benefits: [
       { name: "Easy to Clean", desc: "Washable by hand or machine for effortless maintenance." },
@@ -130,8 +125,7 @@ const fiberData = [
     title: "Polyester",
     subtitle: "The Practical Choice",
     description: [
-      "Polyester is a man-made fiber known for its exceptional stain and fade resistance, while still being soft and budget-friendly. Although it may not be as durable as other synthetics like nylon, well-constructed polyester rugs can still hold up well over time.",
-      "With their lower cost and high stain resistance, polyester rugs are an ideal option for children’s bedrooms and areas where a more expensive investment may not be desired."
+      "A practical man-made fiber known for its exceptional stain and fade resistance, polyester provides a highly durable and budget-friendly option without sacrificing softness."
     ],
     benefits: [
       { name: "Soil Repellent", desc: "Resists dirt and stains for easier maintenance." },
@@ -183,17 +177,17 @@ export default function FibersContent() {
   };
 
   return (
-    <section className="w-full py-24 md:py-32 px-6 md:px-16 lg:px-24 bg-[var(--bg-secondary)]">
+    <section className="w-full py-16 md:py-32 px-6 md:px-16 lg:px-24 bg-[var(--bg-secondary)]">
       <div className="max-w-[var(--container-lg)] mx-auto flex flex-col md:flex-row gap-12 lg:gap-24 relative">
         
         {/* Mobile Accordion */}
-        <div className="md:hidden w-full flex flex-col border-t border-[var(--border-secondary)]">
-          <h2 className="font-serif text-3xl text-[var(--text-primary)] mb-8 pt-8">Material Guide</h2>
+        <div className="lg:hidden w-full flex flex-col border-t border-[var(--border-secondary)]">
+          <h2 className="font-serif text-[clamp(24px,5vw,36px)] text-[var(--text-primary)] mb-8 pt-8">Material Guide</h2>
           {fiberData.map((fiber) => (
             <div key={`mobile-${fiber.id}`} className="border-b border-[var(--border-secondary)]">
               <button
                 onClick={() => handleAccordionClick(fiber.id)}
-                className="w-full py-6 flex items-center justify-between font-serif text-2xl text-[var(--text-primary)]"
+                className="w-full py-6 flex items-center justify-between font-serif text-[clamp(20px,4vw,28px)] text-[var(--text-primary)]"
               >
                 {fiber.title}
                 <ChevronDown 
@@ -285,7 +279,7 @@ export default function FibersContent() {
         </div>
 
         {/* Desktop Sidebar */}
-        <aside className="hidden md:block w-64 lg:w-80 shrink-0 h-max sticky top-32">
+        <aside className="hidden lg:block w-64 lg:w-80 shrink-0 h-max sticky top-32">
           <div className="flex flex-col gap-1 border-l border-[var(--border-secondary)]">
             <h3 className="font-sans text-xs uppercase tracking-widest text-[var(--text-muted)] mb-8 px-6">
               Material Library
@@ -314,7 +308,7 @@ export default function FibersContent() {
         </aside>
 
         {/* Desktop Content Area (Continuous Scroll) */}
-        <div className="hidden md:block flex-1 pb-32">
+        <div className="hidden lg:block flex-1 pb-32">
           <div className="flex flex-col gap-32">
             {fiberData.map((fiber) => (
               <motion.div
@@ -327,7 +321,7 @@ export default function FibersContent() {
                 className="flex flex-col gap-12 scroll-mt-32"
               >
                 <div className="border-b border-[var(--border-secondary)] pb-8">
-                  <h2 className="font-serif text-4xl lg:text-5xl text-[var(--text-primary)] mb-4">
+                  <h2 className="font-serif text-[clamp(32px,5vw,64px)] text-[var(--text-primary)] mb-4">
                     {fiber.title}
                   </h2>
                   <h3 className="font-sans text-[var(--text-secondary)] text-xl font-light mb-8">

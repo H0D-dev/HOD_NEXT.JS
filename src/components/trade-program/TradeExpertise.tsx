@@ -6,22 +6,22 @@ const expertiseAreas = [
   {
     id: "01",
     title: "Product Development",
-    description: "Collaborate directly with our master artisans to develop custom rug designs, specific fiber blends, and unique curtain structures tailored to your project.",
+    description: "Collaborate with artisans to develop custom designs tailored to your project.",
   },
   {
     id: "02",
     title: "Inspiration & Design Support",
-    description: "Access our private showrooms virtually or in person, and work alongside our senior designers to conceptualize spaces and refine palettes.",
+    description: "Work with senior designers to conceptualize spaces and refine palettes.",
   },
   {
     id: "03",
     title: "Delivery & Installation",
-    description: "White-glove delivery and meticulous installation handled by our trained professionals to ensure flawless execution in the final space.",
+    description: "White-glove delivery and expert installation for flawless execution.",
   },
   {
     id: "04",
     title: "Manufacturing",
-    description: "Unparalleled quality control. We oversee every step from ethical sourcing of raw materials to the final hand-stitching in our own facilities.",
+    description: "Unparalleled quality control from ethical sourcing to final hand-stitching.",
   },
 ];
 
@@ -44,7 +44,7 @@ const itemVariants = {
 
 export default function TradeExpertise() {
   return (
-    <section className="w-full py-24 md:py-32 px-6 md:px-16 lg:px-24 bg-[var(--bg-secondary)] border-t border-[var(--border-secondary)]">
+    <section className="w-full py-16 md:py-32 px-6 md:px-16 lg:px-24 bg-[var(--bg-secondary)] border-t border-[var(--border-secondary)]">
       <div className="max-w-[var(--container-lg)] mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 md:mb-24 gap-8">
           <motion.div
@@ -54,7 +54,7 @@ export default function TradeExpertise() {
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any }}
             className="max-w-2xl"
           >
-            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-[var(--text-primary)] tracking-tight mb-6">
+            <h2 className="font-serif text-[clamp(32px,5vw,64px)] text-[var(--text-primary)] tracking-tight mb-6">
               World-Class Expertise
             </h2>
             <p className="font-sans text-[var(--text-secondary)] text-lg md:text-xl leading-relaxed">

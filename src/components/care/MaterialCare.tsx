@@ -94,13 +94,13 @@ export default function MaterialCare() {
     <section ref={containerRef} className="w-full bg-[var(--bg-primary)]">
       
       {/* Mobile Layout */}
-      <div className="md:hidden w-full flex flex-col py-24 px-6 border-t border-[var(--border-secondary)]">
-        <h2 className="font-serif text-3xl text-[var(--text-primary)] mb-8">Material Care</h2>
+      <div className="md:hidden w-full flex flex-col py-16 px-6 border-t border-[var(--border-secondary)]">
+        <h2 className="font-serif text-[clamp(32px,5vw,64px)] text-[var(--text-primary)] mb-8">Material Care</h2>
         {materials.map((material) => (
           <div key={`mobile-${material.id}`} className="border-b border-[var(--border-secondary)]">
             <button
               onClick={() => handleAccordionClick(material.id)}
-              className="w-full py-6 flex items-center justify-between font-serif text-2xl text-[var(--text-primary)]"
+              className="w-full py-6 flex items-center justify-between font-serif text-[clamp(20px,4vw,32px)] text-[var(--text-primary)]"
             >
               {material.title}
               <ChevronDown 
@@ -180,7 +180,7 @@ export default function MaterialCare() {
                   className="flex flex-col xl:flex-row gap-12 items-center w-full"
                 >
                   <div className="flex-1 flex flex-col gap-8">
-                    <h2 className="font-serif text-4xl lg:text-5xl xl:text-6xl text-[var(--text-primary)]">
+                    <h2 className="font-serif text-[clamp(32px,5vw,64px)] text-[var(--text-primary)]">
                       {materials[activeIndex].title}
                     </h2>
                     <p className="font-sans text-[var(--text-secondary)] text-lg leading-relaxed max-w-xl">
@@ -200,15 +200,6 @@ export default function MaterialCare() {
                         ))}
                       </ul>
                     </div>
-                  </div>
-                  
-                  {/* Decorative Image */}
-                  <div className="hidden xl:block w-[400px] h-[400px] shrink-0 border border-[var(--border-secondary)] p-8 bg-[var(--surface-secondary)] mix-blend-multiply">
-                    <img 
-                      src={materials[activeIndex].image} 
-                      alt={materials[activeIndex].title} 
-                      className="w-full h-full object-contain"
-                    />
                   </div>
                 </motion.div>
               </AnimatePresence>

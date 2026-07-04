@@ -56,11 +56,11 @@ export default function LivingRoomGuide() {
   }, { scope: containerRef });
 
   return (
-    <section id="living-room" ref={containerRef} className="w-full py-24 md:py-32 px-4 md:px-8 bg-[var(--bg-primary)]">
+    <section id="living-room" ref={containerRef} className="w-full py-16 md:py-32 px-4 md:px-8 bg-[var(--bg-primary)]">
       <div className="max-w-[1440px] mx-auto">
         {/* Section Header */}
         <div className="lr-text-reveal text-center max-w-[800px] mx-auto mb-16">
-          <h2 className="font-serif text-4xl md:text-6xl text-[var(--text-primary)] mb-6">
+          <h2 className="font-serif text-[clamp(32px,5vw,64px)] text-[var(--text-primary)] mb-6">
             Living Room
           </h2>
           <p className="font-sans text-base md:text-lg text-[var(--text-secondary)] font-light">
@@ -69,7 +69,7 @@ export default function LivingRoomGuide() {
         </div>
 
         {/* Large Hero Image */}
-        <div className="lr-image-parallax w-full aspect-[21/9] mb-32 overflow-hidden border border-[var(--border-secondary)]">
+        <div className="lr-image-parallax w-full aspect-[4/3] md:aspect-[16/9] lg:aspect-[21/9] mb-32 overflow-hidden border border-[var(--border-secondary)]">
           <img 
             src="/images/size-guide/living_room_hero_1782565513474.png" 
             alt="Living Room rug placement hero" 
@@ -78,16 +78,16 @@ export default function LivingRoomGuide() {
         </div>
 
         {/* Layout A — Full Coverage */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 mb-32 items-center">
-          <div className="lr-text-reveal order-2 md:order-1">
-            <h3 className="font-serif text-3xl md:text-4xl text-[var(--text-primary)] mb-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 mb-32 items-center">
+          <div className="lr-text-reveal order-2 lg:order-1">
+            <h3 className="font-serif text-[clamp(24px,5vw,40px)] text-[var(--text-primary)] mb-6">
               Full Coverage
             </h3>
             <p className="font-sans text-sm md:text-base text-[var(--text-secondary)] leading-relaxed">
               A large rug fully situated under the furniture creates a defined, room-within-a-room aesthetic. This is ideal for open-plan spaces, ensuring all pieces—sofa, chairs, and tables—are anchored on the same premium surface.
             </p>
           </div>
-          <div className="lr-image-parallax overflow-hidden order-1 md:order-2 aspect-[4/3] bg-[var(--bg-secondary)] border border-[var(--border-secondary)]">
+          <div className="lr-image-parallax overflow-hidden order-1 lg:order-2 aspect-square bg-[var(--bg-secondary)] border border-[var(--border-secondary)]">
             <img 
               src="/images/size-guide/living_room_full_1782565528143.png" 
               alt="Living room full coverage layout" 
@@ -97,8 +97,8 @@ export default function LivingRoomGuide() {
         </div>
 
         {/* Layout B — Front Legs Placement */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 mb-32 items-center">
-          <div className="lr-image-parallax overflow-hidden aspect-[4/3] bg-[var(--bg-secondary)] border border-[var(--border-secondary)]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 mb-32 items-center">
+          <div className="lr-image-parallax overflow-hidden aspect-square bg-[var(--bg-secondary)] border border-[var(--border-secondary)]">
             <img 
               src="/images/size-guide/living_room_front_1782565538635.png" 
               alt="Living room front legs layout" 
@@ -106,7 +106,7 @@ export default function LivingRoomGuide() {
             />
           </div>
           <div className="lr-text-reveal">
-            <h3 className="font-serif text-3xl md:text-4xl text-[var(--text-primary)] mb-6">
+            <h3 className="font-serif text-[clamp(24px,5vw,40px)] text-[var(--text-primary)] mb-6">
               Front Legs Placement
             </h3>
             <p className="font-sans text-sm md:text-base text-[var(--text-secondary)] leading-relaxed">
@@ -116,9 +116,9 @@ export default function LivingRoomGuide() {
         </div>
 
         {/* Layout C — L-Shaped Sofa */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center">
-          <div className="lr-text-reveal order-2 md:order-1">
-            <h3 className="font-serif text-3xl md:text-4xl text-[var(--text-primary)] mb-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+          <div className="lr-text-reveal order-2 lg:order-1">
+            <h3 className="font-serif text-[clamp(24px,5vw,40px)] text-[var(--text-primary)] mb-6">
               L-Shaped Sofa
             </h3>
             <p className="font-sans text-sm md:text-base text-[var(--text-secondary)] leading-relaxed mb-10">
@@ -131,7 +131,7 @@ export default function LivingRoomGuide() {
               Browse Living Room Rugs &rarr;
             </Link>
           </div>
-          <div className="lr-image-parallax overflow-hidden order-1 md:order-2 aspect-[4/3] bg-[var(--bg-secondary)] border border-[var(--border-secondary)]">
+          <div className="lr-image-parallax overflow-hidden order-1 lg:order-2 aspect-square bg-[var(--bg-secondary)] border border-[var(--border-secondary)]">
             <img 
               src="/images/size-guide/living_room_lshape_1782565549792.png" 
               alt="L-shaped sofa layout" 

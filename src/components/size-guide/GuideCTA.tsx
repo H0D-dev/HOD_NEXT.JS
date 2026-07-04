@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export default function GuideCTA() {
   return (
-    <section className="w-full py-32 md:py-40 px-6 md:px-16 lg:px-24 bg-[var(--bg-secondary)] border-t border-[var(--border-secondary)] text-center flex flex-col items-center">
+    <section className="w-full py-16 md:py-32 px-6 md:px-16 lg:px-24 bg-[var(--bg-secondary)] border-t border-[var(--border-secondary)] text-center flex flex-col items-center">
       <div className="max-w-2xl mx-auto flex flex-col items-center">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
@@ -13,7 +13,7 @@ export default function GuideCTA() {
           transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] as any }}
           className="flex flex-col items-center"
         >
-          <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-[var(--text-primary)] tracking-tight mb-8">
+          <h2 className="font-serif text-[clamp(32px,5vw,64px)] text-[var(--text-primary)] tracking-tight mb-8">
             Need help choosing the perfect rug?
           </h2>
           <p className="font-sans text-[var(--text-secondary)] text-lg mb-16 max-w-lg">

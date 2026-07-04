@@ -30,12 +30,12 @@ export default function CareCTA() {
   }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} className="w-full py-32 md:py-48 px-4 md:px-8 bg-[var(--text-primary)] border-t border-[var(--border-secondary)] flex justify-center">
+    <section ref={containerRef} className="w-full py-16 md:py-32 px-4 md:px-8 bg-[var(--text-primary)] border-t border-[var(--border-secondary)] flex justify-center">
       <div className="max-w-[800px] mx-auto text-center flex flex-col items-center">
         <span className="cta-element block text-[var(--text-muted)] font-sans text-xs uppercase tracking-widest mb-8 text-[var(--bg-primary)] opacity-70">
           Restoration & Maintenance
         </span>
-        <h2 className="cta-element font-serif text-4xl md:text-5xl lg:text-7xl text-[var(--bg-primary)] mb-8">
+        <h2 className="cta-element font-serif text-[clamp(32px,5vw,64px)] text-[var(--bg-primary)] mb-8">
           Need Professional Assistance?
         </h2>
         <p className="cta-element font-sans text-[var(--bg-secondary)] opacity-80 text-lg md:text-xl font-light mb-16 max-w-lg mx-auto">

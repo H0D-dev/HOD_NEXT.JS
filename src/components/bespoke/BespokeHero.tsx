@@ -62,6 +62,9 @@ export default function BespokeHero() {
           />
           <div className="absolute inset-0 bg-black/50" />
         </div>
+        
+        {/* Header visibility gradient - this creates a light backdrop for the dark header without modifying the global header component */}
+        <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-white/90 via-white/50 to-transparent z-10 pointer-events-none" />
       </div>
 
       {/* Content */}
@@ -74,12 +77,12 @@ export default function BespokeHero() {
           Every space deserves a signature. We design and craft rugs tailored to your vision, scale, and story.
         </p>
 
-        <div className="animate-hero flex flex-col sm:flex-row items-center justify-center gap-6 w-full sm:w-auto">
-          <Link href="#contact" className="group relative w-full sm:w-auto inline-flex items-center justify-center px-12 py-5 border border-white overflow-hidden text-sm uppercase tracking-widest font-medium">
+        <div className="animate-hero flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 w-full sm:w-auto">
+          <Link href="https://wa.me/971521236888?text=Hello%2C%20I%20would%20like%20to%20start%20my%20bespoke%20project!" target="_blank" rel="noopener noreferrer" className="group relative w-full sm:w-auto inline-flex items-center justify-center px-6 py-4 sm:px-12 sm:py-5 border border-white overflow-hidden text-xs sm:text-sm uppercase tracking-widest font-medium text-center">
             <span className="relative z-10 transition-colors duration-[0.6s] group-hover:text-black">Start Your Bespoke Project</span>
             <div className="absolute inset-0 bg-white translate-y-[101%] group-hover:translate-y-0 transition-transform duration-[0.6s] ease-[cubic-bezier(0.22,1,0.36,1)] z-0" />
           </Link>
-          <Link href="#process" className="group relative w-full sm:w-auto inline-flex items-center justify-center px-12 py-5 border border-white/40 overflow-hidden text-sm uppercase tracking-widest font-medium hover:border-white transition-colors duration-500">
+          <Link href="#process" className="group relative w-full sm:w-auto inline-flex items-center justify-center px-6 py-4 sm:px-12 sm:py-5 border border-white/40 overflow-hidden text-xs sm:text-sm uppercase tracking-widest font-medium hover:border-white transition-colors duration-500 text-center">
             <span className="relative z-10 transition-colors duration-[0.6s]">Explore Craft</span>
           </Link>
         </div>

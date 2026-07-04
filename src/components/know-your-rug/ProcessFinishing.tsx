@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 
 const finishingSteps = [
@@ -41,8 +42,10 @@ const itemVariants = {
 };
 
 export default function ProcessFinishing() {
+  const [showAllMobile, setShowAllMobile] = useState(false);
+
   return (
-    <section className="w-full py-24 md:py-32 px-6 md:px-16 lg:px-24 bg-[var(--bg-secondary)]">
+    <section className="w-full py-16 md:py-32 px-6 md:px-16 lg:px-24 bg-[var(--bg-secondary)]">
       <div className="max-w-[var(--container-lg)] mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -54,12 +57,14 @@ export default function ProcessFinishing() {
           <span className="block text-[var(--accent-primary)] font-sans text-xs uppercase tracking-widest mb-6 font-medium">
             Meticulous Detailing
           </span>
-          <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-[var(--text-primary)] tracking-tight mb-8">
+          <h2 className="font-serif text-[clamp(32px,5vw,64px)] text-[var(--text-primary)] tracking-tight mb-8">
             The 18 Steps of Finishing
           </h2>
-          <p className="font-sans text-[var(--text-secondary)] text-lg max-w-2xl mx-auto">
-            Completing a hand-crafted carpet involves 18 meticulous finishing steps, each contributing to the rug's final beauty and quality. When done entirely by hand, this process can take up to a month, perfecting the rug to a gleaming finish.
-          </p>
+          <div className="flex flex-col gap-6 text-center max-w-2xl mx-auto">
+            <p className="font-sans text-[var(--text-secondary)] text-lg md:text-xl leading-relaxed font-light">
+              Completing a hand-crafted carpet involves 18 meticulous finishing steps, perfecting the rug to a gleaming finish over the course of a month.
+            </p>
+          </div>
         </motion.div>
 
         <motion.div
@@ -69,11 +74,11 @@ export default function ProcessFinishing() {
           viewport={{ once: true, margin: "-100px" }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
         >
-          {finishingSteps.map((step) => (
+          {finishingSteps.map((step, idx) => (
             <motion.div
               key={step.step}
               variants={itemVariants}
-              className="bg-[var(--surface-primary)] p-8 border border-[var(--border-secondary)] flex flex-col group hover:border-[var(--border-primary)] transition-colors duration-[0.6s]"
+              className={`bg-[var(--surface-primary)] p-6 md:p-8 border border-[var(--border-secondary)] flex flex-col group hover:border-[var(--border-primary)] transition-colors duration-[0.6s] ${!showAllMobile && idx >= 3 ? 'hidden md:flex' : 'flex'}`}
             >
               <span className="font-serif text-5xl text-[var(--border-primary)] group-hover:text-[var(--text-primary)] transition-colors duration-[0.6s] mb-6 opacity-30 group-hover:opacity-100">
                 {step.step.toString().padStart(2, '0')}
@@ -87,6 +92,17 @@ export default function ProcessFinishing() {
             </motion.div>
           ))}
         </motion.div>
+
+        {!showAllMobile && (
+          <div className="mt-12 flex justify-center md:hidden">
+            <button
+              onClick={() => setShowAllMobile(true)}
+              className="px-8 py-4 border border-[var(--border-primary)] text-[var(--text-primary)] font-sans text-sm tracking-widest uppercase hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors duration-300"
+            >
+              View All 18 Steps
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );

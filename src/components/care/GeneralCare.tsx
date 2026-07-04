@@ -72,10 +72,10 @@ export default function GeneralCare() {
   }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} className="w-full py-24 md:py-32 px-4 md:px-8 bg-[var(--bg-secondary)]">
+    <section ref={containerRef} className="w-full py-16 md:py-32 px-4 md:px-8 bg-[var(--bg-secondary)]">
       <div className="max-w-[1440px] mx-auto">
         <div className="gen-care-header text-center mb-16 md:mb-24">
-          <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-[var(--text-primary)] tracking-tight">
+          <h2 className="font-serif text-[clamp(32px,5vw,64px)] text-[var(--text-primary)] tracking-tight">
             General Maintenance
           </h2>
         </div>

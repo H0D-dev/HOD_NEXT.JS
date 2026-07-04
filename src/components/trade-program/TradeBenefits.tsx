@@ -7,25 +7,25 @@ const benefits = [
   {
     id: 1,
     title: "Fast Shipping",
-    description: "Expedited processing and shipping for all our trade partners globally.",
+    description: "Expedited processing and shipping globally.",
     icon: Truck,
   },
   {
     id: 2,
     title: "Trade Pricing",
-    description: "Exclusive tiered discounts on our entire collection of rugs and curtains.",
+    description: "Exclusive tiered discounts on all collections.",
     icon: Tag,
   },
   {
     id: 3,
     title: "Access To Samples",
-    description: "Complimentary material swatches and strike-offs for your design presentations.",
+    description: "Complimentary swatches and strike-offs.",
     icon: Palette,
   },
   {
     id: 4,
     title: "Design Library Subscription",
-    description: "Full access to our 3D models, textures, and comprehensive digital library.",
+    description: "Full access to 3D models and digital library.",
     icon: BookOpen,
   },
 ];
@@ -49,7 +49,7 @@ const itemVariants = {
 
 export default function TradeBenefits() {
   return (
-    <section className="w-full py-20 md:py-32 px-6 md:px-16 lg:px-24 bg-[var(--bg-secondary)]">
+    <section className="w-full py-16 md:py-32 px-6 md:px-16 lg:px-24 bg-[var(--bg-secondary)]">
       <div className="max-w-[var(--container-lg)] mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -58,7 +58,7 @@ export default function TradeBenefits() {
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any }}
           className="text-center mb-16 md:mb-24"
         >
-          <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-[var(--text-primary)] tracking-tight">
+          <h2 className="font-serif text-[clamp(32px,5vw,64px)] text-[var(--text-primary)] tracking-tight">
             Exclusive Benefits
           </h2>
         </motion.div>

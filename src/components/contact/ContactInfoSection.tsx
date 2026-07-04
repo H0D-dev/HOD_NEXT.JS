@@ -32,7 +32,7 @@ const infoCards = [
     icon: Phone,
     action: "tel:+971521236888",
     extraCTA: "Chat Now →",
-    extraAction: "https://wa.me/971521236888",
+    extraAction: "https://wa.me/971521236888?text=Hello,%20I%20would%20like%20to%20get%20in%20touch.",
   },
 ];
 
@@ -57,7 +57,7 @@ const cardVariants = {
 
 export default function ContactInfoSection() {
   return (
-    <section className="w-full py-24 md:py-32 px-6 md:px-16 lg:px-24 bg-[var(--bg-secondary)]">
+    <section className="w-full py-16 md:py-32 px-6 md:px-16 lg:px-24 bg-[var(--bg-secondary)]">
       <div className="max-w-[var(--container-lg)] mx-auto">
         <motion.div
           variants={containerVariants}

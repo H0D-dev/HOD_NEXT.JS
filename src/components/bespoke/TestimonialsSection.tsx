@@ -84,7 +84,7 @@ export default function TestimonialsSection() {
   return (
     <section 
       ref={containerRef} 
-      className="py-24 md:py-40 bg-[var(--bg-primary)] border-b border-[var(--border-secondary)] overflow-hidden cursor-none"
+      className="py-16 md:py-40 bg-[var(--bg-primary)] border-b border-[var(--border-secondary)] overflow-hidden cursor-none"
     >
       {/* Custom Cursor */}
       <div 
@@ -123,8 +123,8 @@ export default function TestimonialsSection() {
           </div>
         </div>
 
-        {/* Increased height to fix overlap on smaller screens */}
-        <div className="test-elem relative h-[500px] sm:h-[400px] lg:h-[300px]">
+        {/* Height adjusted for new fluid typography sizing */}
+        <div className="test-elem relative h-[300px] sm:h-[250px]">
           {testimonials.map((test, idx) => (
             <div 
               key={idx}
@@ -134,7 +134,7 @@ export default function TestimonialsSection() {
                   : 'opacity-0 translate-y-8 pointer-events-none'
               }`}
             >
-              <p className="font-serif text-3xl md:text-5xl lg:text-6xl leading-[1.2] text-[var(--text-primary)] max-w-5xl mb-12">
+              <p className="font-serif text-[clamp(24px,5vw,56px)] leading-[1.2] text-[var(--text-primary)] max-w-5xl mb-12">
                 &ldquo;{test.quote}&rdquo;
               </p>
               <div className="flex flex-col">

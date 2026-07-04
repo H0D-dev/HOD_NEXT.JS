@@ -55,18 +55,15 @@ export default function MaterialsSection() {
   }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} className="py-24 md:py-40 bg-[var(--bg-primary)] border-b border-[var(--border-secondary)]">
+    <section ref={containerRef} className="py-32 md:py-56 bg-[var(--bg-primary)] border-b border-[var(--border-secondary)]">
       <div className="container mx-auto px-6">
         <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
           
           {/* Left Text */}
           <div className="lg:w-1/3 flex flex-col justify-start lg:sticky lg:top-40 h-fit">
-            <h2 className="animate-mat-text font-serif text-4xl md:text-5xl lg:text-6xl leading-[1.1] mb-8 text-[var(--text-primary)]">
+            <h2 className="animate-mat-text font-serif text-[clamp(32px,5vw,64px)] leading-[1.1] mb-8 text-[var(--text-primary)]">
               Materials chosen not for trends, but for timelessness.
             </h2>
-            <p className="animate-mat-text text-[var(--text-secondary)] font-sans text-lg font-light">
-              We source only the highest grade natural fibers. Every thread is selected for its tactile resonance, durability, and ability to hold deep, complex color.
-            </p>
           </div>
 
           {/* Right Grid */}
@@ -84,9 +81,6 @@ export default function MaterialsSection() {
                 <h3 className="font-sans font-medium text-xl mb-2 text-[var(--text-primary)]">
                   {mat.title}
                 </h3>
-                <p className="text-[var(--text-muted)] font-sans text-sm font-light">
-                  {mat.desc}
-                </p>
               </div>
             ))}
           </div>

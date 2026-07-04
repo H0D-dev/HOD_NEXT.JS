@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export default function KnowHero() {
   return (
-    <section className="w-full pt-32 pb-16 md:pt-48 md:pb-24 px-6 md:px-16 lg:px-24 bg-[var(--bg-primary)]">
+    <section className="w-full pt-20 pb-12 md:pt-48 md:pb-24 px-6 md:px-16 lg:px-24 bg-[var(--bg-primary)]">
       <div className="max-w-[var(--container-md)] mx-auto text-center flex flex-col items-center">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -18,12 +18,9 @@ export default function KnowHero() {
           <h1 className="font-serif text-[clamp(48px,8vw,80px)] leading-[1.05] tracking-tight text-[var(--text-primary)] mb-12">
             Know Your Rug
           </h1>
-          <div className="flex flex-col gap-8 text-left md:text-center">
-            <p className="font-sans text-[var(--text-secondary)] text-lg md:text-xl leading-relaxed">
-              A rug is an essential element that brings character and warmth to your home. To choose the perfect one, it's important to understand the craftsmanship behind it. A quality rug should be both visually striking and durable while offering comfort.
-            </p>
-            <p className="font-sans text-[var(--text-secondary)] text-lg md:text-xl leading-relaxed">
-              At House of Décor, we honor the art of rug-making with a diverse collection created by talented artisans from India. Each rug is infused with rich traditions and unique stories, making every piece a one-of-a-kind addition to your space. Discover our weaving techniques, materials, and processes to find a rug that not only complements your home but also narrates its own story.
+          <div className="flex flex-col gap-8 text-center max-w-2xl mx-auto">
+            <p className="font-sans text-[var(--text-secondary)] text-lg md:text-xl leading-relaxed font-light">
+              Discover the craftsmanship, fibers, and time-honored techniques that make every piece a timeless signature.
             </p>
           </div>
         </motion.div>

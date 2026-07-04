@@ -31,10 +31,10 @@ export default function DiningGuide() {
   }, { scope: containerRef });
 
   return (
-    <section id="dining-room" ref={containerRef} className="w-full py-24 md:py-32 px-4 md:px-8 bg-[var(--bg-primary)]">
+    <section id="dining-room" ref={containerRef} className="w-full py-16 md:py-32 px-4 md:px-8 bg-[var(--bg-primary)]">
       <div className="max-w-[1200px] mx-auto">
         <div className="dining-reveal text-center max-w-[800px] mx-auto mb-20">
-          <h2 className="font-serif text-4xl md:text-6xl text-[var(--text-primary)] mb-6">
+          <h2 className="font-serif text-[clamp(32px,5vw,64px)] text-[var(--text-primary)] mb-6">
             Dining Room
           </h2>
           <p className="font-sans text-base md:text-lg text-[var(--text-secondary)] font-light">
@@ -42,7 +42,7 @@ export default function DiningGuide() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
           {/* Left: Rectangular Dining */}
           <div className="dining-reveal flex flex-col items-center text-center">
             <div className="w-full aspect-square mb-8 bg-[var(--bg-secondary)] border border-[var(--border-secondary)] overflow-hidden p-8 flex items-center justify-center">
@@ -52,7 +52,7 @@ export default function DiningGuide() {
                 className="w-full h-full object-cover mix-blend-multiply"
               />
             </div>
-            <h3 className="font-serif text-2xl md:text-3xl text-[var(--text-primary)] mb-4">
+            <h3 className="font-serif text-[clamp(20px,4vw,32px)] text-[var(--text-primary)] mb-4">
               Rectangular Tables
             </h3>
             <p className="font-sans text-sm md:text-base text-[var(--text-secondary)] leading-relaxed max-w-[400px]">
@@ -69,7 +69,7 @@ export default function DiningGuide() {
                 className="w-full h-full object-cover mix-blend-multiply"
               />
             </div>
-            <h3 className="font-serif text-2xl md:text-3xl text-[var(--text-primary)] mb-4">
+            <h3 className="font-serif text-[clamp(20px,4vw,32px)] text-[var(--text-primary)] mb-4">
               Circular Tables
             </h3>
             <p className="font-sans text-sm md:text-base text-[var(--text-secondary)] leading-relaxed max-w-[400px]">

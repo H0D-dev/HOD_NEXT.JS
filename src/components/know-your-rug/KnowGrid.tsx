@@ -50,7 +50,7 @@ const itemVariants = {
 
 export default function KnowGrid() {
   return (
-    <section className="w-full pb-24 md:pb-40 px-6 md:px-16 lg:px-24 bg-[var(--bg-primary)]">
+    <section className="w-full pb-16 md:pb-40 px-6 md:px-16 lg:px-24 bg-[var(--bg-primary)]">
       <div className="max-w-[var(--container-lg)] mx-auto">
         <motion.div
           variants={containerVariants}
@@ -69,12 +69,9 @@ export default function KnowGrid() {
                   className="object-cover transition-transform duration-[1.5s] group-hover:scale-105 ease-[cubic-bezier(0.22,1,0.36,1)]"
                 />
               </div>
-              <h3 className="font-serif text-3xl md:text-4xl text-[var(--text-primary)] mb-4">
+              <h3 className="font-serif text-[clamp(24px,4vw,40px)] text-[var(--text-primary)] mb-6">
                 {topic.title}
               </h3>
-              <p className="font-sans text-[var(--text-secondary)] text-base md:text-lg leading-relaxed mb-8">
-                {topic.description}
-              </p>
               <Link 
                 href={`/know-your-rug/${topic.id}`} 
                 className="inline-block mt-auto font-sans font-medium text-xs tracking-[0.2em] uppercase text-[var(--text-primary)] border-b border-[var(--text-primary)] pb-1 w-max hover:text-[var(--accent-primary)] hover:border-[var(--accent-secondary)] transition-colors duration-300"

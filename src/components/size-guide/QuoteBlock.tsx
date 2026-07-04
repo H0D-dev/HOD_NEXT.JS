@@ -30,10 +30,10 @@ export default function QuoteBlock() {
   return (
     <section 
       ref={quoteRef}
-      className="w-full py-32 md:py-48 px-4 md:px-8 bg-[var(--bg-tertiary)] flex justify-center items-center text-center"
+      className="w-full py-16 md:py-32 px-4 md:px-8 bg-[var(--bg-tertiary)] flex justify-center items-center text-center"
     >
       <div className="max-w-[800px] mx-auto flex flex-col items-center">
-        <h2 className="quote-text font-serif text-3xl md:text-5xl lg:text-6xl italic leading-[1.2] text-[var(--text-primary)] mb-8">
+        <h2 className="quote-text font-serif text-[clamp(28px,5vw,48px)] italic leading-[1.2] text-[var(--text-primary)] mb-8">
           “A rug or curtain can anchor a room, define a space, and completely transform how a home feels.”
         </h2>
         <span className="quote-text font-sans text-xs md:text-sm tracking-[0.2em] uppercase text-[var(--text-muted)]">

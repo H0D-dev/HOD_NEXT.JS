@@ -19,14 +19,14 @@ export default function SizeGuideHero() {
   return (
     <section 
       ref={containerRef}
-      className="min-h-screen w-full flex flex-col justify-center items-center px-4 md:px-8 py-32 bg-[var(--bg-primary)] text-[var(--text-primary)]"
+      className="min-h-screen w-full flex flex-col justify-center items-center px-4 md:px-8 py-16 md:py-32 bg-[var(--bg-primary)] text-[var(--text-primary)]"
     >
       <div className="max-w-[768px] mx-auto flex flex-col items-center text-center">
         <span className="hero-element font-sans text-xs md:text-sm tracking-[0.2em] uppercase mb-8 text-[var(--text-muted)]">
           Guide
         </span>
         
-        <h1 className="hero-element font-serif text-5xl md:text-7xl lg:text-8xl leading-[0.9] tracking-tight mb-8">
+        <h1 className="hero-element font-serif text-[clamp(48px,8vw,80px)] leading-[0.9] tracking-tight mb-8">
           Size & Fitting Guide
         </h1>
         
@@ -35,15 +35,17 @@ export default function SizeGuideHero() {
         </h2>
         
         <p className="hero-element font-sans text-sm md:text-base leading-relaxed mb-12 max-w-[500px] mx-auto text-[var(--text-secondary)]">
-          Selecting the right rug or curtain size can transform the way a space feels. Our design experts help you understand ideal proportions, placement, and styling for every room.
+          Selecting the right rug or curtain size transforms a space. Our design experts help you understand ideal proportions and placement.
         </p>
         
-        <Link 
-          href="/contact" 
+        <a 
+          href="https://wa.me/971521236888?text=Hello,%20I%20need%20help%20with%20sizing%20for%20my%20space."
+          target="_blank"
+          rel="noopener noreferrer"
           className="hero-element font-sans text-sm tracking-wider uppercase px-8 py-4 border border-[var(--border-primary)] text-[var(--text-primary)] hover:bg-[var(--accent-secondary)] hover:text-[var(--bg-primary)] transition-colors duration-500 ease-out"
         >
-          Book Consultation &rarr;
-        </Link>
+          Need Help in Size? &rarr;
+        </a>
       </div>
     </section>
   );

@@ -7,32 +7,32 @@ const services = [
   {
     id: 1,
     title: "Virtual Sales Representative",
-    description: "Connect with a dedicated expert online to view collections, discuss custom requirements, and receive immediate assistance without leaving your studio.",
+    description: "Connect with a dedicated expert for immediate assistance and custom requirements.",
     image: "/curtains/set1-room.png",
   },
   {
     id: 2,
     title: "Budget & Project Management",
-    description: "Comprehensive support for large-scale projects, ensuring your designs are realized within the specified financial framework and timelines.",
+    description: "Comprehensive project support ensuring designs meet timelines and budgets.",
     image: "/rugs/set1-room.png",
   },
   {
     id: 3,
     title: "Dedicated Account Manager",
-    description: "A single point of contact who understands your aesthetic and business needs, providing streamlined communication and personalized service.",
+    description: "Your single point of contact for personalized service and seamless communication.",
     image: "/curtains/set3-room.png",
   },
   {
     id: 4,
     title: "After Sales Support",
-    description: "Our commitment extends beyond delivery. We provide extensive guidance on installation, care, and long-term maintenance of all our pieces.",
+    description: "Extensive guidance on installation, care, and long-term maintenance.",
     image: "/rugs/set2-room.png",
   },
 ];
 
 export default function TradeExpertService() {
   return (
-    <section className="w-full py-24 md:py-32 px-6 md:px-16 lg:px-24 bg-[var(--bg-primary)]">
+    <section className="w-full py-16 md:py-32 px-6 md:px-16 lg:px-24 bg-[var(--bg-primary)]">
       <div className="max-w-[var(--container-md)] mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -44,7 +44,7 @@ export default function TradeExpertService() {
           <span className="block text-[var(--text-muted)] font-sans text-xs uppercase tracking-widest mb-6">
             Our Commitment
           </span>
-          <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-[var(--text-primary)] tracking-tight">
+          <h2 className="font-serif text-[clamp(32px,5vw,64px)] text-[var(--text-primary)] tracking-tight">
             Expert Service & <br className="hidden md:block" /> Trusted Guidance
           </h2>
         </motion.div>
@@ -87,7 +87,7 @@ export default function TradeExpertService() {
                   <span className="font-sans text-xs text-[var(--text-muted)] tracking-widest mb-4">
                     0{service.id}
                   </span>
-                  <h3 className="font-serif text-3xl md:text-4xl text-[var(--text-primary)] mb-6">
+                  <h3 className="font-serif text-[clamp(24px,5vw,40px)] text-[var(--text-primary)] mb-6">
                     {service.title}
                   </h3>
                   <p className="font-sans text-base md:text-lg text-[var(--text-secondary)] leading-relaxed max-w-md">

@@ -44,7 +44,7 @@ export default function GuideNavigation() {
 
   return (
     <div className="sticky top-0 z-50 w-full bg-[var(--bg-primary)]/90 backdrop-blur-md border-b border-[var(--border-primary)] transition-all duration-300">
-      <div className="max-w-[1440px] mx-auto px-4 md:px-8 py-4 overflow-x-auto no-scrollbar">
+      <div className="max-w-[1440px] mx-auto px-4 md:px-8 py-4 overflow-x-auto hide-scrollbar">
         <ul className="flex items-center md:justify-center gap-2 md:gap-8 min-w-max">
           {navLinks.map((link) => (
             <li key={link.href}>

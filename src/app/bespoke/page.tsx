@@ -7,7 +7,7 @@ import BespokeHero from "../../components/bespoke/BespokeHero";
 import PhilosophySection from "../../components/bespoke/PhilosophySection";
 import BespokeProcess from "../../components/bespoke/BespokeProcess";
 import MaterialsSection from "../../components/bespoke/MaterialsSection";
-import FeaturedProjects from "../../components/bespoke/FeaturedProjects";
+
 import ConsultationCTA from "../../components/bespoke/ConsultationCTA";
 import TestimonialsSection from "../../components/bespoke/TestimonialsSection";
 import FinalCTA from "../../components/bespoke/FinalCTA";
@@ -40,7 +40,7 @@ export default function BespokePage() {
       <PhilosophySection />
       <BespokeProcess />
       <MaterialsSection />
-      <FeaturedProjects />
+
       <ConsultationCTA />
       <TestimonialsSection />
       <FinalCTA />

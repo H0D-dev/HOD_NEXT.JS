@@ -151,11 +151,11 @@ export default function TermsContent() {
   };
 
   return (
-    <section className="w-full py-16 md:py-24 px-6 md:px-16 lg:px-24 bg-[var(--bg-primary)]">
-      <div className="max-w-[var(--container-lg)] mx-auto flex flex-col md:flex-row gap-12 lg:gap-24">
+    <section className="w-full py-16 md:py-32 px-6 md:px-16 lg:px-24 bg-[var(--bg-primary)]">
+      <div className="max-w-[var(--container-lg)] mx-auto flex flex-col lg:flex-row gap-12 lg:gap-24">
         
-        {/* Mobile Navigation Dropdown */}
-        <div className="md:hidden sticky top-4 z-40 bg-[var(--bg-secondary)] border border-[var(--border-secondary)]">
+        {/* Mobile & Tablet Navigation Dropdown */}
+        <div className="lg:hidden sticky top-4 z-40 bg-[var(--bg-secondary)] border border-[var(--border-secondary)]">
           <button 
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="w-full px-6 py-4 flex items-center justify-between font-sans text-sm tracking-wider uppercase text-[var(--text-primary)]"
@@ -187,7 +187,7 @@ export default function TermsContent() {
         </div>
 
         {/* Desktop Sidebar */}
-        <aside className="hidden md:block w-64 lg:w-80 shrink-0">
+        <aside className="hidden lg:block w-64 lg:w-80 shrink-0">
           <div className="sticky top-32 flex flex-col gap-1">
             <h3 className="font-sans text-xs uppercase tracking-widest text-[var(--text-muted)] mb-6 px-4">
               Contents
@@ -223,7 +223,7 @@ export default function TermsContent() {
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any }}
               className="scroll-mt-32"
             >
-              <h2 className="font-serif text-3xl md:text-4xl text-[var(--text-primary)] mb-8 pb-4 border-b border-[var(--border-secondary)]">
+              <h2 className="font-serif text-[clamp(24px,5vw,40px)] text-[var(--text-primary)] mb-8 pb-4 border-b border-[var(--border-secondary)]">
                 {section.title}
               </h2>
               <ol className="list-decimal list-outside ml-5 space-y-6">
