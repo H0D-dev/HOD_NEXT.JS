@@ -4,7 +4,7 @@ export async function getFeaturedProducts(categorySlug: string) {
   try {
     // 1. Fetch the category ID by slug
     const catUrl = `${API_CONFIG.baseUrl}/wp-json/wc/v3/products/categories?slug=${categorySlug}&consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}`;
-    const catRes = await fetch(catUrl, { cache: "no-store" });
+    const catRes = await fetch(catUrl, { next: { revalidate: 3600 } });
     const categories = await catRes.json();
 
     if (!Array.isArray(categories) || categories.length === 0) {
@@ -17,7 +17,7 @@ export async function getFeaturedProducts(categorySlug: string) {
     // 2. Fetch featured products for this category
     const fields = "id,name,slug,price,price_html,images,categories";
     const prodUrl = `${API_CONFIG.baseUrl}/wp-json/wc/v3/products?category=${categoryId}&featured=true&per_page=8&consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&_fields=${fields}`;
-    const prodRes = await fetch(prodUrl, { cache: "no-store" });
+    const prodRes = await fetch(prodUrl, { next: { revalidate: 3600 } });
     const products = await prodRes.json();
 
     if (!Array.isArray(products)) {
