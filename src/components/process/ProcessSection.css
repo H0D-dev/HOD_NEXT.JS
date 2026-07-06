@@ -63,8 +63,6 @@
 .process__mobile-testimonial {
   display: block;
   margin-top: 16px;
-  border: 1px solid var(--border-primary);
-  padding: 32px 16px;
   text-align: center;
 }
 

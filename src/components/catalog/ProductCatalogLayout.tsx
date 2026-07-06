@@ -7,7 +7,7 @@ import CatalogControls from "./CatalogControls";
 import ProductGrid from "./ProductGrid";
 import FilterDrawer from "./FilterDrawer";
 import { RUGS_CONFIG, CURTAINS_CONFIG, FilterCategory, ProductStub } from "../../lib/catalogConfig";
-import { getProducts } from "../../services/Product";
+import { getProducts, getCategoryIdBySlug } from "../../services/Product";
 
 interface ProductCatalogLayoutProps {
   category: "rugs" | "curtains";
@@ -32,10 +32,14 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
-      const categoryId = category === "rugs" ? 16 : 17;
-      const data = await getProducts(categoryId);
-      if (Array.isArray(data)) {
-        setProducts(data);
+      const categoryId = await getCategoryIdBySlug(category);
+      if (categoryId) {
+        const data = await getProducts(categoryId);
+        if (Array.isArray(data)) {
+          setProducts(data);
+        } else {
+          setProducts([]);
+        }
       } else {
         setProducts([]);
       }

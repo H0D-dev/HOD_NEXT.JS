@@ -52,3 +52,17 @@ export async function getCategories(parentId = null) {
         return [];
     }
 }
+
+export async function getCategoryIdBySlug(slug) {
+    try {
+        const res = await fetch(`/api/categories?slug=${slug}`, { cache: 'no-store' });
+        if (!res.ok) throw new Error("Failed to fetch category");
+        const { categories } = await res.json();
+        if (Array.isArray(categories) && categories.length > 0) {
+            return categories[0].id;
+        }
+        return null;
+    } catch (error) {
+        return null;
+    }
+}

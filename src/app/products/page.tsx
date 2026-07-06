@@ -7,7 +7,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
-import { getCategories } from "@/src/services/Product";
+import { getCategories, getCategoryIdBySlug } from "@/src/services/Product";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -32,28 +32,34 @@ export default function CollectionsPage() {
   useEffect(() => {
     async function fetchCollections() {
       try {
-        const rugs = await getCategories(16);
-        if (Array.isArray(rugs) && rugs.length > 0) {
-          setRugCollections(rugs.map(r => {
-            const fallback = initialRugCollections.find(ic => ic.slug === r.slug);
-            return {
-              title: r.name,
-              slug: r.slug,
-              image: r.image?.src || fallback?.image || "/rugs/set1-room.png"
-            };
-          }));
+        const rugsId = await getCategoryIdBySlug("rugs");
+        if (rugsId) {
+          const rugs = await getCategories(rugsId);
+          if (Array.isArray(rugs) && rugs.length > 0) {
+            setRugCollections(rugs.map(r => {
+              const fallback = initialRugCollections.find(ic => ic.slug === r.slug);
+              return {
+                title: r.name,
+                slug: r.slug,
+                image: r.image?.src || fallback?.image || "/rugs/set1-room.png"
+              };
+            }));
+          }
         }
 
-        const curtains = await getCategories(17);
-        if (Array.isArray(curtains) && curtains.length > 0) {
-          setCurtainCollections(curtains.map(c => {
-            const fallback = initialCurtainCollections.find(ic => ic.slug === c.slug);
-            return {
-              title: c.name,
-              slug: c.slug,
-              image: c.image?.src || fallback?.image || "/curtains/set1-room.png"
-            };
-          }));
+        const curtainsId = await getCategoryIdBySlug("curtains");
+        if (curtainsId) {
+          const curtains = await getCategories(curtainsId);
+          if (Array.isArray(curtains) && curtains.length > 0) {
+            setCurtainCollections(curtains.map(c => {
+              const fallback = initialCurtainCollections.find(ic => ic.slug === c.slug);
+              return {
+                title: c.name,
+                slug: c.slug,
+                image: c.image?.src || fallback?.image || "/curtains/set1-room.png"
+              };
+            }));
+          }
         }
       } catch (error) {
         console.error("Failed to fetch collections", error);

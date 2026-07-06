@@ -116,7 +116,7 @@ export default function ProcessSection() {
             <p className="process__quote-text">
               The <em>Quality</em>, the feel, the entire experience was exceptional
             </p>
-            <span className="process__quote-author font-sans">Manish Suthar</span>
+            <span className="process__quote-author font-sans">Sarah Jennings</span>
           </div>
         </motion.div>
 
@@ -158,7 +158,7 @@ export default function ProcessSection() {
               <p className="process__quote-text">
                 The <em>Quality</em>, the feel, the entire experience was exceptional
               </p>
-              <span className="process__quote-author font-sans">Manish Suthar</span>
+              <span className="process__quote-author font-sans">Sarah Jennings</span>
             </div>
           </motion.div>
 
