@@ -10,6 +10,7 @@ export interface CartItem {
   category: "rug" | "curtain";
   image: string;
   price: number;
+  currency: string;
   quantity: number;
   variant?: {
     color?: string;
@@ -26,6 +27,7 @@ export interface CartItem {
 
 export interface CartStore {
   items: CartItem[];
+  cartCurrency: string | null;
   isDrawerOpen: boolean;
   addItem: (item: CartItem) => void;
   removeItem: (id: string) => void;
@@ -47,12 +49,20 @@ export const useCartStore = create<CartStore>()(
   persist(
     (set) => ({
       items: [],
+      cartCurrency: null,
       isDrawerOpen: false,
       totalItems: 0,
       subtotal: 0,
 
       addItem: (newItem) => {
         set((state) => {
+          const newCartCurrency = state.items.length === 0 ? newItem.currency : state.cartCurrency;
+          
+          if (state.items.length > 0 && state.cartCurrency !== newItem.currency) {
+            console.warn(`Cart currency is locked to ${state.cartCurrency}. Cannot add item in ${newItem.currency}.`);
+            return state;
+          }
+
           const existingItem = state.items.find((item) => item.id === newItem.id);
           let newItems;
           if (existingItem) {
@@ -64,14 +74,15 @@ export const useCartStore = create<CartStore>()(
           } else {
             newItems = [...state.items, newItem];
           }
-          return { items: newItems, ...calculateTotals(newItems) };
+          return { items: newItems, cartCurrency: newCartCurrency, ...calculateTotals(newItems) };
         });
       },
 
       removeItem: (id) => {
         set((state) => {
           const newItems = state.items.filter((item) => item.id !== id);
-          return { items: newItems, ...calculateTotals(newItems) };
+          const newCartCurrency = newItems.length === 0 ? null : state.cartCurrency;
+          return { items: newItems, cartCurrency: newCartCurrency, ...calculateTotals(newItems) };
         });
       },
 
@@ -84,7 +95,7 @@ export const useCartStore = create<CartStore>()(
         });
       },
 
-      clearCart: () => set({ items: [], totalItems: 0, subtotal: 0 }),
+      clearCart: () => set({ items: [], totalItems: 0, subtotal: 0, cartCurrency: null }),
 
       openDrawer: () => set({ isDrawerOpen: true }),
       closeDrawer: () => set({ isDrawerOpen: false }),
@@ -94,7 +105,8 @@ export const useCartStore = create<CartStore>()(
       partialize: (state) => ({ 
         items: state.items,
         totalItems: state.totalItems,
-        subtotal: state.subtotal
+        subtotal: state.subtotal,
+        cartCurrency: state.cartCurrency
       }),
     }
   )

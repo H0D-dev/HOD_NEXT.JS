@@ -7,6 +7,7 @@ interface LineItem {
   product_id: number;
   variation_id?: number;
   quantity: number;
+  price: number;
 }
 
 interface CreateOrderBody {
@@ -25,6 +26,7 @@ interface CreateOrderBody {
     postcode?: string;
   };
   payment_method: string;
+  currency: string;
   cart: LineItem[];
   order_notes?: string;
   checkout_session_id?: string;
@@ -135,6 +137,7 @@ export async function POST(request: Request) {
       customer_id: customerId,
       payment_method: body.payment_method,
       payment_method_title: paymentTitles[body.payment_method] || body.payment_method,
+      currency: body.currency,
       set_paid: false,
       billing: {
         first_name: body.billing.first_name,
@@ -162,6 +165,8 @@ export async function POST(request: Request) {
         product_id: item.product_id,
         ...(item.variation_id && { variation_id: item.variation_id }),
         quantity: item.quantity,
+        subtotal: (item.price * item.quantity).toString(),
+        total: (item.price * item.quantity).toString(),
       })),
       customer_note: body.order_notes || "",
     };

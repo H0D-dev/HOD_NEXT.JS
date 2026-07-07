@@ -22,6 +22,7 @@ interface WooProduct {
   attributes: { id: number; name: string; options: string[] }[];
   variations: number[];
   meta_data: { key: string; value: any }[];
+  manual_prices?: { inr?: string; usd?: string; eur?: string };
   default_attributes?: { id: number; name: string; option: string }[];
 }
 
@@ -36,6 +37,7 @@ interface WooVariation {
   weight: string;
   dimensions: { length: string; width: string; height: string };
   attributes: { id: number; name: string; option: string }[];
+  manual_prices?: { inr?: string; usd?: string; eur?: string };
 }
 
 function extractAcf(metaData: WooProduct["meta_data"]): Record<string, any> {
@@ -117,6 +119,12 @@ async function fetchVariations(productId: number): Promise<ProductVariation[]> {
         weight: v.weight || undefined,
         attributes: v.attributes.map(a => ({ name: a.name, option: a.option })),
         label,
+        currencyPrices: {
+          AED: parseFloat(v.price) || 0,
+          INR: v.manual_prices?.inr ? parseFloat(v.manual_prices.inr) : undefined,
+          USD: v.manual_prices?.usd ? parseFloat(v.manual_prices.usd) : undefined,
+          EUR: v.manual_prices?.eur ? parseFloat(v.manual_prices.eur) : undefined,
+        },
       };
     });
   } catch (error) {
@@ -167,6 +175,7 @@ function transformProduct(
     salePrice: p.sale_price ? parseFloat(p.sale_price) : undefined,
     onSale: p.on_sale,
     sku: p.sku || undefined,
+    stockStatus: p.stock_status || undefined,
     productType: (isVariable ? "variable" : p.type) as Product["productType"],
     variations: isVariable ? variations : undefined,
     defaultVariationId,
@@ -196,6 +205,12 @@ function transformProduct(
       itemNumber: acf.item_number || undefined,
     },
     colors,
+    currencyPrices: {
+      AED: p.price ? parseFloat(p.price) : (p.regular_price ? parseFloat(p.regular_price) : 0),
+      INR: p.manual_prices?.inr ? parseFloat(p.manual_prices.inr) : undefined,
+      USD: p.manual_prices?.usd ? parseFloat(p.manual_prices.usd) : undefined,
+      EUR: p.manual_prices?.eur ? parseFloat(p.manual_prices.eur) : undefined,
+    },
   };
 }
 
@@ -207,7 +222,7 @@ export async function getProductBySlug(
 ): Promise<Product | null> {
   try {
     const fields =
-      "id,name,slug,type,description,price,regular_price,sale_price,on_sale,sku,categories,images,attributes,variations,meta_data,permalink,dimensions,stock_status,weight,default_attributes";
+      "id,name,slug,type,description,price,regular_price,sale_price,on_sale,sku,categories,images,attributes,variations,meta_data,permalink,dimensions,stock_status,weight,default_attributes,manual_prices";
     const productUrl = `${API_CONFIG.baseUrl}/wp-json/wc/v3/products?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&slug=${slug}&_fields=${fields}`;
 
     const res = await fetch(productUrl, { cache: "no-store" });

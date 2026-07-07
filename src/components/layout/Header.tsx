@@ -6,6 +6,8 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useCartStore } from "@/src/lib/store/useCartStore";
 import { useAuthStore } from "@/src/lib/store/useAuthStore";
+import { useCurrencyStore } from "@/src/lib/store/useCurrencyStore";
+import { Currency } from "@/src/components/product-presentation/ProductPresentation";
 import "./Header.css";
 
 /* ── Navigation Links Data ── */
@@ -23,9 +25,23 @@ export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
   
-  const { openDrawer, totalItems } = useCartStore();
+  const { openDrawer, totalItems, items, clearCart } = useCartStore();
   const { isAuthenticated } = useAuthStore();
+  const { currency, setCurrency } = useCurrencyStore();
   const [mounted, setMounted] = useState(false);
+
+  const handleCurrencyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newCurrency = e.target.value as Currency;
+    if (items.length > 0 && newCurrency !== currency) {
+      const confirmClear = window.confirm(`Your cart is currently in ${currency}. Changing the currency will clear your cart. Do you want to proceed?`);
+      if (confirmClear) {
+        clearCart();
+        setCurrency(newCurrency);
+      }
+    } else {
+      setCurrency(newCurrency);
+    }
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -153,6 +169,22 @@ export default function Header() {
 
           {/* ── Right Group ── */}
           <div className="header__right">
+            {/* ── Currency Selector ── */}
+            {mounted && (
+              <div className="header__currency-selector mr-4 hidden md:block">
+                <select 
+                  value={currency} 
+                  onChange={handleCurrencyChange}
+                  className="bg-transparent border-none text-[var(--text-primary)] text-[var(--text-sm)] font-medium outline-none cursor-pointer tracking-wider"
+                  aria-label="Select Currency"
+                >
+                  <option value="AED">AED</option>
+                  <option value="INR">INR</option>
+                  <option value="USD">USD</option>
+                  <option value="EUR">EUR</option>
+                </select>
+              </div>
+            )}
             <button className="header__cart-btn header__desktop-cart-btn" aria-label="Open cart" onClick={openDrawer}>
               <div className="header__cart-icon-wrapper">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

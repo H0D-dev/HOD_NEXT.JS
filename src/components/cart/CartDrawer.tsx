@@ -4,13 +4,14 @@ import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useCartStore } from "@/src/lib/store/useCartStore";
+import { formatPrice } from "@/src/lib/utils/price";
 import CartItem from "./CartItem";
 import "./CartDrawer.css";
 
 const easing = [0.22, 1, 0.36, 1] as const;
 
 export default function CartDrawer() {
-  const { isDrawerOpen, closeDrawer, items, subtotal, totalItems } = useCartStore();
+  const { isDrawerOpen, closeDrawer, items, subtotal, totalItems, cartCurrency } = useCartStore();
 
   useEffect(() => {
     if (isDrawerOpen) {
@@ -88,7 +89,7 @@ export default function CartDrawer() {
               <div className="cart-drawer__footer">
                 <div className="cart-drawer__summary">
                   <span className="cart-drawer__summary-label">Subtotal</span>
-                  <span className="cart-drawer__summary-value">AED {subtotal.toLocaleString()}</span>
+                  <span className="cart-drawer__summary-value">{formatPrice(subtotal, cartCurrency || "AED")}</span>
                 </div>
                 <p className="cart-drawer__shipping-note">Shipping and taxes calculated at checkout.</p>
                 <div className="cart-drawer__actions">

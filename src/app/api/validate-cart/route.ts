@@ -20,6 +20,7 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const cartItems: CartItemInput[] = body.items;
+    const currency: string = body.currency || "AED";
 
     if (!cartItems || cartItems.length === 0) {
       return NextResponse.json(
@@ -39,8 +40,8 @@ export async function POST(request: Request) {
     // Fetch each product from WooCommerce to validate
     for (const item of cartItems) {
       const url = item.variation_id
-        ? `${API_CONFIG.baseUrl}/wp-json/wc/v3/products/${item.product_id}/variations/${item.variation_id}?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&_fields=id,name,price,regular_price,sale_price,stock_status,stock_quantity,manage_stock,status`
-        : `${API_CONFIG.baseUrl}/wp-json/wc/v3/products/${item.product_id}?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&_fields=id,name,price,regular_price,sale_price,stock_status,stock_quantity,manage_stock,status`;
+        ? `${API_CONFIG.baseUrl}/wp-json/wc/v3/products/${item.product_id}/variations/${item.variation_id}?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&_fields=id,name,price,regular_price,sale_price,stock_status,stock_quantity,manage_stock,status,manual_prices`
+        : `${API_CONFIG.baseUrl}/wp-json/wc/v3/products/${item.product_id}?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&_fields=id,name,price,regular_price,sale_price,stock_status,stock_quantity,manage_stock,status,manual_prices`;
 
       const res = await fetch(url, { cache: "no-store" });
 
@@ -87,8 +88,19 @@ export async function POST(request: Request) {
         }
       }
 
-      // Check price — never trust frontend price
-      const currentPrice = parseFloat(product.price);
+      // Check price using manual_prices logic
+      let currentPrice = 0;
+      if (currency !== "AED") {
+        const manualPriceStr = product.manual_prices?.[currency.toLowerCase()];
+        if (manualPriceStr) {
+          currentPrice = parseFloat(manualPriceStr);
+        } else {
+          currentPrice = parseFloat(product.price) || 0; // fallback to AED
+        }
+      } else {
+        currentPrice = parseFloat(product.price) || 0;
+      }
+
       if (Math.abs(currentPrice - item.frontend_price) > 0.01) {
         errors.push({
           product_id: item.product_id,
@@ -102,7 +114,7 @@ export async function POST(request: Request) {
       validatedItems.push({
         product_id: item.product_id,
         quantity: item.quantity,
-        price: product.price,
+        price: currentPrice.toString(),
         name: product.name,
       });
     }

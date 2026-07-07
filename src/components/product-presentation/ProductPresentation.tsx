@@ -1,11 +1,19 @@
 "use client";
-
 import React, { useState } from "react";
 import ProductTextureView from "./ProductTextureView";
 import ProductDetailsArea from "./ProductDetailsArea";
 import ProductSpecifications from "./ProductSpecifications";
 import ProductInfoCard from "./ProductInfoCard";
 import ExploreMore from "./ExploreMore";
+
+export type Currency = "AED" | "INR" | "USD" | "EUR";
+
+export type CurrencyPrices = {
+  AED: number;
+  INR?: number;
+  USD?: number;
+  EUR?: number;
+};
 
 export type ProductColor = {
   id: string;
@@ -30,6 +38,7 @@ export type ProductVariation = {
   attributes: { name: string; option: string }[];
   /** Computed label like "200 x 300 cm" from variation attributes */
   label: string;
+  currencyPrices: CurrencyPrices;
 };
 
 export type Product = {
@@ -49,6 +58,7 @@ export type Product = {
   category?: string;
   categorySlug?: string;
   image?: string;
+  stockStatus?: string;
   productType?: "simple" | "variable" | "grouped" | "external";
   variations?: ProductVariation[];
   details?: {
@@ -64,6 +74,7 @@ export type Product = {
     [key: string]: string | undefined;
   };
   defaultVariationId?: number;
+  currencyPrices: CurrencyPrices;
 };
 
 interface ProductPresentationProps {

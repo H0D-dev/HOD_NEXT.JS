@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { useCartStore, type CartItem as CartItemType } from "@/src/lib/store/useCartStore";
+import { formatPrice } from "@/src/lib/utils/price";
 import "./CartItem.css";
 
 interface CartItemProps {
@@ -64,7 +65,7 @@ export default function CartItem({ item, context = "drawer" }: CartItemProps) {
 
         <div className="cart-item__bottom">
           <div className="cart-item__price">
-            AED {item.price.toLocaleString()}
+            {formatPrice(item.price, item.currency || "AED")}
           </div>
 
           <div className="cart-item__actions">
