@@ -13,29 +13,51 @@ export default function ContactFormSection() {
   });
 
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [responseMessage, setResponseMessage] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("loading");
+    setResponseMessage("");
     
-    // Simulate API call
-    setTimeout(() => {
-      setStatus("success");
-      setFormData({
-        firstName: "",
-        lastName: "",
-        email: "",
-        subject: "",
-        message: "",
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
       });
-      // Reset status after some time
-      setTimeout(() => setStatus("idle"), 5000);
-    }, 1500);
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        setStatus("success");
+        setResponseMessage(data.message || "Thank you. Your message has been sent successfully. We will get back to you within 24 hours.");
+        setFormData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          subject: "",
+          message: "",
+        });
+        
+        // Reset status after some time
+        setTimeout(() => {
+          setStatus("idle");
+          setResponseMessage("");
+        }, 5000);
+      } else {
+        setStatus("error");
+        setResponseMessage(data.message || "Something went wrong. Please try again.");
+      }
+    } catch (error: any) {
+      setStatus("error");
+      setResponseMessage("An unexpected error occurred. Please try again later.");
+    }
   };
 
   return (
@@ -157,7 +179,7 @@ export default function ContactFormSection() {
                   animate={{ opacity: 1, y: 0 }}
                   className="text-sm font-sans text-green-700 text-center mt-2"
                 >
-                  Thank you. Your message has been sent successfully. We will get back to you within 24 hours.
+                  {responseMessage || "Thank you. Your message has been sent successfully. We will get back to you within 24 hours."}
                 </motion.p>
               )}
               {status === "error" && (
@@ -166,7 +188,7 @@ export default function ContactFormSection() {
                   animate={{ opacity: 1, y: 0 }}
                   className="text-sm font-sans text-red-700 text-center mt-2"
                 >
-                  Something went wrong. Please try again.
+                  {responseMessage || "Something went wrong. Please try again."}
                 </motion.p>
               )}
             </form>
