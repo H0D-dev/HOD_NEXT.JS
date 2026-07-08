@@ -29,7 +29,7 @@ export interface CartStore {
   items: CartItem[];
   cartCurrency: string | null;
   isDrawerOpen: boolean;
-  addItem: (item: CartItem) => { success: boolean; error?: string; lockedCurrency?: string };
+  addItem: (item: CartItem) => { success: boolean; error?: string; lockedCurrency?: string | null };
   removeItem: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
