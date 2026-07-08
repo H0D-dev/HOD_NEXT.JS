@@ -307,7 +307,8 @@
 }
 
 .checkout__summary-item-price {
-  font-size: var(--text-sm);
+  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-size: var(--text-lg);
   font-weight: 600;
   color: var(--text-primary);
   flex-shrink: 0;
@@ -327,7 +328,8 @@
 }
 
 .checkout__summary-value {
-  font-size: var(--text-sm);
+  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-size: var(--text-lg);
   color: var(--text-primary);
   font-weight: 500;
 }
@@ -350,7 +352,7 @@
 
 .checkout__summary-total-value {
   font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
-  font-size: var(--text-xl);
+  font-size: var(--text-2xl);
   font-weight: 600;
   color: var(--text-primary);
 }

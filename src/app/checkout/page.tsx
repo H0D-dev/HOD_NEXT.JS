@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCartStore } from "@/src/lib/store/useCartStore";
 import { useAuthStore } from "@/src/lib/store/useAuthStore";
+import { formatPrice } from "@/src/lib/utils/price";
 import "./Checkout.css";
 
 interface FormData {
@@ -132,7 +133,7 @@ function generateSessionId() {
 
 export default function CheckoutPage() {
   const router = useRouter();
-  const { items, subtotal, clearCart } = useCartStore();
+  const { items, subtotal, clearCart, cartCurrency } = useCartStore();
   const { user } = useAuthStore();
   const [isClient, setIsClient] = useState(false);
   const [formData, setFormData] = useState<FormData>(initialFormData);
@@ -199,6 +200,7 @@ export default function CheckoutPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          currency: cartCurrency || "AED",
           items: items.map((item) => ({
             product_id: item.productId,
             variation_id: item.variationId,
@@ -244,10 +246,12 @@ export default function CheckoutPage() {
             postcode: formData.postcode,
           },
           payment_method: formData.payment_method,
+          currency: cartCurrency || "AED",
           cart: items.map((item) => ({
             product_id: item.productId,
             variation_id: item.variationId,
             quantity: item.quantity,
+            price: item.price,
           })),
           order_notes: formData.order_notes,
           checkout_session_id: checkoutSessionId,
@@ -320,7 +324,7 @@ export default function CheckoutPage() {
             {validationErrors.map((err, i) => (
               <p key={i} className="checkout__alert-item">
                 {err.message}
-                {err.corrected_price !== undefined && ` — New price: AED ${err.corrected_price.toLocaleString()}`}
+                {err.corrected_price !== undefined && ` — New price: ${formatPrice(err.corrected_price, cartCurrency || "AED")}`}
                 {err.available_stock !== undefined && ` — Available: ${err.available_stock}`}
               </p>
             ))}
@@ -525,19 +529,6 @@ export default function CheckoutPage() {
                     <p className="checkout__payment-desc">Credit/Debit Card, Apple Pay, etc.</p>
                   </div>
                 </div>
-
-                <div
-                  className={`checkout__payment-option ${formData.payment_method === "bacs" ? "checkout__payment-option--active" : ""}`}
-                  onClick={() => setFormData((prev) => ({ ...prev, payment_method: "bacs" }))}
-                >
-                  <div className="checkout__payment-radio">
-                    <div className="checkout__payment-radio-dot" />
-                  </div>
-                  <div className="checkout__payment-info">
-                    <p className="checkout__payment-title">Direct Bank Transfer</p>
-                    <p className="checkout__payment-desc">Transfer to our bank account</p>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -560,7 +551,7 @@ export default function CheckoutPage() {
                     )}
                   </div>
                   <span className="checkout__summary-item-price">
-                    AED {(item.price * item.quantity).toLocaleString()}
+                    {formatPrice(item.price * item.quantity, cartCurrency || "AED")}
                   </span>
                 </div>
               ))}
@@ -568,7 +559,7 @@ export default function CheckoutPage() {
 
             <div className="checkout__summary-line">
               <span className="checkout__summary-label">Subtotal</span>
-              <span className="checkout__summary-value">AED {subtotal.toLocaleString()}</span>
+              <span className="checkout__summary-value">{formatPrice(subtotal, cartCurrency || "AED")}</span>
             </div>
             <div className="checkout__summary-line">
               <span className="checkout__summary-label">Shipping</span>
@@ -581,7 +572,7 @@ export default function CheckoutPage() {
 
             <div className="checkout__summary-total">
               <span className="checkout__summary-total-label">Total</span>
-              <span className="checkout__summary-total-value">AED {subtotal.toLocaleString()}</span>
+              <span className="checkout__summary-total-value">{formatPrice(subtotal, cartCurrency || "AED")}</span>
             </div>
 
             <button

@@ -1,11 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useCartStore } from "@/src/lib/store/useCartStore";
 import { useAuthStore } from "@/src/lib/store/useAuthStore";
+import { useCurrencyStore } from "@/src/lib/store/useCurrencyStore";
+import { Currency } from "@/src/components/product-presentation/ProductPresentation";
+import toast from "react-hot-toast";
 import "./Header.css";
 
 /* ── Navigation Links Data ── */
@@ -23,9 +26,53 @@ export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
   
-  const { openDrawer, totalItems } = useCartStore();
+  const { openDrawer, totalItems, items, clearCart } = useCartStore();
   const { isAuthenticated } = useAuthStore();
+  const { currency, setCurrency } = useCurrencyStore();
   const [mounted, setMounted] = useState(false);
+  const [isCurrencyOpen, setIsCurrencyOpen] = useState(false);
+  const currencyRef = useRef<HTMLDivElement>(null);
+
+  // Close currency dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (currencyRef.current && !currencyRef.current.contains(event.target as Node)) {
+        setIsCurrencyOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleCurrencyChange = (newCurrency: Currency) => {
+    if (items.length > 0 && newCurrency !== currency) {
+      toast((t) => (
+        <div className="flex flex-col gap-3">
+          <p className="text-[var(--text-sm)] text-[var(--text-primary)] m-0">Your cart is currently in {currency}. Changing the currency will clear your cart. Do you want to proceed?</p>
+          <div className="flex justify-end gap-2">
+            <button 
+              className="px-3 py-1 text-[var(--text-sm)] border border-[var(--border-secondary)] transition-colors hover:bg-[var(--bg-secondary)]" 
+              onClick={() => toast.dismiss(t.id)}
+            >
+              Cancel
+            </button>
+            <button 
+              className="px-3 py-1 text-[var(--text-sm)] bg-[var(--accent-primary)] text-[#111] font-medium transition-colors hover:opacity-80" 
+              onClick={() => {
+                toast.dismiss(t.id);
+                clearCart();
+                setCurrency(newCurrency);
+              }}
+            >
+              Proceed
+            </button>
+          </div>
+        </div>
+      ), { duration: Infinity, id: 'currency-confirm' });
+    } else {
+      setCurrency(newCurrency);
+    }
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -153,6 +200,38 @@ export default function Header() {
 
           {/* ── Right Group ── */}
           <div className="header__right">
+            {/* ── Currency Selector ── */}
+            {mounted && (
+              <div className="header__currency-selector relative mr-4 hidden md:block" ref={currencyRef}>
+                <button 
+                  onClick={() => setIsCurrencyOpen(!isCurrencyOpen)}
+                  className="flex items-center gap-1 bg-transparent border-none text-[var(--text-primary)] text-[var(--text-sm)] font-medium outline-none cursor-pointer tracking-wider hover:opacity-70 transition-opacity"
+                  aria-label="Select Currency"
+                >
+                  {currency}
+                  <svg className={`w-3 h-3 transition-transform duration-300 ${isCurrencyOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                
+                {isCurrencyOpen && (
+                  <div className="absolute top-full right-0 mt-4 w-24 bg-[var(--bg-primary)] border border-[var(--border-secondary)] shadow-lg py-1 z-50 flex flex-col rounded-sm">
+                    {["AED", "INR", "USD", "EUR"].map(cur => (
+                      <button
+                        key={cur}
+                        className={`text-left px-4 py-2 text-[var(--text-sm)] tracking-wider hover:bg-[var(--bg-secondary)] transition-colors ${currency === cur ? 'font-bold text-[var(--text-primary)]' : 'text-[var(--text-secondary)]'}`}
+                        onClick={() => {
+                          handleCurrencyChange(cur as Currency);
+                          setIsCurrencyOpen(false);
+                        }}
+                      >
+                        {cur}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
             <button className="header__cart-btn header__desktop-cart-btn" aria-label="Open cart" onClick={openDrawer}>
               <div className="header__cart-icon-wrapper">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

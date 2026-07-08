@@ -5,6 +5,9 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { ProductColor, Product, ProductVariation } from "./ProductPresentation";
 import { useCartStore } from "@/src/lib/store/useCartStore";
+import { useCurrencyStore } from "@/src/lib/store/useCurrencyStore";
+import { formatPrice } from "@/src/lib/utils/price";
+import toast from "react-hot-toast";
 
 interface ProductInfoCardProps {
   product: Product & { sizes?: string[] };
@@ -17,6 +20,7 @@ interface ProductInfoCardProps {
 export default function ProductInfoCard({ product, activeColor, onColorChange, selectedVariation, onVariationChange }: ProductInfoCardProps) {
   const router = useRouter();
   const { addItem, openDrawer } = useCartStore();
+  const { currency, setCurrency } = useCurrencyStore();
 
   const isVariable = product.productType === "variable" && Array.isArray(product.variations) && product.variations.length > 0;
 
@@ -26,21 +30,38 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
   const [activeSize, setActiveSize] = useState<string>(fallbackSizes[0]);
 
   // --- Derived display values ---
-  const displayPrice = useMemo(() => {
+  const { displayPrice, isFallbackPrice } = useMemo(() => {
+    let priceToUse = 0;
+    let isFallback = false;
+
     if (isVariable && selectedVariation) {
-      const vPrice = selectedVariation.price || selectedVariation.regularPrice || 0;
-      if (vPrice > 0) return vPrice;
+      const currencyPrice = selectedVariation.currencyPrices?.[currency];
+      if (currencyPrice && currencyPrice > 0) {
+        priceToUse = currencyPrice;
+      } else {
+        priceToUse = selectedVariation.currencyPrices?.AED || 0;
+        if (currency !== "AED") isFallback = true;
+      }
+    } else {
+      const currencyPrice = product.currencyPrices?.[currency];
+      if (currencyPrice && currencyPrice > 0) {
+        priceToUse = currencyPrice;
+      } else {
+        priceToUse = product.currencyPrices?.AED || 0;
+        if (currency !== "AED") isFallback = true;
+      }
     }
-    return product.price ?? product.regularPrice;
-  }, [isVariable, selectedVariation, product.price, product.regularPrice]);
+    return { displayPrice: priceToUse, isFallbackPrice: isFallback };
+  }, [isVariable, selectedVariation, product.currencyPrices, currency]);
 
   const displayRegularPrice = useMemo(() => {
+    if (currency !== "AED") return undefined; // Manual prices don't currently have a regular vs sale distinction
     if (isVariable && selectedVariation) {
       const vRegPrice = selectedVariation.regularPrice || 0;
       if (vRegPrice > 0) return vRegPrice;
     }
     return product.regularPrice;
-  }, [isVariable, selectedVariation, product.regularPrice]);
+  }, [isVariable, selectedVariation, product.regularPrice, currency]);
 
   const displayOnSale = useMemo(() => {
     if (isVariable && selectedVariation) {
@@ -70,6 +91,13 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
     return product.details?.weight;
   }, [isVariable, selectedVariation, product.details?.weight]);
 
+  const displayStockStatus = useMemo(() => {
+    if (isVariable && selectedVariation && selectedVariation.stockStatus) {
+      return selectedVariation.stockStatus;
+    }
+    return product.stockStatus;
+  }, [isVariable, selectedVariation, product.stockStatus]);
+
   // --- Handlers ---
   const handleSizeClick = (variation: ProductVariation) => {
     onVariationChange(variation);
@@ -89,6 +117,7 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
       category: isRug ? "rug" : "curtain",
       image: activeColor.textureUrl || product.image || "/rugs/set1-room.png",
       price: displayPrice,
+      currency: isFallbackPrice ? "AED" : currency,
       quantity: 1,
       variant: {
         color: activeColor.name,
@@ -103,18 +132,24 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
       cartItem.variationId = selectedVariation.id;
     }
 
-    addItem(cartItem);
+    const result = addItem(cartItem);
+    
+    if (!result.success) {
+      toast.error(result.error || "Failed to add item to cart.");
+      return;
+    }
+
+    if (result.lockedCurrency && result.lockedCurrency !== currency) {
+      setCurrency(result.lockedCurrency as any);
+      toast.success(`Global currency auto-updated to ${result.lockedCurrency} to match your cart.`, {
+        duration: 5000,
+        icon: '💱'
+      });
+    }
+    
     openDrawer();
   };
 
-  // --- Price formatting ---
-  const formatPrice = (p: number) => {
-    return new Intl.NumberFormat("en-AE", {
-      style: "currency",
-      currency: "AED",
-      maximumFractionDigits: 0,
-    }).format(p);
-  };
 
   return (
     <motion.div
@@ -130,14 +165,21 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
 
       {/* 2. Price */}
       {displayPrice !== undefined && (
-        <div className="flex items-baseline gap-2 mb-2 shrink-0">
-          <span className="font-serif text-[var(--text-lg)] text-[var(--text-primary)] font-semibold">
-            {formatPrice(displayPrice)}
-          </span>
-          {displayOnSale && displayRegularPrice && displayRegularPrice > displayPrice && (
-            <span className="text-[var(--text-sm)] text-[var(--text-muted)] line-through">
-              {formatPrice(displayRegularPrice)}
+        <div className="mb-2 shrink-0">
+          <div className="flex items-baseline gap-2">
+            <span className="font-serif text-[var(--text-2xl)] lg:text-[var(--text-3xl)] text-[var(--text-primary)] font-semibold">
+              {formatPrice(displayPrice, isFallbackPrice ? "AED" : currency)}
             </span>
+            {displayOnSale && displayRegularPrice && displayRegularPrice > displayPrice && (
+              <span className="text-[var(--text-md)] lg:text-[var(--text-lg)] text-[var(--text-muted)] line-through">
+                {formatPrice(displayRegularPrice, isFallbackPrice ? "AED" : currency)}
+              </span>
+            )}
+          </div>
+          {isFallbackPrice && (
+            <p className="text-[11px] text-orange-600 mt-1">
+              * {currency} pricing not available for this product. Showing in AED.
+            </p>
           )}
         </div>
       )}
@@ -214,25 +256,32 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
       )}
 
       {/* 6. Quick Specs (dimensions/weight/sku from selected variation) */}
-      {(displayDimensions || displaySku) && (
+      {(displayDimensions || displaySku || displayStockStatus) && (
         <div className="mb-4 shrink-0 flex flex-wrap gap-x-6 gap-y-1 text-[var(--text-xs)] text-[var(--text-muted)]">
           {displayDimensions && <span>Dimensions: {displayDimensions}</span>}
           {displayWeight && <span>Weight: {displayWeight}</span>}
           {displaySku && <span>SKU: {displaySku}</span>}
+          {displayStockStatus && (
+            <span className={`font-medium ${displayStockStatus === "instock" ? "text-green-600" : "text-red-600"}`}>
+              {displayStockStatus === "instock" ? "In Stock" : displayStockStatus === "outofstock" ? "Out of Stock" : "On Backorder"}
+            </span>
+          )}
         </div>
       )}
 
       {/* 7. Action Buttons */}
-      <div className="flex gap-2 mt-auto shrink-0 pt-2 lg:pt-0">
-        <button className="flex-1 py-3 border border-[var(--border-primary)] bg-white text-[var(--text-primary)] font-medium text-[var(--text-sm)] transition-all duration-300 hover:bg-[var(--bg-secondary)]">
-          Visualise
-        </button>
-        <button
-          onClick={handleAddToCart}
-          className="flex-1 py-3 bg-[var(--accent-primary)] text-[#111] font-medium text-[var(--text-sm)] transition-all duration-300 hover:bg-[var(--accent-secondary)]"
-        >
-          Add to Cart
-        </button>
+      <div className="flex flex-col gap-2 mt-auto shrink-0 pt-2 lg:pt-0">
+        <div className="flex gap-2">
+          <button className="flex-1 py-3 border border-[var(--border-primary)] bg-white text-[var(--text-primary)] font-medium text-[var(--text-sm)] transition-all duration-300 hover:bg-[var(--bg-secondary)]">
+            Visualise
+          </button>
+          <button
+            onClick={handleAddToCart}
+            className="flex-1 py-3 bg-[var(--accent-primary)] text-[#111] font-medium text-[var(--text-sm)] transition-all duration-300 hover:bg-[var(--accent-secondary)]"
+          >
+            Add to Cart
+          </button>
+        </div>
       </div>
 
     </motion.div>

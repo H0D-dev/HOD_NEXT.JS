@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import { useCartStore } from "@/src/lib/store/useCartStore";
+import { formatPrice } from "@/src/lib/utils/price";
 import "./OrderSummary.css";
 
 export default function OrderSummary() {
-  const { subtotal, items } = useCartStore();
+  const { subtotal, items, cartCurrency } = useCartStore();
 
   if (items.length === 0) return null;
 
@@ -16,7 +17,7 @@ export default function OrderSummary() {
       <div className="order-summary__line-items">
         <div className="order-summary__line">
           <span className="order-summary__label">Subtotal</span>
-          <span className="order-summary__value">AED {subtotal.toLocaleString()}</span>
+          <span className="order-summary__value">{formatPrice(subtotal, cartCurrency || "AED")}</span>
         </div>
         <div className="order-summary__line">
           <span className="order-summary__label">Shipping</span>
@@ -30,7 +31,7 @@ export default function OrderSummary() {
 
       <div className="order-summary__total-line">
         <span className="order-summary__total-label">Total</span>
-        <span className="order-summary__total-value">AED {subtotal.toLocaleString()}</span>
+        <span className="order-summary__total-value">{formatPrice(subtotal, cartCurrency || "AED")}</span>
       </div>
 
       <Link href="/checkout" className="order-summary__checkout-btn">

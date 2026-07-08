@@ -66,8 +66,8 @@
 }
 
 .cart-item__price {
-  font-family: var(--font-inter), sans-serif;
-  font-size: var(--text-md);
+  font-family: var(--font-cormorant), serif;
+  font-size: var(--text-lg);
   color: var(--text-primary);
   font-weight: 500;
 }

@@ -39,6 +39,7 @@ import Footer from "../components/layout/Footer";
 import CartDrawer from "../components/cart/CartDrawer";
 import CustomCursor from "../components/layout/CustomCursor";
 import ScrollToTop from "../components/layout/ScrollToTop";
+import { Toaster } from "react-hot-toast";
 
 export default function RootLayout({
   children,
@@ -56,6 +57,17 @@ export default function RootLayout({
         <CustomCursor />
         <Header />
         <CartDrawer />
+        <Toaster 
+          position="top-center" 
+          toastOptions={{
+            style: {
+              background: 'var(--bg-secondary)',
+              color: 'var(--text-primary)',
+              fontFamily: 'var(--font-inter)',
+              border: '1px solid var(--border-color)',
+            },
+          }} 
+        />
         {children}
         <Footer />
         <Analytics />
