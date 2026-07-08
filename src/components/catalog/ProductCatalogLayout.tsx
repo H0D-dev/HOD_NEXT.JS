@@ -8,6 +8,8 @@ import ProductGrid from "./ProductGrid";
 import FilterDrawer from "./FilterDrawer";
 import { RUGS_CONFIG, CURTAINS_CONFIG, FilterCategory, ProductStub } from "../../lib/catalogConfig";
 import { getProducts } from "../../services/Product";
+import { useCurrencyStore } from "../../lib/store/useCurrencyStore";
+import { formatPrice } from "../../lib/utils/price";
 
 interface ProductCatalogLayoutProps {
   category: "rugs" | "curtains";
@@ -20,6 +22,7 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
   const [loading, setLoading] = useState(true);
 
   // Filter state
+  const { currency } = useCurrencyStore();
   const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>(() => {
     const categoryParam = searchParams?.get("category");
     if (categoryParam) {
@@ -102,19 +105,59 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
       });
     }
 
-    // Size Category
-    const ALL_SIZE_CATEGORIES = ["Small", "Medium", "Large", "Runner", "Oversized"];
+    // Price Range
+    const getPriceBuckets = (curr: string) => {
+      const steps = curr === "INR" ? [20000, 50000, 100000, 200000] :
+                    curr === "AED" ? [1000, 2500, 5000, 10000] :
+                    curr === "USD" ? [250, 600, 1200, 2500] :
+                    [250, 600, 1200, 2500]; // EUR or fallback
+      
+      return [
+        { label: `Under ${formatPrice(steps[0], curr)}`, value: `under-${steps[0]}`, max: steps[0] },
+        { label: `${formatPrice(steps[0], curr)} - ${formatPrice(steps[1], curr)}`, value: `${steps[0]}-${steps[1]}`, min: steps[0], max: steps[1] },
+        { label: `${formatPrice(steps[1], curr)} - ${formatPrice(steps[2], curr)}`, value: `${steps[1]}-${steps[2]}`, min: steps[1], max: steps[2] },
+        { label: `${formatPrice(steps[2], curr)} - ${formatPrice(steps[3], curr)}`, value: `${steps[2]}-${steps[3]}`, min: steps[2], max: steps[3] },
+        { label: `${formatPrice(steps[3], curr)}+`, value: `${steps[3]}-plus`, min: steps[3] }
+      ];
+    };
+
+    const priceOptions = getPriceBuckets(currency);
     filters.push({
-      id: "size-category",
-      label: "Size",
-      options: ALL_SIZE_CATEGORIES.map(s => ({ label: s, value: s.toLowerCase() }))
+      id: "price-range",
+      label: "Price Range",
+      options: priceOptions.map(o => ({ label: o.label, value: o.value }))
     });
 
-    // Exact Size (from ACF exact dimensions as a fallback if desired, but we can rely on Size Category now)
-    // We will leave the exact size out to avoid confusing duplicate size filters, as the user requested "Size" to show all options.
+    // Actual Size (cm)
+    const sizeOptions = getUniqueValues(p => {
+      const length = p.dimensions?.length || p.acf?.exactLengthCm;
+      const width = p.dimensions?.width || p.acf?.exactWidthCm;
+      if (length && width) return `${length}x${width} cm`;
+      return undefined;
+    });
+    if (sizeOptions.length > 0) {
+      filters.push({
+        id: "actual-size",
+        label: "Size",
+        options: sizeOptions
+      });
+    }
 
-
-    // Country of Origin (from ACF)
+    // Shape
+    const shapeOptions = getUniqueValues(p => {
+      const shapeAttr = p.attributes?.find((a: any) => a.name.toLowerCase() === 'shape');
+      if (shapeAttr && shapeAttr.options && shapeAttr.options.length > 0) {
+        return shapeAttr.options[0];
+      }
+      return undefined;
+    });
+    if (shapeOptions.length > 0) {
+      filters.push({
+        id: "shape",
+        label: "Shape",
+        options: shapeOptions
+      });
+    }    // Country of Origin (from ACF)
     const countries = getUniqueValues(p => p.acf?.countryOfOrigin);
     if (countries.length > 0) {
       filters.push({
@@ -144,22 +187,55 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
            const productColor = p.acf?.productColor?.toLowerCase() || "";
            if (!selectedValues.includes(productColor)) return false;
            continue;
-        } else if (filterId === "size-category") {
-           const sizeAttr = p.attributes?.find((a: any) => a.name === 'Size Category');
-           matchFound = sizeAttr?.options?.some((opt: string) => selectedValues.includes(opt.toLowerCase()));
+         } else if (filterId === "price-range") {
+           const currencyKey = currency.toLowerCase();
+           let price = 0;
+           if (p.manualPrices?.[currencyKey]) {
+             price = parseFloat(p.manualPrices[currencyKey]);
+           } else {
+             price = parseFloat(p.price) || parseFloat(p.regularPrice) || 0;
+           }
+
+           const steps = currency === "INR" ? [20000, 50000, 100000, 200000] :
+                         currency === "AED" ? [1000, 2500, 5000, 10000] :
+                         currency === "USD" ? [250, 600, 1200, 2500] :
+                         [250, 600, 1200, 2500];
+                         
+           const buckets = [
+             { value: `under-${steps[0]}`, max: steps[0] },
+             { value: `${steps[0]}-${steps[1]}`, min: steps[0], max: steps[1] },
+             { value: `${steps[1]}-${steps[2]}`, min: steps[1], max: steps[2] },
+             { value: `${steps[2]}-${steps[3]}`, min: steps[2], max: steps[3] },
+             { value: `${steps[3]}-plus`, min: steps[3] }
+           ];
+
+           matchFound = selectedValues.some(val => {
+             const bucket = buckets.find(b => b.value === val);
+             if (!bucket) return false;
+             if (bucket.min !== undefined && price < bucket.min) return false;
+             if (bucket.max !== undefined && price >= bucket.max) return false;
+             return true;
+           });
            if (!matchFound) return false;
+           continue;
+         } else if (filterId === "actual-size") {
+           const length = p.dimensions?.length || p.acf?.exactLengthCm;
+           const width = p.dimensions?.width || p.acf?.exactWidthCm;
+           const sizeStr = length && width ? `${length}x${width} cm`.toLowerCase() : "";
+           if (!selectedValues.includes(sizeStr)) return false;
+           continue;
+         } else if (filterId === "shape") {
+           const shapeAttr = p.attributes?.find((a: any) => a.name.toLowerCase() === 'shape');
+           const shapeStr = shapeAttr?.options?.[0]?.toLowerCase() || "";
+           if (!selectedValues.includes(shapeStr)) return false;
            continue;
          } else if (filterId === "construction") {
            productValue = String(p.acf?.construction || "").toLowerCase();
          } else if (filterId === "country") {
            productValue = String(p.acf?.countryOfOrigin || "").toLowerCase();
-         } else if (filterId === "size") {
-           const width = p.acf?.exactWidthCm;
-           const length = p.acf?.exactLengthCm;
-           productValue = width && length ? `${width}x${length} cm`.toLowerCase() : "";
-        }
+         }
         
-        if (filterId !== "category" && filterId !== "color" && filterId !== "size-category") {
+        if (filterId !== "category" && filterId !== "color" && filterId !== "price-range" && filterId !== "actual-size" && filterId !== "shape") {
           if (!selectedValues.includes(productValue)) return false;
         }
       }
@@ -186,6 +262,16 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
   // 3. Map filtered products to ProductStub for the UI
   const displayProducts: ProductStub[] = filteredProducts.map(p => {
     const colorVal = p.acf?.productColor || "";
+    
+    const currencyKey = currency.toLowerCase();
+    let priceToUse = 0;
+    let isFallback = false;
+    if (p.manualPrices?.[currencyKey]) {
+      priceToUse = parseFloat(p.manualPrices[currencyKey]);
+    } else {
+      priceToUse = parseFloat(p.price) || parseFloat(p.regularPrice) || 0;
+      if (currency !== "AED") isFallback = true;
+    }
 
     return {
       id: p.id.toString(),
@@ -195,7 +281,8 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
       category: String(p.acf?.construction || p.categories?.[0]?.name || ""),
       color: colorVal, 
       image: p.mainImage?.src || (category === "rugs" ? "/rugs/set1-full.png" : "/curtains/set1-room.png"),
-      price: p.regularPrice ? `AED ${p.regularPrice}` : (p.price ? `AED ${p.price}` : "")
+      price: priceToUse > 0 ? formatPrice(priceToUse, isFallback ? "AED" : currency) : "",
+      isFallbackPrice: isFallback
     };
   });
 

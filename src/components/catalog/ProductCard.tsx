@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ProductStub } from "../../lib/catalogConfig";
+import { useCurrencyStore } from "../../lib/store/useCurrencyStore";
 
 interface ProductCardProps {
   product: ProductStub;
@@ -11,6 +12,8 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product, baseRoute }: ProductCardProps) {
+  const { currency } = useCurrencyStore();
+
   return (
     <Link 
       href={`${baseRoute}/${product.slug}`}
@@ -46,6 +49,11 @@ export default function ProductCard({ product, baseRoute }: ProductCardProps) {
             </>
           )}
         </p>
+        {product.isFallbackPrice && (
+          <p className="text-[9px] lg:text-[10px] text-orange-600 mt-1 leading-tight">
+            * {currency} pricing not available. Showing in AED.
+          </p>
+        )}
       </div>
     </Link>
   );

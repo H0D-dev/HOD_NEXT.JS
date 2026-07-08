@@ -77,9 +77,10 @@ export async function POST(request: Request) {
 
     // --- Re-validate stock server-side before creating order ---
     for (const item of body.cart) {
+      const fields = "id,stock_status,stock_quantity,manage_stock,status,price,meta_data,manual_prices";
       const productUrl = item.variation_id
-        ? `${API_CONFIG.baseUrl}/wp-json/wc/v3/products/${item.product_id}/variations/${item.variation_id}?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&_fields=id,stock_status,stock_quantity,manage_stock,status`
-        : `${API_CONFIG.baseUrl}/wp-json/wc/v3/products/${item.product_id}?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&_fields=id,stock_status,stock_quantity,manage_stock,status`;
+        ? `${API_CONFIG.baseUrl}/wp-json/wc/v3/products/${item.product_id}/variations/${item.variation_id}?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&_fields=${fields}`
+        : `${API_CONFIG.baseUrl}/wp-json/wc/v3/products/${item.product_id}?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&_fields=${fields}`;
       const productRes = await fetch(productUrl, { cache: "no-store" });
 
       if (!productRes.ok) {
@@ -90,6 +91,42 @@ export async function POST(request: Request) {
       }
 
       const product = await productRes.json();
+
+      // --- Verify price against backend ---
+      let backendPrice = parseFloat(product.price || "0");
+      const targetCurrency = body.currency?.toLowerCase();
+
+      if (targetCurrency) {
+        let manualPrices = product.manual_prices;
+        
+        // If not at root, check meta_data
+        if (!manualPrices && Array.isArray(product.meta_data)) {
+          const meta = product.meta_data.find((m: any) => m.key === 'manual_prices' || m.key === '_manual_prices');
+          if (meta && meta.value) {
+            if (typeof meta.value === 'string') {
+              try {
+                manualPrices = JSON.parse(meta.value);
+              } catch (e) {
+                // Ignore parse error
+              }
+            } else {
+              manualPrices = meta.value;
+            }
+          }
+        }
+
+        if (manualPrices && manualPrices[targetCurrency] !== undefined) {
+          backendPrice = parseFloat(manualPrices[targetCurrency]);
+        }
+      }
+
+      // Allow small floating point variations (e.g., 0.01)
+      if (Math.abs(backendPrice - item.price) > 0.01) {
+        return NextResponse.json(
+          { success: false, error: `Price mismatch for product ${item.product_id}. Security check failed.` },
+          { status: 400 }
+        );
+      }
 
       // For variations, only check stock (they inherit parent's publish status)
       const isOutOfStock = product.stock_status === "outofstock";
@@ -118,6 +155,8 @@ export async function POST(request: Request) {
 
     // --- Check for authenticated user ---
     let customerId = 0;
+    // Temporarily forcing customerId to 0 to prevent woocommerce_rest_invalid_customer_id errors
+    /*
     try {
       const cookieStore = await cookies();
       const token = cookieStore.get("auth_token")?.value;
@@ -131,6 +170,7 @@ export async function POST(request: Request) {
     } catch (err) {
       console.warn("Failed to extract customer ID from token", err);
     }
+    */
 
     // --- Build Woo order payload ---
     const orderPayload = {

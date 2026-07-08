@@ -7,6 +7,7 @@ import { ProductColor, Product, ProductVariation } from "./ProductPresentation";
 import { useCartStore } from "@/src/lib/store/useCartStore";
 import { useCurrencyStore } from "@/src/lib/store/useCurrencyStore";
 import { formatPrice } from "@/src/lib/utils/price";
+import toast from "react-hot-toast";
 
 interface ProductInfoCardProps {
   product: Product & { sizes?: string[] };
@@ -19,7 +20,7 @@ interface ProductInfoCardProps {
 export default function ProductInfoCard({ product, activeColor, onColorChange, selectedVariation, onVariationChange }: ProductInfoCardProps) {
   const router = useRouter();
   const { addItem, openDrawer } = useCartStore();
-  const { currency } = useCurrencyStore();
+  const { currency, setCurrency } = useCurrencyStore();
 
   const isVariable = product.productType === "variable" && Array.isArray(product.variations) && product.variations.length > 0;
 
@@ -131,7 +132,21 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
       cartItem.variationId = selectedVariation.id;
     }
 
-    addItem(cartItem);
+    const result = addItem(cartItem);
+    
+    if (!result.success) {
+      toast.error(result.error || "Failed to add item to cart.");
+      return;
+    }
+
+    if (result.lockedCurrency && result.lockedCurrency !== currency) {
+      setCurrency(result.lockedCurrency as any);
+      toast.success(`Global currency auto-updated to ${result.lockedCurrency} to match your cart.`, {
+        duration: 5000,
+        icon: '💱'
+      });
+    }
+    
     openDrawer();
   };
 
@@ -255,16 +270,18 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
       )}
 
       {/* 7. Action Buttons */}
-      <div className="flex gap-2 mt-auto shrink-0 pt-2 lg:pt-0">
-        <button className="flex-1 py-3 border border-[var(--border-primary)] bg-white text-[var(--text-primary)] font-medium text-[var(--text-sm)] transition-all duration-300 hover:bg-[var(--bg-secondary)]">
-          Visualise
-        </button>
-        <button
-          onClick={handleAddToCart}
-          className="flex-1 py-3 bg-[var(--accent-primary)] text-[#111] font-medium text-[var(--text-sm)] transition-all duration-300 hover:bg-[var(--accent-secondary)]"
-        >
-          Add to Cart
-        </button>
+      <div className="flex flex-col gap-2 mt-auto shrink-0 pt-2 lg:pt-0">
+        <div className="flex gap-2">
+          <button className="flex-1 py-3 border border-[var(--border-primary)] bg-white text-[var(--text-primary)] font-medium text-[var(--text-sm)] transition-all duration-300 hover:bg-[var(--bg-secondary)]">
+            Visualise
+          </button>
+          <button
+            onClick={handleAddToCart}
+            className="flex-1 py-3 bg-[var(--accent-primary)] text-[#111] font-medium text-[var(--text-sm)] transition-all duration-300 hover:bg-[var(--accent-secondary)]"
+          >
+            Add to Cart
+          </button>
+        </div>
       </div>
 
     </motion.div>

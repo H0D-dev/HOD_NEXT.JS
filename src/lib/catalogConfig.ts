@@ -10,6 +10,7 @@ export type ProductStub = {
   color: string;
   image: string;
   price?: string;
+  isFallbackPrice?: boolean;
 };
 
 export type CatalogConfig = {
@@ -32,15 +33,7 @@ export const RUGS_CONFIG: CatalogConfig = {
         { label: "Geometric", value: "geometric" }
       ]
     },
-    {
-      id: "size",
-      label: "Size",
-      options: [
-        { label: "Small (up to 5x8)", value: "small" },
-        { label: "Medium (8x10 to 9x12)", value: "medium" },
-        { label: "Large (10x14+)", value: "large" }
-      ]
-    },
+
     {
       id: "shape",
       label: "Shape",

@@ -529,19 +529,6 @@ export default function CheckoutPage() {
                     <p className="checkout__payment-desc">Credit/Debit Card, Apple Pay, etc.</p>
                   </div>
                 </div>
-
-                <div
-                  className={`checkout__payment-option ${formData.payment_method === "bacs" ? "checkout__payment-option--active" : ""}`}
-                  onClick={() => setFormData((prev) => ({ ...prev, payment_method: "bacs" }))}
-                >
-                  <div className="checkout__payment-radio">
-                    <div className="checkout__payment-radio-dot" />
-                  </div>
-                  <div className="checkout__payment-info">
-                    <p className="checkout__payment-title">Direct Bank Transfer</p>
-                    <p className="checkout__payment-desc">Transfer to our bank account</p>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
