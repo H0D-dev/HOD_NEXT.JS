@@ -2,12 +2,28 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { footer } from "framer-motion/client";
+import { useCurrencySwitcher } from "@/src/lib/hooks/useCurrencySwitcher";
+import { Currency } from "@/src/components/product-presentation/ProductPresentation";
 
 export default function Footer() {
   const [mobileAboutOpen, setMobileAboutOpen] = useState(false);
   const [mobileResourcesOpen, setMobileResourcesOpen] = useState(false);
+  const { currency, handleCurrencyChange } = useCurrencySwitcher();
+  const [isCurrencyOpen, setIsCurrencyOpen] = useState(false);
+  const currencyRef = useRef<HTMLDivElement>(null);
+
+  // Close currency dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (currencyRef.current && !currencyRef.current.contains(event.target as Node)) {
+        setIsCurrencyOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   // Social Icons Data
   const socialIcons = [
@@ -116,12 +132,41 @@ export default function Footer() {
           <p className="text-[#8C8C8C] text-xs tracking-wide">
             &copy; {new Date().getFullYear()} House of Décor. All rights reserved.
           </p>
-          <div className="flex gap-6">
+          <div className="flex gap-6 items-center">
+            <div className="relative flex items-center gap-2" ref={currencyRef}>
+              <button 
+                onClick={() => setIsCurrencyOpen(!isCurrencyOpen)}
+                className="flex items-center gap-1 bg-transparent border-none text-[#8C8C8C] hover:text-[#f5f3ef] text-xs font-medium outline-none cursor-pointer tracking-wider transition-colors"
+                aria-label="Select Currency"
+              >
+                {currency}
+                <svg className={`w-3 h-3 transition-transform duration-300 ${isCurrencyOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              
+              {isCurrencyOpen && (
+                <div className="absolute bottom-full left-0 mb-2 w-24 bg-[#1A1A1A] border border-[#333333] shadow-lg py-1 z-50 flex flex-col rounded-sm">
+                  {["AED", "INR", "USD", "EUR"].map(cur => (
+                    <button
+                      key={cur}
+                      className={`text-left px-4 py-2 text-xs tracking-wider hover:bg-[#2A2A2A] transition-colors ${currency === cur ? 'font-bold text-[#f5f3ef]' : 'text-[#8C8C8C]'}`}
+                      onClick={() => {
+                        handleCurrencyChange(cur as Currency);
+                        setIsCurrencyOpen(false);
+                      }}
+                    >
+                      {cur}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
             {['Privacy Policy', 'Terms of Service', 'Cookie Policy'].map((link) => (
               <Link
                 key={link}
                 href="#"
-                className="text-[#8C8C8C] hover:text-[var(--bg-primary)] transition-colors duration-300 text-xs tracking-wide"
+                className="text-[#8C8C8C] hover:text-[#f5f3ef] transition-colors duration-300 text-xs tracking-wide"
               >
                 {link}
               </Link>
@@ -246,6 +291,19 @@ export default function Footer() {
                 {link}
               </Link>
             ))}
+          </div>
+          <div className="flex flex-col items-center mt-2 w-full">
+            <div className="flex gap-2">
+              {["AED", "INR", "USD", "EUR"].map(cur => (
+                <button
+                  key={cur}
+                  className={`px-3 py-1.5 text-xs tracking-wider border rounded-sm transition-colors ${currency === cur ? 'border-[#f5f3ef] font-bold text-[#f5f3ef]' : 'border-[#333333] text-[#8C8C8C] hover:border-[#f5f3ef]'}`}
+                  onClick={() => handleCurrencyChange(cur as Currency)}
+                >
+                  {cur}
+                </button>
+              ))}
+            </div>
           </div>
           <p className="text-[#b8b8b8] text-xs tracking-wide font-sans mt-2">
             &copy; {new Date().getFullYear()} House of Décor. All rights reserved.

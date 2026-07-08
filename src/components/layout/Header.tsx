@@ -8,6 +8,7 @@ import { useCartStore } from "@/src/lib/store/useCartStore";
 import { useAuthStore } from "@/src/lib/store/useAuthStore";
 import { useCurrencyStore } from "@/src/lib/store/useCurrencyStore";
 import { Currency } from "@/src/components/product-presentation/ProductPresentation";
+import { useCurrencySwitcher } from "@/src/lib/hooks/useCurrencySwitcher";
 import toast from "react-hot-toast";
 import "./Header.css";
 
@@ -26,9 +27,9 @@ export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
   
-  const { openDrawer, totalItems, items, clearCart } = useCartStore();
+  const { openDrawer, totalItems, items } = useCartStore();
   const { isAuthenticated } = useAuthStore();
-  const { currency, setCurrency } = useCurrencyStore();
+  const { currency, handleCurrencyChange } = useCurrencySwitcher();
   const [mounted, setMounted] = useState(false);
   const [isCurrencyOpen, setIsCurrencyOpen] = useState(false);
   const currencyRef = useRef<HTMLDivElement>(null);
@@ -43,36 +44,6 @@ export default function Header() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
-  const handleCurrencyChange = (newCurrency: Currency) => {
-    if (items.length > 0 && newCurrency !== currency) {
-      toast((t) => (
-        <div className="flex flex-col gap-3">
-          <p className="text-[var(--text-sm)] text-[var(--text-primary)] m-0">Your cart is currently in {currency}. Changing the currency will clear your cart. Do you want to proceed?</p>
-          <div className="flex justify-end gap-2">
-            <button 
-              className="px-3 py-1 text-[var(--text-sm)] border border-[var(--border-secondary)] transition-colors hover:bg-[var(--bg-secondary)]" 
-              onClick={() => toast.dismiss(t.id)}
-            >
-              Cancel
-            </button>
-            <button 
-              className="px-3 py-1 text-[var(--text-sm)] bg-[var(--accent-primary)] text-[#111] font-medium transition-colors hover:opacity-80" 
-              onClick={() => {
-                toast.dismiss(t.id);
-                clearCart();
-                setCurrency(newCurrency);
-              }}
-            >
-              Proceed
-            </button>
-          </div>
-        </div>
-      ), { duration: Infinity, id: 'currency-confirm' });
-    } else {
-      setCurrency(newCurrency);
-    }
-  };
 
   useEffect(() => {
     setMounted(true);
@@ -194,6 +165,20 @@ export default function Header() {
                   </div>
                   <span className="header__mobile-cart-label">Profile</span>
                 </button>
+              </div>
+              <div className="mt-6 pt-4 border-t border-[var(--border-secondary)] block md:hidden w-full flex flex-col items-center">
+                <span className="text-[var(--text-sm)] text-[var(--text-secondary)] mb-3 font-medium uppercase tracking-wider">Currency</span>
+                <div className="flex gap-2">
+                  {["AED", "INR", "USD", "EUR"].map(cur => (
+                    <button
+                      key={cur}
+                      className={`px-3 py-1.5 text-[var(--text-sm)] tracking-wider border rounded-sm transition-colors ${currency === cur ? 'border-[var(--text-primary)] font-bold text-[var(--text-primary)]' : 'border-[var(--border-secondary)] text-[var(--text-secondary)] hover:border-[var(--text-primary)]'}`}
+                      onClick={() => handleCurrencyChange(cur as Currency)}
+                    >
+                      {cur}
+                    </button>
+                  ))}
+                </div>
               </div>
             </nav>
           </div>

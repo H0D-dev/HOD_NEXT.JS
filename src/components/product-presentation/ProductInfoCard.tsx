@@ -209,10 +209,18 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
               className={`relative flex-shrink-0 w-10 h-10 rounded-none transition-transform duration-300 hover:scale-105 snap-center ${activeColor.id === color.id ? 'p-[2px] border border-[var(--border-primary)]' : 'border border-transparent'}`}
               aria-label={`Select color ${color.name}`}
             >
-              <div
-                className="w-full h-full border border-black/10"
-                style={{ backgroundColor: color.hex }}
-              />
+              {color.textureUrl || color.lifestyleUrl ? (
+                <img
+                  src={color.textureUrl || color.lifestyleUrl}
+                  alt={color.name}
+                  className="w-full h-full object-cover border border-black/10"
+                />
+              ) : (
+                <div
+                  className="w-full h-full border border-black/10"
+                  style={{ backgroundColor: color.hex }}
+                />
+              )}
             </button>
           ))}
           {product.colors && product.colors.length > 5 && (
