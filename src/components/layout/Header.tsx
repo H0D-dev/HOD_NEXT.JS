@@ -117,6 +117,7 @@ export default function Header() {
                 alt="House of Décor" 
                 width={160} 
                 height={36} 
+                priority
                 className="header__logo-img--desktop"
               />
               <span className="header__logo-text header__logo-text--mobile">HOD</span>

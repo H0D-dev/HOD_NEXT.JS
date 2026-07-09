@@ -25,6 +25,16 @@ export default function AccountPage() {
   const [orders, setOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const tab = params.get("tab") as TabType;
+      if (tab && ["dashboard", "orders", "addresses", "details"].includes(tab)) {
+        setActiveTab(tab);
+      }
+    }
+  }, []);
+
   // States for sub-views and forms
   const [selectedOrder, setSelectedOrder] = useState<any>(null);
   const [editingAddress, setEditingAddress] = useState<'billing' | 'shipping' | null>(null);

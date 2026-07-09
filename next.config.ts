@@ -10,8 +10,12 @@ const nextConfig: NextConfig = {
             },
             {
                 protocol: "https",
-                hostname: "mediumslateblue-grasshopper-769837.hostingersite.com",
+                hostname: "houseofdecor.ae",
             },
+            {
+                protocol: "https",
+                hostname: "store.houseofdecor.ae",
+            }
         ],
     },
 };

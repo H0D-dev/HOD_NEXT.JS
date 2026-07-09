@@ -1,0 +1,211 @@
+.payment-result__wrapper {
+  min-height: calc(100vh - var(--header-height));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1rem;
+  background-color: var(--bg-secondary, #fafafa);
+  font-family: var(--font-primary, inherit);
+}
+
+.payment-result__card {
+  background-color: var(--bg-primary, #ffffff);
+  border-radius: var(--radius-xl, 24px);
+  padding: 3rem 2rem;
+  width: 100%;
+  max-width: 480px;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.payment-result__icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+}
+
+.payment-result__icon-wrapper--loading {
+  background-color: rgba(100, 100, 100, 0.05);
+  color: var(--text-secondary, #666);
+}
+
+.payment-result__icon-wrapper--success {
+  background-color: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+}
+
+.payment-result__icon-wrapper--processing {
+  background-color: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+}
+
+.payment-result__icon-wrapper--failed {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+.payment-result__icon-wrapper--cancelled {
+  background-color: rgba(107, 114, 128, 0.1);
+  color: #6b7280;
+}
+
+.payment-result__icon {
+  width: 40px;
+  height: 40px;
+}
+
+.payment-result__title {
+  font-size: 1.75rem;
+  font-weight: 400;
+  color: var(--text-primary, #111);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.payment-result__message {
+  font-size: 1.05rem;
+  color: var(--text-secondary, #666);
+  line-height: 1.5;
+  margin: 0;
+  white-space: pre-line;
+}
+
+.payment-result__message--small {
+  font-size: 0.95rem;
+  margin-top: 1rem;
+}
+
+.payment-result__order-details {
+  margin-top: 1rem;
+  padding: 1.5rem;
+  background-color: var(--bg-secondary, #fafafa);
+  border-radius: var(--radius-md, 12px);
+  width: 100%;
+}
+
+.payment-result__detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  font-size: 0.95rem;
+}
+
+.payment-result__detail-row--header {
+  border-bottom: 1px solid var(--border-color, #eaeaea);
+  padding-bottom: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.payment-result__detail-row--header .payment-result__detail-label {
+  color: var(--text-primary, #111);
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.payment-result__items {
+  margin-bottom: 0.5rem;
+}
+
+.payment-result__detail-row--total {
+  border-top: 1px solid var(--border-color, #eaeaea);
+  padding-top: 1rem;
+  margin-top: 0.5rem;
+}
+
+.payment-result__detail-row--total .payment-result__detail-label,
+.payment-result__detail-row--total .payment-result__detail-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary, #111);
+}
+
+.payment-result__detail-label {
+  color: var(--text-secondary, #666);
+}
+
+.payment-result__detail-value {
+  color: var(--text-primary, #111);
+  font-weight: 500;
+}
+
+.payment-result__actions {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  margin-top: 1.5rem;
+}
+
+.payment-result__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 2rem;
+  background-color: var(--text-primary, #111);
+  color: #fff;
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: 9999px;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  width: 100%;
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.payment-result__actions .payment-result__button {
+  flex: 1;
+}
+
+.payment-result__button:hover {
+  background-color: var(--text-secondary, #333);
+  transform: translateY(-1px);
+}
+
+.payment-result__button--outline {
+  background-color: transparent;
+  color: var(--text-primary, #111);
+  border: 1px solid var(--border-color, #eaeaea);
+}
+
+.payment-result__button--outline:hover {
+  background-color: var(--bg-secondary, #fafafa);
+}
+
+/* Animations */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.payment-result__icon--spin {
+  animation: spin 1s linear infinite;
+}
+
+@media (max-width: 640px) {
+  .payment-result__card {
+    padding: 2.5rem 1.5rem;
+    border-radius: var(--radius-lg, 16px);
+  }
+  
+  .payment-result__title {
+    font-size: 1.5rem;
+  }
+
+  .payment-result__actions {
+    flex-direction: column;
+  }
+}

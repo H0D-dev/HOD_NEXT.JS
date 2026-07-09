@@ -98,7 +98,7 @@ export async function POST(request: Request) {
 
       if (targetCurrency) {
         let manualPrices = product.manual_prices;
-        
+
         // If not at root, check meta_data
         if (!manualPrices && Array.isArray(product.meta_data)) {
           const meta = product.meta_data.find((m: any) => m.key === 'manual_prices' || m.key === '_manual_prices');
