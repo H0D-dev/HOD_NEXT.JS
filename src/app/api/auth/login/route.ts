@@ -12,23 +12,21 @@ export async function POST(request: Request) {
       );
     }
 
-    const wpUrl = API_CONFIG.baseUrl || "https://store.houseofdecor.ae";
-    let loginUsername = username;
+    const wpUrl = (API_CONFIG.baseUrl || "https://store.houseofdecor.ae");
 
-    // The JWT plugin strictly requires the username (it rejects email addresses).
-    // WordPress automatically generates usernames by taking the first part of the email.
-    if (username.includes("@")) {
-      loginUsername = username.split('@')[0];
-    }
+    // Construct URL with consumer keys appended
+    const tokenUrl = new URL(`${wpUrl}/wp-json/hod/v1/login`);
+    // tokenUrl.searchParams.append("consumer_key", API_CONFIG.consumerKey || "");
+    // tokenUrl.searchParams.append("consumer_secret", API_CONFIG.consumerSecret || "");
 
-    // Using the exact route provided by the user
-    const tokenUrl = `${wpUrl}/wp-json/api/v1/token`;
+    console.log("Calling WP Login Endpoint:");
 
-    const wpRes = await fetch(tokenUrl, {
+    const wpRes = await fetch(tokenUrl.toString(), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: 'include',
       body: JSON.stringify({
-        username: loginUsername,
+        username,
         password,
       }),
     });
@@ -45,7 +43,7 @@ export async function POST(request: Request) {
       );
     }
 
-    if (!wpRes.ok || !data.jwt_token) {
+    if (!wpRes.ok) {
       console.error("WP Login Error:", wpRes.status, textResponse);
       return NextResponse.json(
         { success: false, error: data.message || "Invalid credentials" },
@@ -53,12 +51,13 @@ export async function POST(request: Request) {
       );
     }
 
-    // Check the structure returned by miniOrange and map accordingly
+    // Map user data structure
+    const wpUser = data.user || data; // Fallback to data just in case
     const user = {
-      id: data.user_id || data.id, 
-      email: data.user_email || username,
-      first_name: data.user_display_name || loginUsername, 
-      last_name: "",
+      id: wpUser.id,
+      email: wpUser.email || wpUser.user_email || username,
+      first_name: wpUser.first_name || wpUser.user_display_name || username.split('@')[0],
+      last_name: wpUser.last_name || "",
     };
 
     // Create response
@@ -67,16 +66,62 @@ export async function POST(request: Request) {
       user
     });
 
-    // Set HttpOnly, Secure cookie
-    response.cookies.set({
-      name: "auth_token",
-      value: data.jwt_token,
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-      maxAge: 7 * 24 * 60 * 60, // 1 week
-      path: "/",
+    const setCookies = wpRes.headers.getSetCookie();
+
+    setCookies.forEach((cookieStr) => {
+      const parts = cookieStr.split(';').map(p => p.trim());
+      const [nameValue, ...options] = parts;
+
+      const equalIndex = nameValue.indexOf('=');
+      if (equalIndex === -1) return;
+
+      const name = nameValue.substring(0, equalIndex);
+      const rawValue = nameValue.substring(equalIndex + 1);
+
+      // Next.js response.cookies.set() will automatically URI-encode the value.
+      // Since WP already encodes it, we must decode it first to prevent double-encoding (e.g. %257C instead of %7C)
+      let value = rawValue;
+      try {
+        value = decodeURIComponent(rawValue);
+      } catch (e) {
+        // Fallback to raw if decoding fails
+      }
+
+      const cookieOptions: any = {};
+
+      options.forEach(opt => {
+        const [k, ...vParts] = opt.split('=');
+        const key = k.toLowerCase();
+        const v = vParts.join('=');
+
+        if (key === 'path') cookieOptions.path = v || '/';
+        if (key === 'expires') cookieOptions.expires = new Date(v);
+        if (key === 'max-age') cookieOptions.maxAge = parseInt(v, 10);
+        if (key === 'httponly') cookieOptions.httpOnly = true;
+        // In production, preserve secure flag
+        if (key === 'secure' && process.env.NODE_ENV !== 'development') cookieOptions.secure = true;
+        if (key === 'samesite') cookieOptions.sameSite = process.env.NODE_ENV === 'development' ? 'lax' : v.toLowerCase();
+      });
+
+      // Always force the parent domain in production so Next.js and WP share the session.
+      if (process.env.NODE_ENV !== 'development') {
+        cookieOptions.domain = '.houseofdecor.ae';
+      }
+
+      response.cookies.set(name, value, cookieOptions);
     });
+
+    // Also store the WP nonce if provided in the response
+    if (data.nonce) {
+      response.cookies.set('wp_rest_nonce', data.nonce, {
+        path: '/',
+        httpOnly: true,
+        secure: process.env.NODE_ENV !== 'development',
+        sameSite: process.env.NODE_ENV === 'development' ? 'lax' : 'strict',
+        // In production, preserve the domain (e.g. .houseofdecor.ae) so it works across subdomains if needed
+        domain: process.env.NODE_ENV !== 'development' ? '.houseofdecor.ae' : undefined,
+      });
+    }
 
     return response;
   } catch (error) {

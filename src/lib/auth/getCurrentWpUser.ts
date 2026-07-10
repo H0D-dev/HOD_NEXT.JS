@@ -1,7 +1,6 @@
-import { NextResponse } from "next/server";
 import { API_CONFIG } from "@/src/lib/api/api";
 
-export async function GET(request: Request) {
+export async function getCurrentWpUser(request: Request) {
   try {
     const cookieHeader = request.headers.get("cookie") || "";
     const wpUrl = API_CONFIG.baseUrl || "https://store.houseofdecor.ae";
@@ -26,18 +25,18 @@ export async function GET(request: Request) {
       cache: "no-store"
     });
 
-    let data;
-    try {
-      data = await wpRes.json();
-    } catch (e) {
-      data = { error: "Failed to parse JSON from WP" };
+    if (!wpRes.ok) {
+      return null;
     }
 
-    // Forward the exact response and status code from WP directly to the frontend
-    return NextResponse.json(data, { status: wpRes.status });
-
+    const data = await wpRes.json();
+    if (data.authenticated && data.user) {
+      return data.user;
+    }
+    
+    return null;
   } catch (error) {
-    console.error("Auth /me error:", error);
-    return NextResponse.json({ authenticated: false }, { status: 500 });
+    console.error("Auth helper error:", error);
+    return null;
   }
 }

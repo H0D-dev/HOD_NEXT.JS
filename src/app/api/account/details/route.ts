@@ -1,29 +1,16 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
-import { verifyAuthToken } from "@/src/lib/auth/jwt";
+import { getCurrentWpUser } from "@/src/lib/auth/getCurrentWpUser";
 import { API_CONFIG } from "@/src/lib/api/api";
 
 export async function PUT(request: Request) {
   try {
-    const cookieStore = await cookies();
-    const token = cookieStore.get("auth_token")?.value;
+    const user = await getCurrentWpUser(request);
 
-    if (!token) {
+    if (!user || !user.id) {
       return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
     }
 
-    const payload = await verifyAuthToken(token);
-    
-    if (!payload) {
-      return NextResponse.json({ success: false, error: "Invalid token" }, { status: 401 });
-    }
-
-    const userData = (payload as any).data?.user || payload;
-    const userId = userData.id || userData.user_id || (payload as any).user_id || (payload as any).sub;
-
-    if (!userId) {
-      return NextResponse.json({ success: false, error: "User ID not found in token" }, { status: 401 });
-    }
+    const userId = user.id;
 
     const body = await request.json();
 

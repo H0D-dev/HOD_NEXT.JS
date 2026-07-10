@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { API_CONFIG } from "@/src/lib/api/api";
-import { verifyAuthToken } from "@/src/lib/auth/jwt";
+import { getCurrentWpUser } from "@/src/lib/auth/getCurrentWpUser";
 
 interface LineItem {
   product_id: number;
@@ -155,22 +155,14 @@ export async function POST(request: Request) {
 
     // --- Check for authenticated user ---
     let customerId = 0;
-    // Temporarily forcing customerId to 0 to prevent woocommerce_rest_invalid_customer_id errors
-    /*
     try {
-      const cookieStore = await cookies();
-      const token = cookieStore.get("auth_token")?.value;
-      if (token) {
-        const payload = await verifyAuthToken(token);
-        if (payload) {
-          const userData = (payload as any).data?.user || payload;
-          customerId = userData.id || userData.user_id || (payload as any).user_id || (payload as any).sub || 0;
-        }
+      const user = await getCurrentWpUser(request);
+      if (user && user.id) {
+        customerId = user.id;
       }
     } catch (err) {
-      console.warn("Failed to extract customer ID from token", err);
+      console.warn("Failed to extract customer ID from WP", err);
     }
-    */
 
     // --- Build Woo order payload ---
     const orderPayload = {
