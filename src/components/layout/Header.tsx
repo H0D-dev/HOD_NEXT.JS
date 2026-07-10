@@ -98,6 +98,9 @@ export default function Header() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  const isHomePage = pathname === "/";
+  const isTransparent = isHomePage && !isScrolled && !isMobileMenuOpen;
+
   return (
     <>
       {/* ── Mobile Overlay ── */}
@@ -107,7 +110,7 @@ export default function Header() {
         aria-hidden="true"
       />
 
-      <header className={`header ${isScrolled ? "header--scrolled" : ""}`}>
+      <header className={`header ${isScrolled ? "header--scrolled" : ""} ${isTransparent ? "header--transparent" : ""}`}>
         <div className="header__container">
           <div className="header__left">
             {/* ── Logo ── */}
@@ -191,7 +194,7 @@ export default function Header() {
               <div className="header__currency-selector relative mr-4 hidden md:block" ref={currencyRef}>
                 <button 
                   onClick={() => setIsCurrencyOpen(!isCurrencyOpen)}
-                  className="flex items-center gap-1 bg-transparent border-none text-[var(--text-primary)] text-[var(--text-sm)] font-medium outline-none cursor-pointer tracking-wider hover:opacity-70 transition-opacity"
+                  className={`flex items-center gap-1 bg-transparent border-none ${isTransparent ? 'text-white' : 'text-[var(--text-primary)]'} text-[var(--text-sm)] font-medium outline-none cursor-pointer tracking-wider hover:opacity-70 transition-opacity`}
                   aria-label="Select Currency"
                 >
                   {currency}
