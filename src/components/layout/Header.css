@@ -335,3 +335,26 @@
   background-color: var(--accent-primary);
   color: #111;
 }
+
+/* ── Transparent Header (Home Page Top) ── */
+.header--transparent .header__nav-link {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.header--transparent .header__nav-link:hover {
+  color: #ffffff;
+}
+
+.header--transparent .header__nav-link::after {
+  background: #ffffff;
+}
+
+.header--transparent .header__logo-text {
+  color: #ffffff;
+}
+
+.header--transparent .header__cart-btn,
+.header--transparent .header__hamburger-btn,
+.header--transparent .header__close-btn {
+  color: #ffffff;
+}

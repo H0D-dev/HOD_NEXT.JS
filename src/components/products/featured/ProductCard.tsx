@@ -27,33 +27,25 @@ export default function ProductCard({ product, onMouseEnter, onMouseLeave }: Pro
   return (
     <Link 
       href={`/products/${routeCategory}/${product.slug}`}
-      className="featured__card group block"
+      className="group flex flex-col no-underline"
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       draggable={false}
     >
-      <div className="featured__card-image-wrapper">
+      <div className="relative w-full aspect-[3/4] overflow-hidden bg-[var(--bg-secondary)] mb-4">
         <Image
           src={product.image}
           alt={product.name}
           fill
-          className="featured__card-image object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03]"
+          className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03]"
           sizes="(max-width: 768px) 80vw, (max-width: 1024px) 45vw, 30vw"
           draggable={false}
         />
       </div>
-      <div className="featured__card-content flex flex-col pt-4">
-        <h3 className="featured__card-title font-serif text-2xl text-[var(--text-primary)] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-1">
+      <div className="flex justify-between items-center px-1">
+        <h3 className="font-sans text-sm font-medium text-[var(--text-primary)]">
           {product.name}
         </h3>
-        <p className="featured__card-category font-sans text-xs uppercase tracking-widest text-[var(--text-muted)] mt-1 opacity-60 transition-opacity duration-500 group-hover:opacity-100">
-          {product.category}
-        </p>
-        
-        {/* Subtle underline animation */}
-        <div className="relative mt-3 h-[1px] w-full bg-[var(--border-secondary)] overflow-hidden">
-          <div className="absolute inset-y-0 left-0 h-full w-full bg-[var(--text-primary)] -translate-x-full transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-0 origin-left"></div>
-        </div>
       </div>
     </Link>
   );

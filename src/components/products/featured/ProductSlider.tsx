@@ -4,7 +4,6 @@ import React, { useRef, useState, useEffect } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import ProductCard from "./ProductCard";
 import { useCursorStore } from "@/src/lib/store/useCursorStore";
-import "./FeaturedProducts.css";
 
 interface ProductSliderProps {
   products: any[];
@@ -58,11 +57,11 @@ export default function ProductSlider({ products, title }: ProductSliderProps) {
   const renderTitleArea = () => {
     if (!title) return null;
     return (
-      <div className="featured__title-area flex flex-col justify-center shrink-0">
-        <h3 className="font-serif text-4xl lg:text-6xl text-[var(--text-primary)] mb-6">
+      <div className="flex flex-col justify-center shrink-0 h-full select-none pr-8">
+        <h3 className="font-sans text-xl lg:text-2xl font-medium text-[var(--text-primary)] mb-4">
           {title}
         </h3>
-        <div className="flex items-center text-[var(--text-secondary)] gap-3 opacity-60">
+        <div className="flex items-center text-[var(--text-secondary)] gap-2 opacity-60">
           <svg width="40" height="12" viewBox="0 0 40 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="transform -scale-x-100">
             <path d="M40 6L30 0.226497V11.7735L40 6ZM0 7H31V5H0V7Z" fill="currentColor" />
           </svg>
@@ -78,13 +77,13 @@ export default function ProductSlider({ products, title }: ProductSliderProps) {
       <div className="flex flex-col w-full">
         {title && (
           <div className="px-[var(--space-4)] mb-4">
-            <h3 className="font-serif text-4xl text-[var(--text-primary)]">{title}</h3>
+            <h3 className="font-sans text-xl font-medium text-[var(--text-primary)]">{title}</h3>
           </div>
         )}
-        <div className="featured__slider-mobile-container" ref={containerRef}>
-          <div className="featured__slider-mobile-track">
+        <div className="w-full pl-[var(--space-4)]" ref={containerRef}>
+          <div className="flex gap-[var(--space-2)] overflow-x-auto snap-x snap-mandatory pr-[var(--space-4)] pb-[var(--space-4)] hide-scrollbar">
             {products.map((product) => (
-              <div key={product.id} className="featured__slider-mobile-item">
+              <div key={product.id} className="snap-start flex-none w-[80vw] md:w-[45vw]">
                 <ProductCard
                   product={product}
                   onMouseEnter={() => { }}
@@ -100,10 +99,10 @@ export default function ProductSlider({ products, title }: ProductSliderProps) {
 
   // Desktop: Framer Motion draggable gallery
   return (
-    <div className="featured__slider-desktop-container" ref={containerRef}>
+    <div className="w-full overflow-hidden px-[var(--space-4)] min-[1440px]:pl-[max(var(--space-4),calc((100vw-var(--container-lg))/2+var(--space-4)))] min-[1440px]:pr-[max(var(--space-4),calc((100vw-var(--container-lg))/2+var(--space-4)))]" ref={containerRef}>
       <motion.div
         ref={trackRef}
-        className="featured__slider-desktop-track flex gap-2 md:gap-3"
+        className="flex gap-2 md:gap-3 will-change-transform"
         drag="x"
         dragConstraints={constraints}
         dragElastic={0.1}
@@ -129,7 +128,7 @@ export default function ProductSlider({ products, title }: ProductSliderProps) {
         {products.map((product) => (
           <div
             key={product.id}
-            className="featured__slider-desktop-item shrink-0"
+            className="shrink-0 w-[30vw] max-w-[500px] min-w-[320px]"
             onClickCapture={(e) => {
               if (isDraggingRef.current) {
                 e.preventDefault();
