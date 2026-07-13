@@ -100,9 +100,10 @@ export default function CustomCursor() {
       gsap.to(cursorRef.current, {
         width: 100,
         height: 100,
-        backgroundColor: "#FFFFFF",
-        color: "#000000",
-        borderColor: "transparent",
+        backgroundColor: "transparent",
+        color: "#fff",
+        borderColor: "rgba(255, 255, 255, 0.5)",
+        borderWidth: "1px",
         duration: 0.4,
         ease: "power2.out"
       });
@@ -113,8 +114,9 @@ export default function CustomCursor() {
         width: 80,
         height: 80,
         backgroundColor: "transparent",
-        color: "#CCCCCC",
-        borderColor: "#CCCCCC",
+        color: "var(--text-secondary)",
+        borderColor: "var(--text-secondary)",
+        borderWidth: "1px",
         duration: 0.4,
         ease: "power2.out"
       });
@@ -126,7 +128,8 @@ export default function CustomCursor() {
         height: 48,
         backgroundColor: "transparent",
         color: "transparent", // Hide text
-        borderColor: "#CCCCCC",
+        borderColor: "var(--text-secondary)",
+        borderWidth: "1px",
         duration: 0.4,
         ease: "power2.out"
       });
@@ -139,7 +142,8 @@ export default function CustomCursor() {
         height: 24,
         backgroundColor: "transparent",
         color: "transparent",
-        borderColor: "#CCCCCC",
+        borderColor: "var(--text-secondary)",
+        borderWidth: "1px",
         duration: 0.4,
         ease: "power2.out"
       });
@@ -159,12 +163,12 @@ export default function CustomCursor() {
           zIndex: 9999,
           width: '24px',
           height: '24px',
-          border: '1px solid #CCCCCC',
+          border: '1px solid var(--text-secondary)',
           color: 'transparent'
         }}
       >
         <span ref={textRef} className="custom-cursor__text font-sans text-[10px] uppercase tracking-widest text-center px-2 font-medium transition-colors duration-300 opacity-0 leading-tight">
-          {mode === "view" ? "Drag to view more" : mode === "drag" ? "Drag" : ""}
+          {mode === "view" ? "Click to view more" : mode === "drag" ? "Drag" : ""}
         </span>
       </div>
       {/* Inner Dot */}
@@ -175,7 +179,7 @@ export default function CustomCursor() {
           zIndex: 9999,
           width: '4px',
           height: '4px',
-          backgroundColor: '#CCCCCC'
+          backgroundColor: 'var(--text-secondary)'
         }}
       />
     </>

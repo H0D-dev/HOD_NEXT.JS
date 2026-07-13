@@ -20,7 +20,7 @@ export default function TradeCTA() {
             Ready to begin your design journey?
           </h2>
           <p className="font-sans text-[#D0D0D0] text-lg md:text-xl leading-relaxed mb-16 max-w-xl">
-            Gain exclusive access to premium handmade rugs, bespoke curtains, and unparalleled trade benefits.
+            Gain exclusive access to premium handmade rugs, bespoke carpets, and unparalleled trade benefits.
           </p>
           
           <div className="flex flex-col sm:flex-row items-center gap-6 w-full sm:w-auto">

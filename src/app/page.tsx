@@ -1,23 +1,23 @@
 import HeroSection from "@/src/components/hero/HeroSection";
-import CollectionCategories from "@/src/components/collections/CollectionCategories";
-import SofterVoiceBanner from "@/src/components/banner/SofterVoiceBanner";
+import CoreValuesSection from "@/src/components/philosophy/CoreValuesSection";
 import FeaturedProductsSection from "@/src/components/products/featured/FeaturedProductsSection";
-import ProcessSection from "@/src/components/process/ProcessSection";
+import CustomRugsBanner from "@/src/components/banner/CustomRugsBanner";
+import CollectionCategories from "@/src/components/collections/CollectionCategories";
 import ProjectsSection from "@/src/components/projects/ProjectsSection";
-import AboutSection from "@/src/components/about/AboutSection";
-import NewsletterSection from "@/src/components/newsletter/NewsletterSection";
+import CraftsmanshipSection from "@/src/components/craftsmanship/CraftsmanshipSection";
+import SocialFeedSection from "@/src/components/social/SocialFeedSection";
 
 export default function Home() {
   return (
-    <main>
+    <main className="bg-[#F9F9F6]">
       <HeroSection />
-      <CollectionCategories />
-      <SofterVoiceBanner />
+      <CoreValuesSection />
       <FeaturedProductsSection />
-      <ProcessSection />
+      <CollectionCategories />
       <ProjectsSection />
-      <AboutSection />
-      <NewsletterSection />
+      <CraftsmanshipSection />
+      <CustomRugsBanner />
+      <SocialFeedSection />
     </main>
   );
 }

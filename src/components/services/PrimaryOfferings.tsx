@@ -10,9 +10,9 @@ const offerings = [
     image: "/rugs/set1-room.png"
   },
   {
-    title: "Bespoke Curtains",
-    desc: "Elevate your interiors with our tailor-made curtains, designed to fit your style and space while ensuring privacy and elegance.",
-    image: "/curtains/set1-room.png"
+    title: "Custom Flatweaves",
+    desc: "Elevate your interiors with our tailor-made flatweaves, designed to fit your style and space while ensuring durability and elegance.",
+    image: "/rugs/rug3.png"
   },
   {
     title: "Unique Wallcoverings",

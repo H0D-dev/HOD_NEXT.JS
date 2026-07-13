@@ -1,168 +1,86 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
-import "./ProcessSection.css";
+import { useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+import { MessageSquare, Layers, PenTool, Hammer, CheckCircle, Truck } from "lucide-react";
 
-const DUMMY_IMAGES = {
-  tall: "https://images.unsplash.com/photo-1595428774223-ef52624120d2?auto=format&fit=crop&q=80&w=800",
-  topCenter: "https://images.unsplash.com/photo-1600166898405-da9535204843?auto=format&fit=crop&q=80&w=600",
-  bottomCenter: "https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?auto=format&fit=crop&q=80&w=600"
-};
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
-const fadeInUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
-    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] as any } 
-  }
-};
+const steps = [
+  { id: "01", title: "Consultation", icon: MessageSquare },
+  { id: "02", title: "Material Selection", icon: Layers },
+  { id: "03", title: "Design & Prototyping", icon: PenTool },
+  { id: "04", title: "Artisan Crafting", icon: Hammer },
+  { id: "05", title: "Quality Assurance", icon: CheckCircle },
+  { id: "06", title: "Installation", icon: Truck },
+];
 
 export default function ProcessSection() {
-  return (
-    <section className="process">
-      <div className="process__container">
-        
-        {/* Top Header */}
-        <div className="process__top">
-          <motion.div 
-            className="process__top-left"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={fadeInUp}
-          >
-            <span className="process__eyebrow font-sans">Process</span>
-            <h2 className="process__heading font-sans">
-              <span>From vision,</span>
-              <span>to</span>
-              <span><em>your perfect rug</em></span>
-            </h2>
-          </motion.div>
+  const sectionRef = useRef<HTMLElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
-          <motion.div 
-            className="process__top-right"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={fadeInUp}
-          >
-            <p className="process__description font-sans">
-              Creating a bespoke rug should feel effortless. From the first conversation to the final installation, we handle every detail with precision and care.
-            </p>
-            <button className="process__cta font-sans">
-              Start your Journey &rarr;
-            </button>
-          </motion.div>
+  useGSAP(() => {
+    gsap.from(gsap.utils.toArray(wrapperRef.current?.children || []), {
+      y: 30,
+      opacity: 0,
+      duration: 1,
+      stagger: 0.15,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top 80%",
+      }
+    });
+  }, { scope: sectionRef });
+
+  return (
+    <section ref={sectionRef} className="w-full bg-brand-light pt-8 md:pt-12 pb-24 md:pb-32" id="process-section">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-16">
+
+        {/* Header */}
+        <div className="mb-16 md:mb-24 flex flex-col items-start max-w-3xl">
+          <span className="font-sans text-xs uppercase tracking-[0.2em] text-neutral-500 mb-4 block">
+            THE BESPOKE JOURNEY
+          </span>
+          <h2 className="font-serif text-3xl md:text-4xl lg:text-[42px] text-brand-dark leading-[1.15]">
+            From concept to creation, a truly personalized experience.
+          </h2>
         </div>
 
-        {/* Steps Grid */}
-        <motion.div 
-          className="process__steps"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={{
-            visible: {
-              transition: { staggerChildren: 0.15 }
-            }
-          }}
-        >
-          <motion.div className="process__step process__step--active" variants={fadeInUp}>
-            <span className="process__step-number font-serif">01</span>
-            <h3 className="process__step-title font-sans">Discover & Consult</h3>
-            <p className="process__step-desc font-sans">
-              Browse our curated collection or book a free 30-minute consultation with one of our design experts. Tell us your vision and we listen.
-            </p>
-            <div className="process__step-mobile-image">
-              <img src={DUMMY_IMAGES.tall} alt="Discover & Consult" />
-            </div>
-          </motion.div>
+        {/* Timeline Wrapper */}
+        <div className="relative flex flex-wrap md:flex-nowrap justify-between items-stretch gap-4 md:gap-6" ref={wrapperRef}>
 
-          <motion.div className="process__step" variants={fadeInUp}>
-            <span className="process__step-number font-serif">02</span>
-            <h3 className="process__step-title font-sans">Design & Customise</h3>
-            <p className="process__step-desc font-sans">
-              We take precise measurements, recommend materials and weaves, craft a bespoke piece tailored exactly to your space and taste.
-            </p>
-            <div className="process__step-mobile-image">
-              <img src={DUMMY_IMAGES.topCenter} alt="Design & Customise" />
-            </div>
-          </motion.div>
+          {/* Steps */}
+          {steps.map((step) => {
+            const Icon = step.icon;
+            return (
+              <div key={step.id} className="relative z-10 flex flex-col items-center justify-center w-[calc(50%-8px)] md:flex-1 bg-brand-light border border-brand-mid/20 rounded-lg p-5 md:p-6 min-h-[140px] md:min-h-[160px] group cursor-pointer hover:border-brand-mid/40 transition-colors duration-500">
 
-          <motion.div className="process__step" variants={fadeInUp}>
-            <span className="process__step-number font-serif">03</span>
-            <h3 className="process__step-title font-sans">Delivered & Installed</h3>
-            <p className="process__step-desc font-sans">
-              Your handcrafted rug is delivered and installed by our team. We don't leave until you're completely delighted with the result.
-            </p>
-            <div className="process__step-mobile-image">
-              <img src={DUMMY_IMAGES.bottomCenter} alt="Delivered & Installed" />
-            </div>
-          </motion.div>
-        </motion.div>
+                {/* Icon Slot */}
+                <div className="w-12 h-12 flex items-center justify-center text-neutral-400 mb-4 transition-all duration-500 group-hover:-translate-y-2 group-hover:text-[#C9A87C] group-hover:scale-110">
+                  <Icon strokeWidth={1.5} size={24} />
+                </div>
 
-        {/* Mobile Testimonial (Hidden on Desktop) */}
-        <motion.div 
-          className="process__mobile-testimonial"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={fadeInUp}
-        >
-          <div className="process__testimonial">
-            <div className="process__quote-icon">“</div>
-            <p className="process__quote-text">
-              The <em>Quality</em>, the feel, the entire experience was exceptional
-            </p>
-            <span className="process__quote-author font-sans">Sarah Jennings</span>
-          </div>
-        </motion.div>
+                {/* Step Number */}
+                <span className="font-sans text-neutral-400 text-[10px] uppercase tracking-widest mb-1 transition-colors duration-500 group-hover:text-neutral-900">
+                  {step.id}
+                </span>
 
-        {/* Media & Testimonial Grid */}
-        <motion.div 
-          className="process__media"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={{
-            visible: { transition: { staggerChildren: 0.2 } }
-          }}
-        >
-          {/* Left Large Image */}
-          <motion.div className="process__media-left" variants={fadeInUp}>
-            <div className="process__image-wrapper process__image-wrapper--left">
-              <img src={DUMMY_IMAGES.tall} alt="Living room with beautiful rug" className="process__image" />
-            </div>
-          </motion.div>
+                {/* Step Title */}
+                <h3 className="text-xs text-neutral-800 uppercase tracking-widest text-center transition-colors duration-500 group-hover:text-[#C9A87C]">
+                  {step.title}
+                </h3>
 
-          {/* Center Top Image */}
-          <motion.div className="process__media-center-top" variants={fadeInUp}>
-            <div className="process__image-wrapper process__image-wrapper--center-top">
-              <img src={DUMMY_IMAGES.topCenter} alt="Rug detail" className="process__image" />
-            </div>
-          </motion.div>
+              </div>
+            );
+          })}
 
-          {/* Center Bottom Image */}
-          <motion.div className="process__media-center-bottom" variants={fadeInUp}>
-            <div className="process__image-wrapper process__image-wrapper--center-bottom">
-              <img src={DUMMY_IMAGES.bottomCenter} alt="Rug craftsmanship" className="process__image" />
-            </div>
-          </motion.div>
+        </div>
 
-          {/* Right Testimonial */}
-          <motion.div className="process__media-right" variants={fadeInUp}>
-            <div className="process__testimonial">
-              <div className="process__quote-icon">“</div>
-              <p className="process__quote-text">
-                The <em>Quality</em>, the feel, the entire experience was exceptional
-              </p>
-              <span className="process__quote-author font-sans">Sarah Jennings</span>
-            </div>
-          </motion.div>
-
-        </motion.div>
       </div>
     </section>
   );

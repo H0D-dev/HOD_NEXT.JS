@@ -53,70 +53,16 @@ const MOCK_RUGS_PRODUCTS = [
   }
 ];
 
-const MOCK_CURTAINS_PRODUCTS = [
-  {
-    id: "c1",
-    name: "Velvet Drape",
-    category: "Blackout",
-    price: "From ₹8,999",
-    image: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&q=80&w=800",
-    slug: "velvet-drape"
-  },
-  {
-    id: "c2",
-    name: "Linen Sheer",
-    category: "Sheer",
-    price: "From ₹5,499",
-    image: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&q=80&w=800",
-    slug: "linen-sheer"
-  },
-  {
-    id: "c3",
-    name: "Silk Elegance",
-    category: "Luxury",
-    price: "From ₹14,999",
-    image: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&q=80&w=800",
-    slug: "silk-elegance"
-  },
-  {
-    id: "c4",
-    name: "Cotton Classic",
-    category: "Standard",
-    price: "From ₹4,000",
-    image: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&q=80&w=800",
-    slug: "cotton-classic"
-  },
-  {
-    id: "c5",
-    name: "Embroidered Panel",
-    category: "Luxury",
-    price: "From ₹12,999",
-    image: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&q=80&w=800",
-    slug: "embroidered-panel"
-  },
-  {
-    id: "c6",
-    name: "Thermal Weave",
-    category: "Blackout",
-    price: "From ₹7,499",
-    image: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&q=80&w=800",
-    slug: "thermal-weave"
-  }
-];
-
 export default async function FeaturedProductsSection() {
   // Fetch products from WooCommerce API
   const rugsProducts = await getFeaturedProducts("rugs");
-  const curtainsProducts = await getFeaturedProducts("curtains");
 
   // Fallback to mock data if the API returns an empty array
   const finalRugs = rugsProducts.length > 0 ? rugsProducts : MOCK_RUGS_PRODUCTS;
-  const finalCurtains = curtainsProducts.length > 0 ? curtainsProducts : MOCK_CURTAINS_PRODUCTS;
 
   return (
     <FeaturedProductsClientSection 
       rugsProducts={finalRugs} 
-      curtainsProducts={finalCurtains} 
     />
   );
 }

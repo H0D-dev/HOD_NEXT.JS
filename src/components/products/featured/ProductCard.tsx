@@ -32,7 +32,7 @@ export default function ProductCard({ product, onMouseEnter, onMouseLeave }: Pro
       onMouseLeave={onMouseLeave}
       draggable={false}
     >
-      <div className="relative w-full aspect-[3/4] overflow-hidden bg-[var(--bg-secondary)] mb-4">
+      <div className="relative w-full aspect-[4/5] overflow-hidden bg-[#EBE7E0] mb-4">
         <Image
           src={product.image}
           alt={product.name}
@@ -43,7 +43,7 @@ export default function ProductCard({ product, onMouseEnter, onMouseLeave }: Pro
         />
       </div>
       <div className="flex justify-between items-center px-1">
-        <h3 className="font-sans text-sm font-medium text-[var(--text-primary)]">
+        <h3 className="font-sans text-sm font-medium text-brand-dark">
           {product.name}
         </h3>
       </div>

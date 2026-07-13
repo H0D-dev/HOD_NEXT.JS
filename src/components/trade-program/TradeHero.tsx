@@ -21,7 +21,7 @@ export default function TradeHero() {
             Designer Trade Program
           </h1>
           <p className="font-sans text-[var(--text-secondary)] text-lg md:text-xl leading-relaxed mb-12 max-w-md">
-            Exclusive benefits for interior design professionals. Elevate your spaces with our premium handmade rugs and bespoke curtains.
+            Exclusive benefits for interior design professionals. Elevate your spaces with our premium handmade rugs and bespoke carpets.
           </p>
           <a 
             href="https://wa.me/971521236888?text=I%20would%20like%20to%20apply%20for%20the%20Designer%20Trade%20Program."

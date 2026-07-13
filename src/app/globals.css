@@ -15,9 +15,9 @@
     --border-primary: #2B2B2B;
     --border-secondary: #D4CFC6;
     --border-thin: 1px solid var(--border-secondary);
-    --accent-primary: #B08A57;
-    --accent-secondary: #6B5646;
-    --highlight-color: #B08A57;
+    --accent-primary: #B89970;
+    --accent-secondary: #A38760;
+    --highlight-color: #B89970;
     --surface-primary: #F5F2EC;
     --surface-secondary: #EAE3D8;
     /* ── Typography Scale ── */
@@ -81,6 +81,13 @@
     --color-foreground: var(--foreground);
     --font-sans: var(--font-inter);
     --font-serif: var(--font-cormorant);
+    --color-brand-gold: #B89970;
+    --color-brand-gold-dark: #A38760;
+    --color-brand-gold-light: #E3D5C4;
+    --color-brand-dark: #3A312B;
+    --color-brand-mid: #AD948A;
+    --color-brand-light: #F6F3EF;
+    --color-brand-accent: #C27D65;
 }
 
 @media (prefers-color-scheme: dark) {
