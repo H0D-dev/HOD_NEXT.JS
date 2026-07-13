@@ -90,7 +90,7 @@ export default function Header() {
   // Close mobile menu on resize to desktop
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth > 768) {
+      if (window.innerWidth > 1024) {
         setIsMobileMenuOpen(false);
       }
     };
@@ -121,9 +121,8 @@ export default function Header() {
                 width={160} 
                 height={36} 
                 priority
-                className="header__logo-img--desktop"
+                className="header__logo-img"
               />
-              <span className="header__logo-text header__logo-text--mobile">HOD</span>
             </Link>
 
             {/* ── Navigation Links ── */}
@@ -148,7 +147,7 @@ export default function Header() {
                   </li>
                 ))}
               </ul>
-              <div className="header__mobile-cart">
+              <div className="header__mobile-cart" style={{ gap: "2rem", alignItems: "center" }}>
                 <button className="header__cart-btn" aria-label="Open cart" onClick={openDrawer}>
                   <div className="header__cart-icon-wrapper">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -160,7 +159,7 @@ export default function Header() {
                   </div>
                   <span className="header__mobile-cart-label">Cart</span>
                 </button>
-                <button className="header__cart-btn" aria-label="Profile" onClick={handleProfileClick} style={{ marginTop: "1rem" }}>
+                <button className="header__cart-btn" aria-label="Profile" onClick={handleProfileClick}>
                   <div className="header__cart-icon-wrapper">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" strokeWidth="1" strokeLinecap="square" />
@@ -170,20 +169,6 @@ export default function Header() {
                   <span className="header__mobile-cart-label">Profile</span>
                 </button>
               </div>
-              <div className="mt-6 pt-4 border-t border-[var(--border-secondary)] block md:hidden w-full flex flex-col items-center">
-                <span className="text-[var(--text-sm)] text-[var(--text-secondary)] mb-3 font-medium uppercase tracking-wider">Currency</span>
-                <div className="flex gap-2">
-                  {["AED", "INR", "USD", "EUR"].map(cur => (
-                    <button
-                      key={cur}
-                      className={`px-3 py-1.5 text-[var(--text-sm)] tracking-wider border rounded-sm transition-colors ${currency === cur ? 'border-[var(--text-primary)] font-bold text-[var(--text-primary)]' : 'border-[var(--border-secondary)] text-[var(--text-secondary)] hover:border-[var(--text-primary)]'}`}
-                      onClick={() => handleCurrencyChange(cur as Currency)}
-                    >
-                      {cur}
-                    </button>
-                  ))}
-                </div>
-              </div>
             </nav>
           </div>
 
@@ -191,7 +176,7 @@ export default function Header() {
           <div className="header__right">
             {/* ── Currency Selector ── */}
             {mounted && (
-              <div className="header__currency-selector relative mr-4 hidden md:block" ref={currencyRef}>
+              <div className="header__currency-selector relative block" ref={currencyRef}>
                 <button 
                   onClick={() => setIsCurrencyOpen(!isCurrencyOpen)}
                   className={`flex items-center gap-1 bg-transparent border-none ${isTransparent ? 'text-white' : 'text-[var(--text-primary)]'} text-[var(--text-sm)] font-medium outline-none cursor-pointer tracking-wider hover:opacity-70 transition-opacity`}
@@ -221,7 +206,7 @@ export default function Header() {
                 )}
               </div>
             )}
-            <button className="header__cart-btn header__desktop-cart-btn" aria-label="Open cart" onClick={openDrawer}>
+            <button className="header__cart-btn !hidden lg:!flex" aria-label="Open cart" onClick={openDrawer}>
               <div className="header__cart-icon-wrapper">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke="currentColor" strokeWidth="1" strokeLinecap="square" />
@@ -231,7 +216,7 @@ export default function Header() {
                 )}
               </div>
             </button>
-            <button className="header__cart-btn header__desktop-cart-btn" aria-label="Profile" onClick={handleProfileClick}>
+            <button className="header__cart-btn !hidden lg:!flex" aria-label="Profile" onClick={handleProfileClick}>
               <div className="header__cart-icon-wrapper">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" strokeWidth="1" strokeLinecap="square" />

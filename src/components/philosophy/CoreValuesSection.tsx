@@ -53,12 +53,12 @@ export default function CoreValuesSection() {
   return (
     <section ref={sectionRef} className="w-full bg-[#F5F2ED] py-8 md:py-12 border-b border-[#2C251F]/5">
       <div className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-12 lg:gap-y-0">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-y-12 md:gap-y-0">
           {features.map((feature, index) => (
             <div 
               key={index} 
-              className={`feature-item flex flex-col items-center text-center px-4 ${
-                index !== features.length - 1 ? 'lg:border-r lg:border-[#2C251F]/10' : ''
+              className={`feature-item flex flex-col items-center text-center px-2 md:px-4 ${
+                index !== features.length - 1 ? 'md:border-r md:border-[#2C251F]/10' : ''
               }`}
             >
               <div className="mb-6 text-[#2C251F]/80">

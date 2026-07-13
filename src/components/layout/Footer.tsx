@@ -14,6 +14,30 @@ export default function Footer() {
   const [isCurrencyOpen, setIsCurrencyOpen] = useState(false);
   const currencyRef = useRef<HTMLDivElement>(null);
 
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+    setStatus("loading");
+    try {
+      const response = await fetch("/api/hod/v1/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, name: "" }),
+      });
+      if (response.ok) {
+        setStatus("success");
+        setEmail("");
+      } else {
+        setStatus("error");
+      }
+    } catch (error) {
+      setStatus("error");
+    }
+  };
+
   // Close currency dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -40,29 +64,29 @@ export default function Footer() {
         {/* ================================================== */}
         {/* DESKTOP FOOTER (min-width: 768px)                  */}
         {/* ================================================== */}
-        <div className="hidden md:grid grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-20">
+        <div className="hidden md:grid grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-20">
 
           {/* Column 1: Brand */}
-          <div className="flex flex-col lg:pr-8">
+          <div className="flex flex-col lg:col-span-4 lg:pr-12">
             <Link href="/" className="mb-8 inline-block">
               <Image
                 src="/logo/HOD_LOGO.webp"
                 alt="House of Décor"
-                width={180}
-                height={40}
+                width={200}
+                height={45}
                 style={{ width: "auto", height: "auto" }}
-                className="h-10 w-auto object-contain brightness-0 invert opacity-90"
+                className="h-12 w-auto object-contain brightness-0 invert opacity-90"
               />
             </Link>
-            <p className="text-[#D0D0D0] text-sm leading-relaxed font-light mb-8 max-w-sm">
+            <p className="text-[#D0D0D0] text-base leading-relaxed font-light mb-8 max-w-sm">
               Premium handwoven rugs and curtains crafted with timeless artistry and delivered with excellence.
             </p>
           </div>
 
           {/* Column 2: About Us */}
-          <div className="flex flex-col">
-            <h4 className="font-sans font-medium text-sm tracking-[0.15em] uppercase mb-8">About Us</h4>
-            <ul className="flex flex-col gap-4">
+          <div className="flex flex-col lg:col-span-2">
+            <h4 className="font-sans font-medium text-base tracking-[0.15em] uppercase mb-8">About Us</h4>
+            <ul className="flex flex-col gap-5">
               {[
                 { label: 'About', href: '/about' },
                 { label: 'Services', href: '/services' },
@@ -73,7 +97,7 @@ export default function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-[#8C8C8C] hover:text-[var(--bg-primary)] transition-colors duration-300 font-light text-sm"
+                    className="text-[#8C8C8C] hover:text-[var(--bg-primary)] transition-colors duration-300 font-light text-base"
                   >
                     {link.label}
                   </Link>
@@ -83,21 +107,20 @@ export default function Footer() {
           </div>
 
           {/* Column 3: Resources */}
-          <div className="flex flex-col">
-            <h4 className="font-sans font-medium text-sm tracking-[0.15em] uppercase mb-8">Resources</h4>
-            <ul className="flex flex-col gap-4">
+          <div className="flex flex-col lg:col-span-3">
+            <h4 className="font-sans font-medium text-base tracking-[0.15em] uppercase mb-8">Resources</h4>
+            <ul className="flex flex-col gap-5">
               {[
                 { label: 'Bespoke Rugs & Textiles', href: '/bespoke' },
                 { label: 'Know Your Rug', href: '/know-your-rug' },
                 { label: 'Designer Trade Program', href: '/designer-trade-program' },
                 { label: 'Size & Fitting Guide', href: '/size-fitting-guide' },
-                { label: 'Care & Cleaning', href: '/care-cleaning' },
-                { label: 'Terms & Conditions', href: '/terms-conditions' }
+                { label: 'Care & Cleaning', href: '/care-cleaning' }
               ].map((link) => (
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-[#8C8C8C] hover:text-[var(--bg-primary)] transition-colors duration-300 font-light text-sm"
+                    className="text-[#8C8C8C] hover:text-[var(--bg-primary)] transition-colors duration-300 font-light text-base"
                   >
                     {link.label}
                   </Link>
@@ -107,8 +130,8 @@ export default function Footer() {
           </div>
 
           {/* Column 4: Stay Connected */}
-          <div className="flex flex-col">
-            <h4 className="font-sans font-medium text-sm tracking-[0.15em] uppercase mb-8">Stay Connected</h4>
+          <div className="flex flex-col lg:col-span-3">
+            <h4 className="font-sans font-medium text-base tracking-[0.15em] uppercase mb-8">Stay Connected</h4>
             <div className="flex gap-4">
               {/* Social Icons (Square, 1px border) */}
               {socialIcons.map((social) => (
@@ -124,6 +147,35 @@ export default function Footer() {
                 </a>
               ))}
             </div>
+            
+            {/* Newsletter (Desktop) */}
+            <div className="mt-12 flex flex-col">
+              <h4 className="font-sans font-medium text-base tracking-[0.15em] uppercase mb-4">Newsletter</h4>
+              <form onSubmit={handleNewsletterSubmit} className="flex flex-col gap-2">
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="bg-transparent border-b border-[#333333] text-[#f5f3ef] px-0 py-2 focus:outline-none focus:border-[#d4b06a] transition-colors text-base font-light placeholder-[#666]"
+                />
+                <button
+                  type="submit"
+                  disabled={status === "loading"}
+                  className="mt-4 text-left uppercase text-sm tracking-[0.15em] font-medium text-[#D0D0D0] hover:text-[#f5f3ef] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-between"
+                >
+                  {status === "loading" ? "Subscribing..." : "Subscribe"}
+                  <span className="text-[#d4b06a] ml-2">→</span>
+                </button>
+                {status === "success" && (
+                  <span className="text-[#d4b06a] text-sm mt-3">Thank you for subscribing!</span>
+                )}
+                {status === "error" && (
+                  <span className="text-red-400 text-sm mt-3">Something went wrong. Please try again.</span>
+                )}
+              </form>
+            </div>
           </div>
         </div>
 
@@ -134,7 +186,7 @@ export default function Footer() {
           </p>
           <div className="flex gap-6 items-center">
             <div className="relative flex items-center gap-2" ref={currencyRef}>
-              <button 
+              <button
                 onClick={() => setIsCurrencyOpen(!isCurrencyOpen)}
                 className="flex items-center gap-1 bg-transparent border-none text-[#8C8C8C] hover:text-[#f5f3ef] text-xs font-medium outline-none cursor-pointer tracking-wider transition-colors"
                 aria-label="Select Currency"
@@ -144,7 +196,7 @@ export default function Footer() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
-              
+
               {isCurrencyOpen && (
                 <div className="absolute bottom-full left-0 mb-2 w-24 bg-[#1A1A1A] border border-[#333333] shadow-lg py-1 z-50 flex flex-col rounded-sm">
                   {["AED", "INR", "USD", "EUR"].map(cur => (
@@ -162,13 +214,17 @@ export default function Footer() {
                 </div>
               )}
             </div>
-            {['Privacy Policy', 'Terms of Service', 'Cookie Policy'].map((link) => (
+            {[
+              { label: 'Privacy Policy', href: '/privacy-policy' },
+              { label: 'Terms of Service', href: '/terms-conditions' },
+              { label: 'Cookie Policy', href: '/cookie-policy' }
+            ].map((link) => (
               <Link
-                key={link}
-                href="#"
+                key={link.label}
+                href={link.href}
                 className="text-[#8C8C8C] hover:text-[#f5f3ef] transition-colors duration-300 text-xs tracking-wide"
               >
-                {link}
+                {link.label}
               </Link>
             ))}
           </div>
@@ -203,7 +259,7 @@ export default function Footer() {
 
           {/* ABOUT US */}
           <div className="flex flex-col border-b border-[#222222]">
-            <button 
+            <button
               onClick={() => setMobileAboutOpen(!mobileAboutOpen)}
               className="flex justify-between items-center w-full py-4"
             >
@@ -212,10 +268,9 @@ export default function Footer() {
                 {mobileAboutOpen ? '−' : '+'}
               </span>
             </button>
-            <div 
-              className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                mobileAboutOpen ? 'max-h-64 pb-6 opacity-100' : 'max-h-0 opacity-0'
-              }`}
+            <div
+              className={`overflow-hidden transition-all duration-300 ease-in-out ${mobileAboutOpen ? 'max-h-64 pb-6 opacity-100' : 'max-h-0 opacity-0'
+                }`}
             >
               <ul className="flex flex-col gap-4">
                 {['About', 'Services', 'Rugs', 'Contact', 'Blog'].map((link) => (
@@ -231,7 +286,7 @@ export default function Footer() {
 
           {/* RESOURCES */}
           <div className="flex flex-col border-b border-[#222222]">
-            <button 
+            <button
               onClick={() => setMobileResourcesOpen(!mobileResourcesOpen)}
               className="flex justify-between items-center w-full py-4"
             >
@@ -240,10 +295,9 @@ export default function Footer() {
                 {mobileResourcesOpen ? '−' : '+'}
               </span>
             </button>
-            <div 
-              className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                mobileResourcesOpen ? 'max-h-64 pb-6 opacity-100' : 'max-h-0 opacity-0'
-              }`}
+            <div
+              className={`overflow-hidden transition-all duration-300 ease-in-out ${mobileResourcesOpen ? 'max-h-64 pb-6 opacity-100' : 'max-h-0 opacity-0'
+                }`}
             >
               <ul className="flex flex-col gap-4">
                 {[
@@ -251,8 +305,7 @@ export default function Footer() {
                   { label: 'Know Your Rug', href: '/know-your-rug' },
                   { label: 'Designer Trade Program', href: '/designer-trade-program' },
                   { label: 'Size & Fitting Guide', href: '/size-fitting-guide' },
-                  { label: 'Care & Cleaning', href: '/care-cleaning' },
-                  { label: 'Terms & Conditions', href: '/terms-conditions' }
+                  { label: 'Care & Cleaning', href: '/care-cleaning' }
                 ].map((link) => (
                   <li key={link.label}>
                     <Link href={link.href} className="text-[#b8b8b8] hover:text-[#d4b06a] font-sans font-light text-sm transition-colors block">
@@ -282,13 +335,45 @@ export default function Footer() {
             ))}
           </div>
         </div>
+        {/* 3.5 Newsletter (Mobile) */}
+        <div className="flex flex-col items-center mb-10 w-full">
+          <h4 className="font-sans font-medium text-xs tracking-[0.15em] uppercase text-[#f5f3ef] mb-4">Newsletter</h4>
+          <form onSubmit={handleNewsletterSubmit} className="flex flex-col w-full max-w-[300px] gap-2">
+            <input
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="bg-transparent border-b border-[#333333] text-[#f5f3ef] px-0 py-2 focus:outline-none focus:border-[#d4b06a] transition-colors text-sm font-light placeholder-[#666]"
+            />
+            <button
+              type="submit"
+              disabled={status === "loading"}
+              className="mt-2 text-left uppercase text-xs tracking-[0.15em] font-medium text-[#D0D0D0] hover:text-[#f5f3ef] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-between"
+            >
+              {status === "loading" ? "Subscribing..." : "Subscribe"}
+              <span className="text-[#d4b06a] ml-2">→</span>
+            </button>
+            {status === "success" && (
+              <span className="text-[#d4b06a] text-xs mt-2">Thank you for subscribing!</span>
+            )}
+            {status === "error" && (
+              <span className="text-red-400 text-xs mt-2">Something went wrong. Please try again.</span>
+            )}
+          </form>
+        </div>
 
         {/* 4. Bottom Legal Section */}
         <div className="flex flex-col items-center pt-8 border-t border-[#222222] gap-4">
           <div className="flex flex-wrap justify-center gap-x-6 gap-y-3">
-            {['Privacy Policy', 'Terms of Service', 'Cookie Policy'].map((link) => (
-              <Link key={link} href="#" className="text-[#b8b8b8] hover:text-[#f5f3ef] text-xs font-sans tracking-wide transition-colors">
-                {link}
+            {[
+              { label: 'Privacy Policy', href: '/privacy-policy' },
+              { label: 'Terms of Service', href: '/terms-conditions' },
+              { label: 'Cookie Policy', href: '/cookie-policy' }
+            ].map((link) => (
+              <Link key={link.label} href={link.href} className="text-[#b8b8b8] hover:text-[#f5f3ef] text-xs font-sans tracking-wide transition-colors">
+                {link.label}
               </Link>
             ))}
           </div>
