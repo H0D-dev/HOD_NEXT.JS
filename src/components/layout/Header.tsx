@@ -26,7 +26,7 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
-  
+
   const { openDrawer, totalItems, items } = useCartStore();
   const { isAuthenticated } = useAuthStore();
   const { currency, handleCurrencyChange } = useCurrencySwitcher();
@@ -104,7 +104,7 @@ export default function Header() {
   return (
     <>
       {/* ── Mobile Overlay ── */}
-      <div 
+      <div
         className={`header__overlay ${isMobileMenuOpen ? "header__overlay--open" : ""}`}
         onClick={() => setIsMobileMenuOpen(false)}
         aria-hidden="true"
@@ -115,11 +115,11 @@ export default function Header() {
           <div className="header__left">
             {/* ── Logo ── */}
             <Link href="/" className="header__logo">
-              <Image 
-                src="/logo/HOD_LOGO.webp" 
-                alt="House of Décor" 
-                width={160} 
-                height={36} 
+              <Image
+                src="/logo/HOD_LOGO.webp"
+                alt="House of Décor"
+                width={160}
+                height={36}
                 priority
                 className="header__logo-img"
               />
@@ -128,13 +128,13 @@ export default function Header() {
             {/* ── Navigation Links ── */}
             <nav className={`header__nav ${isMobileMenuOpen ? "header__nav--open" : ""}`} aria-label="Main Navigation">
               <div className="header__nav-header">
-                <button 
-                  className="header__close-btn" 
+                <button
+                  className="header__close-btn"
                   aria-label="Close menu"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </button>
               </div>
@@ -177,7 +177,7 @@ export default function Header() {
             {/* ── Currency Selector ── */}
             {mounted && (
               <div className="header__currency-selector relative block" ref={currencyRef}>
-                <button 
+                <button
                   onClick={() => setIsCurrencyOpen(!isCurrencyOpen)}
                   className={`flex items-center gap-1 bg-transparent border-none ${isTransparent ? 'text-white' : 'text-[var(--text-primary)]'} text-[var(--text-sm)] font-medium outline-none cursor-pointer tracking-wider hover:opacity-70 transition-opacity`}
                   aria-label="Select Currency"
@@ -187,7 +187,7 @@ export default function Header() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
-                
+
                 {isCurrencyOpen && (
                   <div className="absolute top-full right-0 mt-4 w-24 bg-[var(--bg-primary)] border border-[var(--border-secondary)] shadow-lg py-1 z-50 flex flex-col rounded-sm">
                     {["AED", "INR", "USD", "EUR"].map(cur => (
@@ -224,13 +224,13 @@ export default function Header() {
                 </svg>
               </div>
             </button>
-            <button 
-              className="header__hamburger-btn" 
+            <button
+              className="header__hamburger-btn"
               aria-label="Open menu"
               onClick={() => setIsMobileMenuOpen(true)}
             >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </button>
           </div>

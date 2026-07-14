@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import ProductTextureView from "./ProductTextureView";
-import ProductDetailsArea from "./ProductDetailsArea";
+import ProductGallery from "./ProductGallery";
 import ProductSpecifications from "./ProductSpecifications";
 import ProductInfoCard from "./ProductInfoCard";
 import ExploreMore from "./ExploreMore";
@@ -82,9 +81,6 @@ interface ProductPresentationProps {
 }
 
 export default function ProductPresentation({ product }: ProductPresentationProps) {
-  // Log the product to the browser console for debugging
-  console.log("Current Product data:", product);
-
   // Ensure we handle missing data gracefully
   const [activeColor, setActiveColor] = useState<ProductColor | null>(
     product?.colors?.[0] || null
@@ -113,40 +109,34 @@ export default function ProductPresentation({ product }: ProductPresentationProp
 
   return (
     <>
-      <div className="relative w-full">
-      {/* Sticky Card overlay (Desktop only) spanning across Hero and Specs */}
-      <div className="absolute inset-y-0 right-0 w-full pointer-events-none z-30 hidden lg:block">
-        <div className="sticky top-[104px] lg:top-28 flex justify-end px-[var(--space-6)] xl:px-[var(--space-8)] pointer-events-auto">
-          <ProductInfoCard 
-            product={product} 
-            activeColor={activeColor} 
-            onColorChange={setActiveColor} 
-            selectedVariation={selectedVariation}
-            onVariationChange={setSelectedVariation}
-          />
-        </div>
-      </div>
+      <section className="w-full bg-[var(--bg-primary)] text-[var(--text-primary)] pt-20 lg:pt-28 pb-16 px-6 lg:px-24">
+        <div className="max-w-[1100px] mx-auto grid lg:grid-cols-2 gap-10 lg:gap-0 relative">
 
-      <section className="w-full min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)] pt-20 lg:pt-24 relative z-10">
-        <div className="flex flex-col lg:grid lg:grid-cols-[45%_55%] min-h-[calc(100vh-6rem)]">
-          <ProductTextureView activeColor={activeColor} />
-          <ProductDetailsArea 
-            product={product} 
-            activeColor={activeColor} 
-            onColorChange={setActiveColor} 
-            selectedVariation={selectedVariation}
-            onVariationChange={setSelectedVariation}
-          />
+          {/* Left Side: Product Image Gallery */}
+          <div className="w-full lg:pr-8 xl:pr-10 lg:border-r lg:border-[var(--border-secondary)]">
+            <ProductGallery product={product} activeColor={activeColor} />
+          </div>
+
+          {/* Right Side: Product Information */}
+          <div className="w-full lg:pl-8 xl:pl-10">
+            <ProductInfoCard
+              product={product}
+              activeColor={activeColor}
+              onColorChange={setActiveColor}
+              selectedVariation={selectedVariation}
+              onVariationChange={setSelectedVariation}
+            />
+          </div>
+
         </div>
       </section>
 
-      {/* New Specifications Section Below */}
+      {/* Specifications Section Below */}
       <div className="relative z-20">
         <ProductSpecifications product={product} selectedVariation={selectedVariation} />
       </div>
-    </div>
-    
-    <ExploreMore />
+
+      <ExploreMore />
     </>
   );
 }

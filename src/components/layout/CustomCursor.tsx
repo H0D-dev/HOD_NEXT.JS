@@ -20,11 +20,20 @@ export default function CustomCursor() {
     setIsTouch(isTouchDevice);
   }, []);
 
+  const isHiddenRef = useRef(false);
+
   // Global hover detection for buttons and links
   useEffect(() => {
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      if (target.closest('button') || target.closest('a')) {
+      if (target.closest('.native-pointer')) {
+        isHiddenRef.current = true;
+        gsap.to([cursorRef.current, dotRef.current], { opacity: 0, duration: 0.2 });
+      } else {
+        isHiddenRef.current = false;
+      }
+      
+      if (target.closest('button') || target.closest('a') || target.closest('[role="button"]')) {
         setIsHoveringClickable(true);
       } else {
         setIsHoveringClickable(false);
@@ -52,7 +61,7 @@ export default function CustomCursor() {
     const onMouseMove = (e: MouseEvent) => {
       const { clientX, clientY } = e;
       
-      if (cursorRef.current && cursorRef.current.style.opacity === "0") {
+      if (cursorRef.current && cursorRef.current.style.opacity === "0" && !isHiddenRef.current) {
         gsap.to(cursorRef.current, { opacity: 1, duration: 0.3 });
         gsap.to(dotRef.current, { opacity: 1, duration: 0.3 });
       }
@@ -137,18 +146,20 @@ export default function CustomCursor() {
       gsap.to(dotRef.current, { opacity: 1, scale: 1, duration: 0.2 });
     } else {
       // Default state: Small circle with black dot, no text
-      gsap.to(cursorRef.current, {
-        width: 24,
-        height: 24,
-        backgroundColor: "transparent",
-        color: "transparent",
-        borderColor: "var(--text-secondary)",
-        borderWidth: "1px",
-        duration: 0.4,
-        ease: "power2.out"
-      });
-      gsap.to(textRef.current, { opacity: 0, duration: 0.2 });
-      gsap.to(dotRef.current, { opacity: 1, scale: 1, duration: 0.2 });
+      if (!isHiddenRef.current) {
+        gsap.to(cursorRef.current, {
+          width: 24,
+          height: 24,
+          backgroundColor: "transparent",
+          color: "transparent",
+          borderColor: "var(--text-secondary)",
+          borderWidth: "1px",
+          duration: 0.4,
+          ease: "power2.out"
+        });
+        gsap.to(textRef.current, { opacity: 0, duration: 0.2 });
+        gsap.to(dotRef.current, { opacity: 1, scale: 1, duration: 0.2 });
+      }
     }
   }, [mode, isTouch, isHoveringClickable]);
 

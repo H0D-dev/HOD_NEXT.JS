@@ -17,7 +17,7 @@
 .header--scrolled {
   background: var(--color-brand-light);
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
 }
 
 .header__container {
@@ -295,7 +295,9 @@
     width: auto;
     text-align: left;
   }
-}.header__cart-icon-wrapper {
+}
+
+.header__cart-icon-wrapper {
   position: relative;
   display: inline-flex;
 }

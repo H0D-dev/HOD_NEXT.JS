@@ -20,4 +20,9 @@ body.dragging * {
   * {
     cursor: none !important;
   }
+
+  /* EXCEPTIONS FOR NATIVE CURSOR */
+  .native-pointer, .native-pointer * {
+    cursor: pointer !important;
+  }
 }

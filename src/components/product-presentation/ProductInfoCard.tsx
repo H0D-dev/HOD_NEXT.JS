@@ -3,6 +3,7 @@
 import React, { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { Share2, Globe, ShieldCheck, Clock, Truck, Plus, Minus } from "lucide-react";
 import { ProductColor, Product, ProductVariation } from "./ProductPresentation";
 import { useCartStore } from "@/src/lib/store/useCartStore";
 import { useCurrencyStore } from "@/src/lib/store/useCurrencyStore";
@@ -21,12 +22,12 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
   const router = useRouter();
   const { addItem, openDrawer } = useCartStore();
   const { currency, setCurrency } = useCurrencyStore();
+  const [quantity, setQuantity] = useState(1);
 
   const isVariable = product.productType === "variable" && Array.isArray(product.variations) && product.variations.length > 0;
 
-
   // Fallback sizes for simple products with no variations
-  const fallbackSizes = product.sizes || ["170 x 240 cm", "200 x 300 cm", "250 x 350 cm", "300 x 400 cm", "Custom size"];
+  const fallbackSizes = product.sizes || ["170 x 240 cm", "200 x 300 cm", "250 x 350 cm", "300 x 400 cm"];
   const [activeSize, setActiveSize] = useState<string>(fallbackSizes[0]);
 
   // --- Derived display values ---
@@ -103,6 +104,30 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
     onVariationChange(variation);
   };
 
+  const handleShare = async () => {
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: product.name,
+          text: `Check out ${product.name} at House of Décor`,
+          url: window.location.href,
+        });
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+        toast.success("Link copied to clipboard!");
+      }
+    } catch (error) {
+      if (error instanceof Error && error.name !== "AbortError") {
+        try {
+          await navigator.clipboard.writeText(window.location.href);
+          toast.success("Link copied to clipboard!");
+        } catch (clipboardError) {
+          toast.error("Failed to copy link");
+        }
+      }
+    }
+  };
+
   const handleAddToCart = () => {
     const numericId = typeof product.id === "string" ? parseInt(product.id, 10) : Number(product.id);
     const isRug = product.category?.toLowerCase().includes("rug") ?? true;
@@ -118,7 +143,7 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
       image: activeColor.textureUrl || product.image || "/rugs/set1-room.png",
       price: displayPrice,
       currency: isFallbackPrice ? "AED" : currency,
-      quantity: 1,
+      quantity: quantity,
       variant: {
         color: activeColor.name,
         size: isVariable && selectedVariation ? selectedVariation.label : (product.details?.dimensions || activeSize),
@@ -127,7 +152,6 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
     };
 
     // Include variation ID for WooCommerce order accuracy.
-    // id: 0 is a synthetic parent-size entry — no variation_id needed.
     if (isVariable && selectedVariation && selectedVariation.id > 0) {
       cartItem.variationId = selectedVariation.id;
     }
@@ -150,52 +174,73 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
     openDrawer();
   };
 
-
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any, delay: 0.2 }}
-      className="bg-white w-full lg:w-[480px] xl:w-[500px] p-[var(--space-3)] lg:p-[var(--space-4)] shadow-none lg:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] border-0 lg:border-t lg:border-l lg:border-b border-[var(--border-secondary)] lg:rounded-l-sm z-10 max-h-[calc(100vh-8rem)] overflow-y-auto hide-scrollbar flex flex-col"
+      className="w-full flex flex-col gap-4 pb-12"
     >
-      {/* 1. Product Name */}
-      <h1 className="font-serif text-[var(--text-xl)] lg:text-[var(--text-2xl)] leading-tight text-[var(--text-primary)] mb-2 shrink-0">
-        {product.name}
-      </h1>
+      {/* 1. Header (Collection, Title, Share) */}
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center justify-between">
+          <span className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-[var(--text-muted)]">
+            {product.collection || product.category || "COLLECTION"}
+          </span>
+          <button 
+            onClick={handleShare}
+            className="text-[var(--text-primary)] hover:text-[var(--text-muted)] transition-colors"
+            aria-label="Share product"
+          >
+            <Share2 size={20} strokeWidth={1.5} />
+          </button>
+        </div>
+        <h1 className="font-serif text-2xl lg:text-3xl font-light text-[var(--text-primary)] leading-tight">
+          {product.name}
+        </h1>
+      </div>
 
-      {/* 2. Price */}
+      {/* Divider */}
+      <div className="w-full h-[1px] bg-[var(--border-secondary)] opacity-60" />
+
+      {/* 2. Description */}
+      <p className="font-sans text-sm md:text-base leading-relaxed text-[var(--text-secondary)]">
+        {product.description || "A contemporary hand-tufted rug inspired by natural landscapes, crafted using New Zealand wool and bamboo silk for exceptional softness and depth."}
+      </p>
+
+      {/* Divider */}
+      <div className="w-full h-[1px] bg-[var(--border-secondary)] opacity-60" />
+
+      {/* 3. Starting Price */}
       {displayPrice !== undefined && (
-        <div className="mb-2 shrink-0">
+        <div className="flex flex-col gap-1">
+          <span className="font-sans text-xs text-[var(--text-secondary)]">Starting from</span>
           <div className="flex items-baseline gap-2">
-            <span className="font-serif text-[var(--text-2xl)] lg:text-[var(--text-3xl)] text-[var(--text-primary)] font-semibold">
+            <span className="font-serif text-2xl md:text-3xl text-[var(--text-primary)]">
               {formatPrice(displayPrice, isFallbackPrice ? "AED" : currency)}
             </span>
             {displayOnSale && displayRegularPrice && displayRegularPrice > displayPrice && (
-              <span className="text-[var(--text-md)] lg:text-[var(--text-lg)] text-[var(--text-muted)] line-through">
+              <span className="text-sm text-[var(--text-muted)] line-through">
                 {formatPrice(displayRegularPrice, isFallbackPrice ? "AED" : currency)}
               </span>
             )}
           </div>
+          <span className="font-sans text-xs text-[var(--text-muted)] mt-1">Includes VAT</span>
           {isFallbackPrice && (
-            <p className="text-[11px] text-orange-600 mt-1">
-              * {currency} pricing not available for this product. Showing in AED.
+            <p className="text-[10px] text-orange-600 mt-1">
+              * {currency} pricing not available. Showing in AED.
             </p>
           )}
         </div>
       )}
 
-      {/* 3. Product Description */}
-      <p className="font-sans text-[var(--text-sm)] text-[var(--text-secondary)] leading-relaxed mb-4 shrink-0">
-        {product.description || "Handcrafted premium product designed for sophisticated modern interiors."}
-      </p>
-
       {/* 4. Colour Selector */}
-      <div className="mb-4 shrink-0">
-        <div className="flex justify-between items-end mb-2">
-          <h3 className="text-[var(--text-sm)] font-semibold text-[var(--text-primary)]">Colour</h3>
+      <div className="flex flex-col gap-4">
+        <div className="font-sans text-xs font-medium text-[var(--text-primary)] uppercase tracking-wider">
+          COLOUR: <span className="font-normal text-[var(--text-secondary)] normal-case tracking-normal">{activeColor.name}</span>
         </div>
 
-        <div className="flex gap-2 overflow-x-auto pb-1 snap-x hide-scrollbar">
+        <div className="flex flex-wrap gap-4">
           {product.colors && product.colors.map((color) => (
             <button
               key={color.id}
@@ -206,40 +251,36 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
                   onColorChange(color);
                 }
               }}
-              className={`relative flex-shrink-0 w-10 h-10 rounded-none transition-transform duration-300 hover:scale-105 snap-center ${activeColor.id === color.id ? 'p-[2px] border border-[var(--border-primary)]' : 'border border-transparent'}`}
+              className={`relative flex-shrink-0 w-12 h-12 rounded-full transition-all duration-300 ${activeColor.id === color.id ? 'ring-1 ring-offset-2 ring-[var(--text-primary)]' : 'hover:scale-105'}`}
               aria-label={`Select color ${color.name}`}
             >
-              {color.textureUrl || color.lifestyleUrl ? (
-                <img
-                  src={color.textureUrl || color.lifestyleUrl}
-                  alt={color.name}
-                  className="w-full h-full object-cover border border-black/10"
-                />
-              ) : (
-                <div
-                  className="w-full h-full border border-black/10"
-                  style={{ backgroundColor: color.hex }}
-                />
-              )}
+              <div className="w-full h-full rounded-full overflow-hidden border border-[var(--border-secondary)]">
+                {color.textureUrl || color.lifestyleUrl ? (
+                  <img
+                    src={color.textureUrl || color.lifestyleUrl}
+                    alt={color.name}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div
+                    className="w-full h-full"
+                    style={{ backgroundColor: color.hex }}
+                  />
+                )}
+              </div>
             </button>
           ))}
-          {product.colors && product.colors.length > 5 && (
-            <button className="flex-shrink-0 w-10 h-10 border border-[var(--border-secondary)] flex items-center justify-center text-[9px] text-[var(--text-secondary)] transition-colors hover:border-[var(--border-primary)] snap-center">
-              +{product.colors.length - 5}
-            </button>
-          )}
         </div>
       </div>
 
       {/* 5. Size Selector */}
       {isVariable && (
-        <div className="mb-6 shrink-0">
-          <div className="flex justify-between items-end mb-2">
-            <h3 className="text-[var(--text-sm)] font-semibold text-[var(--text-primary)]">Size</h3>
-            <p className="text-[var(--text-xs)] text-[var(--text-muted)] underline cursor-pointer hover:text-[var(--text-primary)] transition-colors">Size guide</p>
+        <div className="flex flex-col gap-3">
+          <div className="font-sans text-xs font-medium text-[var(--text-primary)] uppercase tracking-wider">
+            SIZE: <span className="font-normal text-[var(--text-secondary)] normal-case tracking-normal">{selectedVariation?.label || activeSize}</span>
           </div>
 
-          <div className="grid grid-cols-2 gap-2">
+          <div className="flex flex-wrap gap-3">
             {product.variations!.map((variation) => {
               const isActive = selectedVariation?.id === variation.id;
               const isOutOfStock = variation.stockStatus === "outofstock";
@@ -248,12 +289,13 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
                   key={variation.id}
                   onClick={() => !isOutOfStock && handleSizeClick(variation)}
                   disabled={isOutOfStock}
-                  className={`py-2 px-3 text-center text-[var(--text-sm)] font-medium transition-colors duration-300 border ${isOutOfStock
+                  className={`py-2.5 px-5 rounded-full font-sans text-xs md:text-sm text-center transition-colors duration-300 border ${
+                    isOutOfStock
                       ? "border-[var(--border-secondary)] text-[var(--text-muted)] opacity-50 cursor-not-allowed line-through"
                       : isActive
-                        ? "border-[var(--border-primary)] bg-[var(--bg-secondary)] text-[var(--text-primary)]"
-                        : "border-[var(--border-secondary)] text-[var(--text-secondary)] hover:border-[var(--text-muted)]"
-                    }`}
+                        ? "border-[var(--text-primary)] bg-[var(--text-primary)] text-[var(--bg-primary)]"
+                        : "border-[var(--border-secondary)] text-[var(--text-primary)] hover:border-[var(--text-primary)] bg-transparent"
+                  }`}
                 >
                   {variation.label}
                 </button>
@@ -263,32 +305,62 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
         </div>
       )}
 
-      {/* 6. Quick Specs (dimensions/weight/sku from selected variation) */}
-      {(displayDimensions || displaySku || displayStockStatus) && (
-        <div className="mb-4 shrink-0 flex flex-wrap gap-x-6 gap-y-1 text-[var(--text-xs)] text-[var(--text-muted)]">
-          {displayDimensions && <span>Dimensions: {displayDimensions}</span>}
-          {displayWeight && <span>Weight: {displayWeight}</span>}
-          {displaySku && <span>SKU: {displaySku}</span>}
-          {displayStockStatus && (
-            <span className={`font-medium ${displayStockStatus === "instock" ? "text-green-600" : "text-red-600"}`}>
-              {displayStockStatus === "instock" ? "In Stock" : displayStockStatus === "outofstock" ? "Out of Stock" : "On Backorder"}
-            </span>
-          )}
+      {/* 7. Quantity & Add to Cart */}
+      <div className="flex flex-col gap-3">
+        <div className="font-sans text-xs font-medium text-[var(--text-primary)] uppercase tracking-wider">
+          QUANTITY
         </div>
-      )}
-
-      {/* 7. Action Buttons */}
-      <div className="flex flex-col gap-2 mt-auto shrink-0 pt-2 lg:pt-0">
-        <div className="flex gap-2">
-          <button className="flex-1 py-3 border border-[var(--border-primary)] bg-white text-[var(--text-primary)] font-medium text-[var(--text-sm)] transition-all duration-300 hover:bg-[var(--bg-secondary)]">
-            Visualise
-          </button>
-          <button
-            onClick={handleAddToCart}
-            className="flex-1 py-3 bg-[var(--accent-primary)] text-[#111] font-medium text-[var(--text-sm)] transition-all duration-300 hover:bg-[var(--accent-secondary)]"
+        <div className="flex items-center border border-[var(--border-secondary)] w-fit rounded-sm overflow-hidden bg-transparent">
+          <button 
+            onClick={() => setQuantity(Math.max(1, quantity - 1))}
+            className="w-10 h-10 flex items-center justify-center text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] transition-colors"
           >
-            Add to Cart
+            <Minus size={14} strokeWidth={2} />
           </button>
+          <div className="w-10 h-10 flex items-center justify-center font-sans text-sm font-medium text-[var(--text-primary)]">
+            {quantity}
+          </div>
+          <button 
+            onClick={() => setQuantity(quantity + 1)}
+            className="w-10 h-10 flex items-center justify-center text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] transition-colors"
+          >
+            <Plus size={14} strokeWidth={2} />
+          </button>
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-3">
+        <div className="font-sans text-xs text-[var(--text-secondary)]">
+          Estimated Delivery: 8-12 Weeks
+        </div>
+        <button
+          onClick={handleAddToCart}
+          className="w-full py-4 bg-[#A38A61] hover:bg-[#8F7752] text-white font-sans text-xs tracking-widest uppercase font-medium transition-colors duration-300"
+        >
+          Add to Cart
+        </button>
+        <button className="w-full py-4 border border-[var(--border-primary)] bg-transparent text-[var(--text-primary)] font-sans text-xs tracking-widest uppercase font-medium transition-colors duration-300 hover:bg-[var(--bg-secondary)]">
+          Request Customisation
+        </button>
+      </div>
+
+      {/* 8. Trust Badges / Icons */}
+      <div className="flex justify-between items-start mt-6 pt-5 border-t border-[var(--border-secondary)]">
+        <div className="flex flex-col items-center gap-2 flex-1 text-center">
+          <Globe size={24} strokeWidth={1} className="text-[var(--text-primary)]" />
+          <span className="font-sans text-[10px] text-[var(--text-secondary)] leading-tight max-w-[80px]">Handcrafted</span>
+        </div>
+        <div className="flex flex-col items-center gap-2 flex-1 text-center">
+          <Truck size={24} strokeWidth={1} className="text-[var(--text-primary)]" />
+          <span className="font-sans text-[10px] text-[var(--text-secondary)] leading-tight max-w-[80px]">Worldwide Shipping</span>
+        </div>
+        <div className="flex flex-col items-center gap-2 flex-1 text-center">
+          <Clock size={24} strokeWidth={1} className="text-[var(--text-primary)]" />
+          <span className="font-sans text-[10px] text-[var(--text-secondary)] leading-tight max-w-[80px]">Made to Order</span>
+        </div>
+        <div className="flex flex-col items-center gap-2 flex-1 text-center">
+          <ShieldCheck size={24} strokeWidth={1} className="text-[var(--text-primary)]" />
+          <span className="font-sans text-[10px] text-[var(--text-secondary)] leading-tight max-w-[80px]">Secure Payment</span>
         </div>
       </div>
 
