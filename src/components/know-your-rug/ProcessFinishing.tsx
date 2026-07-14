@@ -57,7 +57,7 @@ export default function ProcessFinishing() {
           <span className="block text-[var(--accent-primary)] font-sans text-xs uppercase tracking-widest mb-6 font-medium">
             Meticulous Detailing
           </span>
-          <h2 className="font-serif text-[clamp(32px,5vw,64px)] text-[var(--text-primary)] tracking-tight mb-8">
+          <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-[var(--text-primary)] tracking-tight mb-8 leading-tight">
             The 18 Steps of Finishing
           </h2>
           <div className="flex flex-col gap-6 text-center max-w-2xl mx-auto">

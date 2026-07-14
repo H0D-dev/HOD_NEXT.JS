@@ -12,17 +12,17 @@ export default function ProcessHero() {
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any }}
           className="max-w-4xl"
         >
-          <span className="block text-[var(--accent-primary)] font-sans text-xs md:text-sm uppercase tracking-widest mb-6 md:mb-8 font-medium">
+          <span className="block text-[var(--accent-primary)] font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] mb-6 md:mb-8 font-medium">
             Know Your Rug
           </span>
-          <h1 className="font-serif text-[clamp(48px,8vw,80px)] leading-[1.05] tracking-tight text-[var(--text-primary)] mb-8">
+          <h1 className="font-serif text-[2.75rem] md:text-[4rem] lg:text-[4.75rem] leading-[1.1] tracking-tight text-[var(--text-primary)] mb-8">
             Rug Making Process
           </h1>
-          <h2 className="font-sans text-[var(--text-primary)] text-xl md:text-2xl font-light tracking-wide mb-12">
+          <h2 className="font-sans text-[var(--text-primary)] text-lg md:text-xl font-light tracking-wide mb-8 md:mb-12">
             Transforming Designs into Masterpieces
           </h2>
           <div className="flex flex-col gap-6 text-center max-w-2xl mx-auto">
-            <p className="font-sans text-[var(--text-secondary)] text-lg md:text-xl leading-relaxed font-light">
+            <p className="font-sans text-[var(--text-secondary)] text-base md:text-lg leading-relaxed font-light">
               Each hand-crafted rug is a testament to artisanal skill, passing through the hands of dedicated specialists whose expertise creates unparalleled quality.
             </p>
           </div>

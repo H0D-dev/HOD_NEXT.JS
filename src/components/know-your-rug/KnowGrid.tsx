@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -31,56 +31,62 @@ const topics = [
   },
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15 },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 40 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 1, ease: [0.22, 1, 0.36, 1] as any },
-  },
+const getTopClass = (idx: number) => {
+  const zIndexes = ["z-10", "z-20", "z-30", "z-40", "z-50"];
+  switch (idx) {
+    case 0: return `top-[4rem] md:top-[6rem] ${zIndexes[0]}`;
+    case 1: return `top-[4.5rem] md:top-[6.5rem] ${zIndexes[1]}`;
+    case 2: return `top-[5rem] md:top-[7rem] ${zIndexes[2]}`;
+    case 3: return `top-[5.5rem] md:top-[7.5rem] ${zIndexes[3]}`;
+    default: return `top-[6rem] md:top-[8rem] ${zIndexes[4]}`;
+  }
 };
 
 export default function KnowGrid() {
+  const sectionRef = useRef<HTMLElement>(null);
+
   return (
-    <section className="w-full pb-16 md:pb-40 px-6 md:px-16 lg:px-24 bg-[var(--bg-primary)]">
-      <div className="max-w-[var(--container-lg)] mx-auto">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 lg:gap-24"
-        >
-          {topics.map((topic) => (
-            <motion.div key={topic.id} variants={itemVariants} className="flex flex-col group">
-              <div className="w-full aspect-[4/3] relative overflow-hidden bg-[var(--surface-primary)] border border-[var(--border-secondary)] mb-8">
-                <Image
-                  src={topic.image}
-                  alt={topic.title}
-                  fill
-                  className="object-cover transition-transform duration-[1.5s] group-hover:scale-105 ease-[cubic-bezier(0.22,1,0.36,1)]"
-                />
-              </div>
-              <h3 className="font-serif text-[clamp(24px,4vw,40px)] text-[var(--text-primary)] mb-6">
+    <section ref={sectionRef} className="w-full bg-[var(--bg-secondary)] pb-16 md:pb-32 pt-16 md:pt-24" id="know-grid-section">
+      <div className="flex flex-col w-full max-w-[1400px] mx-auto relative px-4 md:px-8 lg:px-12 space-y-12 md:space-y-24">
+
+        {topics.map((topic, idx) => (
+          <div
+            key={topic.id}
+            className={`craft-panel sticky ${getTopClass(idx)} w-full relative min-h-[450px] md:h-[550px] overflow-hidden`}
+          >
+            {/* Full Background Image */}
+            <div className="absolute inset-0 w-full h-full z-0">
+              <Image
+                src={topic.image}
+                alt={topic.title}
+                fill
+                className="object-cover"
+              />
+              {/* Gradient Overlay for text legibility */}
+              <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
+            </div>
+
+            {/* Text Overlay */}
+            <div className="relative z-10 w-full h-full md:w-[70%] lg:w-[60%] flex flex-col justify-center items-start p-8 md:p-16 lg:p-24 text-white">
+              <span className="text-xs uppercase tracking-[0.2em] text-neutral-300 mb-4 block">
+                0{idx + 1}
+              </span>
+              <h2 className="font-serif text-[2.75rem] md:text-[4rem] lg:text-[4.75rem] leading-[1.1] tracking-tight text-white mb-4">
                 {topic.title}
-              </h3>
-              <Link 
-                href={`/know-your-rug/${topic.id}`} 
-                className="inline-block mt-auto font-sans font-medium text-xs tracking-[0.2em] uppercase text-[var(--text-primary)] border-b border-[var(--text-primary)] pb-1 w-max hover:text-[var(--accent-primary)] hover:border-[var(--accent-secondary)] transition-colors duration-300"
+              </h2>
+              <p className="font-sans max-w-xl text-neutral-300 text-[10px] md:text-xs uppercase tracking-[0.2em] mt-6 leading-relaxed mb-10">
+                {topic.description}
+              </p>
+              <Link
+                href={`/know-your-rug/${topic.id}`}
+                className="text-[10px] md:text-xs uppercase tracking-[0.2em] text-neutral-300 hover:text-brand-gold border-b border-transparent hover:border-brand-gold transition-colors duration-300 font-sans w-fit flex"
               >
-                Learn More
+                EXPLORE {topic.title} &rarr;
               </Link>
-            </motion.div>
-          ))}
-        </motion.div>
+            </div>
+          </div>
+        ))}
+
       </div>
     </section>
   );

@@ -53,13 +53,13 @@ export default function GuideHero() {
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any }}
           className="text-center max-w-4xl mb-24"
         >
-          <span className="block text-[var(--accent-primary)] font-sans text-xs md:text-sm uppercase tracking-widest mb-6 md:mb-8 font-medium">
+          <span className="block text-[var(--accent-primary)] font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] mb-6 md:mb-8 font-medium">
             Know Your Rug
           </span>
-          <h1 className="font-serif text-[clamp(48px,8vw,80px)] leading-[1.05] tracking-tight text-[var(--text-primary)] mb-8">
+          <h1 className="font-serif text-[2.75rem] md:text-[4rem] lg:text-[4.75rem] leading-[1.1] tracking-tight text-[var(--text-primary)] mb-8">
             Rug Guide
           </h1>
-          <h2 className="font-sans text-[var(--text-secondary)] text-xl md:text-2xl font-light tracking-wide">
+          <h2 className="font-sans text-[var(--text-secondary)] text-lg md:text-xl font-light tracking-wide">
             Discover the Art of Rug Selection: Your Guide to Finding the Ideal Piece!
           </h2>
         </motion.div>
@@ -73,7 +73,7 @@ export default function GuideHero() {
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] as any }}
             className="mb-12 text-center"
           >
-            <h3 className="font-serif text-[clamp(24px,5vw,40px)] text-[var(--text-primary)] mb-6">
+            <h3 className="font-serif text-3xl md:text-4xl text-[var(--text-primary)] mb-6">
               Guide to Choosing the Right Rug
             </h3>
             <p className="font-sans text-[var(--text-secondary)] text-lg">
@@ -93,7 +93,7 @@ export default function GuideHero() {
               >
                 <button
                   onClick={() => handleAccordionClick(idx)}
-                  className="w-full py-8 flex items-center justify-between font-serif text-[clamp(20px,4vw,28px)] text-[var(--text-primary)] text-left"
+                  className="w-full py-8 flex items-center justify-between font-serif text-2xl md:text-3xl text-[var(--text-primary)] text-left"
                 >
                   {item.question}
                   <ChevronDown

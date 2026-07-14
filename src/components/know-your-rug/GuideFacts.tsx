@@ -48,7 +48,7 @@ export default function GuideFacts() {
             <div className="w-12 h-12 rounded-full bg-[var(--surface-primary)] border border-[var(--border-secondary)] flex items-center justify-center">
               <AlertTriangle size={20} className="text-[var(--text-primary)]" strokeWidth={1.5} />
             </div>
-            <h3 className="font-serif text-[clamp(24px,5vw,40px)] text-[var(--text-primary)]">
+            <h3 className="font-serif text-3xl md:text-4xl text-[var(--text-primary)]">
               Common Mistakes When Choosing a Rug
             </h3>
           </motion.div>
@@ -86,7 +86,7 @@ export default function GuideFacts() {
             <div className="w-12 h-12 rounded-full bg-[var(--surface-primary)] border border-[var(--border-secondary)] flex items-center justify-center">
               <Info size={20} className="text-[var(--text-primary)]" strokeWidth={1.5} />
             </div>
-            <h3 className="font-serif text-[clamp(24px,5vw,40px)] text-[var(--text-primary)]">
+            <h3 className="font-serif text-3xl md:text-4xl text-[var(--text-primary)]">
               Quick Facts About Handcrafted Rugs
             </h3>
           </motion.div>

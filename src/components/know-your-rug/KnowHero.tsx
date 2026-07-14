@@ -1,30 +1,99 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import Image from "next/image";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 export default function KnowHero() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const bgRefDesktop = useRef<HTMLDivElement>(null);
+  const bgRefMobile = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    // Background parallax effect
+    gsap.to([bgRefDesktop.current, bgRefMobile.current], {
+      yPercent: 20,
+      ease: "none",
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top top",
+        end: "bottom top",
+        scrub: true,
+      }
+    });
+
+    // Fade and translate content upwards
+    gsap.from(gsap.utils.toArray(contentRef.current?.children || []), {
+      y: 30,
+      opacity: 0,
+      duration: 1,
+      stagger: 0.2,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top 80%",
+      }
+    });
+  }, { scope: sectionRef });
+
   return (
-    <section className="w-full pt-20 pb-12 md:pt-48 md:pb-24 px-6 md:px-16 lg:px-24 bg-[var(--bg-primary)]">
-      <div className="max-w-[var(--container-md)] mx-auto text-center flex flex-col items-center">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any }}
-          className="max-w-4xl"
-        >
-          <span className="block text-[var(--accent-primary)] font-sans text-xs md:text-sm uppercase tracking-widest mb-6 md:mb-8 font-medium">
-            Education
-          </span>
-          <h1 className="font-serif text-[clamp(48px,8vw,80px)] leading-[1.05] tracking-tight text-[var(--text-primary)] mb-12">
-            Know Your Rug
-          </h1>
-          <div className="flex flex-col gap-8 text-center max-w-2xl mx-auto">
-            <p className="font-sans text-[var(--text-secondary)] text-lg md:text-xl leading-relaxed font-light">
-              Discover the craftsmanship, fibers, and time-honored techniques that make every piece a timeless signature.
-            </p>
-          </div>
-        </motion.div>
+    <section ref={sectionRef} className="relative w-full h-screen flex flex-col justify-end lg:justify-center overflow-hidden bg-black" id="know-hero-section">
+      
+      {/* ── Background Image Desktop ── */}
+      <div className="absolute inset-0 w-full h-[120%] -top-[10%] z-0 hidden md:block" ref={bgRefDesktop}>
+        <Image
+          src="/know_your_rug_hero_desktop.png"
+          alt="Macro close-up of luxurious hand-knotted rug"
+          fill
+          priority
+          className="object-cover"
+          sizes="100vw"
+        />
+        {/* Subtle gradient overlay for text legibility */}
+        <div className="absolute inset-0 bg-black/40 md:bg-gradient-to-r from-black/80 to-transparent z-10"></div>
       </div>
+      
+      {/* ── Background Image Mobile ── */}
+      <div className="absolute inset-0 w-full h-[120%] -top-[10%] z-0 block md:hidden" ref={bgRefMobile}>
+        <Image
+          src="/know_your_rug_hero_mobile.png"
+          alt="Macro close-up of luxurious hand-knotted rug"
+          fill
+          priority
+          className="object-cover"
+          sizes="100vw"
+        />
+        {/* Subtle gradient overlay for text legibility */}
+        <div className="absolute inset-0 bg-black/50 z-10"></div>
+      </div>
+
+      {/* ── Content ── */}
+      <div className="w-full px-6 sm:px-12 md:px-16 lg:px-24 xl:px-32 relative z-20 flex flex-col py-24 md:py-32 lg:pb-0">
+          {/* Hero Content Layer */}
+          <div ref={contentRef} className="flex flex-col items-start gap-0 lg:-mt-16">
+            
+            <h1 className="font-serif text-[2.75rem] md:text-[4rem] lg:text-[4.75rem] leading-[1.1] tracking-tight text-white mb-4">
+              Know <br /> Your Rug
+            </h1>
+            
+            <p className="font-sans max-w-xl text-neutral-300 text-[10px] md:text-xs uppercase tracking-[0.2em] mt-6 leading-relaxed">
+              UNDERSTANDING CRAFTSMANSHIP, MATERIALS, <br className="hidden sm:block" />
+              TEXTURES, AND TECHNIQUES BEHIND TIMELESS <br className="hidden sm:block" />
+              HANDMADE RUGS.
+            </p>
+
+            <div className="mt-8 border-t border-white/30 w-16 mb-4"></div>
+            
+          </div>
+        </div>
+
     </section>
   );
 }

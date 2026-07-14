@@ -17,7 +17,7 @@ export default function GuideContent() {
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any }}
             className="flex flex-col gap-6"
           >
-            <h3 className="font-serif text-[clamp(24px,5vw,40px)] text-[var(--text-primary)]">
+            <h3 className="font-serif text-3xl md:text-4xl text-[var(--text-primary)]">
               Hand-Made vs. Machine-Made Rugs
             </h3>
             <p className="font-sans text-[var(--text-secondary)] text-lg leading-relaxed">
@@ -35,7 +35,7 @@ export default function GuideContent() {
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any }}
             className="flex flex-col gap-6"
           >
-            <h3 className="font-serif text-[clamp(24px,5vw,40px)] text-[var(--text-primary)]">
+            <h3 className="font-serif text-3xl md:text-4xl text-[var(--text-primary)]">
               The Regal Hand-Knotted Rugs
             </h3>
             <p className="font-sans text-[var(--text-secondary)] text-lg leading-relaxed">
@@ -57,7 +57,7 @@ export default function GuideContent() {
             className="bg-[var(--surface-primary)] p-8 lg:p-12 border-t-2 border-[var(--text-primary)] flex flex-col gap-6"
           >
             <Lightbulb size={32} className="text-[var(--text-muted)]" strokeWidth={1} />
-            <h4 className="font-serif text-[clamp(20px,4vw,28px)] text-[var(--text-primary)]">Lighting Conditions</h4>
+            <h4 className="font-serif text-2xl md:text-3xl text-[var(--text-primary)]">Lighting Conditions</h4>
             <p className="font-sans text-[var(--text-secondary)] text-lg leading-relaxed">
               Rug fibers reflect light differently. A rug may appear lighter or darker in photos compared to real life. Similarly, the lighting in the room can affect how the rug’s colors look once placed.
             </p>
@@ -71,7 +71,7 @@ export default function GuideContent() {
             className="bg-[var(--surface-primary)] p-8 lg:p-12 border-t-2 border-[var(--text-primary)] flex flex-col gap-6"
           >
             <MonitorSmartphone size={32} className="text-[var(--text-muted)]" strokeWidth={1} />
-            <h4 className="font-serif text-[clamp(20px,4vw,28px)] text-[var(--text-primary)]">On-Screen vs. Real Life</h4>
+            <h4 className="font-serif text-2xl md:text-3xl text-[var(--text-primary)]">On-Screen vs. Real Life</h4>
             <p className="font-sans text-[var(--text-secondary)] text-lg leading-relaxed">
               Colors can vary between screens, print images, and actual rugs. For accurate color representation, it's best to view rug samples before making a final decision.
             </p>

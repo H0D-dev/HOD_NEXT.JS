@@ -161,7 +161,7 @@ export default function FibersContent() {
           }
         });
       },
-      { rootMargin: "-20% 0px -60% 0px", threshold: 0.1 }
+      { rootMargin: "-40% 0px -40% 0px", threshold: 0 }
     );
 
     fiberData.forEach((fiber) => {
@@ -187,7 +187,7 @@ export default function FibersContent() {
             <div key={`mobile-${fiber.id}`} className="border-b border-[var(--border-secondary)]">
               <button
                 onClick={() => handleAccordionClick(fiber.id)}
-                className="w-full py-6 flex items-center justify-between font-serif text-[clamp(20px,4vw,28px)] text-[var(--text-primary)]"
+                className="w-full py-6 flex items-center justify-between font-serif text-3xl md:text-4xl text-[var(--text-primary)]"
               >
                 {fiber.title}
                 <ChevronDown 
@@ -207,19 +207,19 @@ export default function FibersContent() {
                   >
                     <div className="pb-8 flex flex-col gap-8">
                       <div>
-                        <h3 className="font-sans text-[var(--text-secondary)] text-lg mb-4">{fiber.subtitle}</h3>
+                        <h3 className="font-sans text-[var(--text-secondary)] text-lg md:text-xl font-light mb-4">{fiber.subtitle}</h3>
                         {fiber.description.map((desc, i) => (
-                          <p key={i} className="font-sans text-[var(--text-secondary)] text-base leading-relaxed mb-4">
+                          <p key={i} className="font-sans text-[var(--text-secondary)] text-base md:text-lg leading-relaxed mb-4">
                             {desc}
                           </p>
                         ))}
                       </div>
 
                       <div className="bg-[var(--surface-primary)] p-6 border border-[var(--border-secondary)]">
-                        <h4 className="font-sans text-xs uppercase tracking-widest text-[var(--text-primary)] mb-4">Key Features</h4>
+                        <h4 className="font-sans text-xs md:text-sm uppercase tracking-[0.2em] text-[var(--text-primary)] mb-4">Key Features</h4>
                         <ul className="flex flex-col gap-4">
                           {fiber.benefits.map((benefit, idx) => (
-                            <li key={idx} className="font-sans text-sm flex flex-col gap-1">
+                            <li key={idx} className="font-sans text-sm md:text-base flex flex-col gap-1">
                               <span className="font-medium text-[var(--text-primary)]">{benefit.name}</span>
                               <span className="text-[var(--text-secondary)]">{benefit.desc}</span>
                             </li>
@@ -228,7 +228,7 @@ export default function FibersContent() {
                       </div>
 
                       <div>
-                        <h4 className="font-sans text-sm font-medium uppercase tracking-widest text-[var(--text-primary)] mb-4 flex items-center gap-2">
+                        <h4 className="font-sans text-xs md:text-sm font-medium uppercase tracking-[0.2em] text-[var(--text-primary)] mb-4 flex items-center gap-2">
                           <CheckCircle2 size={16} className="text-[var(--accent-primary)]" />
                           Why Choose {fiber.title}?
                         </h4>
@@ -236,7 +236,7 @@ export default function FibersContent() {
                           {fiber.whyChoose.map((reason, idx) => {
                             const [boldPart, restPart] = reason.split(": ");
                             return (
-                              <li key={idx} className="font-sans text-sm text-[var(--text-secondary)] flex items-start gap-2">
+                              <li key={idx} className="font-sans text-sm md:text-base text-[var(--text-secondary)] flex items-start gap-2">
                                 <span className="text-[var(--text-muted)] block mt-1">•</span>
                                 <span><strong className="text-[var(--text-primary)] font-medium">{boldPart}:</strong> {restPart}</span>
                               </li>
@@ -247,7 +247,7 @@ export default function FibersContent() {
 
                       {fiber.considerations && (
                         <div>
-                          <h4 className="font-sans text-sm font-medium uppercase tracking-widest text-[var(--text-primary)] mb-4 flex items-center gap-2">
+                          <h4 className="font-sans text-xs md:text-sm font-medium uppercase tracking-[0.2em] text-[var(--text-primary)] mb-4 flex items-center gap-2">
                             <AlertCircle size={16} className="text-[var(--text-muted)]" />
                             Other Considerations
                           </h4>
@@ -255,7 +255,7 @@ export default function FibersContent() {
                             {fiber.considerations.map((cons, idx) => {
                               const [boldPart, restPart] = cons.split(": ");
                               return (
-                                <li key={idx} className="font-sans text-sm text-[var(--text-secondary)] flex items-start gap-2">
+                                <li key={idx} className="font-sans text-sm md:text-base text-[var(--text-secondary)] flex items-start gap-2">
                                   <span className="text-[var(--text-muted)] block mt-1">•</span>
                                   <span><strong className="text-[var(--text-primary)] font-medium">{boldPart}:</strong> {restPart}</span>
                                 </li>
@@ -266,7 +266,7 @@ export default function FibersContent() {
                       )}
 
                       <div className="bg-[var(--surface-secondary)] p-6 border-l-2 border-[var(--accent-primary)]">
-                        <p className="font-serif text-lg text-[var(--text-primary)] italic">
+                        <p className="font-serif text-xl md:text-2xl text-[var(--text-primary)] italic leading-relaxed">
                           "{fiber.summary}"
                         </p>
                       </div>
@@ -321,7 +321,7 @@ export default function FibersContent() {
                 className="flex flex-col gap-12 scroll-mt-32"
               >
                 <div className="border-b border-[var(--border-secondary)] pb-8">
-                  <h2 className="font-serif text-[clamp(32px,5vw,64px)] text-[var(--text-primary)] mb-4">
+                  <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-[var(--text-primary)] mb-4 leading-tight">
                     {fiber.title}
                   </h2>
                   <h3 className="font-sans text-[var(--text-secondary)] text-xl font-light mb-8">
@@ -339,7 +339,7 @@ export default function FibersContent() {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                   {/* Benefits Grid */}
                   <div className="flex flex-col gap-6 bg-[var(--surface-primary)] p-8 border border-[var(--border-secondary)] h-fit">
-                    <h4 className="font-sans text-sm font-medium tracking-widest uppercase text-[var(--text-primary)]">
+                    <h4 className="font-sans text-xs md:text-sm font-medium tracking-[0.2em] uppercase text-[var(--text-primary)]">
                       Key Features
                     </h4>
                     <div className="grid grid-cols-1 gap-6">
@@ -354,7 +354,7 @@ export default function FibersContent() {
 
                   <div className="flex flex-col gap-8">
                     <div className="flex flex-col gap-6">
-                      <h4 className="font-sans text-sm font-medium tracking-widest uppercase text-[var(--text-primary)] flex items-center gap-3">
+                      <h4 className="font-sans text-xs md:text-sm font-medium tracking-[0.2em] uppercase text-[var(--text-primary)] flex items-center gap-3">
                         <CheckCircle2 size={18} className="text-[var(--accent-primary)]" />
                         Why Choose {fiber.title}?
                       </h4>
@@ -373,7 +373,7 @@ export default function FibersContent() {
 
                     {fiber.considerations && (
                       <div className="flex flex-col gap-6 pt-8 border-t border-[var(--border-secondary)]">
-                        <h4 className="font-sans text-sm font-medium tracking-widest uppercase text-[var(--text-primary)] flex items-center gap-3">
+                        <h4 className="font-sans text-xs md:text-sm font-medium tracking-[0.2em] uppercase text-[var(--text-primary)] flex items-center gap-3">
                           <AlertCircle size={18} className="text-[var(--text-muted)]" />
                           Other Considerations
                         </h4>

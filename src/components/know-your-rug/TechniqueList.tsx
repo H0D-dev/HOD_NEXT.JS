@@ -40,59 +40,43 @@ const techniques = [
 
 export default function TechniqueList() {
   return (
-    <section className="w-full pb-16 md:pb-40 px-6 md:px-16 lg:px-24 bg-[var(--bg-primary)]">
-      <div className="max-w-[var(--container-lg)] mx-auto flex flex-col gap-24 md:gap-32">
-        {techniques.map((technique, index) => {
-          const isReversed = index % 2 !== 0;
-
-          return (
-            <div
+    <section className="w-full pb-16 md:pb-40 px-6 md:px-16 lg:px-24 bg-[var(--bg-primary)] pt-12 md:pt-20">
+      <div className="max-w-[var(--container-lg)] mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 lg:gap-24">
+          {techniques.map((technique, index) => (
+            <motion.div
               key={technique.id}
-              className={`flex flex-col ${
-                isReversed ? "lg:flex-row-reverse" : "lg:flex-row"
-              } items-center gap-12 lg:gap-24`}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] as any }}
+              className="flex flex-col group cursor-pointer"
             >
-              {/* Image Side */}
-              <motion.div
-                initial={{ opacity: 0, x: isReversed ? 40 : -40 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] as any }}
-                className="flex-1 w-full aspect-square relative overflow-hidden bg-[var(--surface-primary)] border border-[var(--border-secondary)]"
-              >
+              {/* Image */}
+              <div className="w-full aspect-[4/3] relative overflow-hidden bg-[var(--surface-primary)] border border-[var(--border-secondary)] mb-8">
                 <Image
                   src={technique.image}
                   alt={technique.title}
                   fill
-                  className="object-cover transition-transform duration-[1.5s] hover:scale-105 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                  className="object-cover transition-transform duration-[1.5s] group-hover:scale-105 ease-[cubic-bezier(0.22,1,0.36,1)]"
                 />
-              </motion.div>
+              </div>
 
-              {/* Text Side */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] as any }}
-                className="flex-1 w-full flex flex-col justify-center"
-              >
-                <span className="font-sans text-xs text-[var(--text-muted)] tracking-widest mb-6 uppercase">
-                  Technique 0{index + 1}
-                </span>
-                <h2 className="font-serif text-[clamp(32px,5vw,64px)] text-[var(--text-primary)] mb-8">
-                  {technique.title}
-                </h2>
-                <div className="flex flex-col gap-6">
-                  {technique.paragraphs.map((p, i) => (
-                    <p key={i} className="font-sans text-base md:text-lg text-[var(--text-secondary)] leading-relaxed">
-                      {p}
-                    </p>
-                  ))}
-                </div>
-              </motion.div>
-            </div>
-          );
-        })}
+              {/* Text */}
+              <span className="font-sans text-[10px] md:text-xs text-[var(--text-muted)] tracking-widest mb-4 uppercase">
+                Technique 0{index + 1}
+              </span>
+              <h2 className="font-serif text-3xl md:text-4xl text-[var(--text-primary)] mb-4 transition-colors duration-300">
+                {technique.title}
+              </h2>
+              {technique.paragraphs.map((p, i) => (
+                <p key={i} className="font-sans text-sm md:text-base text-[var(--text-secondary)] leading-relaxed">
+                  {p}
+                </p>
+              ))}
+            </motion.div>
+          ))}
+        </div>
       </div>
     </section>
   );
