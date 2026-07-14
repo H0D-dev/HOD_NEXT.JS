@@ -9,13 +9,13 @@
   left: 0;
   width: 100%;
   z-index: 1000;
-  background: var(--color-brand-light);
+  background: var(--bg-primary);
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   transition: all 0.4s var(--ease-premium);
 }
 
 .header--scrolled {
-  background: var(--color-brand-light);
+  background: var(--bg-primary);
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
 }

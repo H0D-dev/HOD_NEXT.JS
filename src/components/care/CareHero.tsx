@@ -24,7 +24,7 @@ export default function CareHero() {
         <span className="care-hero-el block text-[var(--text-muted)] font-sans text-xs md:text-sm uppercase tracking-widest mb-6 md:mb-8 font-medium">
           Guidance
         </span>
-        <h1 className="care-hero-el font-serif text-[clamp(48px,8vw,80px)] leading-[1.05] tracking-tight text-[var(--text-primary)] mb-8">
+        <h1 className="care-hero-el font-serif text-[2.75rem] md:text-[4rem] lg:text-[4.75rem] leading-[1.1] tracking-tight text-[var(--text-primary)] mb-8">
           Care & Cleaning
         </h1>
         <h2 className="care-hero-el font-sans text-[var(--text-primary)] text-xl md:text-2xl font-light tracking-wide mb-8">

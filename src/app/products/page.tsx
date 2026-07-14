@@ -132,7 +132,7 @@ export default function CollectionsPage() {
         <span className="hero-animate uppercase tracking-widest text-[var(--text-xs)] md:text-[var(--text-sm)] font-medium mb-[var(--space-3)] text-[var(--text-muted)]">
           Our Collections
         </span>
-        <h1 className="hero-animate font-serif text-[clamp(48px,8vw,96px)] text-[var(--text-primary)] leading-[0.9] mb-[var(--space-4)] max-w-4xl tracking-tight">
+        <h1 className="hero-animate font-serif text-[2.75rem] md:text-[4rem] lg:text-[4.75rem] text-[var(--text-primary)] leading-[1.1] mb-[var(--space-4)] max-w-4xl tracking-tight">
           Explore Our Collections
         </h1>
         <p className="hero-animate text-[var(--text-md)] md:text-[var(--text-lg)] text-[var(--text-secondary)] max-w-2xl font-light">

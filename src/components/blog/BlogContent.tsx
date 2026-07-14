@@ -57,7 +57,7 @@ export default function BlogContent({ blog }: { blog: Blog }) {
             <span className="font-sans text-sm uppercase tracking-widest text-[var(--accent-primary)] font-medium">
               {blog.date}
             </span>
-            <h1 className="font-serif text-[clamp(40px,6vw,64px)] leading-[1.05] tracking-tight text-[var(--text-primary)]">
+            <h1 className="font-serif text-[2.75rem] md:text-[4rem] lg:text-[4.75rem] leading-[1.1] tracking-tight text-[var(--text-primary)]">
               {blog.title}
             </h1>
             <p className="font-sans text-[var(--text-secondary)] text-lg md:text-xl leading-relaxed">

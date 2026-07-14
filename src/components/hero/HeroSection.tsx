@@ -69,7 +69,7 @@ export default function HeroSection() {
               Luxury Beneath <br /> Every Space.
             </h1>
             
-            <p className="font-sans max-w-xl text-neutral-300 text-base md:text-lg mt-6">
+            <p className="font-sans text-lg md:text-xl font-light italic mt-6 max-w-xl text-neutral-300">
               Premium handwoven rugs and bespoke curtains crafted for architectural interiors. Where heritage techniques meet modern luxury.
             </p>
 

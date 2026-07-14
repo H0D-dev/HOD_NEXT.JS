@@ -69,7 +69,7 @@ export default function BespokeHero() {
 
       {/* Content */}
       <div className="relative z-10 container mx-auto px-6 text-center text-white flex flex-col items-center">
-        <h1 className="animate-hero font-serif text-[clamp(48px,8vw,96px)] leading-[0.9] tracking-tight mb-8 max-w-4xl">
+        <h1 className="animate-hero font-serif text-[2.75rem] md:text-[4rem] lg:text-[4.75rem] leading-[1.1] tracking-tight mb-8 max-w-4xl">
           Bespoke Rugs,<br />
           Crafted as Architecture
         </h1>

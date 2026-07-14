@@ -7,7 +7,7 @@ export default function CraftsmanshipSection() {
   const sectionRef = useRef<HTMLElement>(null);
 
   return (
-    <section ref={sectionRef} className="w-full bg-brand-dark pb-16" id="craftsmanship-section">
+    <section ref={sectionRef} className="w-full bg-[#2C251F] pb-16" id="craftsmanship-section">
       <div className="flex flex-col w-full max-w-[1400px] mx-auto relative px-4 md:px-8 lg:px-12 pt-8 md:pt-12 space-y-12 md:space-y-24">
 
         {/* Panel 1: Craftsmanship */}
