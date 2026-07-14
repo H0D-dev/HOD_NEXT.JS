@@ -98,8 +98,8 @@ export default function Header() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const isHomePage = pathname === "/";
-  const isTransparent = isHomePage && !isScrolled && !isMobileMenuOpen;
+  const isTransparentRoute = pathname === "/" || pathname === "/contact";
+  const isTransparent = isTransparentRoute && !isScrolled && !isMobileMenuOpen;
 
   return (
     <>

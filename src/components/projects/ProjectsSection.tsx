@@ -73,7 +73,7 @@ export default function ProjectsSection() {
         </div>
 
         {/* Clean 4-Column Grid */}
-        <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+        <div ref={gridRef} className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
           {projects.map((project, index) => (
             <div
               key={index}

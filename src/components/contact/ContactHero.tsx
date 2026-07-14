@@ -1,56 +1,98 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef } from "react";
 import Image from "next/image";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 export default function ContactHero() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const bgRefDesktop = useRef<HTMLDivElement>(null);
+  const bgRefMobile = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    // Background parallax effect
+    gsap.to([bgRefDesktop.current, bgRefMobile.current], {
+      yPercent: 20,
+      ease: "none",
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top top",
+        end: "bottom top",
+        scrub: true,
+      }
+    });
+
+    // Fade and translate content upwards
+    gsap.from(gsap.utils.toArray(contentRef.current?.children || []), {
+      y: 30,
+      opacity: 0,
+      duration: 1,
+      stagger: 0.2,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top 80%",
+      }
+    });
+  }, { scope: sectionRef });
+
   return (
-    <section className="w-full min-h-[90vh] flex flex-col md:flex-row bg-[var(--bg-primary)] pt-24 md:pt-32">
-      {/* Left Content */}
-      <div className="flex-1 flex flex-col justify-center px-6 py-12 md:px-16 lg:px-24 xl:px-32 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any }}
-          className="max-w-xl"
-        >
-          <span className="block text-[var(--accent-primary)] font-sans text-xs md:text-sm uppercase tracking-widest mb-6 md:mb-8 font-medium">
-            Contact Us
-          </span>
-          <h1 className="font-serif text-[clamp(48px,8vw,80px)] leading-[1.05] tracking-tight text-[var(--text-primary)] mb-8">
-            Let’s Create Something Beautiful
-          </h1>
-          <p className="font-sans text-[var(--text-secondary)] text-lg md:text-xl leading-relaxed mb-12 max-w-md">
-            We invite you to connect with us for inquiries, bespoke consultations, or partnership opportunities. Our dedicated team is committed to providing a thoughtful response within 24 hours.
-          </p>
-          <a 
-            href="https://wa.me/971521236888?text=Hello,%20I%20would%20like%20to%20inquire%20about%20your%20products%20and%20book%20a%20consultation." 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="inline-block text-center px-8 py-4 border border-[var(--border-primary)] text-[var(--text-primary)] bg-transparent font-sans font-medium text-sm md:text-base hover:bg-[var(--accent-secondary)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] w-full sm:w-auto"
-          >
-            Book Consultation
-          </a>
-        </motion.div>
+    <section ref={sectionRef} className="relative w-full h-screen flex flex-col justify-end lg:justify-center overflow-hidden bg-black" id="contact-hero-section">
+      
+      {/* ── Background Image Desktop ── */}
+      <div className="absolute inset-0 w-full h-[120%] -top-[10%] z-0 hidden md:block" ref={bgRefDesktop}>
+        <Image
+          src="/contact_hero_desktop.png"
+          alt="Luxury architectural interior"
+          fill
+          priority
+          className="object-cover"
+          sizes="100vw"
+        />
+        {/* Subtle gradient overlay for text legibility */}
+        <div className="absolute inset-0 bg-black/40 md:bg-gradient-to-r from-black/80 to-transparent z-10"></div>
+      </div>
+      
+      {/* ── Background Image Mobile ── */}
+      <div className="absolute inset-0 w-full h-[120%] -top-[10%] z-0 block md:hidden" ref={bgRefMobile}>
+        <Image
+          src="/contact_hero_mobile.png"
+          alt="Luxury architectural interior"
+          fill
+          priority
+          className="object-cover"
+          sizes="100vw"
+        />
+        {/* Subtle gradient overlay for text legibility */}
+        <div className="absolute inset-0 bg-black/50 z-10"></div>
       </div>
 
-      {/* Right Image */}
-      <div className="flex-1 relative min-h-[50vh] md:min-h-full p-6 md:p-12 lg:p-16 flex items-center justify-center">
-        <motion.div
-          initial={{ opacity: 0, scale: 1.05 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] as any }}
-          className="w-full h-full min-h-[400px] relative overflow-hidden"
-        >
-          <Image
-            src="/curtains/set1-room.png"
-            alt="Premium Interior Space"
-            fill
-            className="object-cover transform hover:scale-105 transition-transform duration-[1.2s] ease-[cubic-bezier(0.22,1,0.36,1)]"
-            priority
-          />
-        </motion.div>
-      </div>
+      {/* ── Content ── */}
+      <div className="w-full px-6 sm:px-12 md:px-16 lg:px-24 xl:px-32 relative z-20 flex flex-col py-24 md:py-32 lg:pb-0">
+          {/* Hero Content Layer */}
+          <div ref={contentRef} className="flex flex-col items-start gap-0 lg:-mt-16">
+            
+            <h1 className="font-serif text-[2.75rem] md:text-[4rem] lg:text-[4.75rem] leading-[1.1] tracking-tight text-white mb-4">
+              Let&apos;s Begin <br /> a Conversation
+            </h1>
+            
+            <p className="font-sans max-w-xl text-neutral-300 text-[10px] md:text-xs uppercase tracking-[0.2em] mt-6 leading-relaxed">
+              FOR BESPOKE RUGS, INTERIOR COLLABORATIONS, <br className="hidden sm:block" />
+              HOSPITALITY PROJECTS, AND PRIVATE COMMISSIONS.
+            </p>
+
+            <div className="mt-8 border-t border-white/30 w-16 mb-4"></div>
+            
+          </div>
+        </div>
+
     </section>
   );
 }

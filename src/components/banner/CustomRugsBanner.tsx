@@ -30,7 +30,7 @@ export default function CustomRugsBanner() {
   return (
     <section className="w-full py-8 md:py-12 bg-[#F9F9F6]">
       <div className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-16" ref={containerRef}>
-        <div className="relative w-full overflow-hidden min-h-[500px] flex items-center bg-[#E6E3DB]">
+        <div className="relative w-full overflow-hidden min-h-[400px] md:min-h-[500px] flex items-center bg-[#E6E3DB]">
           
           {/* Background Image (Covering the full section) */}
           <div className="absolute inset-0 w-full h-full">
@@ -45,7 +45,7 @@ export default function CustomRugsBanner() {
           </div>
           
           {/* Text Content Overlay */}
-          <div className="relative z-10 w-full md:w-[60%] lg:w-[50%] flex flex-col justify-center p-10 md:p-16 lg:p-24 custom-rug-content">
+          <div className="relative z-10 w-full md:w-[60%] lg:w-[50%] flex flex-col justify-center p-6 sm:p-10 md:p-16 lg:p-24 custom-rug-content">
             <span className="font-sans text-[11px] md:text-xs uppercase tracking-[0.15em] text-[#2C251F]/70 mb-5 block">
               CUSTOM RUGS
             </span>
