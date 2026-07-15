@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useCartStore } from "@/src/lib/store/useCartStore";
 import CartItem from "@/src/components/cart/CartItem";
 import OrderSummary from "@/src/components/cart/OrderSummary";
-import "./CartPage.css";
+import { ShoppingBag } from "lucide-react";
 
 export default function CartPage() {
   const { items } = useCartStore();
@@ -19,17 +19,23 @@ export default function CartPage() {
 
   if (items.length === 0) {
     return (
-      <div className="cart-page__empty-state">
-        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="cart-page__empty-icon">
-          <path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" strokeLinecap="square" />
-        </svg>
-        <h2 className="cart-page__empty-title">Your cart is empty</h2>
-        <p className="cart-page__empty-text">Discover our curated collections of premium rugs and curtains.</p>
-        <div className="cart-page__empty-actions">
-          <Link href="/products/rugs" className="cart-page__empty-btn">
+      <div className="min-h-[60vh] flex flex-col items-center justify-center text-center py-20 px-6">
+        <ShoppingBag size={48} strokeWidth={1} className="text-[var(--text-secondary)] mb-6" />
+        <h2 className="font-serif text-3xl md:text-4xl text-[var(--text-primary)] font-normal mb-3">Your cart is empty</h2>
+        <p className="font-sans text-sm md:text-base text-[var(--text-secondary)] mb-10 max-w-[400px]">
+          Discover our curated collections of premium rugs and curtains.
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+          <Link 
+            href="/products" 
+            className="py-4 px-8 border border-[var(--border-secondary)] text-[var(--text-primary)] font-sans text-xs uppercase tracking-[0.15em] transition-colors hover:bg-[var(--bg-secondary)] whitespace-nowrap text-center"
+          >
             Explore Rugs
           </Link>
-          <Link href="/products/curtains" className="cart-page__empty-btn">
+          <Link 
+            href="/products/curtains" 
+            className="py-4 px-8 border border-[var(--border-secondary)] text-[var(--text-primary)] font-sans text-xs uppercase tracking-[0.15em] transition-colors hover:bg-[var(--bg-secondary)] whitespace-nowrap text-center"
+          >
             Explore Curtains
           </Link>
         </div>
@@ -38,25 +44,34 @@ export default function CartPage() {
   }
 
   return (
-    <div className="cart-page">
-      <div className="cart-page__container">
-        <div className="cart-page__header">
-          <h1 className="cart-page__title">Shopping Cart</h1>
+    <div className="py-12 md:py-20 min-h-[calc(100vh-200px)]">
+      <div className="max-w-[1200px] mx-auto px-6 lg:px-12">
+        
+        <div className="mb-6 md:mb-10 flex items-end justify-between border-b border-[var(--border-secondary)] pb-4">
+          <h1 className="font-sans text-xs md:text-sm font-medium uppercase tracking-[0.2em] text-[var(--text-primary)] m-0">
+            Your Cart
+          </h1>
+          <span className="font-sans text-xs text-[var(--text-secondary)] uppercase tracking-[0.15em]">
+            {items.length} {items.length === 1 ? 'Item' : 'Items'}
+          </span>
         </div>
 
-        <div className="cart-page__layout">
-          <div className="cart-page__items-column">
-            <div className="cart-page__items-list">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12 lg:gap-16">
+          {/* Items Column */}
+          <div className="lg:col-span-7 flex flex-col">
+            <div className="flex flex-col border-t border-[var(--border-secondary)]">
               {items.map((item) => (
                 <CartItem key={item.id} item={item} context="page" />
               ))}
             </div>
           </div>
 
-          <div className="cart-page__summary-column">
+          {/* Summary Column */}
+          <div className="lg:col-span-5">
             <OrderSummary />
           </div>
         </div>
+        
       </div>
     </div>
   );
