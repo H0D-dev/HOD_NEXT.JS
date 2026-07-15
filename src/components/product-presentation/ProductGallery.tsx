@@ -195,14 +195,14 @@ export default function ProductGallery({ product, activeColor }: ProductGalleryP
             <>
               <button
                 onClick={handlePrevImage}
-                className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/50 hover:bg-white/80 rounded-full flex items-center justify-center text-[var(--text-primary)] hover:text-[var(--text-secondary)] z-20 transition-all"
+                className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/20 backdrop-blur-md hover:bg-black/40 rounded-full flex items-center justify-center text-white z-20 transition-all"
                 aria-label="Previous image"
               >
                 <ChevronLeft size={24} strokeWidth={1.5} />
               </button>
               <button
                 onClick={handleNextImage}
-                className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/50 hover:bg-white/80 rounded-full flex items-center justify-center text-[var(--text-primary)] hover:text-[var(--text-secondary)] z-20 transition-all"
+                className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/20 backdrop-blur-md hover:bg-black/40 rounded-full flex items-center justify-center text-white z-20 transition-all"
                 aria-label="Next image"
               >
                 <ChevronRight size={24} strokeWidth={1.5} />

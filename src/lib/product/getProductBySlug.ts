@@ -78,9 +78,9 @@ function buildColorEntry(p: WooProduct): ProductColor {
 }
 
 function formatDimensions(d: { length: string; width: string; height: string }): string {
-  const parts = [d.width, d.length].filter(v => v && v !== "0" && v !== "");
+  const parts = [d.length, d.width].filter(v => v && v !== "0" && v !== "");
   if (parts.length === 0) return "";
-  return parts.join("x");
+  return parts.join(" x ");
 }
 
 /**
@@ -187,7 +187,7 @@ function transformProduct(
       careInstructions: acf.care_instructions || undefined,
       dimensions:
         acf.exact_width_cm && acf.exact_length_cm
-          ? `${acf.exact_width_cm}x${acf.exact_length_cm} cm`
+          ? `${acf.exact_length_cm} x ${acf.exact_width_cm}`
           : undefined,
       weight: acf.weight_kg ? `${acf.weight_kg} kg` : undefined,
       petFriendly:

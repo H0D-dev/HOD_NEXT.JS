@@ -278,7 +278,7 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
           </div>
         </div>
 
-        <div className="grid grid-cols-3 lg:grid-cols-4 gap-2">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
           {isVariable ? (
             product.variations!.map((variation) => {
               const isActive = selectedVariation?.id === variation.id;
@@ -296,13 +296,20 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
                         : "border-[var(--border-secondary)] hover:border-[var(--border-primary)] bg-transparent"
                   }`}
                 >
-                  <span className={`text-xs whitespace-normal break-words px-1 ${isActive ? 'text-[var(--text-primary)] font-medium' : 'text-[var(--text-secondary)]'}`}>{variation.label}</span>
+                  <span className={`text-xs whitespace-normal break-words px-1 ${isActive ? 'text-[var(--text-primary)] font-medium' : 'text-[var(--text-secondary)]'}`}>
+                    {/\d/.test(variation.label) && !variation.label.toLowerCase().includes('cm') ? `${variation.label} cm` : variation.label}
+                  </span>
                 </button>
               );
             })
           ) : (
             <div className="p-3 rounded-none font-sans flex flex-col items-center justify-center text-center border border-[var(--border-primary)] bg-transparent shadow-[0_0_0_0.5px_var(--border-primary)]">
-              <span className="text-xs text-[var(--text-primary)] font-medium whitespace-normal break-words px-1">{product.details?.dimensions || activeSize}</span>
+              <span className="text-xs text-[var(--text-primary)] font-medium whitespace-normal break-words px-1">
+                {(() => {
+                  const lbl = product.details?.dimensions || activeSize;
+                  return /\d/.test(lbl) && !lbl.toLowerCase().includes('cm') ? `${lbl} cm` : lbl;
+                })()}
+              </span>
             </div>
           )}
         </div>
