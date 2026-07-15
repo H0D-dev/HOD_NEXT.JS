@@ -58,8 +58,34 @@ Do not use abrupt font jumps or arbitrary `clamp()` values. Use Tailwind respons
 - **Borders:** `1px solid var(--border-primary)` or `--border-secondary`. Hard edges only.
 - **Radius:** `0px` (or max `2px`). No rounded SaaS elements.
 
+**Component Responsiveness & Font Consistency:**
+- **Fluid, Not Broken:** Never use components that 'break' awkwardly or rely on massive layout shifts. Instead, components should fluently scale down using Tailwind breakpoints (`md:`, `lg:`).
+- **Font Consistency:** Keep typography strictly tied to the predefined sizes. A label on the checkout page must exactly match a label on the product page. Use exact font pairings (e.g., `text-[10px] md:text-xs` for labels, `text-sm md:text-base` for standard UI text, and `text-xs md:text-sm` for tight spaces like mobile summaries). 
+- **Gaps & Padding:** When dropping to mobile, do not just shrink fonts—shrink the empty spaces. Reduce huge desktop padding (`p-10` to `p-5`) and grid gaps (`gap-10` to `gap-6` or `gap-5` to `gap-4`) to optimize layout density for thumbs without making it feel claustrophobic.
+- **Horizontal Real Estate:** On mobile screens, avoid aggressive text wrapping (e.g. 1 word per line) by combining titles and prices on the same line (`flex justify-between items-start`) and reducing font size appropriately.
+
 **Buttons:**
 - Sharp, minimal, transparent background with `1px solid var(--border-primary)`. Fill with accent on hover.
+- **Primary CTAs (Checkout / Place Order):** `bg-[var(--accent-primary)] text-[#111] font-sans text-xs md:text-sm uppercase tracking-[0.2em] font-medium transition-colors hover:bg-[var(--accent-secondary)]`
+
+## Forms, Cart & Checkout Experience
+
+**Form Inputs & Labels:**
+- **Labels:** `font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-[var(--text-secondary)] flex items-center`
+- **Inputs (Mobile-First):** `w-full h-10 md:h-12 px-3 md:px-4 border border-[var(--border-secondary)] bg-transparent text-sm focus:border-[var(--text-primary)] rounded-none`
+- **Textareas:** `min-h-[60px] md:min-h-[80px] p-3`
+- Never use rounded corners (`rounded-none`).
+
+**Form Layouts & Wrappers:**
+- **Main Wrappers:** Give forms and order summaries a distinct, bordered box feel to separate them from the page background: `p-5 md:p-8 lg:p-10 border border-[var(--border-secondary)] bg-[var(--surface-primary)] flex flex-col gap-5 md:gap-8`
+- **Inner Form Grids:** Use tighter gaps to avoid scrolling fatigue, especially on mobile: `grid grid-cols-1 md:grid-cols-2 gap-x-4 md:gap-x-5 gap-y-4 md:gap-y-5`
+- **Section Titles within Forms:** Keep them balanced: `font-serif text-lg md:text-xl font-medium mb-4`
+
+**Order Summary & Product Variants:**
+- **Summary Sidebar:** `sticky top-[100px]` to keep it visible while scrolling long forms.
+- **Item Cards:** Use highly responsive layouts so text doesn't aggressively wrap on mobile. Keep the title and price side-by-side using `flex justify-between items-start` and smaller mobile fonts (`text-xs md:text-sm`).
+- **Thumbnails:** Small and crisp: `w-16 h-20 md:w-20 md:h-24 shrink-0`.
+- **Variant Display:** DO NOT display raw hex codes (e.g. `#8B5A2B`). Render hex colors as `10px` circular swatches with a `1px` border. Always append units like `cm` to raw size strings.
 
 ## AI Agent Instructions
 - Follow this design system strictly.

@@ -28,9 +28,9 @@ const offerings = [
 
 export default function PrimaryOfferings() {
   return (
-    <section className="w-full py-24 md:py-32 px-6 md:px-16 lg:px-24 bg-[var(--bg-secondary)]">
+    <section className="w-full py-16 md:py-24 lg:py-32 px-6 md:px-16 lg:px-24 bg-[var(--bg-secondary)]">
       <div className="max-w-[var(--container-lg)] mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 lg:gap-16">
           {offerings.map((item, index) => (
             <motion.div
               key={index}
@@ -38,7 +38,7 @@ export default function PrimaryOfferings() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.8, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] as any }}
-              className="group flex flex-col gap-8"
+              className="group flex flex-col gap-4 md:gap-5"
             >
               <div className="w-full aspect-[4/3] relative overflow-hidden bg-[var(--surface-primary)] border border-[var(--border-secondary)]">
                 <Image
@@ -50,10 +50,10 @@ export default function PrimaryOfferings() {
                 />
               </div>
               <div className="flex flex-col gap-4">
-                <h3 className="font-serif text-3xl md:text-4xl text-[var(--text-primary)]">
+                <h3 className="font-serif text-lg md:text-xl lg:text-2xl text-[var(--text-primary)]">
                   {item.title}
                 </h3>
-                <p className="font-sans text-[var(--text-secondary)] text-base md:text-lg leading-relaxed">
+                <p className="font-sans text-[var(--text-secondary)] text-sm md:text-base leading-relaxed">
                   {item.desc}
                 </p>
               </div>

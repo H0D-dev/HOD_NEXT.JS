@@ -1,46 +1,59 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function AboutHero() {
+  const containerRef = useRef<HTMLElement>(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"]
+  });
+  
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "-15%"]);
+
   return (
-    <section className="w-full pt-32 pb-16 md:pt-48 md:pb-24 px-6 md:px-16 lg:px-24 bg-[var(--bg-primary)]">
-      <div className="max-w-[var(--container-lg)] mx-auto flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+    <section ref={containerRef} className="w-full lg:h-[100svh] pt-24 lg:pt-32 pb-6 md:pb-12 px-6 md:px-12 lg:px-16 bg-[var(--bg-primary)]">
+      <div className="w-full h-full flex flex-col lg:flex-row border border-[var(--border-secondary)]">
         
-        {/* Text Side */}
+      {/* Image Side (Left) */}
         <motion.div
-          initial={{ opacity: 0, x: -30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any }}
-          className="lg:w-1/2 flex flex-col items-start text-left"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] as any }}
+          className="w-full lg:w-1/2 h-[50vh] lg:h-full relative overflow-hidden"
         >
-          <span className="block text-[var(--accent-primary)] font-sans text-xs md:text-sm uppercase tracking-widest mb-6 font-medium">
-            Who we are
-          </span>
-          <h1 className="font-serif text-[2.75rem] md:text-[4rem] lg:text-[4.75rem] leading-[1.1] tracking-tight text-[var(--text-primary)] mb-8">
-            House of Décor
-          </h1>
-          <p className="font-sans text-[var(--text-secondary)] text-lg md:text-xl leading-relaxed">
-            House of Décor offers luxury custom-made rugs, carpets, curtains, wallcoverings, handicrafts, and more. Through our exclusive network of international suppliers, we provide architects, designers, and private clients with the material to transform their commercial or residential spaces into beautiful masterpieces.
-          </p>
+          <motion.div className="absolute inset-0 w-full h-[120%]" style={{ y }}>
+            <Image
+              src="/about/designer.png"
+              alt="Designer at House of Décor"
+              fill
+              className="object-cover"
+              priority
+            />
+          </motion.div>
         </motion.div>
 
-        {/* Image Side */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, delay: 0.2, ease: [0.22, 1, 0.36, 1] as any }}
-          className="lg:w-1/2 w-full aspect-[4/5] relative bg-[var(--surface-primary)] overflow-hidden border border-[var(--border-secondary)]"
-        >
-          <Image
-            src="/rugs/set1-room.png"
-            alt="Luxury Interior by House of Décor"
-            fill
-            className="object-cover"
-            priority
-          />
-        </motion.div>
+        {/* Text Side (Right) */}
+        <div className="w-full lg:w-1/2 flex items-center justify-center p-8 md:p-12 lg:p-16 min-h-[50vh] lg:h-full bg-[var(--surface-primary)]">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] as any }}
+            className="flex flex-col items-center text-center max-w-lg mx-auto"
+          >
+            <span className="block text-[var(--text-secondary)] font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] mb-8 font-medium">
+              House of Décor
+            </span>
+            
+            <h1 className="font-serif text-xl md:text-4xl lg:text-[2.75rem] leading-[1.2] text-[var(--text-primary)] tracking-wide">
+              Asia’s foremost design studio for luxury hand-crafted rugs, redefining modern spaces with timeless elegance.
+            </h1>
+          </motion.div>
+        </div>
 
       </div>
     </section>

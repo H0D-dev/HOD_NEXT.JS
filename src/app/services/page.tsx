@@ -5,7 +5,7 @@ import ServicesCTA from "../../components/services/ServicesCTA";
 
 export const metadata = {
   title: "Our Services — House of Décor",
-  description: "Specializing in luxurious, custom-made home décor solutions including bespoke rugs, curtains, wallcoverings, and artisanal handicrafts.",
+  description: "Specializing in luxurious, custom-made home décor solutions including bespoke rugs, wallcoverings, and artisanal handicrafts.",
 };
 
 export default function ServicesPage() {

@@ -4,14 +4,14 @@ import Image from "next/image";
 
 export default function AboutSection() {
   return (
-    <section className="py-24 lg:py-32 bg-[var(--bg-secondary)] text-[var(--text-primary)]">
+    <section className="py-16 lg:py-32 bg-[var(--bg-primary)] text-[var(--text-primary)]">
       <div className="max-w-[var(--container-lg)] mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-8 items-center">
 
           {/* LEFT SIDE: Heading & Staggered Image Grid */}
           <div className="flex flex-col lg:col-span-5">
-            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl mb-12 leading-none tracking-wide">
-              About Us
+            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl mb-12 tracking-wide text-[var(--text-primary)]">
+              The Art of Weaving
             </h2>
 
             <div className="grid grid-cols-2 gap-4 md:gap-6">
@@ -63,15 +63,15 @@ export default function AboutSection() {
 
           {/* RIGHT SIDE: Text Content & CTA */}
           <div className="flex flex-col justify-center lg:col-span-6 lg:col-start-7 lg:pl-8 mt-8 md:mt-0">
-            <p className="text-[var(--text-secondary)] text-[15px] md:text-xl leading-[1.8] md:leading-loose mb-6 md:mb-8 font-sans font-light">
-              Welcome to House Of Decor, where premium craftsmanship meets timeless design. Our handmade rugs and curtains are expertly crafted by skilled artisans using the finest materials, bringing warmth, elegance, and lasting quality to every space.
+            <p className="text-[var(--text-secondary)] text-sm md:text-base leading-relaxed mb-6 md:mb-8 font-sans">
+              Every House of Décor creation begins with a profound respect for heritage. Our master artisans employ centuries-old techniques, meticulously hand-knotting the finest silks and wools to breathe life into modern geometric and classical patterns.
             </p>
 
-            <p className="text-[var(--text-secondary)] text-[15px] md:text-xl leading-[1.8] md:leading-loose mb-10 md:mb-12 font-sans font-light">
-              From classic to contemporary styles, each piece is thoughtfully designed to elevate your home or office with beauty, comfort, and enduring craftsmanship.
+            <p className="text-[var(--text-secondary)] text-sm md:text-base leading-relaxed mb-10 md:mb-12 font-sans">
+              We believe true luxury lies in the details. From the initial dye of the yarn to the final shear, our process is a slow, deliberate pursuit of perfection, resulting in textiles that are not merely decor, but enduring works of art.
             </p>
 
-            <button className="px-8 py-4 md:px-10 md:py-5 border border-[var(--accent-primary)] bg-[var(--accent-primary)] text-black uppercase text-[10px] md:text-xs tracking-[0.2em] font-medium hover:bg-[var(--accent-secondary)] hover:border-[var(--accent-secondary)] hover:text-[var(--bg-primary)] transition-all duration-500 w-full md:w-max">
+            <button className="px-8 py-4 md:px-10 md:py-5 border border-[var(--border-primary)] bg-[var(--accent-primary)] text-[#111] uppercase text-[10px] md:text-xs tracking-[0.2em] font-medium hover:bg-[var(--accent-secondary)] transition-all duration-500 w-full md:w-max rounded-none">
               Book Appointment
             </button>
           </div>
