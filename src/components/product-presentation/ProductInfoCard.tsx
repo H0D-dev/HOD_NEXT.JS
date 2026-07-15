@@ -181,58 +181,50 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
       transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any, delay: 0.2 }}
       className="w-full flex flex-col gap-4 pb-12"
     >
-      {/* 1. Header (Collection, Title, Share) */}
-      <div className="flex flex-col gap-2">
-        <div className="flex items-center justify-between">
-          <span className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-[var(--text-muted)]">
-            {product.collection || product.category || "COLLECTION"}
-          </span>
+      {/* 1. Header, Description, and Price (Stacked tightly) */}
+      <div className="flex flex-col gap-5">
+        
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex flex-col gap-2">
+            <h1 className="font-sans text-lg md:text-xl lg:text-2xl font-medium text-[var(--text-primary)] leading-tight tracking-tight">
+              {product.name}
+            </h1>
+            {/* 2. Description as Subtitle */}
+            <p className="font-sans text-sm md:text-base leading-snug text-[var(--text-secondary)]">
+              {product.description || "A contemporary hand-tufted rug inspired by natural landscapes, crafted using New Zealand wool and bamboo silk for exceptional softness and depth."}
+            </p>
+          </div>
           <button 
             onClick={handleShare}
-            className="text-[var(--text-primary)] hover:text-[var(--text-muted)] transition-colors"
+            className="text-[var(--text-primary)] hover:text-[var(--text-muted)] transition-colors mt-1"
             aria-label="Share product"
           >
             <Share2 size={20} strokeWidth={1.5} />
           </button>
         </div>
-        <h1 className="font-serif text-2xl lg:text-3xl font-light text-[var(--text-primary)] leading-tight">
-          {product.name}
-        </h1>
-      </div>
 
-      {/* Divider */}
-      <div className="w-full h-[1px] bg-[var(--border-secondary)] opacity-60" />
-
-      {/* 2. Description */}
-      <p className="font-sans text-sm md:text-base leading-relaxed text-[var(--text-secondary)]">
-        {product.description || "A contemporary hand-tufted rug inspired by natural landscapes, crafted using New Zealand wool and bamboo silk for exceptional softness and depth."}
-      </p>
-
-      {/* Divider */}
-      <div className="w-full h-[1px] bg-[var(--border-secondary)] opacity-60" />
-
-      {/* 3. Starting Price */}
-      {displayPrice !== undefined && (
-        <div className="flex flex-col gap-1">
-          <span className="font-sans text-xs text-[var(--text-secondary)]">Starting from</span>
-          <div className="flex items-baseline gap-2">
-            <span className="font-serif text-2xl md:text-3xl text-[var(--text-primary)]">
-              {formatPrice(displayPrice, isFallbackPrice ? "AED" : currency)}
-            </span>
-            {displayOnSale && displayRegularPrice && displayRegularPrice > displayPrice && (
-              <span className="text-sm text-[var(--text-muted)] line-through">
-                {formatPrice(displayRegularPrice, isFallbackPrice ? "AED" : currency)}
+        {/* 3. Starting Price */}
+        {displayPrice !== undefined && (
+          <div className="flex flex-col gap-1 mt-1">
+            <div className="flex items-baseline gap-3">
+              <span className="font-sans text-xl md:text-2xl font-semibold text-[var(--text-primary)] tracking-tight">
+                {formatPrice(displayPrice, isFallbackPrice ? "AED" : currency)}
               </span>
+              {displayOnSale && displayRegularPrice && displayRegularPrice > displayPrice && (
+                <span className="font-sans text-lg text-[var(--text-muted)] line-through">
+                  {formatPrice(displayRegularPrice, isFallbackPrice ? "AED" : currency)}
+                </span>
+              )}
+            </div>
+            <span className="font-sans text-sm text-[var(--text-primary)] font-medium">(Inclusive of all taxes)</span>
+            {isFallbackPrice && (
+              <p className="text-[10px] text-orange-600 mt-1">
+                * {currency} pricing not available. Showing in AED.
+              </p>
             )}
           </div>
-          <span className="font-sans text-xs text-[var(--text-muted)] mt-1">Includes VAT</span>
-          {isFallbackPrice && (
-            <p className="text-[10px] text-orange-600 mt-1">
-              * {currency} pricing not available. Showing in AED.
-            </p>
-          )}
-        </div>
-      )}
+        )}
+      </div>
 
       {/* 4. Colour Selector */}
       <div className="flex flex-col gap-4">
@@ -251,10 +243,10 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
                   onColorChange(color);
                 }
               }}
-              className={`relative flex-shrink-0 w-12 h-12 rounded-full transition-all duration-300 ${activeColor.id === color.id ? 'ring-1 ring-offset-2 ring-[var(--text-primary)]' : 'hover:scale-105'}`}
+              className={`relative flex-shrink-0 w-12 aspect-[3/4] rounded-sm transition-all duration-300 ${activeColor.id === color.id ? 'ring-1 ring-offset-2 ring-[#E87461]' : 'hover:scale-105'}`}
               aria-label={`Select color ${color.name}`}
             >
-              <div className="w-full h-full rounded-full overflow-hidden border border-[var(--border-secondary)]">
+              <div className="w-full h-full rounded-sm overflow-hidden border border-[var(--border-secondary)]">
                 {color.textureUrl || color.lifestyleUrl ? (
                   <img
                     src={color.textureUrl || color.lifestyleUrl}
@@ -274,14 +266,21 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
       </div>
 
       {/* 5. Size Selector */}
-      {isVariable && (
-        <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3 mt-2">
+        <div className="flex justify-between items-end">
           <div className="font-sans text-xs font-medium text-[var(--text-primary)] uppercase tracking-wider">
-            SIZE: <span className="font-normal text-[var(--text-secondary)] normal-case tracking-normal">{selectedVariation?.label || activeSize}</span>
+            SIZE
           </div>
+          <div className="flex gap-2 font-sans text-[10px] text-[var(--text-secondary)] uppercase underline cursor-pointer hover:text-[var(--text-primary)] transition-colors">
+            <span>Size Chart</span>
+            <span className="no-underline">|</span>
+            <span>Size Guide</span>
+          </div>
+        </div>
 
-          <div className="flex flex-wrap gap-3">
-            {product.variations!.map((variation) => {
+        <div className="grid grid-cols-3 lg:grid-cols-4 gap-2">
+          {isVariable ? (
+            product.variations!.map((variation) => {
               const isActive = selectedVariation?.id === variation.id;
               const isOutOfStock = variation.stockStatus === "outofstock";
               return (
@@ -289,58 +288,56 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
                   key={variation.id}
                   onClick={() => !isOutOfStock && handleSizeClick(variation)}
                   disabled={isOutOfStock}
-                  className={`py-2.5 px-5 rounded-full font-sans text-xs md:text-sm text-center transition-colors duration-300 border ${
+                  className={`p-3 rounded-none font-sans flex flex-col items-center justify-center text-center transition-all duration-300 border ${
                     isOutOfStock
-                      ? "border-[var(--border-secondary)] text-[var(--text-muted)] opacity-50 cursor-not-allowed line-through"
+                      ? "border-[var(--border-secondary)] bg-[var(--surface-secondary)] text-[var(--text-muted)] opacity-50 cursor-not-allowed line-through"
                       : isActive
-                        ? "border-[var(--text-primary)] bg-[var(--text-primary)] text-[var(--bg-primary)]"
-                        : "border-[var(--border-secondary)] text-[var(--text-primary)] hover:border-[var(--text-primary)] bg-transparent"
+                        ? "border-[var(--border-primary)] bg-transparent shadow-[0_0_0_0.5px_var(--border-primary)]"
+                        : "border-[var(--border-secondary)] hover:border-[var(--border-primary)] bg-transparent"
                   }`}
                 >
-                  {variation.label}
+                  <span className={`text-xs whitespace-normal break-words px-1 ${isActive ? 'text-[var(--text-primary)] font-medium' : 'text-[var(--text-secondary)]'}`}>{variation.label}</span>
                 </button>
               );
-            })}
-          </div>
-        </div>
-      )}
-
-      {/* 7. Quantity & Add to Cart */}
-      <div className="flex flex-col gap-3">
-        <div className="font-sans text-xs font-medium text-[var(--text-primary)] uppercase tracking-wider">
-          QUANTITY
-        </div>
-        <div className="flex items-center border border-[var(--border-secondary)] w-fit rounded-sm overflow-hidden bg-transparent">
-          <button 
-            onClick={() => setQuantity(Math.max(1, quantity - 1))}
-            className="w-10 h-10 flex items-center justify-center text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] transition-colors"
-          >
-            <Minus size={14} strokeWidth={2} />
-          </button>
-          <div className="w-10 h-10 flex items-center justify-center font-sans text-sm font-medium text-[var(--text-primary)]">
-            {quantity}
-          </div>
-          <button 
-            onClick={() => setQuantity(quantity + 1)}
-            className="w-10 h-10 flex items-center justify-center text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] transition-colors"
-          >
-            <Plus size={14} strokeWidth={2} />
-          </button>
+            })
+          ) : (
+            <div className="p-3 rounded-none font-sans flex flex-col items-center justify-center text-center border border-[var(--border-primary)] bg-transparent shadow-[0_0_0_0.5px_var(--border-primary)]">
+              <span className="text-xs text-[var(--text-primary)] font-medium whitespace-normal break-words px-1">{product.details?.dimensions || activeSize}</span>
+            </div>
+          )}
         </div>
       </div>
 
-      <div className="flex flex-col gap-3">
-        <div className="font-sans text-xs text-[var(--text-secondary)]">
-          Estimated Delivery: 8-12 Weeks
+      {/* 7. Quantity & Add to Cart */}
+      <div className="flex flex-col gap-4 mt-2">
+        <div className="flex flex-col gap-2">
+          <div className="font-sans text-xs font-medium text-[var(--text-primary)] uppercase tracking-wider">
+            QUANTITY
+          </div>
+          <div className="flex items-center border border-[var(--border-secondary)] w-fit rounded-none overflow-hidden bg-transparent">
+            <button 
+              onClick={() => setQuantity(Math.max(1, quantity - 1))}
+              className="w-10 h-10 flex items-center justify-center text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] transition-colors"
+            >
+              <Minus size={14} strokeWidth={2} />
+            </button>
+            <div className="w-10 h-10 flex items-center justify-center font-sans text-sm font-medium text-[var(--text-primary)]">
+              {quantity}
+            </div>
+            <button 
+              onClick={() => setQuantity(quantity + 1)}
+              className="w-10 h-10 flex items-center justify-center text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] transition-colors"
+            >
+              <Plus size={14} strokeWidth={2} />
+            </button>
+          </div>
         </div>
+
         <button
           onClick={handleAddToCart}
-          className="w-full py-4 bg-[#A38A61] hover:bg-[#8F7752] text-white font-sans text-xs tracking-widest uppercase font-medium transition-colors duration-300"
+          className="w-full py-4 mt-2 bg-[#A38A61] hover:bg-[#8F7752] text-white font-sans text-sm tracking-widest uppercase font-medium transition-colors duration-300 rounded-none"
         >
-          Add to Cart
-        </button>
-        <button className="w-full py-4 border border-[var(--border-primary)] bg-transparent text-[var(--text-primary)] font-sans text-xs tracking-widest uppercase font-medium transition-colors duration-300 hover:bg-[var(--bg-secondary)]">
-          Request Customisation
+          ADD TO CART
         </button>
       </div>
 
