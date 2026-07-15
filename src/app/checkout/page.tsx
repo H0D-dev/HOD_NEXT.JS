@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useCartStore } from "@/src/lib/store/useCartStore";
 import { useAuthStore } from "@/src/lib/store/useAuthStore";
 import { formatPrice } from "@/src/lib/utils/price";
-import "./Checkout.css";
+import { ShoppingBag } from "lucide-react";
 
 interface FormData {
   first_name: string;
@@ -287,42 +287,85 @@ export default function CheckoutPage() {
 
   if (items.length === 0) {
     return (
-      <div className="checkout__empty">
-        <h2 className="checkout__empty-title">Your cart is empty</h2>
-        <p className="checkout__empty-text">Add some products before checking out.</p>
-        <Link href="/products/rugs" className="checkout__empty-link">
-          Browse Products
-        </Link>
+      <div className="min-h-[60vh] flex flex-col items-center justify-center text-center py-20 px-6">
+        <ShoppingBag size={48} strokeWidth={1} className="text-[var(--text-secondary)] mb-6" />
+        <h2 className="font-serif text-3xl md:text-4xl text-[var(--text-primary)] font-normal mb-3">Your cart is empty</h2>
+        <p className="font-sans text-sm md:text-base text-[var(--text-secondary)] mb-10 max-w-[400px]">
+          Add some products before checking out.
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+          <Link 
+            href="/products" 
+            className="py-4 px-8 bg-[var(--accent-primary)] text-[#111] border border-[var(--border-thin)] font-sans text-xs uppercase tracking-[0.15em] transition-colors hover:bg-[var(--accent-secondary)] whitespace-nowrap text-center"
+          >
+            Explore Collection
+          </Link>
+        </div>
       </div>
     );
   }
 
   const isProcessing = isValidating || isPlacingOrder;
 
-  // Get variant display text for summary
-  const getVariantText = (item: typeof items[0]) => {
+  // Get variant display for summary
+  const renderVariantInfo = (item: typeof items[0]) => {
     if (!item.variant) return null;
-    const parts: string[] = [];
-    if (item.variant.size) parts.push(item.variant.size);
-    if (item.variant.color) parts.push(item.variant.color);
-    if (item.variant.fabric) parts.push(item.variant.fabric);
-    if (item.variant.width && item.variant.height) parts.push(`${item.variant.width} × ${item.variant.height}`);
-    return parts.length > 0 ? parts.join(" · ") : null;
+    
+    return (
+      <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1 font-sans text-[10px] md:text-xs text-[var(--text-secondary)] uppercase tracking-wider mt-0.5">
+        {item.category === "rug" && (
+          <>
+            {item.variant.size && <span>{item.variant.size.replace(/\s*cm\s*$/i, '')} cm</span>}
+            {item.variant.size && (item.variant.color || item.variant.material) && <span>·</span>}
+            {item.variant.color && (
+              <span className="flex items-center gap-1">
+                {item.variant.color.startsWith('#') ? (
+                  <span className="w-2.5 h-2.5 rounded-full border border-[var(--border-secondary)] inline-block" style={{ backgroundColor: item.variant.color }} aria-label={item.variant.color} />
+                ) : (
+                  item.variant.color
+                )}
+              </span>
+            )}
+            {item.variant.color && item.variant.material && <span>·</span>}
+            {item.variant.material && <span>{item.variant.material}</span>}
+          </>
+        )}
+        {item.category === "curtain" && (
+          <>
+            {(item.variant.width && item.variant.height) && (
+              <span>{item.variant.width} × {item.variant.height}</span>
+            )}
+            {(item.variant.width && item.variant.height) && (item.variant.fabric || item.variant.lining || item.variant.pleatStyle) && <span>·</span>}
+            {item.variant.fabric && <span>{item.variant.fabric}</span>}
+            {item.variant.fabric && (item.variant.lining || item.variant.pleatStyle) && <span>·</span>}
+            {item.variant.lining && <span>{item.variant.lining}</span>}
+            {item.variant.lining && item.variant.pleatStyle && <span>·</span>}
+            {item.variant.pleatStyle && <span>{item.variant.pleatStyle}</span>}
+          </>
+        )}
+      </div>
+    );
   };
 
   return (
-    <div className="checkout">
-      <div className="checkout__container">
-        <div className="checkout__header">
-          <h1 className="checkout__title">Checkout</h1>
+    <div className="py-12 md:py-20 min-h-[calc(100vh-200px)]">
+      <div className="max-w-[1200px] mx-auto px-6 lg:px-12">
+        
+        <div className="mb-6 md:mb-10 flex items-end justify-between border-b border-[var(--border-secondary)] pb-4">
+          <h1 className="font-sans text-xs md:text-sm font-medium uppercase tracking-[0.2em] text-[var(--text-primary)] m-0">
+            Secure Checkout
+          </h1>
+          <span className="font-sans text-xs text-[var(--text-secondary)] uppercase tracking-[0.15em]">
+            {items.length} {items.length === 1 ? 'Item' : 'Items'}
+          </span>
         </div>
 
         {/* Validation Errors Alert */}
         {validationErrors.length > 0 && (
-          <div className="checkout__alert">
-            <p className="checkout__alert-title">Some items in your cart need attention:</p>
+          <div className="mb-8 p-4 bg-red-50 border border-red-200 text-red-800 font-sans text-sm">
+            <p className="font-semibold mb-2">Some items in your cart need attention:</p>
             {validationErrors.map((err, i) => (
-              <p key={i} className="checkout__alert-item">
+              <p key={i} className="mb-1 last:mb-0">
                 {err.message}
                 {err.corrected_price !== undefined && ` — New price: ${formatPrice(err.corrected_price, cartCurrency || "AED")}`}
                 {err.available_stock !== undefined && ` — Available: ${err.available_stock}`}
@@ -332,146 +375,146 @@ export default function CheckoutPage() {
         )}
 
         {orderError && (
-          <div className="checkout__alert">
-            <p className="checkout__alert-title">{orderError}</p>
+          <div className="mb-8 p-4 bg-red-50 border border-red-200 text-red-800 font-sans text-sm">
+            <p className="font-semibold">{orderError}</p>
           </div>
         )}
 
-        <div className="checkout__layout">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12 lg:gap-16">
           {/* ── Left: Form ── */}
-          <div className="checkout__form-column">
+          <div className="lg:col-span-7 p-5 md:p-8 lg:p-10 border border-[var(--border-secondary)] bg-[var(--surface-primary)] flex flex-col gap-5 md:gap-8">
             {!user && (
-              <div className="checkout__login-prompt" style={{ marginBottom: "2rem", padding: "1rem", backgroundColor: "var(--bg-secondary)", borderRadius: "var(--radius-md)", border: "1px solid var(--border-color)", fontSize: "0.95rem" }}>
-                Returning customer? <Link href="/login?redirect=/checkout" style={{ color: "var(--accent-color)", fontWeight: "500", textDecoration: "underline" }}>Click here to login</Link>
+              <div className="checkout__login-prompt" style={{ padding: "1rem", backgroundColor: "var(--bg-secondary)", border: "1px solid var(--border-secondary)", fontSize: "0.95rem" }}>
+                Returning customer? <Link href="/login?redirect=/checkout" style={{ color: "var(--text-primary)", fontWeight: "500", textDecoration: "underline" }}>Click here to login</Link>
               </div>
             )}
 
             {/* Billing */}
-            <div className="checkout__section">
-              <h2 className="checkout__section-title">Billing Details</h2>
-              <div className="checkout__form-grid checkout__form-grid--2col">
-                <div className="checkout__field">
-                  <label className="checkout__label checkout__label--required" htmlFor="first_name">First Name</label>
+            <div>
+              <h2 className="font-serif text-lg md:text-xl font-medium text-[var(--text-primary)] mb-4 tracking-tight">Billing Details</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 md:gap-x-5 gap-y-4 md:gap-y-5">
+                <div className="flex flex-col gap-2">
+                  <label className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-[var(--text-secondary)] flex items-center" htmlFor="first_name">First Name <span className="text-red-500 ml-1">*</span></label>
                   <input
                     id="first_name"
                     name="first_name"
                     type="text"
-                    className={`checkout__input ${formErrors.first_name ? "checkout__input--error" : ""}`}
+                    className={`w-full h-10 md:h-12 px-3 md:px-4 border border-[var(--border-secondary)] bg-transparent text-[var(--text-primary)] font-sans text-sm focus:outline-none focus:border-[var(--text-primary)] transition-colors placeholder:text-[var(--text-muted)] rounded-none ${formErrors.first_name ? "!border-red-500" : ""}`}
                     value={formData.first_name}
                     onChange={handleInputChange}
                     placeholder="John"
                   />
-                  {formErrors.first_name && <span className="checkout__error-text">{formErrors.first_name}</span>}
+                  {formErrors.first_name && <span className="text-red-500 text-xs mt-1 font-sans">{formErrors.first_name}</span>}
                 </div>
 
-                <div className="checkout__field">
-                  <label className="checkout__label checkout__label--required" htmlFor="last_name">Last Name</label>
+                <div className="flex flex-col gap-2">
+                  <label className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-[var(--text-secondary)] flex items-center" htmlFor="last_name">Last Name <span className="text-red-500 ml-1">*</span></label>
                   <input
                     id="last_name"
                     name="last_name"
                     type="text"
-                    className={`checkout__input ${formErrors.last_name ? "checkout__input--error" : ""}`}
+                    className={`w-full h-10 md:h-12 px-3 md:px-4 border border-[var(--border-secondary)] bg-transparent text-[var(--text-primary)] font-sans text-sm focus:outline-none focus:border-[var(--text-primary)] transition-colors placeholder:text-[var(--text-muted)] rounded-none ${formErrors.last_name ? "!border-red-500" : ""}`}
                     value={formData.last_name}
                     onChange={handleInputChange}
                     placeholder="Doe"
                   />
-                  {formErrors.last_name && <span className="checkout__error-text">{formErrors.last_name}</span>}
+                  {formErrors.last_name && <span className="text-red-500 text-xs mt-1 font-sans">{formErrors.last_name}</span>}
                 </div>
 
-                <div className="checkout__field">
-                  <label className="checkout__label checkout__label--required" htmlFor="email">Email</label>
+                <div className="flex flex-col gap-2">
+                  <label className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-[var(--text-secondary)] flex items-center" htmlFor="email">Email <span className="text-red-500 ml-1">*</span></label>
                   <input
                     id="email"
                     name="email"
                     type="email"
-                    className={`checkout__input ${formErrors.email ? "checkout__input--error" : ""}`}
+                    className={`w-full h-10 md:h-12 px-3 md:px-4 border border-[var(--border-secondary)] bg-transparent text-[var(--text-primary)] font-sans text-sm focus:outline-none focus:border-[var(--text-primary)] transition-colors placeholder:text-[var(--text-muted)] rounded-none ${formErrors.email ? "!border-red-500" : ""}`}
                     value={formData.email}
                     onChange={handleInputChange}
                     placeholder="john@example.com"
                   />
-                  {formErrors.email && <span className="checkout__error-text">{formErrors.email}</span>}
+                  {formErrors.email && <span className="text-red-500 text-xs mt-1 font-sans">{formErrors.email}</span>}
                 </div>
 
-                <div className="checkout__field">
-                  <label className="checkout__label checkout__label--required" htmlFor="phone">Phone</label>
+                <div className="flex flex-col gap-2">
+                  <label className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-[var(--text-secondary)] flex items-center" htmlFor="phone">Phone <span className="text-red-500 ml-1">*</span></label>
                   <input
                     id="phone"
                     name="phone"
                     type="tel"
-                    className={`checkout__input ${formErrors.phone ? "checkout__input--error" : ""}`}
+                    className={`w-full h-10 md:h-12 px-3 md:px-4 border border-[var(--border-secondary)] bg-transparent text-[var(--text-primary)] font-sans text-sm focus:outline-none focus:border-[var(--text-primary)] transition-colors placeholder:text-[var(--text-muted)] rounded-none ${formErrors.phone ? "!border-red-500" : ""}`}
                     value={formData.phone}
                     onChange={handleInputChange}
-                    placeholder="+971 50 123 4567 / +1 555 123 4567"
+                    placeholder="+971 50 123 4567"
                   />
-                  {formErrors.phone && <span className="checkout__error-text">{formErrors.phone}</span>}
+                  {formErrors.phone && <span className="text-red-500 text-xs mt-1 font-sans">{formErrors.phone}</span>}
                 </div>
               </div>
             </div>
 
             {/* Shipping */}
-            <div className="checkout__section">
-              <h2 className="checkout__section-title">Shipping Address</h2>
-              <div className="checkout__form-grid checkout__form-grid--2col">
-                <div className="checkout__field checkout__field--full">
-                  <label className="checkout__label checkout__label--required" htmlFor="address_1">Street Address</label>
+            <div>
+              <h2 className="font-serif text-lg md:text-xl font-medium text-[var(--text-primary)] mb-4 tracking-tight">Shipping Address</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 md:gap-x-5 gap-y-4 md:gap-y-5">
+                <div className="flex flex-col gap-2 md:col-span-2">
+                  <label className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-[var(--text-secondary)] flex items-center" htmlFor="address_1">Street Address <span className="text-red-500 ml-1">*</span></label>
                   <input
                     id="address_1"
                     name="address_1"
                     type="text"
-                    className={`checkout__input ${formErrors.address_1 ? "checkout__input--error" : ""}`}
+                    className={`w-full h-10 md:h-12 px-3 md:px-4 border border-[var(--border-secondary)] bg-transparent text-[var(--text-primary)] font-sans text-sm focus:outline-none focus:border-[var(--text-primary)] transition-colors placeholder:text-[var(--text-muted)] rounded-none ${formErrors.address_1 ? "!border-red-500" : ""}`}
                     value={formData.address_1}
                     onChange={handleInputChange}
                     placeholder="Street address, P.O. box"
                   />
-                  {formErrors.address_1 && <span className="checkout__error-text">{formErrors.address_1}</span>}
+                  {formErrors.address_1 && <span className="text-red-500 text-xs mt-1 font-sans">{formErrors.address_1}</span>}
                 </div>
 
-                <div className="checkout__field checkout__field--full">
-                  <label className="checkout__label" htmlFor="address_2">Apartment / Suite</label>
+                <div className="flex flex-col gap-2 md:col-span-2">
+                  <label className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-[var(--text-secondary)] flex items-center" htmlFor="address_2">Apartment / Suite</label>
                   <input
                     id="address_2"
                     name="address_2"
                     type="text"
-                    className="checkout__input"
+                    className="w-full h-10 md:h-12 px-3 md:px-4 border border-[var(--border-secondary)] bg-transparent text-[var(--text-primary)] font-sans text-sm focus:outline-none focus:border-[var(--text-primary)] transition-colors placeholder:text-[var(--text-muted)] rounded-none"
                     value={formData.address_2}
                     onChange={handleInputChange}
                     placeholder="Apt 401"
                   />
                 </div>
 
-                <div className="checkout__field">
-                  <label className="checkout__label checkout__label--required" htmlFor="city">City</label>
+                <div className="flex flex-col gap-2">
+                  <label className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-[var(--text-secondary)] flex items-center" htmlFor="city">City <span className="text-red-500 ml-1">*</span></label>
                   <input
                     id="city"
                     name="city"
                     type="text"
-                    className={`checkout__input ${formErrors.city ? "checkout__input--error" : ""}`}
+                    className={`w-full h-10 md:h-12 px-3 md:px-4 border border-[var(--border-secondary)] bg-transparent text-[var(--text-primary)] font-sans text-sm focus:outline-none focus:border-[var(--text-primary)] transition-colors placeholder:text-[var(--text-muted)] rounded-none ${formErrors.city ? "!border-red-500" : ""}`}
                     value={formData.city}
                     onChange={handleInputChange}
                     placeholder="Dubai"
                   />
-                  {formErrors.city && <span className="checkout__error-text">{formErrors.city}</span>}
+                  {formErrors.city && <span className="text-red-500 text-xs mt-1 font-sans">{formErrors.city}</span>}
                 </div>
 
-                <div className="checkout__field">
-                  <label className="checkout__label" htmlFor="state">State / Province / Region</label>
+                <div className="flex flex-col gap-2">
+                  <label className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-[var(--text-secondary)] flex items-center" htmlFor="state">State / Province / Region</label>
                   <input
                     id="state"
                     name="state"
                     type="text"
-                    className="checkout__input"
+                    className="w-full h-10 md:h-12 px-3 md:px-4 border border-[var(--border-secondary)] bg-transparent text-[var(--text-primary)] font-sans text-sm focus:outline-none focus:border-[var(--text-primary)] transition-colors placeholder:text-[var(--text-muted)] rounded-none"
                     value={formData.state}
                     onChange={handleInputChange}
                     placeholder="State, province, or region"
                   />
                 </div>
 
-                <div className="checkout__field">
-                  <label className="checkout__label checkout__label--required" htmlFor="country">Country</label>
+                <div className="flex flex-col gap-2">
+                  <label className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-[var(--text-secondary)] flex items-center" htmlFor="country">Country <span className="text-red-500 ml-1">*</span></label>
                   <select
                     id="country"
                     name="country"
-                    className={`checkout__select ${formErrors.country ? "checkout__input--error" : ""}`}
+                    className={`w-full h-10 md:h-12 px-3 md:px-4 border border-[var(--border-secondary)] bg-transparent text-[var(--text-primary)] font-sans text-sm focus:outline-none focus:border-[var(--text-primary)] transition-colors placeholder:text-[var(--text-muted)] rounded-none appearance-none cursor-pointer ${formErrors.country ? "!border-red-500" : ""}`}
                     value={formData.country}
                     onChange={handleInputChange}
                   >
@@ -480,16 +523,16 @@ export default function CheckoutPage() {
                       <option key={c.code} value={c.code}>{c.name}</option>
                     ))}
                   </select>
-                  {formErrors.country && <span className="checkout__error-text">{formErrors.country}</span>}
+                  {formErrors.country && <span className="text-red-500 text-xs mt-1 font-sans">{formErrors.country}</span>}
                 </div>
 
-                <div className="checkout__field">
-                  <label className="checkout__label" htmlFor="postcode">ZIP / Postal Code</label>
+                <div className="flex flex-col gap-2">
+                  <label className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-[var(--text-secondary)] flex items-center" htmlFor="postcode">ZIP / Postal Code</label>
                   <input
                     id="postcode"
                     name="postcode"
                     type="text"
-                    className="checkout__input"
+                    className="w-full h-10 md:h-12 px-3 md:px-4 border border-[var(--border-secondary)] bg-transparent text-[var(--text-primary)] font-sans text-sm focus:outline-none focus:border-[var(--text-primary)] transition-colors placeholder:text-[var(--text-muted)] rounded-none"
                     value={formData.postcode}
                     onChange={handleInputChange}
                     placeholder="00000"
@@ -499,13 +542,13 @@ export default function CheckoutPage() {
             </div>
 
             {/* Order Notes */}
-            <div className="checkout__section">
-              <h2 className="checkout__section-title">Order Notes</h2>
-              <div className="checkout__field">
+            <div>
+              <h2 className="font-serif text-lg md:text-xl font-medium text-[var(--text-primary)] mb-4 tracking-tight">Order Notes</h2>
+              <div className="flex flex-col gap-2">
                 <textarea
                   id="order_notes"
                   name="order_notes"
-                  className="checkout__textarea"
+                  className="w-full min-h-[60px] md:min-h-[80px] p-3 border border-[var(--border-secondary)] bg-transparent text-[var(--text-primary)] font-sans text-sm focus:outline-none focus:border-[var(--text-primary)] transition-colors placeholder:text-[var(--text-muted)] rounded-none resize-y"
                   value={formData.order_notes}
                   onChange={handleInputChange}
                   placeholder="Special instructions for your order (optional)"
@@ -514,19 +557,19 @@ export default function CheckoutPage() {
             </div>
 
             {/* Payment Method */}
-            <div className="checkout__section">
-              <h2 className="checkout__section-title">Payment Method</h2>
-              <div className="checkout__payment-options">
+            <div>
+              <h2 className="font-serif text-lg md:text-xl font-medium text-[var(--text-primary)] mb-4 tracking-tight">Payment Method</h2>
+              <div className="flex flex-col gap-4">
                 <div
-                  className={`checkout__payment-option ${formData.payment_method === "online" ? "checkout__payment-option--active" : ""}`}
+                  className={`p-4 border cursor-pointer transition-colors flex items-center gap-3 md:gap-4 ${formData.payment_method === "online" ? "border-[var(--border-primary)] bg-[var(--bg-secondary)]" : "border-[var(--border-secondary)] hover:border-[var(--border-primary)]"}`}
                   onClick={() => setFormData((prev) => ({ ...prev, payment_method: "online" }))}
                 >
-                  <div className="checkout__payment-radio">
-                    <div className="checkout__payment-radio-dot" />
+                  <div className="w-4 h-4 md:w-5 md:h-5 rounded-full border border-[var(--border-primary)] flex items-center justify-center shrink-0">
+                    {formData.payment_method === "online" && <div className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-[var(--text-primary)]" />}
                   </div>
-                  <div className="checkout__payment-info">
-                    <p className="checkout__payment-title">Online Payment</p>
-                    <p className="checkout__payment-desc">Credit/Debit Card, Apple Pay, etc.</p>
+                  <div className="flex flex-wrap items-baseline gap-x-2">
+                    <span className="font-sans text-sm font-medium text-[var(--text-primary)]">Online Payment</span>
+                    <span className="font-sans text-[10px] md:text-xs text-[var(--text-secondary)]">Credit/Debit Card, Apple Pay, etc.</span>
                   </div>
                 </div>
               </div>
@@ -534,59 +577,62 @@ export default function CheckoutPage() {
           </div>
 
           {/* ── Right: Order Summary ── */}
-          <div className="checkout__summary">
-            <h3 className="checkout__summary-title">Order Summary</h3>
+          <div className="lg:col-span-5">
+            <div className="sticky top-[100px] p-6 md:p-8 lg:p-10 border border-[var(--border-secondary)] bg-[var(--surface-primary)] flex flex-col">
+              <h3 className="font-serif text-xl md:text-2xl font-normal text-[var(--text-primary)] mb-6 md:mb-8 tracking-tight">Order Summary</h3>
 
-            <div className="checkout__summary-items">
+            <div className="flex flex-col gap-6 mb-8 pb-8 border-b border-[var(--border-secondary)]">
               {items.map((item) => (
-                <div key={item.id} className="checkout__summary-item">
-                  <div className="checkout__summary-item-image">
-                    <span className="checkout__summary-item-badge">{item.quantity}</span>
+                <div key={item.id} className="flex items-start gap-3 md:gap-6">
+                  <div className="relative w-16 h-20 md:w-20 md:h-24 bg-[var(--bg-secondary)] shrink-0 border border-[var(--border-secondary)] mt-1 md:mt-0">
+                    <span className="absolute -top-2 -right-2 w-5 h-5 md:w-6 md:h-6 rounded-full bg-[var(--text-primary)] text-[var(--bg-primary)] flex items-center justify-center font-sans text-[10px] md:text-xs font-medium z-10">{item.quantity}</span>
                     <Image src={item.image} alt={item.name} fill style={{ objectFit: "cover" }} />
                   </div>
-                  <div className="checkout__summary-item-details">
-                    <p className="checkout__summary-item-name">{item.name}</p>
-                    {getVariantText(item) && (
-                      <p className="checkout__summary-item-variant">{getVariantText(item)}</p>
-                    )}
+                  <div className="flex flex-col flex-1 min-w-0">
+                    <div className="flex justify-between items-start gap-2">
+                      <p className="font-sans text-xs md:text-sm font-medium text-[var(--text-primary)] leading-snug mb-0.5">{item.name}</p>
+                      <span className="font-sans text-xs md:text-sm font-normal text-[var(--text-primary)] shrink-0">
+                        {formatPrice(item.price * item.quantity, cartCurrency || "AED")}
+                      </span>
+                    </div>
+                    {renderVariantInfo(item)}
                   </div>
-                  <span className="checkout__summary-item-price">
-                    {formatPrice(item.price * item.quantity, cartCurrency || "AED")}
-                  </span>
                 </div>
               ))}
             </div>
 
-            <div className="checkout__summary-line">
-              <span className="checkout__summary-label">Subtotal</span>
-              <span className="checkout__summary-value">{formatPrice(subtotal, cartCurrency || "AED")}</span>
-            </div>
-            <div className="checkout__summary-line">
-              <span className="checkout__summary-label">Shipping</span>
-              <span className="checkout__summary-value">Calculated by store</span>
-            </div>
-            <div className="checkout__summary-line">
-              <span className="checkout__summary-label">Tax</span>
-              <span className="checkout__summary-value">Included</span>
+            <div className="flex flex-col gap-3 md:gap-4">
+              <div className="flex justify-between items-center">
+                <span className="font-sans text-[10px] md:text-xs text-[var(--text-secondary)] uppercase tracking-[0.2em] font-medium">Subtotal</span>
+                <span className="font-sans text-[15px] text-[var(--text-primary)] font-normal tracking-tight">{formatPrice(subtotal, cartCurrency || "AED")}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="font-sans text-[10px] md:text-xs text-[var(--text-secondary)] uppercase tracking-[0.2em] font-medium">Shipping</span>
+                <span className="font-sans text-xs md:text-sm text-[var(--text-secondary)] italic">Calculated by store</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="font-sans text-[10px] md:text-xs text-[var(--text-secondary)] uppercase tracking-[0.2em] font-medium">Tax</span>
+                <span className="font-sans text-xs md:text-sm text-[var(--text-secondary)] italic">Included</span>
+              </div>
             </div>
 
-            <div className="checkout__summary-total">
-              <span className="checkout__summary-total-label">Total</span>
-              <span className="checkout__summary-total-value">{formatPrice(subtotal, cartCurrency || "AED")}</span>
+            <div className="flex justify-between items-end mt-6 pt-6 border-t border-[var(--border-secondary)] mb-8">
+              <span className="font-sans text-[10px] md:text-xs text-[var(--text-secondary)] uppercase tracking-[0.2em] font-medium mb-1">Total</span>
+              <span className="font-sans text-xl md:text-2xl font-normal text-[var(--text-primary)] tracking-tight">{formatPrice(subtotal, cartCurrency || "AED")}</span>
             </div>
 
             <button
-              className="checkout__place-order"
+              className="w-full h-12 md:h-14 bg-[var(--accent-primary)] text-[#111] border border-[var(--border-thin)] font-sans text-xs md:text-sm uppercase tracking-[0.2em] font-medium transition-colors hover:bg-[var(--accent-secondary)] flex items-center justify-center disabled:opacity-70 disabled:cursor-not-allowed"
               onClick={handlePlaceOrder}
               disabled={isProcessing}
             >
-              {isValidating && <><span className="checkout__spinner" /> Validating...</>}
-              {isPlacingOrder && <><span className="checkout__spinner" /> Placing Order...</>}
+              {isValidating && <><span className="inline-block w-4 h-4 border-2 border-[#111] border-t-transparent rounded-full animate-spin mr-2" /> Validating...</>}
+              {isPlacingOrder && <><span className="inline-block w-4 h-4 border-2 border-[#111] border-t-transparent rounded-full animate-spin mr-2" /> Placing Order...</>}
               {!isProcessing && "Place Order"}
             </button>
 
-            <div className="checkout__secure">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <div className="flex items-center justify-center gap-2 mt-6 font-sans text-[10px] text-[var(--text-secondary)] uppercase tracking-[0.2em] font-medium">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <rect x="3" y="11" width="18" height="11" rx="2" />
                 <path d="M7 11V7a5 5 0 0110 0v4" />
               </svg>
@@ -595,6 +641,7 @@ export default function CheckoutPage() {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }
