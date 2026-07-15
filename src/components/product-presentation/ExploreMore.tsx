@@ -33,55 +33,52 @@ const EXPLORE_PRODUCTS = [
 
 export default function ExploreMore() {
   return (
-    <section className="w-full bg-[var(--bg-primary)] py-[var(--space-7)] lg:py-[var(--space-8)] border-t border-[var(--border-secondary)]">
-      <div className="max-w-[var(--container-lg)] mx-auto px-[var(--space-4)] lg:px-[var(--space-8)]">
-
-        {/* Monumental Section Heading */}
-        <div className="pt-[64px] lg:pt-[120px] mb-[80px] lg:mb-[120px]">
-          <h2 className="font-serif font-medium text-[clamp(64px,14vw,180px)] tracking-[-0.04em] leading-[0.9] text-[var(--text-primary)] relative inline-flex uppercase">
-            EXPLORE
-            <span className="font-sans font-light text-[clamp(24px,4vw,40px)] text-[var(--text-secondary)] ml-3 tracking-normal normal-case">
-              (03)
-            </span>
+    <section className="w-full bg-[var(--bg-primary)] py-16 lg:py-24 border-t border-[var(--border-secondary)]">
+      <div className="max-w-[1200px] mx-auto px-6 lg:px-12">
+        
+        {/* Section Heading */}
+        <div className="flex justify-center md:justify-between items-end mb-8 md:mb-10">
+          <h2 className="font-serif text-lg md:text-xl tracking-[0.15em] uppercase text-[var(--text-primary)] font-medium text-center md:text-left">
+            Explore More
           </h2>
+          <button className="hidden md:flex items-center gap-2 font-sans text-xs uppercase tracking-widest text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
+            View All <span className="text-[14px]">&rarr;</span>
+          </button>
         </div>
 
         {/* Horizontal Rack */}
-        <div className="flex gap-4 lg:gap-6 overflow-x-auto snap-x hide-scrollbar pb-4 -mx-[var(--space-4)] px-[var(--space-4)] lg:mx-0 lg:px-0">
+        <div className="flex gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory hide-scrollbar pb-6 -mx-6 px-6 lg:mx-0 lg:px-0 scroll-smooth">
           {EXPLORE_PRODUCTS.map((prod) => (
             <div
               key={prod.id}
-              className="group relative flex-shrink-0 w-[280px] lg:w-[320px] snap-start cursor-pointer"
+              className="group relative flex-shrink-0 w-[260px] md:w-[280px] lg:w-[300px] snap-center cursor-pointer"
             >
-              <div className="relative w-full aspect-[4/5] overflow-hidden bg-[var(--bg-secondary)] mb-4">
+              <div className="relative w-full aspect-[4/5] overflow-hidden bg-[var(--bg-secondary)] mb-4 border border-[var(--border-secondary)]">
                 <Image
                   src={prod.image}
                   alt={prod.name}
                   fill
-                  className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
-                  sizes="(max-width: 1024px) 280px, 320px"
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  sizes="(max-width: 768px) 240px, (max-width: 1024px) 280px, 300px"
                 />
               </div>
-              <div className="flex justify-between items-start">
-                <div>
-                  <h3 className="font-serif text-[var(--text-lg)] text-[var(--text-primary)] leading-tight mb-1">
-                    {prod.name}
-                  </h3>
-                  <p className="font-sans text-[var(--text-xs)] uppercase tracking-widest text-[var(--text-muted)]">
-                    {prod.collection}
-                  </p>
-                </div>
-                <div className="w-8 h-8 rounded-full border border-[var(--border-secondary)] flex items-center justify-center transition-colors group-hover:border-[var(--border-primary)] group-hover:bg-[var(--bg-secondary)]">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" strokeLinejoin="miter">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                  </svg>
-                </div>
+              <div className="flex flex-col items-start">
+                <h3 className="font-sans text-sm md:text-[15px] font-medium text-[var(--text-primary)] tracking-tight mb-1">
+                  {prod.name}
+                </h3>
+                <p className="font-sans text-[10px] md:text-[11px] uppercase tracking-widest text-[var(--text-secondary)]">
+                  {prod.collection}
+                </p>
               </div>
             </div>
           ))}
         </div>
 
+        <div className="mt-8 flex justify-center md:hidden">
+          <button className="flex items-center gap-2 font-sans text-xs uppercase tracking-widest text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
+            View All <span className="text-[14px]">&rarr;</span>
+          </button>
+        </div>
       </div>
     </section>
   );
