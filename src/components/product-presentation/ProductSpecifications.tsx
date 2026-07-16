@@ -63,67 +63,84 @@ export default function ProductSpecifications({ product, selectedVariation }: Pr
   return (
     <section className="w-full bg-[var(--bg-primary)] border-t border-[var(--border-secondary)] text-[var(--text-primary)]">
 
-      {/* Top Half: Materials & Construction (Gallery Row Layout) */}
+      {/* Top Half: Story & Specifications */}
       <div className="w-full border-b border-[var(--border-secondary)] bg-[var(--bg-primary)]">
-        <div className="max-w-[1200px] mx-auto py-10 lg:py-14 px-6">
-          <div className="flex flex-wrap justify-center gap-x-6 gap-y-8 md:gap-x-12 md:gap-y-10 lg:gap-x-24">
-            {Object.entries(computedDetails).map(([key, value]) => {
-              if (!value) return null;
-              const formattedKey = key.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase());
-
-              let displayValue = value;
-              if (key.toLowerCase() === 'weight' && !String(value).toLowerCase().includes('kg')) {
-                displayValue = `${value} kg`;
-              } else if (key.toLowerCase() === 'dimensions' && !String(value).toLowerCase().includes('cm')) {
-                displayValue = `${value} cm`;
-              }
-
-              return (
-                <div key={key} className="flex flex-col items-center text-center gap-3 w-[120px] md:w-[140px]">
-                  <div className="text-[var(--text-primary)] opacity-70 mb-1">
-                    {getDetailIcon(key)}
-                  </div>
-                  <div className="flex flex-col items-center gap-1.5">
-                    <span className="font-sans text-[10px] text-[var(--text-secondary)] font-bold uppercase tracking-widest">{formattedKey}</span>
-                    <span className="font-sans text-sm md:text-[15px] font-medium text-[var(--text-primary)] tracking-tight">{displayValue}</span>
-                  </div>
-                </div>
-              );
-            })}
+        <div className="max-w-[1400px] mx-auto flex flex-col lg:flex-row gap-8 lg:gap-0">
+          
+          {/* Story Section */}
+          <div className="w-full lg:w-1/2 px-4 lg:px-6 pt-6 pb-6 lg:pt-8 lg:pb-8 flex flex-col border-b lg:border-b-0 lg:border-r border-[var(--border-secondary)]">
+            <h2 className="font-serif text-lg md:text-xl uppercase tracking-[0.15em] mb-4 font-medium text-center lg:text-left">Story</h2>
+            <div className="flex-1">
+              <p className="font-sans text-sm md:text-base leading-relaxed text-[var(--text-secondary)] text-center lg:text-left">
+                {computedDetails.story || "A masterclass in asymmetrical balance, The Capsule commands attention with an elongated, rounded pill-shaped form on the left, counterweighted by a sharp, thin vertical brass-like line on the right. An intersecting sequence of textured horizontal ridges bridges the two halves, culminating in a heavy half-globe at the base. This design beautifully juxtaposes soft, organic curves with rigid, upright columns."}
+              </p>
+            </div>
           </div>
+
+          {/* Specifications Section */}
+          <div className="w-full lg:w-1/2 px-4 lg:px-6 pt-6 pb-6 lg:pt-8 lg:pb-8 flex flex-col">
+            <h2 className="font-serif text-lg md:text-xl uppercase tracking-[0.15em] mb-4 font-medium text-center lg:text-left">Product Specification</h2>
+            <div className="flex-1 flex flex-nowrap items-start justify-start md:justify-between gap-x-4 md:gap-x-6 overflow-x-auto hide-scrollbar w-full pb-2">
+              {Object.entries(computedDetails).map(([key, value]) => {
+                if (!value) return null;
+                const hiddenKeys = ['washable', 'petfriendly', 'pet', 'weight', 'story'];
+                if (hiddenKeys.includes(key.toLowerCase())) return null;
+
+                const formattedKey = key.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase());
+
+                let displayValue = value;
+                if (key.toLowerCase() === 'dimensions' && !String(value).toLowerCase().includes('cm')) {
+                  displayValue = `${value} cm`;
+                }
+
+                return (
+                  <div key={key} className="flex flex-col items-center text-center gap-3 flex-shrink-0 w-[90px] md:flex-1 md:w-auto">
+                    <div className="text-[var(--text-primary)] opacity-70 mb-1">
+                      {getDetailIcon(key)}
+                    </div>
+                    <div className="flex flex-col items-center gap-1.5 w-full">
+                      <span className="font-sans text-[11px] md:text-xs text-[var(--text-secondary)] font-bold uppercase tracking-widest break-words text-center">{formattedKey}</span>
+                      <span className="font-sans text-sm md:text-[15px] font-medium text-[var(--text-primary)] tracking-tight text-center">{displayValue}</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
         </div>
       </div>
 
       {/* Bottom Half: Care Guide & Size Guide */}
-      <div className="max-w-[1200px] mx-auto flex flex-col lg:flex-row gap-8 lg:gap-0">
+      <div className="max-w-[1400px] mx-auto flex flex-col">
 
         {/* Care Guide */}
-        <div className="w-full lg:w-1/2 px-6 lg:px-12 pt-4 pb-10 lg:pt-8 lg:pb-12 flex flex-col">
+        <div className="w-full px-6 lg:px-12 pt-8 pb-4 lg:pt-12 lg:pb-6 flex flex-col">
           <h2 className="font-serif text-lg md:text-xl uppercase tracking-[0.15em] mb-6 font-medium text-center lg:text-left">Care Guide</h2>
-          <div className="grid grid-cols-2 border-l border-t border-[var(--border-secondary)] w-full">
-            
-            <div className="flex flex-col items-center justify-start text-center gap-3 pt-6 px-3 pb-5 md:pt-8 md:px-6 md:pb-6 h-full border-r border-b border-[var(--border-secondary)] hover:bg-black/5 transition-colors">
-              <Wind size={24} strokeWidth={1} className="text-[var(--text-primary)] shrink-0" />
-              <span className="font-sans text-[11px] md:text-xs text-[var(--text-secondary)] leading-relaxed">Vacuum regularly using low suction.</span>
+          <div className="grid grid-cols-2 md:grid-cols-4 border-l border-t border-[var(--border-secondary)] w-full">
+
+            <div className="flex flex-col items-center justify-start text-center gap-4 py-8 px-4 md:py-12 md:px-6 h-full border-r border-b border-[var(--border-secondary)] hover:bg-black/5 transition-colors">
+              <Wind size={26} strokeWidth={1} className="text-[var(--text-primary)] shrink-0" />
+              <span className="font-sans text-xs md:text-[14px] text-[var(--text-secondary)] leading-relaxed">Vacuum regularly using low suction.</span>
             </div>
-            <div className="flex flex-col items-center justify-start text-center gap-3 pt-6 px-3 pb-5 md:pt-8 md:px-6 md:pb-6 h-full border-r border-b border-[var(--border-secondary)] hover:bg-black/5 transition-colors">
-              <RefreshCw size={24} strokeWidth={1} className="text-[var(--text-primary)] shrink-0" />
-              <span className="font-sans text-[11px] md:text-xs text-[var(--text-secondary)] leading-relaxed">Rotate every six months.</span>
+            <div className="flex flex-col items-center justify-start text-center gap-4 py-8 px-4 md:py-12 md:px-6 h-full border-r border-b border-[var(--border-secondary)] hover:bg-black/5 transition-colors">
+              <RefreshCw size={26} strokeWidth={1} className="text-[var(--text-primary)] shrink-0" />
+              <span className="font-sans text-xs md:text-[14px] text-[var(--text-secondary)] leading-relaxed">Rotate every six months.</span>
             </div>
-            <div className="flex flex-col items-center justify-start text-center gap-3 pt-6 px-3 pb-5 md:pt-8 md:px-6 md:pb-6 h-full border-r border-b border-[var(--border-secondary)] hover:bg-black/5 transition-colors">
-              <ShieldCheck size={24} strokeWidth={1} className="text-[var(--text-primary)] shrink-0" />
-              <span className="font-sans text-[11px] md:text-xs text-[var(--text-secondary)] leading-relaxed">Professional cleaning recommended.</span>
+            <div className="flex flex-col items-center justify-start text-center gap-4 py-8 px-4 md:py-12 md:px-6 h-full border-r border-b border-[var(--border-secondary)] hover:bg-black/5 transition-colors">
+              <ShieldCheck size={26} strokeWidth={1} className="text-[var(--text-primary)] shrink-0" />
+              <span className="font-sans text-xs md:text-[14px] text-[var(--text-secondary)] leading-relaxed">Professional cleaning recommended.</span>
             </div>
-            <div className="flex flex-col items-center justify-start text-center gap-3 pt-6 px-3 pb-5 md:pt-8 md:px-6 md:pb-6 h-full border-r border-b border-[var(--border-secondary)] hover:bg-black/5 transition-colors">
-              <Sun size={24} strokeWidth={1} className="text-[var(--text-primary)] shrink-0" />
-              <span className="font-sans text-[11px] md:text-xs text-[var(--text-secondary)] leading-relaxed">Avoid prolonged direct sunlight.</span>
+            <div className="flex flex-col items-center justify-start text-center gap-4 py-8 px-4 md:py-12 md:px-6 h-full border-r border-b border-[var(--border-secondary)] hover:bg-black/5 transition-colors">
+              <Sun size={26} strokeWidth={1} className="text-[var(--text-primary)] shrink-0" />
+              <span className="font-sans text-xs md:text-[14px] text-[var(--text-secondary)] leading-relaxed">Avoid prolonged direct sunlight.</span>
             </div>
 
           </div>
         </div>
 
         {/* Size Guide */}
-        <div className="w-full lg:w-1/2 px-6 lg:px-12 pt-4 pb-10 lg:pt-8 lg:pb-12 flex flex-col overflow-hidden">
+        <div className="w-full px-6 lg:px-12 pt-4 pb-10 lg:pt-6 lg:pb-12 flex flex-col overflow-hidden">
           <h2 className="font-serif text-lg md:text-xl uppercase tracking-[0.15em] mb-3 font-medium text-center lg:text-left">Size Guide</h2>
 
           <div className="flex gap-5 border-b border-[var(--border-secondary)] mb-4 overflow-x-auto hide-scrollbar">
@@ -139,32 +156,32 @@ export default function ProductSpecifications({ product, selectedVariation }: Pr
           </div>
 
           <div className="flex items-center gap-4">
-            <button 
+            <button
               onClick={() => scroll('left')}
-              className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors shrink-0 hidden sm:flex h-[180px] items-center"
+              className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors shrink-0 hidden sm:flex lg:hidden h-[180px] items-center"
             >
               <ChevronLeft size={24} strokeWidth={1} />
             </button>
 
-            <div 
+            <div
               ref={scrollRef}
-              className="flex-1 flex gap-6 overflow-x-auto hide-scrollbar snap-x snap-mandatory pb-2 scroll-smooth"
+              className="flex-1 flex lg:grid lg:grid-cols-3 gap-6 lg:gap-10 overflow-x-auto lg:overflow-visible hide-scrollbar snap-x snap-mandatory pb-2 scroll-smooth"
             >
               {sizeGuideData[activeTab].map((item, idx) => (
-                <div key={idx} className="flex flex-col items-center gap-3 shrink-0 snap-center min-w-[200px]">
-                  <div className={`relative w-[200px] h-[180px] bg-white border flex items-center justify-center p-0 transition-colors ${idx === 0 ? 'border-[#C2A789]' : 'border-[var(--border-secondary)]'}`}>
+                <div key={idx} className="flex flex-col items-center gap-3 shrink-0 snap-center min-w-[200px] lg:min-w-0 lg:w-full">
+                  <div className={`relative w-[200px] h-[180px] lg:w-full lg:h-[320px] bg-white border flex items-center justify-center p-6 transition-colors ${idx === 0 ? 'border-[#C2A789]' : 'border-[var(--border-secondary)]'}`}>
                     <div className="relative w-full h-full">
-                      <Image src={item.src} alt={item.label} fill className="object-contain" />
+                      <Image src={item.src} alt={item.label} fill sizes="(max-width: 1024px) 200px, 33vw" className="object-contain" />
                     </div>
                   </div>
-                  <span className="font-sans text-xs md:text-[13px] text-[var(--text-primary)] font-medium tracking-wide">{item.label}</span>
+                  <span className="font-sans text-xs md:text-[14px] text-[var(--text-primary)] font-medium tracking-wide mt-2">{item.label}</span>
                 </div>
               ))}
             </div>
 
-            <button 
+            <button
               onClick={() => scroll('right')}
-              className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors shrink-0 hidden sm:flex h-[180px] items-center"
+              className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors shrink-0 hidden sm:flex lg:hidden h-[180px] items-center"
             >
               <ChevronRight size={24} strokeWidth={1} />
             </button>

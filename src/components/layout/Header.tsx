@@ -121,6 +121,8 @@ export default function Header() {
                 width={160}
                 height={36}
                 priority
+                loading="eager"
+                fetchPriority="high"
                 className="header__logo-img"
               />
             </Link>

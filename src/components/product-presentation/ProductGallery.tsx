@@ -23,7 +23,7 @@ export default function ProductGallery({ product, activeColor }: ProductGalleryP
   const [isDesktop, setIsDesktop] = useState(true);
 
   const thumbnailsRef = useRef<HTMLDivElement>(null);
-  
+
   const scrollThumbnails = (direction: 'up' | 'down') => {
     if (thumbnailsRef.current) {
       const scrollAmount = 120; // Approx height of one thumbnail + gap
@@ -44,16 +44,19 @@ export default function ProductGallery({ product, activeColor }: ProductGalleryP
   useEffect(() => {
     const newImages = [];
     if (activeColor.textureUrl) newImages.push(activeColor.textureUrl);
-    if (activeColor.lifestyleUrl) newImages.push(activeColor.lifestyleUrl);
+    if (activeColor.lifestyleUrl && activeColor.lifestyleUrl !== activeColor.textureUrl) {
+      newImages.push(activeColor.lifestyleUrl);
+    }
 
     // Fallback if the active color has no images, but the product has a main image
     if (newImages.length === 0 && product.image) {
       newImages.push(product.image);
     }
 
-    setImages(newImages);
-    if (newImages.length > 0) {
-      setMainImage(newImages[0]);
+    const uniqueImages = Array.from(new Set(newImages));
+    setImages(uniqueImages);
+    if (uniqueImages.length > 0) {
+      setMainImage(uniqueImages[0]);
     }
   }, [activeColor, product.image]);
 
@@ -96,12 +99,12 @@ export default function ProductGallery({ product, activeColor }: ProductGalleryP
 
   return (
     <div className="w-full flex justify-center lg:justify-end xl:justify-center lg:sticky lg:top-28">
-      <div className="flex flex-col-reverse lg:flex-row gap-4 lg:gap-6 w-full max-w-[700px] xl:max-w-[750px] items-start">
-        
+      <div className="flex flex-col-reverse lg:flex-row gap-4 lg:gap-6 w-full max-w-[850px] items-start">
+
         {/* Thumbnails (Left side on desktop, hidden on mobile) */}
         <div className="hidden lg:flex flex-col items-center w-[90px] shrink-0">
           {images.length > 5 && (
-            <button 
+            <button
               onClick={() => scrollThumbnails('up')}
               className="hidden lg:flex w-full items-center justify-center pb-2 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
               aria-label="Scroll thumbnails up"
@@ -109,7 +112,7 @@ export default function ProductGallery({ product, activeColor }: ProductGalleryP
               <ChevronUp size={24} strokeWidth={1.5} />
             </button>
           )}
-          <div 
+          <div
             ref={thumbnailsRef}
             className={`flex lg:flex-col gap-3 w-full shrink-0 overflow-x-auto lg:overflow-y-hidden hide-scrollbar snap-x lg:snap-none ${images.length > 5 ? 'lg:max-h-[500px]' : ''}`}
           >
@@ -120,17 +123,16 @@ export default function ProductGallery({ product, activeColor }: ProductGalleryP
                   setMainImage(img);
                   setMobileScale(1); // Reset mobile scale on image change
                 }}
-                className={`relative w-14 lg:w-full aspect-[3/4] shrink-0 snap-center transition-all duration-300 bg-white border ${
-                  mainImage === img 
-                    ? "border-[#E87461] shadow-sm" 
-                    : "border-[var(--border-secondary)] hover:border-[var(--text-muted)]"
-                }`}
+                className={`relative w-14 lg:w-full aspect-[3/4] shrink-0 snap-center transition-all duration-300 bg-white border ${mainImage === img
+                  ? "border-[#E87461] shadow-sm"
+                  : "border-[var(--border-secondary)] hover:border-[var(--text-muted)]"
+                  }`}
               >
-                <div className="relative w-full h-full overflow-hidden">
-                  <Image 
-                    src={img} 
-                    alt={`${product.name} view ${idx + 1}`} 
-                    fill 
+                <div className="relative w-full h-full overflow-hidden bg-[var(--bg-secondary)]">
+                  <Image
+                    src={img}
+                    alt={`${product.name} view ${idx + 1}`}
+                    fill
                     className="object-cover"
                   />
                 </div>
@@ -138,7 +140,7 @@ export default function ProductGallery({ product, activeColor }: ProductGalleryP
             ))}
           </div>
           {images.length > 5 && (
-            <button 
+            <button
               onClick={() => scrollThumbnails('down')}
               className="hidden lg:flex w-full items-center justify-center pt-2 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
               aria-label="Scroll thumbnails down"
@@ -149,8 +151,8 @@ export default function ProductGallery({ product, activeColor }: ProductGalleryP
         </div>
 
         {/* Main Image Viewer */}
-        <div 
-          className="relative w-full flex-1 aspect-[2/3] bg-white border border-[var(--border-secondary)] native-pointer"
+        <div
+          className="relative w-full flex-1 aspect-[100/102] bg-[var(--bg-secondary)] border border-[var(--border-secondary)] native-pointer"
           onMouseMove={handleMouseMove}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
@@ -166,7 +168,7 @@ export default function ProductGallery({ product, activeColor }: ProductGalleryP
                   transition={{ duration: 0.6, ease: "easeInOut" }}
                   className={`absolute inset-0 w-full h-full cursor-pointer ${mobileScale > 1 && !isDesktop ? 'overflow-auto hide-scrollbar touch-pan-x touch-pan-y' : 'overflow-hidden'}`}
                 >
-                  <div 
+                  <div
                     className="relative w-full h-full cursor-pointer"
                     style={{
                       cursor: "pointer",
@@ -213,7 +215,7 @@ export default function ProductGallery({ product, activeColor }: ProductGalleryP
           {/* Mobile Zoom Controls */}
           {!isDesktop && (
             <div className="absolute bottom-4 right-4 flex flex-col gap-2 z-10">
-              <button 
+              <button
                 onClick={(e) => {
                   e.stopPropagation();
                   setMobileScale(prev => Math.min(3, prev + 0.5));
@@ -223,7 +225,7 @@ export default function ProductGallery({ product, activeColor }: ProductGalleryP
               >
                 <ZoomIn size={18} />
               </button>
-              <button 
+              <button
                 onClick={(e) => {
                   e.stopPropagation();
                   setMobileScale(prev => Math.max(1, prev - 0.5));

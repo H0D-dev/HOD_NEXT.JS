@@ -34,7 +34,7 @@ const EXPLORE_PRODUCTS = [
 export default function ExploreMore() {
   return (
     <section className="w-full bg-[var(--bg-primary)] py-16 lg:py-24 border-t border-[var(--border-secondary)]">
-      <div className="max-w-[1200px] mx-auto px-6 lg:px-12">
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         
         {/* Section Heading */}
         <div className="flex justify-center md:justify-between items-end mb-8 md:mb-10">
@@ -47,11 +47,11 @@ export default function ExploreMore() {
         </div>
 
         {/* Horizontal Rack */}
-        <div className="flex gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory hide-scrollbar pb-6 -mx-6 px-6 lg:mx-0 lg:px-0 scroll-smooth">
+        <div className="flex gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory hide-scrollbar pb-6 -mx-6 px-6 lg:mx-0 lg:px-0 scroll-smooth lg:grid lg:grid-cols-4">
           {EXPLORE_PRODUCTS.map((prod) => (
             <div
               key={prod.id}
-              className="group relative flex-shrink-0 w-[260px] md:w-[280px] lg:w-[300px] snap-center cursor-pointer"
+              className="group relative flex-shrink-0 w-[260px] md:w-[280px] lg:w-full snap-center cursor-pointer"
             >
               <div className="relative w-full aspect-[4/5] overflow-hidden bg-[var(--bg-secondary)] mb-4 border border-[var(--border-secondary)]">
                 <Image

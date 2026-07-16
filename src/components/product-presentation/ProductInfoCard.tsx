@@ -157,7 +157,7 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
     }
 
     const result = addItem(cartItem);
-    
+
     if (!result.success) {
       toast.error(result.error || "Failed to add item to cart.");
       return;
@@ -170,7 +170,7 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
         icon: '💱'
       });
     }
-    
+
     openDrawer();
   };
 
@@ -179,11 +179,11 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any, delay: 0.2 }}
-      className="w-full flex flex-col gap-4 pb-12"
+      className="w-full h-full flex flex-col gap-4"
     >
       {/* 1. Header, Description, and Price (Stacked tightly) */}
       <div className="flex flex-col gap-5">
-        
+
         <div className="flex items-start justify-between gap-4">
           <div className="flex flex-col gap-2">
             <h1 className="font-sans text-lg md:text-xl lg:text-2xl font-medium text-[var(--text-primary)] leading-tight tracking-tight">
@@ -194,7 +194,7 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
               {product.description || "A contemporary hand-tufted rug inspired by natural landscapes, crafted using New Zealand wool and bamboo silk for exceptional softness and depth."}
             </p>
           </div>
-          <button 
+          <button
             onClick={handleShare}
             className="text-[var(--text-primary)] hover:text-[var(--text-muted)] transition-colors mt-1"
             aria-label="Share product"
@@ -288,13 +288,12 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
                   key={variation.id}
                   onClick={() => !isOutOfStock && handleSizeClick(variation)}
                   disabled={isOutOfStock}
-                  className={`p-3 rounded-none font-sans flex flex-col items-center justify-center text-center transition-all duration-300 border ${
-                    isOutOfStock
+                  className={`p-3 rounded-none font-sans flex flex-col items-center justify-center text-center transition-all duration-300 border ${isOutOfStock
                       ? "border-[var(--border-secondary)] bg-[var(--surface-secondary)] text-[var(--text-muted)] opacity-50 cursor-not-allowed line-through"
                       : isActive
                         ? "border-[var(--border-primary)] bg-transparent shadow-[0_0_0_0.5px_var(--border-primary)]"
                         : "border-[var(--border-secondary)] hover:border-[var(--border-primary)] bg-transparent"
-                  }`}
+                    }`}
                 >
                   <span className={`text-xs whitespace-normal break-words px-1 ${isActive ? 'text-[var(--text-primary)] font-medium' : 'text-[var(--text-secondary)]'}`}>
                     {/\d/.test(variation.label) && !variation.label.toLowerCase().includes('cm') ? `${variation.label} cm` : variation.label}
@@ -322,7 +321,7 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
             QUANTITY
           </div>
           <div className="flex items-center border border-[var(--border-secondary)] w-fit rounded-none overflow-hidden bg-transparent">
-            <button 
+            <button
               onClick={() => setQuantity(Math.max(1, quantity - 1))}
               className="w-10 h-10 flex items-center justify-center text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] transition-colors"
             >
@@ -331,7 +330,7 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
             <div className="w-10 h-10 flex items-center justify-center font-sans text-sm font-medium text-[var(--text-primary)]">
               {quantity}
             </div>
-            <button 
+            <button
               onClick={() => setQuantity(quantity + 1)}
               className="w-10 h-10 flex items-center justify-center text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] transition-colors"
             >
@@ -349,22 +348,22 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
       </div>
 
       {/* 8. Trust Badges / Icons */}
-      <div className="flex justify-between items-start mt-6 pt-5 border-t border-[var(--border-secondary)]">
-        <div className="flex flex-col items-center gap-2 flex-1 text-center">
-          <Globe size={24} strokeWidth={1} className="text-[var(--text-primary)]" />
-          <span className="font-sans text-[10px] text-[var(--text-secondary)] leading-tight max-w-[80px]">Handcrafted</span>
+      <div className="grid grid-cols-2 gap-y-6 gap-x-2 md:flex md:justify-between items-start mt-auto pt-8 border-t border-[var(--border-secondary)]">
+        <div className="flex flex-col items-center gap-3 flex-1 text-center">
+          <Globe size={28} strokeWidth={1} className="text-[var(--text-primary)]" />
+          <span className="font-sans text-xs md:text-sm text-[var(--text-secondary)] leading-tight max-w-[100px]">Handcrafted</span>
         </div>
-        <div className="flex flex-col items-center gap-2 flex-1 text-center">
-          <Truck size={24} strokeWidth={1} className="text-[var(--text-primary)]" />
-          <span className="font-sans text-[10px] text-[var(--text-secondary)] leading-tight max-w-[80px]">Worldwide Shipping</span>
+        <div className="flex flex-col items-center gap-3 flex-1 text-center">
+          <Truck size={28} strokeWidth={1} className="text-[var(--text-primary)]" />
+          <span className="font-sans text-xs md:text-sm text-[var(--text-secondary)] leading-tight max-w-[100px]">Worldwide Shipping</span>
         </div>
-        <div className="flex flex-col items-center gap-2 flex-1 text-center">
-          <Clock size={24} strokeWidth={1} className="text-[var(--text-primary)]" />
-          <span className="font-sans text-[10px] text-[var(--text-secondary)] leading-tight max-w-[80px]">Made to Order</span>
+        <div className="flex flex-col items-center gap-3 flex-1 text-center">
+          <Clock size={28} strokeWidth={1} className="text-[var(--text-primary)]" />
+          <span className="font-sans text-xs md:text-sm text-[var(--text-secondary)] leading-tight max-w-[100px]">Made to Order</span>
         </div>
-        <div className="flex flex-col items-center gap-2 flex-1 text-center">
-          <ShieldCheck size={24} strokeWidth={1} className="text-[var(--text-primary)]" />
-          <span className="font-sans text-[10px] text-[var(--text-secondary)] leading-tight max-w-[80px]">Secure Payment</span>
+        <div className="flex flex-col items-center gap-3 flex-1 text-center">
+          <ShieldCheck size={28} strokeWidth={1} className="text-[var(--text-primary)]" />
+          <span className="font-sans text-xs md:text-sm text-[var(--text-secondary)] leading-tight max-w-[100px]">Secure Payment</span>
         </div>
       </div>
 

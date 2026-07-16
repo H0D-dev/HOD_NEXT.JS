@@ -110,11 +110,11 @@ export default function ProductPresentation({ product }: ProductPresentationProp
   return (
     <>
       <section className="w-full bg-[var(--bg-primary)] text-[var(--text-primary)] pt-24 lg:pt-28 pb-16 px-6 lg:px-24">
-        <div className="max-w-[1100px] mx-auto mb-6 font-sans text-[10px] md:text-xs text-[var(--text-secondary)] tracking-wider uppercase">
+        <div className="max-w-[1300px] mx-auto mb-6 font-sans text-[10px] md:text-xs text-[var(--text-secondary)] tracking-wider uppercase">
           <span className="mr-2 font-light">/</span>
           <span className="text-[var(--text-primary)] font-light">{product.name}</span>
         </div>
-        <div className="max-w-[1100px] mx-auto grid lg:grid-cols-2 gap-10 lg:gap-0 relative">
+        <div className="max-w-[1300px] mx-auto grid lg:grid-cols-[55%_45%] xl:grid-cols-[58%_42%] gap-10 lg:gap-0 relative">
 
           {/* Left Side: Product Image Gallery */}
           <div className="w-full lg:pr-8 xl:pr-10 lg:border-r lg:border-[var(--border-secondary)]">
