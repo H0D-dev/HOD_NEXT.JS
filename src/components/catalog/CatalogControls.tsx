@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 interface CatalogControlsProps {
   onFilterClick: () => void;
@@ -8,6 +8,29 @@ interface CatalogControlsProps {
 }
 
 export default function CatalogControls({ onFilterClick, resultCount, sortOption, onSortChange }: CatalogControlsProps) {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const sortOptions = [
+    { value: "default", label: "Sort by: Default" },
+    { value: "newest", label: "Sort by: Newest" },
+    { value: "popular", label: "Sort by: Popular" },
+    { value: "price_asc", label: "Sort by: Price Low to High" },
+    { value: "price_desc", label: "Sort by: Price High to Low" },
+  ];
+
+  const currentOptionLabel = sortOptions.find(o => o.value === sortOption)?.label || "Sort by: Default";
+
   return (
     <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-center py-4 gap-4">
       <button 
@@ -32,23 +55,35 @@ export default function CatalogControls({ onFilterClick, resultCount, sortOption
         {resultCount} Products
       </span>
 
-      <div className="relative w-full md:w-auto">
-        <select 
-          value={sortOption}
-          onChange={(e) => onSortChange(e.target.value)}
-          className="appearance-none w-full md:w-auto border border-[var(--border-secondary)] bg-transparent px-6 py-3 pr-12 font-sans text-[var(--text-sm)] text-[var(--text-primary)] cursor-pointer hover:border-[var(--border-primary)] transition-colors outline-none rounded-none focus:border-[var(--border-primary)]"
+      <div className="relative w-full md:w-auto" ref={dropdownRef}>
+        <button 
+          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+          className="appearance-none w-full md:w-auto border border-[var(--border-secondary)] bg-[var(--bg-primary)] px-6 py-3 pr-12 font-sans text-[var(--text-sm)] text-[var(--text-primary)] cursor-pointer hover:border-[var(--border-primary)] transition-colors outline-none rounded-none text-left flex items-center justify-between min-w-[240px]"
         >
-          <option value="default">Sort by: Default</option>
-          <option value="newest">Sort by: Newest</option>
-          <option value="popular">Sort by: Popular</option>
-          <option value="price_asc">Sort by: Price Low to High</option>
-          <option value="price_desc">Sort by: Price High to Low</option>
-        </select>
-        <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-[var(--text-secondary)]">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter">
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
-        </div>
+          {currentOptionLabel}
+          <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-[var(--text-secondary)]">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter" className={`transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`}>
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+        </button>
+
+        {isDropdownOpen && (
+          <div className="absolute top-full left-0 w-full mt-1 bg-[var(--bg-primary)] border border-[var(--border-secondary)] shadow-xl z-50 flex flex-col py-2">
+            {sortOptions.map(opt => (
+              <button
+                key={opt.value}
+                onClick={() => {
+                  onSortChange(opt.value);
+                  setIsDropdownOpen(false);
+                }}
+                className={`text-left px-6 py-3 font-sans text-[var(--text-sm)] transition-colors cursor-pointer w-full hover:bg-black/5 ${sortOption === opt.value ? 'text-[var(--text-primary)] font-medium' : 'text-[var(--text-secondary)]'}`}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
       
       {/* Mobile only results count, shown below the sort */}

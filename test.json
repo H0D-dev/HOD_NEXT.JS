@@ -1,0 +1,124 @@
+{
+  "id": 218,
+  "name": "Arc - Hand Tufted Wool Rug",
+  "slug": "arc",
+  "sku": null,
+  "permalink": "https://store.houseofdecor.ae/product/arc/",
+  "description": "<p>Add artistic dimension to your floor with the Arc rug. Expertly hand-tufted from a premium blend of natural wool and shimmering bamboo silk, this piece features a striking composition of stacked, rounded blocks in rich rust, sage green, and balancing cream. Built upon a structured, pinstriped foundation, its high-low texture and subtle silk luster make it a captivating statement piece for any modern living space.</p>\n",
+  "price": "5955",
+  "regularPrice": "",
+  "salePrice": "",
+  "onSale": false,
+  "taxStatus": "taxable",
+  "manualPrices": {
+    "inr": "",
+    "usd": "1625",
+    "eur": "1420"
+  },
+  "stockStatus": "onbackorder",
+  "weight": "",
+  "dimensions": {
+    "length": "",
+    "width": "",
+    "height": ""
+  },
+  "categories": [
+    {
+      "id": 16,
+      "name": "Rugs",
+      "slug": "rugs"
+    },
+    {
+      "id": 87,
+      "name": "The Form Collection",
+      "slug": "the-form-collection"
+    }
+  ],
+  "variations": [
+    220,
+    221,
+    222
+  ],
+  "mainImage": {
+    "id": 219,
+    "date_created": "2026-07-15T20:23:14",
+    "date_created_gmt": "2026-07-15T20:23:14",
+    "date_modified": "2026-07-15T20:24:13",
+    "date_modified_gmt": "2026-07-15T20:24:13",
+    "src": "https://store.houseofdecor.ae/wp-content/uploads/2026/07/40.png",
+    "name": "house-of-decor-arc-hand-tufted-rug",
+    "alt": "Arc hand-tufted wool and bamboo silk rug with rust, sage green, and cream geometric shapes over black and white stripes by houseofdecor.ae.",
+    "srcset": "https://store.houseofdecor.ae/wp-content/uploads/2026/07/40.png 2000w, https://store.houseofdecor.ae/wp-content/uploads/2026/07/40-300x300.png 300w, https://store.houseofdecor.ae/wp-content/uploads/2026/07/40-1024x1024.png 1024w, https://store.houseofdecor.ae/wp-content/uploads/2026/07/40-150x150.png 150w, https://store.houseofdecor.ae/wp-content/uploads/2026/07/40-768x768.png 768w, https://store.houseofdecor.ae/wp-content/uploads/2026/07/40-1536x1536.png 1536w, https://store.houseofdecor.ae/wp-content/uploads/2026/07/40-1320x1320.png 1320w, https://store.houseofdecor.ae/wp-content/uploads/2026/07/40-600x600.png 600w, https://store.houseofdecor.ae/wp-content/uploads/2026/07/40-100x100.png 100w",
+    "sizes": "(max-width: 2000px) 100vw, 2000px",
+    "thumbnail": "https://store.houseofdecor.ae/wp-content/uploads/2026/07/40-300x300.png"
+  },
+  "galleryImages": [
+    {
+      "id": 219,
+      "date_created": "2026-07-15T20:23:14",
+      "date_created_gmt": "2026-07-15T20:23:14",
+      "date_modified": "2026-07-15T20:24:13",
+      "date_modified_gmt": "2026-07-15T20:24:13",
+      "src": "https://store.houseofdecor.ae/wp-content/uploads/2026/07/40.png",
+      "name": "house-of-decor-arc-hand-tufted-rug",
+      "alt": "Arc hand-tufted wool and bamboo silk rug with rust, sage green, and cream geometric shapes over black and white stripes by houseofdecor.ae.",
+      "srcset": "https://store.houseofdecor.ae/wp-content/uploads/2026/07/40.png 2000w, https://store.houseofdecor.ae/wp-content/uploads/2026/07/40-300x300.png 300w, https://store.houseofdecor.ae/wp-content/uploads/2026/07/40-1024x1024.png 1024w, https://store.houseofdecor.ae/wp-content/uploads/2026/07/40-150x150.png 150w, https://store.houseofdecor.ae/wp-content/uploads/2026/07/40-768x768.png 768w, https://store.houseofdecor.ae/wp-content/uploads/2026/07/40-1536x1536.png 1536w, https://store.houseofdecor.ae/wp-content/uploads/2026/07/40-1320x1320.png 1320w, https://store.houseofdecor.ae/wp-content/uploads/2026/07/40-600x600.png 600w, https://store.houseofdecor.ae/wp-content/uploads/2026/07/40-100x100.png 100w",
+      "sizes": "(max-width: 2000px) 100vw, 2000px",
+      "thumbnail": "https://store.houseofdecor.ae/wp-content/uploads/2026/07/40-300x300.png"
+    }
+  ],
+  "attributes": [
+    {
+      "id": 3,
+      "name": "Material",
+      "slug": "pa_material",
+      "position": 0,
+      "visible": true,
+      "variation": false,
+      "options": [
+        "Wool"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Shape",
+      "slug": "pa_shape",
+      "position": 1,
+      "visible": true,
+      "variation": false,
+      "options": [
+        "Rectangle"
+      ]
+    },
+    {
+      "id": 10,
+      "name": "Size Category",
+      "slug": "pa_size-category",
+      "position": 2,
+      "visible": true,
+      "variation": true,
+      "options": [
+        "180X210",
+        "240X280",
+        "360X420"
+      ]
+    }
+  ],
+  "acf": {
+    "productFamilyId": null,
+    "productColor": null,
+    "designId": null,
+    "itemNumber": null,
+    "construction": [
+      "Hand Tufted"
+    ],
+    "countryOfOrigin": "Crafted by artisans in India",
+    "washable": "0",
+    "petFriendly": "0",
+    "careInstructions": null,
+    "exactWidthCm": null,
+    "exactLengthCm": null,
+    "exactHeightCm": null,
+    "weightKg": null
+  }
+}

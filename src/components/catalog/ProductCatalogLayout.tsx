@@ -60,16 +60,29 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
 
     if (!products.length) return config.filters;
 
-    const getUniqueValues = (keyExtractor: (p: any) => string | undefined) => {
-      const values = new Set<string>();
+    const getUniqueValues = (keyExtractor: (p: any) => string | undefined, splitRegex?: RegExp) => {
+      const uniqueMap = new Map<string, string>();
       products.forEach(p => {
         const val = keyExtractor(p);
-        if (val) values.add(val);
+        if (val) {
+          const strVal = String(val).replace(/&amp;/g, '&').trim();
+          if (splitRegex) {
+            strVal.split(splitRegex).forEach(part => {
+              const cleaned = part.trim();
+              if (cleaned) {
+                const lowerVal = cleaned.toLowerCase();
+                if (!uniqueMap.has(lowerVal)) uniqueMap.set(lowerVal, cleaned);
+              }
+            });
+          } else {
+            const lowerVal = strVal.toLowerCase();
+            if (!uniqueMap.has(lowerVal)) {
+              uniqueMap.set(lowerVal, strVal);
+            }
+          }
+        }
       });
-      return Array.from(values).map(v => {
-        const strVal = String(v);
-        return { label: strVal, value: strVal.toLowerCase() };
-      });
+      return Array.from(uniqueMap.entries()).map(([value, label]) => ({ label, value }));
     };
 
     // Subcategories (excluding the main one)
@@ -96,6 +109,22 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
         id: "construction",
         label: "Construction",
         options: constructions
+      });
+    }
+
+    // Material (from Attributes)
+    const materials = getUniqueValues(p => {
+      const matAttr = p.attributes?.find((a: any) => a.name.toLowerCase() === 'material');
+      if (matAttr && matAttr.options && matAttr.options.length > 0) {
+        return matAttr.options[0];
+      }
+      return p.acf?.material;
+    }, /&|,/);
+    if (materials.length > 0) {
+      filters.push({
+        id: "material",
+        label: "Material",
+        options: materials
       });
     }
 
@@ -234,9 +263,15 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
            if (!selectedValues.includes(shapeStr)) return false;
            continue;
          } else if (filterId === "construction") {
-           productValue = String(p.acf?.construction || "").toLowerCase();
+           productValue = String(p.acf?.construction || "").toLowerCase().trim();
          } else if (filterId === "country") {
-           productValue = String(p.acf?.countryOfOrigin || "").toLowerCase();
+           productValue = String(p.acf?.countryOfOrigin || "").toLowerCase().trim();
+         } else if (filterId === "material") {
+           const matAttr = p.attributes?.find((a: any) => a.name.toLowerCase() === 'material');
+           const matStr = String(matAttr?.options?.[0] || p.acf?.material || "").replace(/&amp;/g, '&').toLowerCase();
+           const matchFound = selectedValues.some(selected => matStr.includes(selected));
+           if (!matchFound) return false;
+           continue;
          }
         
         if (filterId !== "category" && filterId !== "color" && filterId !== "price-range" && filterId !== "actual-size" && filterId !== "shape") {

@@ -32,9 +32,6 @@ export default function ProductCard({ product, baseRoute }: ProductCardProps) {
       </div>
 
       <div className="flex flex-col items-start px-2">
-        <span className="font-sans text-[10px] lg:text-[var(--text-xs)] uppercase tracking-widest text-[var(--text-muted)] mb-1">
-          {product.collectionName}
-        </span>
         <h3 className="font-serif text-[var(--text-lg)] text-[var(--text-primary)] leading-tight mb-1">
           {product.title}
         </h3>

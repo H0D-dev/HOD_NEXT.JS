@@ -19,7 +19,7 @@ export default function FilterDrawer({ isOpen, onClose, filters, selectedFilters
 
   useEffect(() => {
     setExpandedSections(
-      filters.reduce((acc, f) => ({ ...acc, [f.id]: true }), {})
+      filters.reduce((acc, f, index) => ({ ...acc, [f.id]: index === 0 }), {})
     );
   }, [filters]);
 
