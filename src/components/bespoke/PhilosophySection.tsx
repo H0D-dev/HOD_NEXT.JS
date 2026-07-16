@@ -2,85 +2,62 @@
 
 import React, { useRef } from "react";
 import Image from "next/image";
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
+import { motion, useScroll, useTransform } from "framer-motion";
 
 export default function PhilosophySection() {
   const containerRef = useRef<HTMLElement>(null);
-  const imageRef = useRef<HTMLDivElement>(null);
-
-  useGSAP(() => {
-    gsap.fromTo(
-      ".animate-phil",
-      { opacity: 0, y: 40 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 1.2,
-        stagger: 0.15,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top 80%",
-        },
-      }
-    );
-
-    gsap.fromTo(
-      imageRef.current,
-      { yPercent: -10 },
-      {
-        yPercent: 10,
-        ease: "none",
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true,
-        },
-      }
-    );
-  }, { scope: containerRef });
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
+  
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "-15%"]);
 
   return (
-    <section ref={containerRef} className="py-32 md:py-56 bg-[var(--bg-primary)] border-b border-[var(--border-secondary)]">
-      <div className="container mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-32 items-center">
-          
-          {/* Left Text Column */}
-          <div className="flex flex-col">
-            <span className="animate-phil text-xs uppercase tracking-widest font-medium text-[var(--text-muted)] mb-12">
+    <section ref={containerRef} className="w-full lg:h-[90svh] pt-16 lg:pt-32 pb-6 md:pb-12 px-6 md:px-12 lg:px-16 bg-[var(--bg-primary)]">
+      <div className="w-full h-full flex flex-col lg:flex-row border border-[var(--border-secondary)]">
+        
+        {/* Left Side (Image) */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          className="w-full lg:w-1/2 h-[50vh] lg:h-full relative overflow-hidden bg-[var(--bg-secondary)]"
+        >
+          <motion.div className="absolute inset-0 w-full h-[120%]" style={{ y }}>
+            <Image
+              src="/images/bespoke/artisan_weaving.png"
+              alt="Artisan weaving luxury rug"
+              fill
+              className="object-cover object-center"
+            />
+          </motion.div>
+        </motion.div>
+
+        {/* Right Side (Text) */}
+        <div className="w-full lg:w-1/2 flex items-center justify-center p-8 md:p-12 lg:p-16 min-h-[50vh] lg:h-full bg-[var(--surface-primary)]">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="flex flex-col items-center text-center w-full max-w-lg"
+          >
+            <span className="block text-[var(--text-secondary)] font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] mb-6 font-medium">
               Our Philosophy
             </span>
-            <h2 className="animate-phil font-serif text-[clamp(40px,6vw,80px)] leading-[1.1] mb-20 text-[var(--text-primary)]">
-              Not Made.<br />Composed.
+            <h2 className="font-serif text-xl md:text-4xl lg:text-[2.75rem] leading-[1.2] text-[var(--text-primary)] tracking-wide mb-8">
+              Not Made. Composed.
             </h2>
             
-            <blockquote className="animate-phil relative pl-8 border-l border-[var(--border-primary)]">
-              <p className="font-serif text-2xl md:text-3xl italic text-[var(--text-primary)] mb-4">
-                &ldquo;A rug is not a product.<br />It is a surface of memory.&rdquo;
-              </p>
-            </blockquote>
-          </div>
-
-          {/* Right Image Column */}
-          <div className="animate-phil relative h-[400px] md:h-[500px] lg:h-[800px] w-full max-w-xl mx-auto lg:max-w-none overflow-hidden bg-[var(--bg-secondary)]">
-            <div ref={imageRef} className="absolute inset-0 w-full h-[120%] -top-[10%]">
-              <Image
-                src="/images/bespoke/artisan_weaving.png"
-                alt="Artisan weaving luxury rug"
-                fill
-                className="object-cover object-center grayscale hover:grayscale-0 transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)]"
-              />
-            </div>
-          </div>
-
+            <p className="text-[var(--text-secondary)] font-sans text-sm md:text-base leading-relaxed text-center lg:text-left max-w-md">
+              We believe that a bespoke rug is the foundation of any architectural space. By collaborating closely with designers and clients, we translate distinct visions into tactile realities. Each piece is meticulously hand-knotted by master artisans using only the finest natural fibers, ensuring a legacy of unmatched quality and timeless design.
+            </p>
+          </motion.div>
         </div>
+
       </div>
     </section>
   );

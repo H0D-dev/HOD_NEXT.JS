@@ -10,7 +10,6 @@ import MaterialsSection from "../../components/bespoke/MaterialsSection";
 
 import ConsultationCTA from "../../components/bespoke/ConsultationCTA";
 import TestimonialsSection from "../../components/bespoke/TestimonialsSection";
-import FinalCTA from "../../components/bespoke/FinalCTA";
 
 export default function BespokePage() {
   useEffect(() => {
@@ -43,7 +42,6 @@ export default function BespokePage() {
 
       <ConsultationCTA />
       <TestimonialsSection />
-      <FinalCTA />
     </main>
   );
 }

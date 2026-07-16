@@ -84,7 +84,7 @@ export default function TestimonialsSection() {
   return (
     <section 
       ref={containerRef} 
-      className="py-16 md:py-40 bg-[var(--bg-primary)] border-b border-[var(--border-secondary)] overflow-hidden cursor-none"
+      className="py-12 md:py-20 bg-[var(--bg-primary)] border-b border-[var(--border-secondary)] overflow-hidden cursor-none"
     >
       {/* Custom Cursor */}
       <div 
@@ -95,36 +95,44 @@ export default function TestimonialsSection() {
 
       <div className="container mx-auto px-6 relative z-10">
         
-        <div className="flex flex-col md:flex-row justify-between items-end mb-16 border-b border-[var(--border-secondary)] pb-8">
-          <h2 className="test-elem font-sans text-xs uppercase tracking-widest font-medium text-[var(--text-muted)]">
-            Client Perspectives
-          </h2>
-          <div className="test-elem flex gap-4 mt-6 md:mt-0">
-            <button 
-              onClick={() => setActiveIndex(Math.max(0, activeIndex - 1))}
-              className={`p-2 border border-[var(--border-primary)] rounded-full transition-colors cursor-pointer ${activeIndex === 0 ? 'opacity-30' : 'hover:bg-[var(--bg-secondary)]'}`}
-              disabled={activeIndex === 0}
-              aria-label="Previous testimonial"
-            >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="square">
-                <path d="M15 18l-6-6 6-6" />
-              </svg>
-            </button>
-            <button 
-              onClick={() => setActiveIndex(Math.min(testimonials.length - 1, activeIndex + 1))}
-              className={`p-2 border border-[var(--border-primary)] rounded-full transition-colors cursor-pointer ${activeIndex === testimonials.length - 1 ? 'opacity-30' : 'hover:bg-[var(--bg-secondary)]'}`}
-              disabled={activeIndex === testimonials.length - 1}
-              aria-label="Next testimonial"
-            >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="square">
-                <path d="M9 18l6-6-6-6" />
-              </svg>
-            </button>
+        <div className="flex flex-col mb-8 border-b border-[var(--border-secondary)] pb-4">
+          <div className="flex flex-col md:flex-row justify-between items-end w-full">
+            <div className="flex flex-col max-w-2xl">
+              <span className="test-elem text-[10px] uppercase tracking-[0.1em] font-medium text-[var(--text-secondary)] mb-2 font-sans">
+                Client Perspectives
+              </span>
+              <h2 className="test-elem font-serif text-lg md:text-xl lg:text-2xl leading-[1.2] tracking-tight text-[var(--text-primary)] mb-4 md:mb-0">
+                A Legacy of Trust.
+              </h2>
+            </div>
+            
+            <div className="test-elem flex gap-4 mt-4 md:mt-0 pb-2">
+              <button 
+                onClick={() => setActiveIndex(Math.max(0, activeIndex - 1))}
+                className={`p-2 border border-[var(--border-primary)] rounded-full transition-colors cursor-pointer ${activeIndex === 0 ? 'opacity-30' : 'hover:bg-[var(--bg-secondary)]'}`}
+                disabled={activeIndex === 0}
+                aria-label="Previous testimonial"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="square">
+                  <path d="M15 18l-6-6 6-6" />
+                </svg>
+              </button>
+              <button 
+                onClick={() => setActiveIndex(Math.min(testimonials.length - 1, activeIndex + 1))}
+                className={`p-2 border border-[var(--border-primary)] rounded-full transition-colors cursor-pointer ${activeIndex === testimonials.length - 1 ? 'opacity-30' : 'hover:bg-[var(--bg-secondary)]'}`}
+                disabled={activeIndex === testimonials.length - 1}
+                aria-label="Next testimonial"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="square">
+                  <path d="M9 18l6-6-6-6" />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Height adjusted for new fluid typography sizing */}
-        <div className="test-elem relative h-[300px] sm:h-[250px]">
+        {/* Height drastically reduced for new compact font sizing */}
+        <div className="test-elem relative h-[250px] sm:h-[180px] lg:h-[150px]">
           {testimonials.map((test, idx) => (
             <div 
               key={idx}
@@ -134,12 +142,12 @@ export default function TestimonialsSection() {
                   : 'opacity-0 translate-y-8 pointer-events-none'
               }`}
             >
-              <p className="font-serif text-[clamp(24px,5vw,56px)] leading-[1.2] text-[var(--text-primary)] max-w-5xl mb-12">
+              <p className="font-serif text-lg md:text-xl lg:text-2xl leading-[1.4] text-[var(--text-primary)] max-w-4xl mb-6">
                 &ldquo;{test.quote}&rdquo;
               </p>
               <div className="flex flex-col">
-                <span className="font-sans font-medium text-lg text-[var(--text-primary)]">{test.author}</span>
-                <span className="font-sans text-sm text-[var(--text-muted)]">{test.role}</span>
+                <span className="font-serif text-lg text-[var(--text-primary)] mb-1">{test.author}</span>
+                <span className="font-sans text-xs text-[var(--text-secondary)]">{test.role}</span>
               </div>
             </div>
           ))}

@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ChevronDown } from "lucide-react";
@@ -10,6 +10,15 @@ import { Blog } from "../../lib/data/blogs";
 export default function BlogContent({ blog }: { blog: Blog }) {
   const [activeSection, setActiveSection] = useState<string | undefined>(blog?.sections?.[0]?.id);
   const [openAccordion, setOpenAccordion] = useState<string | null>(blog?.sections?.[0]?.id || null);
+
+  const imageContainerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: imageContainerRef,
+    offset: ["start end", "end start"]
+  });
+
+  const imageScale = useTransform(scrollYProgress, [0.3, 1], [1, 0.85]);
+  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
 
   // Intersection Observer for Desktop Sidebar
   useEffect(() => {
@@ -42,56 +51,63 @@ export default function BlogContent({ blog }: { blog: Blog }) {
     <article className="w-full bg-[var(--bg-primary)]">
 
       {/* Blog Hero */}
-      <section className="w-full pt-32 pb-16 md:pt-48 md:pb-24 px-6 md:px-16 lg:px-24 border-b border-[var(--border-secondary)]">
-        <div className="max-w-[var(--container-md)] mx-auto flex flex-col gap-8">
-          <Link href="/blog" className="group flex items-center gap-2 font-sans text-sm tracking-widest uppercase text-[var(--text-muted)] hover:text-[var(--text-primary)] w-fit transition-colors">
-            <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
-            Back to Journal
-          </Link>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any }}
-            className="flex flex-col gap-6"
-          >
-            <span className="font-sans text-sm uppercase tracking-widest text-[var(--accent-primary)] font-medium">
-              {blog.date}
-            </span>
-            <h1 className="font-serif text-[2.75rem] md:text-[4rem] lg:text-[4.75rem] leading-[1.1] tracking-tight text-[var(--text-primary)]">
-              {blog.title}
-            </h1>
-            <p className="font-sans text-[var(--text-secondary)] text-lg md:text-xl leading-relaxed">
-              {blog.excerpt}
-            </p>
-          </motion.div>
+      <section className="w-full pt-12 md:pt-20 lg:pt-28 px-5 md:px-10 lg:px-16">
+        <div className="max-w-[var(--container-lg)] mx-auto pb-8 md:pb-12 lg:pb-16 border-b border-[var(--border-secondary)]">
+          <div className="max-w-[var(--container-md)] mx-auto flex flex-col gap-6">
+            <Link href="/blog" className="group flex items-center gap-2 font-sans text-[10px] md:text-xs tracking-[0.2em] uppercase text-[var(--text-muted)] hover:text-[var(--text-primary)] w-fit transition-colors font-medium">
+              <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+              Back to Journal
+            </Link>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any }}
+              className="flex flex-col gap-6"
+            >
+              <span className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-[var(--text-secondary)]">
+                {blog.date}
+              </span>
+              <h1 className="font-serif text-2xl md:text-3xl lg:text-4xl text-[var(--text-primary)] mb-4">
+                {blog.title}
+              </h1>
+              <p className="font-sans text-sm md:text-base leading-relaxed text-[var(--text-secondary)]">
+                {blog.excerpt}
+              </p>
+            </motion.div>
+          </div>
         </div>
       </section>
 
       {/* Featured Image */}
-      <div className="w-full aspect-[4/3] md:aspect-[16/9] lg:aspect-[21/9] min-h-[40vh] max-h-[70vh] relative bg-[var(--surface-primary)]">
-        <Image
-          src={blog.image}
-          alt={blog.title}
-          fill
-          priority
-          className="object-cover"
-        />
+      <div ref={imageContainerRef} className="w-full px-5 md:px-10 lg:px-16 py-8 md:py-12 lg:py-16 bg-[var(--bg-primary)] border-b border-[var(--border-secondary)] overflow-hidden">
+        <motion.div 
+          style={{ scale: imageScale, y: imageY }}
+          className="max-w-[var(--container-lg)] mx-auto w-full aspect-[4/3] lg:aspect-[16/9] min-h-[50vh] lg:min-h-[60vh] max-h-[85vh] relative bg-[var(--surface-primary)]"
+        >
+          <Image
+            src={blog.image}
+            alt={blog.title}
+            fill
+            priority
+            className="object-cover origin-bottom"
+          />
+        </motion.div>
       </div>
 
       {/* Blog Content with Sticky Sidebar */}
-      <section className="w-full py-16 md:py-32 px-6 md:px-16 lg:px-24 bg-[var(--bg-secondary)]">
+      <section className="w-full py-16 md:py-32 lg:py-48 px-5 md:px-10 lg:px-16 bg-[var(--bg-secondary)]">
         <div className="max-w-[var(--container-lg)] mx-auto flex flex-col md:flex-row gap-12 lg:gap-24 relative">
 
           {blog.sections && blog.sections.length > 0 ? (
             <>
               {/* Mobile Accordion Navigation */}
               <div className="md:hidden w-full flex flex-col border-t border-[var(--border-secondary)]">
-                <h2 className="font-serif text-3xl text-[var(--text-primary)] mb-8 pt-8">Article Contents</h2>
+                <h2 className="font-serif text-xl md:text-2xl text-[var(--text-primary)] mb-8 pt-8">Article Contents</h2>
                 {blog.sections.map((section) => (
                   <div key={`mobile-${section.id}`} className="border-b border-[var(--border-secondary)]">
                     <button
                       onClick={() => handleAccordionClick(section.id)}
-                      className="w-full py-6 flex items-center justify-between font-serif text-2xl text-[var(--text-primary)]"
+                      className="w-full py-6 flex items-center justify-between font-serif text-lg md:text-xl text-[var(--text-primary)]"
                     >
                       {section.title}
                       <ChevronDown
@@ -111,7 +127,7 @@ export default function BlogContent({ blog }: { blog: Blog }) {
                         >
                           <div className="pb-8 flex flex-col gap-6">
                             {section.content.map((paragraph, i) => (
-                              <p key={i} className="font-sans text-[var(--text-secondary)] text-lg leading-relaxed">
+                              <p key={i} className="font-sans text-sm md:text-base leading-relaxed text-[var(--text-secondary)]">
                                 {paragraph}
                               </p>
                             ))}
@@ -126,7 +142,7 @@ export default function BlogContent({ blog }: { blog: Blog }) {
               {/* Desktop Sticky Sidebar */}
               <aside className="hidden md:block w-64 lg:w-80 shrink-0 h-max sticky top-32">
                 <div className="flex flex-col gap-1 border-l border-[var(--border-secondary)]">
-                  <h3 className="font-sans text-xs uppercase tracking-widest text-[var(--text-muted)] mb-8 px-6">
+                  <h3 className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-[var(--text-muted)] mb-8 px-6">
                     In this article
                   </h3>
                   <ul className="flex flex-col">
@@ -138,7 +154,7 @@ export default function BlogContent({ blog }: { blog: Blog }) {
                             e.preventDefault();
                             document.getElementById(section.id)?.scrollIntoView({ behavior: 'smooth' });
                           }}
-                          className={`block w-full text-left px-6 py-4 font-sans text-base transition-all duration-300 border-l-2 -ml-[1px] ${activeSection === section.id
+                          className={`block w-full text-left px-6 py-4 font-sans text-sm md:text-base transition-all duration-300 border-l-2 -ml-[1px] ${activeSection === section.id
                               ? "text-[var(--text-primary)] border-[var(--border-primary)] bg-[var(--surface-primary)]"
                               : "text-[var(--text-muted)] border-transparent hover:text-[var(--text-primary)] hover:border-[var(--border-secondary)]"
                             }`}
@@ -164,12 +180,12 @@ export default function BlogContent({ blog }: { blog: Blog }) {
                       transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any }}
                       className="flex flex-col gap-8 scroll-mt-32"
                     >
-                      <h2 className="font-serif text-3xl lg:text-4xl text-[var(--text-primary)] border-b border-[var(--border-secondary)] pb-6 mb-2">
+                      <h2 className="font-serif text-2xl md:text-3xl lg:text-4xl text-[var(--text-primary)] border-b border-[var(--border-secondary)] pb-6 mb-2">
                         {section.title}
                       </h2>
                       <div className="flex flex-col gap-6">
                         {section.content.map((paragraph, i) => (
-                          <p key={i} className="font-sans text-[var(--text-secondary)] text-lg leading-relaxed">
+                          <p key={i} className="font-sans text-sm md:text-base leading-relaxed text-[var(--text-secondary)]">
                             {paragraph}
                           </p>
                         ))}
@@ -180,7 +196,10 @@ export default function BlogContent({ blog }: { blog: Blog }) {
               </div>
             </>
           ) : (
-            <div className="w-full max-w-[800px] mx-auto prose prose-lg prose-headings:font-serif prose-headings:text-[var(--text-primary)] prose-p:text-[var(--text-secondary)] prose-a:text-[var(--accent-primary)] pb-32" dangerouslySetInnerHTML={{ __html: blog.content || '' }} />
+            <div 
+              className="blog-content w-full max-w-[800px] mx-auto pb-32" 
+              dangerouslySetInnerHTML={{ __html: blog.content || '' }} 
+            />
           )}
 
         </div>

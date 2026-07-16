@@ -41,57 +41,39 @@ export default function BespokeProcess() {
   }, { scope: containerRef });
 
   return (
-    <section id="process" ref={containerRef} className="py-32 md:py-48 bg-[var(--bg-secondary)] border-b border-[var(--border-secondary)] overflow-hidden">
+    <section id="process" ref={containerRef} className="py-16 md:py-32 bg-[var(--bg-secondary)] border-b border-[var(--border-secondary)]">
       <div className="container mx-auto px-6 max-w-[1600px]">
-        <h2 className="process-item font-sans text-sm tracking-[0.2em] md:text-base mb-24 text-[var(--text-primary)] text-center uppercase font-medium">
-          The Bespoke Process
-        </h2>
+        <div className="flex justify-center w-full mb-16">
+          <h2 className="process-item text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-[var(--text-secondary)] text-center">
+            The Bespoke Process
+          </h2>
+        </div>
         
-        <div className="flex overflow-x-auto lg:overflow-visible pb-8 snap-x snap-mandatory hide-scrollbar gap-8 lg:gap-0">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6 lg:gap-8">
           {steps.map((step, idx) => (
-            <React.Fragment key={idx}>
-              <div 
-                className="process-item flex-shrink-0 w-[80vw] sm:w-[40vw] lg:w-auto lg:flex-1 snap-center flex flex-col border border-[var(--border-secondary)] bg-transparent p-8"
-              >
-                {/* Icon centered above text block */}
-                <div className="w-full flex justify-center mb-8 h-16 items-center">
-                  <step.icon strokeWidth={1} size={48} className="text-[var(--text-primary)]" />
-                </div>
-                
-                {/* Text Block left aligned */}
-                <div className="flex flex-col">
-                  <div className="text-[var(--text-primary)] font-serif text-lg mb-1">
-                    {step.num}
-                  </div>
-                  <h3 className="font-serif font-medium text-[16px] mb-3 text-[var(--text-primary)] leading-tight">
-                    {step.title}
-                  </h3>
-                </div>
+            <div 
+              key={idx}
+              className="process-item flex flex-col border border-[var(--border-secondary)] bg-[var(--surface-primary)] p-8 hover:border-[var(--text-primary)] transition-colors duration-500"
+            >
+              <div className="w-full flex justify-start mb-8 h-12 items-center">
+                <step.icon strokeWidth={1} size={32} className="text-[var(--text-primary)]" />
               </div>
-
-              {/* Chevron Divider - only visible on large screens */}
-              {idx < steps.length - 1 && (
-                <div className="process-item hidden lg:flex flex-col pt-6 items-center justify-start text-[var(--border-secondary)]">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="7 13 12 18 17 13"></polyline>
-                    <polyline points="7 6 12 11 17 6"></polyline>
-                  </svg>
+              
+              <div className="flex flex-col flex-grow">
+                <div className="text-[var(--text-muted)] font-serif text-2xl mb-4">
+                  {step.num}
                 </div>
-              )}
-            </React.Fragment>
+                <h3 className="font-serif text-xl mb-4 text-[var(--text-primary)] leading-tight">
+                  {step.title}
+                </h3>
+                <p className="font-sans text-sm text-[var(--text-secondary)] leading-relaxed mt-auto">
+                  {step.desc}
+                </p>
+              </div>
+            </div>
           ))}
         </div>
       </div>
-      
-      <style dangerouslySetInnerHTML={{ __html: `
-        .hide-scrollbar::-webkit-scrollbar {
-          display: none;
-        }
-        .hide-scrollbar {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-      `}} />
     </section>
   );
 }
