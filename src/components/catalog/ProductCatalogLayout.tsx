@@ -6,6 +6,7 @@ import CatalogHeader from "./CatalogHeader";
 import CatalogControls from "./CatalogControls";
 import ProductGrid from "./ProductGrid";
 import FilterDrawer from "./FilterDrawer";
+import Pagination from "./Pagination";
 import { RUGS_CONFIG, CURTAINS_CONFIG, FilterCategory, ProductStub } from "../../lib/catalogConfig";
 import { getProducts, getCategoryIdBySlug } from "../../services/Product";
 import { useCurrencyStore } from "../../lib/store/useCurrencyStore";
@@ -31,6 +32,24 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
     return {} as Record<string, string[]>;
   });
   const [sortOption, setSortOption] = useState("default");
+  
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 12;
+
+  // Reset to page 1 when filters or sorting change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedFilters, sortOption]);
+
+  // Clear price range filter when currency changes
+  useEffect(() => {
+    setSelectedFilters(prev => {
+      const next = { ...prev };
+      delete next["price-range"];
+      return next;
+    });
+  }, [currency]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -140,17 +159,15 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
 
     // Price Range
     const getPriceBuckets = (curr: string) => {
-      const steps = curr === "INR" ? [20000, 50000, 100000, 200000] :
-                    curr === "AED" ? [1000, 2500, 5000, 10000] :
-                    curr === "USD" ? [250, 600, 1200, 2500] :
-                    [250, 600, 1200, 2500]; // EUR or fallback
+      const steps = [2500, 5000, 10000, 20000, 30000];
       
       return [
         { label: `Under ${formatPrice(steps[0], curr)}`, value: `under-${steps[0]}`, max: steps[0] },
         { label: `${formatPrice(steps[0], curr)} - ${formatPrice(steps[1], curr)}`, value: `${steps[0]}-${steps[1]}`, min: steps[0], max: steps[1] },
         { label: `${formatPrice(steps[1], curr)} - ${formatPrice(steps[2], curr)}`, value: `${steps[1]}-${steps[2]}`, min: steps[1], max: steps[2] },
         { label: `${formatPrice(steps[2], curr)} - ${formatPrice(steps[3], curr)}`, value: `${steps[2]}-${steps[3]}`, min: steps[2], max: steps[3] },
-        { label: `${formatPrice(steps[3], curr)}+`, value: `${steps[3]}-plus`, min: steps[3] }
+        { label: `${formatPrice(steps[3], curr)} - ${formatPrice(steps[4], curr)}`, value: `${steps[3]}-${steps[4]}`, min: steps[3], max: steps[4] },
+        { label: `${formatPrice(steps[4], curr)} above`, value: `${steps[4]}-plus`, min: steps[4] }
       ];
     };
 
@@ -201,7 +218,7 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
     }
 
     return filters.length > 0 ? filters : config.filters;
-  }, [products, config.filters]);
+  }, [products, config.filters, currency]);
 
   // 2. Filter products based on selectedFilters
   const filteredProducts = useMemo(() => {
@@ -229,17 +246,15 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
              price = parseFloat(p.price) || parseFloat(p.regularPrice) || 0;
            }
 
-           const steps = currency === "INR" ? [20000, 50000, 100000, 200000] :
-                         currency === "AED" ? [1000, 2500, 5000, 10000] :
-                         currency === "USD" ? [250, 600, 1200, 2500] :
-                         [250, 600, 1200, 2500];
+           const steps = [2500, 5000, 10000, 20000, 30000];
                          
            const buckets = [
              { value: `under-${steps[0]}`, max: steps[0] },
              { value: `${steps[0]}-${steps[1]}`, min: steps[0], max: steps[1] },
              { value: `${steps[1]}-${steps[2]}`, min: steps[1], max: steps[2] },
              { value: `${steps[2]}-${steps[3]}`, min: steps[2], max: steps[3] },
-             { value: `${steps[3]}-plus`, min: steps[3] }
+             { value: `${steps[3]}-${steps[4]}`, min: steps[3], max: steps[4] },
+             { value: `${steps[4]}-plus`, min: steps[4] }
            ];
 
            matchFound = selectedValues.some(val => {
@@ -356,16 +371,15 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--text-primary)]"></div>
           </div>
         ) : (
-          <ProductGrid products={displayProducts} baseRoute={baseRoute} />
+          <ProductGrid products={displayProducts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)} baseRoute={baseRoute} />
         )}
 
-        {/* Load More Button - Static for demo */}
-        {displayProducts.length > 0 && (
-          <div className="w-full flex justify-center mt-16 lg:mt-24">
-            <button className="bg-[var(--accent-primary)] text-[#111] px-12 py-4 font-sans text-[var(--text-sm)] uppercase tracking-widest hover:bg-[var(--accent-secondary)] transition-colors border-none">
-              Load More
-            </button>
-          </div>
+        {displayProducts.length > 0 && !loading && (
+          <Pagination 
+            currentPage={currentPage}
+            totalPages={Math.ceil(displayProducts.length / itemsPerPage)}
+            onPageChange={setCurrentPage}
+          />
         )}
 
       </div>

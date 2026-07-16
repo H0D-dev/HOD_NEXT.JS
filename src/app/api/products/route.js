@@ -5,7 +5,7 @@ export async function GET(request) {
     try {
         const category = request.nextUrl.searchParams.get("category");
         const fields = 'id,name,slug,type,description,price,regular_price,sale_price,on_sale,tax_status,categories,variations,images,attributes,meta_data,permalink,dimensions,stock_status,weight,manual_prices';
-        let URL = `${API_CONFIG.baseUrl}/wp-json/wc/v3/products?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&_fields=${fields}`;
+        let URL = `${API_CONFIG.baseUrl}/wp-json/wc/v3/products?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&_fields=${fields}&per_page=100`;
 
         if (category) {
             URL += `&category=${category}`;
