@@ -121,15 +121,38 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
       });
     }
 
-    // Construction (from ACF)
+    // Construction (from ACF) - legacy fallback
     const constructions = getUniqueValues(p => p.acf?.construction);
-    if (constructions.length > 0) {
-      filters.push({
-        id: "construction",
-        label: "Construction",
-        options: constructions
-      });
-    }
+    // if (constructions.length > 0) {
+    //   filters.push({
+    //     id: "construction",
+    //     label: "Construction",
+    //     options: constructions
+    //   });
+    // }
+
+    // Weaving Technique (Fixed Values from Attributes)
+    filters.push({
+      id: "weaving-technique",
+      label: "Weaving Technique",
+      options: [
+        { label: "Hand Knotted", value: "hand knotted" },
+        { label: "Hand Tufted", value: "hand tufted" },
+        { label: "Handloom", value: "handloom" },
+        { label: "Flat Weave", value: "flat weave" }
+      ]
+    });
+
+    // Pattern (Fixed Values from Attributes)
+    filters.push({
+      id: "pattern",
+      label: "Pattern",
+      options: [
+        { label: "Abstract", value: "abstract" },
+        { label: "Solid", value: "solid" },
+        { label: "Geometric", value: "geometric" }
+      ]
+    });
 
     // Material (from Attributes)
     const materials = getUniqueValues(p => {
@@ -208,14 +231,8 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
         options: shapeOptions
       });
     }    // Country of Origin (from ACF)
-    const countries = getUniqueValues(p => p.acf?.countryOfOrigin);
-    if (countries.length > 0) {
-      filters.push({
-        id: "country",
-        label: "Country of Origin",
-        options: countries
-      });
-    }
+    // Removed per user request
+
 
     return filters.length > 0 ? filters : config.filters;
   }, [products, config.filters, currency]);
@@ -279,6 +296,16 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
            continue;
          } else if (filterId === "construction") {
            productValue = String(p.acf?.construction || "").toLowerCase().trim();
+         } else if (filterId === "weaving-technique") {
+           const attr = p.attributes?.find((a: any) => a.name.toLowerCase() === 'weaving technique');
+           const val = attr?.options?.[0]?.toLowerCase().trim() || "";
+           if (!selectedValues.includes(val)) return false;
+           continue;
+         } else if (filterId === "pattern") {
+           const attr = p.attributes?.find((a: any) => a.name.toLowerCase() === 'pattern');
+           const val = attr?.options?.[0]?.toLowerCase().trim() || "";
+           if (!selectedValues.includes(val)) return false;
+           continue;
          } else if (filterId === "country") {
            productValue = String(p.acf?.countryOfOrigin || "").toLowerCase().trim();
          } else if (filterId === "material") {
