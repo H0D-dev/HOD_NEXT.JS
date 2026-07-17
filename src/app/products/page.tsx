@@ -11,23 +11,17 @@ import { getCategories, getCategoryIdBySlug } from "@/src/services/Product";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const initialRugCollections = [
-  { title: "Luxury", slug: "luxury", image: "/rugs/set1-room.png" },
-  { title: "Modern", slug: "modern", image: "/rugs/set2-room.png" },
-  { title: "Persian", slug: "persian", image: "/rugs/set3-room.png" },
-];
-
-const initialCurtainCollections = [
-  { title: "Blackout", slug: "blackout", image: "/curtains/set1-room.png" },
-  { title: "Sheer", slug: "sheer", image: "/curtains/set2-room.png" },
-  { title: "Velvet", slug: "velvet", image: "/curtains/set3-room.png" },
-];
+type RugCollection = {
+  title: string;
+  slug: string;
+  image: string;
+};
 
 export default function CollectionsPage() {
   const containerRef = useRef<HTMLDivElement>(null);
   
-  const [rugCollections, setRugCollections] = React.useState(initialRugCollections);
-  const [curtainCollections, setCurtainCollections] = React.useState(initialCurtainCollections);
+  const [rugCollections, setRugCollections] = React.useState<RugCollection[]>([]);
+  const [loading, setLoading] = React.useState(true);
 
   useEffect(() => {
     async function fetchCollections() {
@@ -36,33 +30,17 @@ export default function CollectionsPage() {
         if (rugsId) {
           const rugs = await getCategories(rugsId);
           if (Array.isArray(rugs) && rugs.length > 0) {
-            setRugCollections(rugs.map(r => {
-              const fallback = initialRugCollections.find(ic => ic.slug === r.slug);
-              return {
-                title: r.name,
-                slug: r.slug,
-                image: r.image?.src || fallback?.image || "/rugs/set1-room.png"
-              };
-            }));
-          }
-        }
-
-        const curtainsId = await getCategoryIdBySlug("curtains");
-        if (curtainsId) {
-          const curtains = await getCategories(curtainsId);
-          if (Array.isArray(curtains) && curtains.length > 0) {
-            setCurtainCollections(curtains.map(c => {
-              const fallback = initialCurtainCollections.find(ic => ic.slug === c.slug);
-              return {
-                title: c.name,
-                slug: c.slug,
-                image: c.image?.src || fallback?.image || "/curtains/set1-room.png"
-              };
-            }));
+            setRugCollections(rugs.map(r => ({
+              title: r.name,
+              slug: r.slug,
+              image: r.image?.src || "/rugs/set1-room.png"
+            })));
           }
         }
       } catch (error) {
         console.error("Failed to fetch collections", error);
+      } finally {
+        setLoading(false);
       }
     }
     fetchCollections();
@@ -123,108 +101,82 @@ export default function CollectionsPage() {
         }
       );
     });
-  }, { scope: containerRef });
+
+    // Image Parallax
+    const parallaxImages = gsap.utils.toArray(".parallax-image");
+    parallaxImages.forEach((image: any) => {
+      gsap.fromTo(
+        image,
+        { yPercent: -10, scale: 1.15 },
+        {
+          yPercent: 10,
+          ease: "none",
+          scrollTrigger: {
+            trigger: image.closest(".collection-animate"),
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          }
+        }
+      );
+    });
+  }, { scope: containerRef, dependencies: [rugCollections] });
 
   return (
     <main ref={containerRef} className="w-full flex flex-col bg-[var(--bg-primary)]">
       {/* Hero Section */}
-      <section className="relative min-h-[80vh] flex flex-col items-center justify-center px-4 md:px-8 text-center pt-32 pb-16">
-        <span className="hero-animate uppercase tracking-widest text-[var(--text-xs)] md:text-[var(--text-sm)] font-medium mb-[var(--space-3)] text-[var(--text-muted)]">
-          Our Collections
+      <section className="relative flex flex-col items-center justify-center px-4 md:px-8 text-center pt-32 pb-8 lg:pt-40 lg:pb-12">
+        <span className="hero-animate block text-[var(--text-muted)] font-sans text-[10px] md:text-xs uppercase tracking-widest mb-3 font-medium">
+          Rug Collections
         </span>
-        <h1 className="hero-animate font-serif text-[2.75rem] md:text-[4rem] lg:text-[4.75rem] text-[var(--text-primary)] leading-[1.1] mb-[var(--space-4)] max-w-4xl tracking-tight">
-          Explore Our Collections
+        <h1 className="hero-animate font-serif text-2xl md:text-4xl lg:text-5xl leading-tight tracking-tight text-[var(--text-primary)] mb-3 max-w-3xl">
+          Handcrafted Rugs
         </h1>
-        <p className="hero-animate text-[var(--text-md)] md:text-[var(--text-lg)] text-[var(--text-secondary)] max-w-2xl font-light">
-          Discover handcrafted rugs and premium curtains designed to elevate refined living spaces.
+        <p className="hero-animate font-sans text-sm md:text-base leading-relaxed text-[var(--text-secondary)] max-w-xl">
+          Discover handcrafted rugs designed to elevate refined living spaces.
         </p>
       </section>
 
       {/* Rug Collections */}
-      <section className="collection-section w-full max-w-[var(--container-lg)] mx-auto px-4 md:px-[var(--space-4)] lg:px-[var(--space-8)] py-[var(--space-7)] md:py-[var(--space-8)]">
-        <div className="flex flex-col items-center text-center mb-[var(--space-6)] md:mb-[var(--space-7)]">
-          <span className="collection-animate uppercase tracking-widest text-[var(--text-xs)] md:text-[var(--text-sm)] font-medium mb-[var(--space-2)] text-[var(--text-muted)]">
-            Rug Collections
-          </span>
-          <h2 className="collection-animate font-serif text-[clamp(32px,5vw,64px)] text-[var(--text-primary)] mb-[var(--space-3)]">
-            Rugs for Every Space
-          </h2>
-          <p className="collection-animate text-[var(--text-secondary)] max-w-xl text-[var(--text-sm)] md:text-[var(--text-md)]">
-            Discover handcrafted rugs designed for luxury interiors.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[var(--space-4)] md:gap-[var(--space-5)]">
-          {rugCollections.map((col) => (
+      <section className="collection-section w-full max-w-[1200px] mx-auto pb-8 md:pb-12 lg:pb-24 px-4 md:px-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          {loading ? (
+            Array.from({ length: 4 }).map((_, idx) => (
+              <div 
+                key={idx} 
+                className="relative aspect-[3/4] overflow-hidden bg-[var(--bg-secondary)] border border-[var(--border-secondary)] animate-pulse" 
+              />
+            ))
+          ) : (
+            rugCollections.map((col) => (
             <Link 
               key={col.slug} 
               href={`/products/rugs?category=${col.slug}`}
               className="collection-animate group flex flex-col"
             >
-              <div className="relative aspect-[4/5] overflow-hidden bg-[var(--bg-secondary)] border border-[var(--border-secondary)] mb-[var(--space-3)]">
+              <div className="relative aspect-[3/4] overflow-hidden bg-[var(--bg-secondary)] border border-[var(--border-secondary)]">
                 <Image 
                   src={col.image} 
                   alt={col.title}
                   fill
-                  className="object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
+                  className="parallax-image object-cover"
                 />
                 <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-[1.2s] ease-[cubic-bezier(0.22,1,0.36,1)]" />
-                <div className="absolute inset-0 p-[var(--space-4)] flex flex-col justify-end items-center">
-                  <span className="text-white text-[var(--text-sm)] tracking-[0.1em] uppercase opacity-0 group-hover:opacity-100 transition-all duration-[1.2s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-2">
+                <div className="absolute inset-0 p-6 flex flex-col justify-end items-center">
+                  <span className="text-white font-sans text-xs md:text-sm uppercase tracking-widest font-medium opacity-0 group-hover:opacity-100 transition-all duration-[1.2s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-2">
                     Explore Collection
                   </span>
                 </div>
               </div>
-              <h3 className="font-serif text-[var(--text-2xl)] md:text-[var(--text-3xl)] text-[var(--text-primary)] text-center transition-transform duration-[1.2s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-y-1">
+              <h3 className="font-sans text-sm md:text-base font-normal text-[var(--text-primary)] text-center mt-4 transition-transform duration-[1.2s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-y-1">
                 {col.title}
               </h3>
             </Link>
-          ))}
+          )))}
         </div>
       </section>
 
-      {/* Curtain Collections */}
-      <section className="collection-section w-full max-w-[var(--container-lg)] mx-auto px-4 md:px-[var(--space-4)] lg:px-[var(--space-8)] py-[var(--space-7)] md:py-[var(--space-8)] border-t border-[var(--border-secondary)] mb-[var(--space-7)]">
-        <div className="flex flex-col items-center text-center mb-[var(--space-6)] md:mb-[var(--space-7)]">
-          <span className="collection-animate uppercase tracking-widest text-[var(--text-xs)] md:text-[var(--text-sm)] font-medium mb-[var(--space-2)] text-[var(--text-muted)]">
-            Curtain Collections
-          </span>
-          <h2 className="collection-animate font-serif text-[clamp(32px,5vw,64px)] text-[var(--text-primary)] mb-[var(--space-3)]">
-            Curtains for Elegant Interiors
-          </h2>
-          <p className="collection-animate text-[var(--text-secondary)] max-w-xl text-[var(--text-sm)] md:text-[var(--text-md)]">
-            Curated curtain collections tailored for modern and timeless spaces.
-          </p>
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[var(--space-4)] md:gap-[var(--space-5)]">
-          {curtainCollections.map((col) => (
-            <Link 
-              key={col.slug} 
-              href={`/products/curtains?category=${col.slug}`}
-              className="collection-animate group flex flex-col"
-            >
-              <div className="relative aspect-[4/5] overflow-hidden bg-[var(--bg-secondary)] border border-[var(--border-secondary)] mb-[var(--space-3)]">
-                <Image 
-                  src={col.image} 
-                  alt={col.title}
-                  fill
-                  className="object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-[1.2s] ease-[cubic-bezier(0.22,1,0.36,1)]" />
-                <div className="absolute inset-0 p-[var(--space-4)] flex flex-col justify-end items-center">
-                  <span className="text-white text-[var(--text-sm)] tracking-[0.1em] uppercase opacity-0 group-hover:opacity-100 transition-all duration-[1.2s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-2">
-                    Explore Collection
-                  </span>
-                </div>
-              </div>
-              <h3 className="font-serif text-[var(--text-2xl)] md:text-[var(--text-3xl)] text-[var(--text-primary)] text-center transition-transform duration-[1.2s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-y-1">
-                {col.title}
-              </h3>
-            </Link>
-          ))}
-        </div>
-      </section>
     </main>
   );
 }

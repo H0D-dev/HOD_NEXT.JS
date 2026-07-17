@@ -118,7 +118,7 @@
 .header__right {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 6px;
 }
 
 @media (min-width: 768px) {
@@ -196,13 +196,16 @@
 /* ── Responsive ── */
 @media (max-width: 1024px) {
   .header__container {
-    padding: var(--space-3) 5vw;
+    padding: 16px 5vw;
   }
 }
 
 @media (max-width: 768px) {
   .header__container {
-    padding: var(--space-3) 24px;
+    padding: 12px 12px;
+  }
+  .header__logo-img {
+    height: 32px;
   }
 }
 
@@ -210,7 +213,7 @@
 
   .header__hamburger-btn {
     display: flex;
-    margin-left: var(--space-3);
+    margin-left: 4px;
   }
 
   .header__nav {
