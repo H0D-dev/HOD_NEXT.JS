@@ -28,25 +28,27 @@ This document defines the visual language, design rules, and design tokens for t
 - Headings: **Cormorant Garamond** (Serif - Luxury, Timeless)
 - Body/UI: **Inter** (Sans-Serif - Clean, Modern)
 
-**Responsive Typography Rules (The "Know Your Rugs" Standard):**
-Do not use abrupt font jumps or arbitrary `clamp()` values. Use Tailwind responsive classes for perfect fluid consistency:
+**Responsive Typography Rules (The "Designer Trade" Standard):**
+Do not use abrupt font jumps or arbitrary `clamp()` values. Use exact fluid Tailwind classes to perfectly match the Designer Trade page aesthetics.
 
 1. **Hero & Monumental Headings (H1):**
-   - `font-serif text-[2.75rem] md:text-[4rem] lg:text-[4.75rem] leading-[1.1] tracking-tight`
-2. **Section Headings & Cards (H2/H3):**
-   - `font-serif text-3xl md:text-4xl lg:text-5xl`
-3. **Subtitles / Quotes:**
-   - `font-sans text-lg md:text-xl font-light italic`
-4. **Pre-titles & Labels:**
-   - `font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium`
-5. **Body Text & Descriptions:**
+   - `font-serif text-3xl md:text-5xl lg:text-[4rem] leading-[1.1] tracking-tight` (Never use massive sizes on mobile)
+2. **Section Headings (H2):**
+   - `font-serif text-xl md:text-2xl lg:text-3xl leading-[1.2] tracking-tight`
+3. **Card Titles (H3):**
+   - `font-sans text-base md:text-lg font-medium` (Keep understated)
+4. **CTA / Assistance Section Headings:**
+   - `font-serif text-xl md:text-3xl lg:text-4xl leading-[1.2]`
+5. **Body Text & Content Descriptions:**
    - `font-sans text-sm md:text-base leading-relaxed text-[var(--text-secondary)]`
+6. **Pre-titles, Labels & CTA Buttons:**
+   - `font-sans text-xs md:text-sm uppercase tracking-widest font-medium`
 
 ## Layout & Components
 
-**Grids & Spacing:**
-- **Desktop:** Massive padding (`py-32 md:py-48`), 12-column grid.
-- **Mobile/Tablet:** Reduced padding (`py-16 md:py-24`) to prevent empty voids, but maintain breathing room. 4/6-column grid.
+**Grids & Spacing (Compact Mobile Spaces):**
+- **Desktop:** Generous padding (`py-20` to `py-32`), 12-column grid.
+- **Mobile/Tablet:** **CRITICAL:** Do NOT use huge negative spaces on mobile. Sections must be compact. Use `py-8 md:py-12` or `py-12 md:py-16` maximum. For Hero sections, use `pt-24 pb-12 lg:pt-32 lg:pb-16`.
 - **Container Widths:** `max-w-[1400px]` (`--container-lg`) for major grids.
 
 **Cards (Editorial Layouts):**
