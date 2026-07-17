@@ -11,17 +11,17 @@ const specialTopics = [
   {
     id: 1,
     title: "Understanding Abrash",
-    description: "Abrash refers to the natural and subtle color variations found in handmade rugs. This occurs when differently dyed batches of yarn are used. It is a hallmark of authenticity and hand-craftsmanship, not a flaw. Embrace it as the unique signature of your piece.",
+    description: "Abrash refers to the natural color variations found in handmade rugs. A hallmark of authenticity—not a flaw—embrace it as your piece's unique signature.",
   },
   {
     id: 2,
     title: "Preventing Fading",
-    description: "Prolonged exposure to direct, harsh sunlight will eventually fade natural dyes. We highly recommend using window treatments or UV-filtering glass. Rotating your rug every six months ensures that any natural fading occurs evenly across the entire surface.",
+    description: "Direct sunlight eventually fades natural dyes. Use window treatments or rotate your rug every six months to ensure even wear.",
   },
   {
     id: 3,
     title: "Moth Protection",
-    description: "Moths are attracted to natural fibers like wool and silk, particularly in dark, undisturbed areas under heavy furniture. Regular vacuuming and moving furniture slightly when cleaning will disturb them. If storing a rug, always have it professionally cleaned and sealed first.",
+    description: "Moths target natural fibers in dark, undisturbed areas. Vacuum regularly and have your rug professionally cleaned and sealed before storage.",
   },
 ];
 
@@ -62,27 +62,27 @@ export default function SpecialTopics() {
   }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} className="w-full py-16 md:py-32 px-6 md:px-8 bg-[var(--bg-secondary)] border-t border-[var(--border-secondary)]">
+    <section ref={containerRef} className="w-full py-8 md:py-12 px-6 md:px-8 bg-[var(--bg-secondary)] border-t border-[var(--border-secondary)]">
       <div className="max-w-[1440px] mx-auto">
-        <div className="special-header mb-16 md:mb-24 max-w-2xl">
-          <span className="block text-[var(--text-muted)] font-sans text-xs uppercase tracking-widest mb-6">
+        <div className="special-header mb-6 md:mb-10 max-w-2xl">
+          <span className="block text-[var(--text-muted)] font-sans text-xs uppercase tracking-widest mb-3 md:mb-4">
             Expert Knowledge
           </span>
-          <h2 className="font-serif text-[clamp(32px,5vw,64px)] text-[var(--text-primary)] tracking-tight">
+          <h2 className="font-serif text-xl md:text-2xl lg:text-3xl leading-[1.2] text-[var(--text-primary)] tracking-tight">
             Special Topics
           </h2>
         </div>
 
-        <div className="special-grid grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+        <div className="special-grid grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10">
           {specialTopics.map((topic) => (
             <div
               key={topic.id}
-              className="special-card flex flex-col pt-8 border-t border-[var(--border-secondary)]"
+              className="special-card flex flex-col pt-4 md:pt-6 border-t border-[var(--border-secondary)]"
             >
-              <h3 className="font-serif text-2xl text-[var(--text-primary)] mb-6">
+              <h3 className="font-sans text-base md:text-lg font-medium text-[var(--text-primary)] mb-4">
                 {topic.title}
               </h3>
-              <p className="font-sans text-[var(--text-secondary)] text-base leading-relaxed">
+              <p className="font-sans text-[var(--text-secondary)] text-sm leading-relaxed">
                 {topic.description}
               </p>
             </div>

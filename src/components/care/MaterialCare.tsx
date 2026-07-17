@@ -72,11 +72,13 @@ export default function MaterialCare() {
 
     mm.add("(min-width: 768px)", () => {
       ScrollTrigger.create({
-        trigger: containerRef.current,
+        trigger: ".desktop-material-wrapper",
         start: "top top",
         end: "+=300%", // 300vh for scrolling
         pin: desktopInnerRef.current,
         scrub: true,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
         onUpdate: (self) => {
           // Determine which tab should be active based on progress (0 to 1)
           // Progress 0-0.25 (idx 0), 0.25-0.5 (idx 1), 0.5-0.75 (idx 2), 0.75-1.0 (idx 3)
@@ -94,13 +96,13 @@ export default function MaterialCare() {
     <section ref={containerRef} className="w-full bg-[var(--bg-primary)]">
       
       {/* Mobile Layout */}
-      <div className="md:hidden w-full flex flex-col py-16 px-6 border-t border-[var(--border-secondary)]">
-        <h2 className="font-serif text-[clamp(32px,5vw,64px)] text-[var(--text-primary)] mb-8">Material Care</h2>
+      <div className="md:hidden w-full flex flex-col py-8 px-6 border-t border-[var(--border-secondary)]">
+        <h2 className="font-serif text-xl md:text-2xl lg:text-3xl leading-[1.2] tracking-tight text-[var(--text-primary)] mb-6">Material Care</h2>
         {materials.map((material) => (
           <div key={`mobile-${material.id}`} className="border-b border-[var(--border-secondary)]">
             <button
               onClick={() => handleAccordionClick(material.id)}
-              className="w-full py-6 flex items-center justify-between font-serif text-[clamp(20px,4vw,32px)] text-[var(--text-primary)]"
+              className="w-full py-6 flex items-center justify-between font-sans text-base md:text-lg font-medium text-[var(--text-primary)]"
             >
               {material.title}
               <ChevronDown 
@@ -142,7 +144,7 @@ export default function MaterialCare() {
       </div>
 
       {/* Desktop Layout (Pinned) */}
-      <div className="hidden md:block h-[400vh]">
+      <div className="desktop-material-wrapper hidden md:block">
         <div ref={desktopInnerRef} className="h-screen w-full flex items-center px-8 lg:px-24">
           <div className="w-full max-w-[var(--container-lg)] mx-auto flex gap-12 lg:gap-24">
             
@@ -180,10 +182,10 @@ export default function MaterialCare() {
                   className="flex flex-col xl:flex-row gap-12 items-center w-full"
                 >
                   <div className="flex-1 flex flex-col gap-8">
-                    <h2 className="font-serif text-[clamp(32px,5vw,64px)] text-[var(--text-primary)]">
+                    <h2 className="font-serif text-xl md:text-2xl lg:text-3xl leading-[1.2] tracking-tight text-[var(--text-primary)]">
                       {materials[activeIndex].title}
                     </h2>
-                    <p className="font-sans text-[var(--text-secondary)] text-lg leading-relaxed max-w-xl">
+                    <p className="font-sans text-[var(--text-secondary)] text-sm md:text-base leading-relaxed max-w-xl">
                       {materials[activeIndex].description}
                     </p>
                     
@@ -193,7 +195,7 @@ export default function MaterialCare() {
                       </h4>
                       <ul className="flex flex-col gap-4">
                         {materials[activeIndex].careTips.map((tip, idx) => (
-                          <li key={idx} className="font-sans text-base text-[var(--text-secondary)] flex items-start gap-3">
+                          <li key={idx} className="font-sans text-sm text-[var(--text-secondary)] flex items-start gap-3">
                             <span className="text-[var(--text-muted)] mt-1">•</span>
                             {tip}
                           </li>

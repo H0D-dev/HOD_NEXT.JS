@@ -72,15 +72,15 @@ export default function GeneralCare() {
   }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} className="w-full py-16 md:py-32 px-4 md:px-8 bg-[var(--bg-secondary)]">
+    <section ref={containerRef} className="w-full py-8 md:py-12 px-4 md:px-8 bg-[var(--bg-secondary)]">
       <div className="max-w-[1440px] mx-auto">
-        <div className="gen-care-header text-center mb-16 md:mb-24">
-          <h2 className="font-serif text-[clamp(32px,5vw,64px)] text-[var(--text-primary)] tracking-tight">
+        <div className="gen-care-header text-center mb-10 md:mb-12">
+          <h2 className="font-serif text-xl md:text-2xl lg:text-3xl leading-[1.2] text-[var(--text-primary)] tracking-tight">
             General Maintenance
           </h2>
         </div>
 
-        <div className="gen-care-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-[var(--border-secondary)] border border-[var(--border-secondary)]">
+        <div className="gen-care-grid grid grid-cols-1 md:grid-cols-2 gap-px bg-[var(--border-secondary)] border border-[var(--border-secondary)]">
           {generalCareTopics.map((topic) => {
             const Icon = topic.icon;
             return (
@@ -91,7 +91,7 @@ export default function GeneralCare() {
                 <div className="mb-8 p-4 bg-transparent border border-[var(--border-primary)] rounded-none text-[var(--text-primary)] group-hover:bg-[var(--text-primary)] group-hover:text-[var(--bg-primary)] transition-colors duration-500 self-start">
                   <Icon size={24} strokeWidth={1.5} />
                 </div>
-                <h3 className="font-serif text-2xl text-[var(--text-primary)] mb-4">
+                <h3 className="font-sans text-base md:text-lg font-medium text-[var(--text-primary)] mb-4">
                   {topic.title}
                 </h3>
                 <p className="font-sans text-[var(--text-secondary)] text-sm leading-relaxed mt-auto">

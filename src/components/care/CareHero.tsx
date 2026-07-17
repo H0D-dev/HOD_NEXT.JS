@@ -18,19 +18,19 @@ export default function CareHero() {
   return (
     <section 
       ref={containerRef}
-      className="w-full pt-32 pb-16 md:pt-40 md:pb-32 px-4 md:px-8 bg-[var(--bg-primary)] border-b border-[var(--border-secondary)]"
+      className="w-full pt-24 pb-12 lg:pt-32 lg:pb-16 px-4 md:px-8 bg-[var(--bg-primary)] border-b border-[var(--border-secondary)]"
     >
       <div className="max-w-[1440px] mx-auto flex flex-col items-center text-center">
         <span className="care-hero-el block text-[var(--text-muted)] font-sans text-xs md:text-sm uppercase tracking-widest mb-6 md:mb-8 font-medium">
           Guidance
         </span>
-        <h1 className="care-hero-el font-serif text-[2.75rem] md:text-[4rem] lg:text-[4.75rem] leading-[1.1] tracking-tight text-[var(--text-primary)] mb-8">
+        <h1 className="care-hero-el font-serif text-3xl md:text-5xl lg:text-[4rem] leading-[1.1] tracking-tight text-[var(--text-primary)] mb-6">
           Care & Cleaning
         </h1>
-        <h2 className="care-hero-el font-sans text-[var(--text-primary)] text-xl md:text-2xl font-light tracking-wide mb-8">
+        <h2 className="care-hero-el font-sans text-[var(--text-primary)] text-base md:text-lg leading-relaxed mb-6">
           Designed for Real Life
         </h2>
-        <p className="care-hero-el font-sans text-[var(--text-secondary)] text-lg md:text-xl leading-relaxed max-w-2xl mx-auto mb-16">
+        <p className="care-hero-el font-sans text-[var(--text-secondary)] text-base md:text-lg leading-relaxed max-w-xl mx-auto mb-12">
           With proper care and understanding of natural materials, your House of Décor pieces will age gracefully for generations.
         </p>
 
@@ -39,7 +39,7 @@ export default function CareHero() {
           <img 
             src="/images/care/care_hero_1782566445248.png" 
             alt="Care and cleaning luxury rug" 
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-bottom"
           />
         </div>
       </div>
