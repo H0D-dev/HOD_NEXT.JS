@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export default function TradeHero() {
   return (
-    <section className="w-full min-h-[90vh] flex flex-col lg:flex-row bg-[var(--bg-primary)] pt-20 lg:pt-32">
+    <section className="w-full flex flex-col lg:flex-row bg-[var(--bg-primary)] pt-24 pb-12 lg:pt-32 lg:pb-16 min-h-[70vh]">
       {/* Left Content */}
       <div className="flex-1 flex flex-col justify-center px-6 py-12 md:px-16 lg:px-24 xl:px-32 relative z-10">
         <motion.div
@@ -17,17 +17,17 @@ export default function TradeHero() {
           <span className="block text-[var(--accent-primary)] font-sans text-xs md:text-sm uppercase tracking-widest mb-6 md:mb-8 font-medium">
             Partnership
           </span>
-          <h1 className="font-serif text-[2.75rem] md:text-[4rem] lg:text-[4.75rem] leading-[1.1] tracking-tight text-[var(--text-primary)] mb-8">
+          <h1 className="font-serif text-3xl md:text-5xl lg:text-[4rem] leading-[1.1] tracking-tight text-[var(--text-primary)] mb-8">
             Designer Trade Program
           </h1>
-          <p className="font-sans text-[var(--text-secondary)] text-lg md:text-xl leading-relaxed mb-12 max-w-md">
+          <p className="font-sans text-[var(--text-secondary)] text-base md:text-lg leading-relaxed mb-12 max-w-md">
             Exclusive benefits for interior design professionals. Elevate your spaces with our premium handmade rugs and bespoke carpets.
           </p>
           <a 
             href="https://wa.me/971521236888?text=I%20would%20like%20to%20apply%20for%20the%20Designer%20Trade%20Program."
             target="_blank"
             rel="noopener noreferrer"
-            className="px-8 py-4 border border-[var(--border-primary)] text-[var(--text-primary)] bg-transparent font-sans font-medium text-sm md:text-base hover:bg-[var(--accent-secondary)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] w-full sm:w-auto inline-block text-center"
+            className="px-8 py-4 bg-[var(--accent-primary)] text-[#111] border border-[var(--accent-primary)] font-sans font-medium text-xs md:text-sm hover:bg-[var(--accent-secondary)] hover:border-[var(--accent-secondary)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] w-full sm:w-auto inline-block text-center uppercase tracking-widest"
           >
             Apply Now
           </a>

@@ -1,7 +1,14 @@
 "use client";
 
-import { motion } from "framer-motion";
+import React, { useRef } from "react";
 import { Truck, Tag, Palette, BookOpen } from "lucide-react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const benefits = [
   {
@@ -30,67 +37,74 @@ const benefits = [
   },
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15 },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] as any },
-  },
-};
-
 export default function TradeBenefits() {
+  const containerRef = useRef<HTMLElement>(null);
+
+  useGSAP(() => {
+    // Heading animation
+    gsap.fromTo(
+      ".benefit-header",
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top 80%",
+        },
+      }
+    );
+
+    // Cards staggered arrival
+    gsap.fromTo(
+      ".benefit-card",
+      { opacity: 0, y: 40 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: ".benefit-grid",
+          start: "top 80%",
+        },
+      }
+    );
+  }, { scope: containerRef });
+
   return (
-    <section className="w-full py-16 md:py-32 px-6 md:px-16 lg:px-24 bg-[var(--bg-secondary)]">
+    <section ref={containerRef} className="w-full py-12 md:py-20 px-6 md:px-16 lg:px-24 bg-[var(--bg-secondary)]">
       <div className="max-w-[var(--container-lg)] mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any }}
-          className="text-center mb-16 md:mb-24"
-        >
-          <h2 className="font-serif text-[clamp(32px,5vw,64px)] text-[var(--text-primary)] tracking-tight">
+        <div className="benefit-header text-center mb-12 md:mb-16">
+          <h2 className="font-serif text-xl md:text-2xl lg:text-3xl leading-[1.2] text-[var(--text-primary)] tracking-tight">
             Exclusive Benefits
           </h2>
-        </motion.div>
+        </div>
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8"
-        >
+        <div className="benefit-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           {benefits.map((benefit) => {
             const Icon = benefit.icon;
             return (
-              <motion.div
+              <div
                 key={benefit.id}
-                variants={itemVariants}
-                className="bg-[var(--surface-primary)] border border-[var(--border-secondary)] p-8 md:p-10 transition-all duration-[0.6s] ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-2 hover:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.05)] hover:border-[var(--border-primary)] flex flex-col items-start group"
+                className="benefit-card bg-[var(--surface-primary)] border border-[var(--border-secondary)] p-8 md:p-10 transition-all duration-[0.6s] ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-2 hover:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.05)] hover:border-[var(--border-primary)] flex flex-col items-start group"
               >
                 <div className="mb-8 p-4 bg-[var(--bg-secondary)] rounded-full text-[var(--text-primary)] group-hover:bg-[var(--accent-secondary)] transition-colors duration-[0.6s]">
                   <Icon size={28} strokeWidth={1.5} />
                 </div>
-                <h3 className="font-sans text-lg font-medium text-[var(--text-primary)] mb-4">
+                <h3 className="font-sans text-base md:text-lg font-medium text-[var(--text-primary)] mb-4">
                   {benefit.title}
                 </h3>
                 <p className="font-sans text-[var(--text-secondary)] text-sm leading-relaxed">
                   {benefit.description}
                 </p>
-              </motion.div>
+              </div>
             );
           })}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

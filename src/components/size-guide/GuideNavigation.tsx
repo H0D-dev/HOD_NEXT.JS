@@ -7,7 +7,6 @@ const navLinks = [
   { label: "Living Room", href: "#living-room" },
   { label: "Bedroom", href: "#bedroom" },
   { label: "Dining Room", href: "#dining-room" },
-  { label: "Curtains", href: "#curtains" },
 ];
 
 export default function GuideNavigation() {
@@ -43,7 +42,7 @@ export default function GuideNavigation() {
   };
 
   return (
-    <div className="sticky top-0 z-50 w-full bg-[var(--bg-primary)]/90 backdrop-blur-md border-b border-[var(--border-primary)] transition-all duration-300">
+    <div className="hidden md:block sticky top-0 z-50 w-full bg-[var(--bg-primary)]/90 backdrop-blur-md border-b border-[var(--border-primary)] transition-all duration-300">
       <div className="max-w-[1440px] mx-auto px-4 md:px-8 py-4 overflow-x-auto hide-scrollbar">
         <ul className="flex items-center md:justify-center gap-2 md:gap-8 min-w-max">
           {navLinks.map((link) => (
@@ -53,7 +52,7 @@ export default function GuideNavigation() {
                 onClick={(e) => handleClick(e, link.href)}
                 className={`font-sans text-xs md:text-sm tracking-widest uppercase px-4 py-2 border rounded-[var(--radius-sm,0px)] transition-colors duration-300 ${
                   activeSection === link.href
-                    ? "border-[var(--border-primary)] bg-[var(--border-primary)] text-[var(--bg-primary)]"
+                    ? "border-[var(--accent-primary)] bg-[var(--accent-primary)] text-[#111]"
                     : "border-transparent text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--border-secondary)]"
                 }`}
               >

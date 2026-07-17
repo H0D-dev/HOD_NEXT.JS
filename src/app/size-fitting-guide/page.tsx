@@ -9,7 +9,6 @@ import QuoteBlock from "../../components/size-guide/QuoteBlock";
 import LivingRoomGuide from "../../components/size-guide/LivingRoomGuide";
 import BedroomGuide from "../../components/size-guide/BedroomGuide";
 import DiningGuide from "../../components/size-guide/DiningGuide";
-import CurtainGuide from "../../components/size-guide/CurtainGuide";
 import FinalCTA from "../../components/size-guide/FinalCTA";
 
 export default function SizeFittingGuidePage() {
@@ -45,7 +44,6 @@ export default function SizeFittingGuidePage() {
       <LivingRoomGuide />
       <BedroomGuide />
       <DiningGuide />
-      <CurtainGuide />
       <FinalCTA />
     </main>
   );

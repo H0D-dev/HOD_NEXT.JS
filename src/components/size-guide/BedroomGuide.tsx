@@ -47,16 +47,19 @@ export default function BedroomGuide() {
   }, { scope: sectionRef });
 
   return (
-    <section id="bedroom" ref={sectionRef} className="w-full py-16 md:py-32 px-4 md:px-8 bg-[var(--bg-secondary)]">
+    <section id="bedroom" ref={sectionRef} className="w-full py-8 md:py-12 px-4 md:px-8 bg-[var(--bg-secondary)]">
       <div className="max-w-[1440px] mx-auto">
-        <div className="bed-header text-center mb-16">
-          <h2 className="font-serif text-[clamp(32px,5vw,64px)] text-[var(--text-primary)]">
+        <div className="bed-header text-center mb-8 md:mb-12">
+          <h2 className="font-serif text-xl md:text-2xl lg:text-3xl text-[var(--text-primary)] mb-4 leading-[1.2]">
             Bedroom
           </h2>
+          <p className="font-sans text-sm md:text-base text-[var(--text-secondary)] font-light max-w-[600px] mx-auto">
+            Your bedroom should be a sanctuary. The right rug placement provides warmth underfoot the moment you wake up.
+          </p>
         </div>
 
         {/* Large Hero Image */}
-        <div className="w-full aspect-[4/3] md:aspect-[16/9] lg:aspect-[21/9] mb-24 overflow-hidden border border-[var(--border-secondary)]">
+        <div className="w-full aspect-[4/3] md:aspect-[21/9] mb-12 md:mb-16 overflow-hidden border border-[var(--border-secondary)]">
           <img 
             src="/images/size-guide/bedroom_hero_1782565501415.png" 
             alt="Bedroom rug placement hero" 
@@ -65,19 +68,19 @@ export default function BedroomGuide() {
         </div>
 
         {/* Layout Cards */}
-        <div className="bed-cards-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="bed-cards-container grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
           
           {/* Card A */}
-          <div className="bed-card flex flex-col border border-[var(--border-secondary)] bg-[var(--surface-primary)]">
-            <div className="aspect-square w-full overflow-hidden border-b border-[var(--border-secondary)]">
+          <div className="bed-card group flex flex-col border border-[var(--border-secondary)] bg-[var(--bg-primary)] overflow-hidden transition-colors duration-500 hover:border-[var(--text-primary)]">
+            <div className="aspect-square w-full overflow-hidden border-b border-[var(--border-secondary)] relative">
               <img 
                 src="/images/size-guide/bedroom_full_1782565454914.png" 
                 alt="Large rug under bed" 
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
               />
             </div>
-            <div className="p-8 flex-1 flex flex-col">
-              <h3 className="font-serif text-[clamp(20px,4vw,32px)] text-[var(--text-primary)] mb-4">
+            <div className="p-6 md:p-8 flex-1 flex flex-col">
+              <h3 className="font-serif text-lg md:text-xl text-[var(--text-primary)] mb-3">
                 Full Frame
               </h3>
               <p className="font-sans text-sm md:text-base text-[var(--text-secondary)] leading-relaxed mb-8 flex-1">
@@ -85,7 +88,7 @@ export default function BedroomGuide() {
               </p>
               <Link 
                 href="/products?category=bedroom" 
-                className="font-sans text-xs tracking-wider uppercase text-[var(--text-primary)] hover:text-[var(--accent-primary)] transition-colors underline underline-offset-4"
+                className="inline-block font-sans text-xs md:text-sm tracking-widest uppercase px-6 py-4 border border-[var(--border-secondary)] text-[var(--text-primary)] bg-transparent group-hover:border-[var(--text-primary)] transition-all duration-300 ease-out text-center"
               >
                 Shop Bedroom Rugs &rarr;
               </Link>
@@ -93,16 +96,16 @@ export default function BedroomGuide() {
           </div>
 
           {/* Card B */}
-          <div className="bed-card flex flex-col border border-[var(--border-secondary)] bg-[var(--surface-primary)]">
-            <div className="aspect-square w-full overflow-hidden border-b border-[var(--border-secondary)]">
+          <div className="bed-card group flex flex-col border border-[var(--border-secondary)] bg-[var(--bg-primary)] overflow-hidden transition-colors duration-500 hover:border-[var(--text-primary)]">
+            <div className="aspect-square w-full overflow-hidden border-b border-[var(--border-secondary)] relative">
               <img 
                 src="/images/size-guide/bedroom_runners_1782565467316.png" 
                 alt="Bedside runners" 
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
               />
             </div>
-            <div className="p-8 flex-1 flex flex-col">
-              <h3 className="font-serif text-[clamp(20px,4vw,32px)] text-[var(--text-primary)] mb-4">
+            <div className="p-6 md:p-8 flex-1 flex flex-col">
+              <h3 className="font-serif text-lg md:text-xl text-[var(--text-primary)] mb-3">
                 Bedside Runners
               </h3>
               <p className="font-sans text-sm md:text-base text-[var(--text-secondary)] leading-relaxed mb-8 flex-1">
@@ -110,7 +113,7 @@ export default function BedroomGuide() {
               </p>
               <Link 
                 href="/products?category=bedroom" 
-                className="font-sans text-xs tracking-wider uppercase text-[var(--text-primary)] hover:text-[var(--accent-primary)] transition-colors underline underline-offset-4"
+                className="inline-block font-sans text-xs md:text-sm tracking-widest uppercase px-6 py-4 border border-[var(--border-secondary)] text-[var(--text-primary)] bg-transparent group-hover:border-[var(--text-primary)] transition-all duration-300 ease-out text-center"
               >
                 Explore Runners &rarr;
               </Link>
@@ -118,16 +121,16 @@ export default function BedroomGuide() {
           </div>
 
           {/* Card C */}
-          <div className="bed-card flex flex-col border border-[var(--border-secondary)] bg-[var(--surface-primary)]">
-            <div className="aspect-square w-full overflow-hidden border-b border-[var(--border-secondary)]">
+          <div className="bed-card group flex flex-col border border-[var(--border-secondary)] bg-[var(--bg-primary)] overflow-hidden transition-colors duration-500 hover:border-[var(--text-primary)]">
+            <div className="aspect-square w-full overflow-hidden border-b border-[var(--border-secondary)] relative">
               <img 
                 src="/images/size-guide/bedroom_foot_1782565488826.png" 
                 alt="Foot of bed rug" 
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
               />
             </div>
-            <div className="p-8 flex-1 flex flex-col">
-              <h3 className="font-serif text-[clamp(20px,4vw,32px)] text-[var(--text-primary)] mb-4">
+            <div className="p-6 md:p-8 flex-1 flex flex-col">
+              <h3 className="font-serif text-lg md:text-xl text-[var(--text-primary)] mb-3">
                 Foot of the Bed
               </h3>
               <p className="font-sans text-sm md:text-base text-[var(--text-secondary)] leading-relaxed mb-8 flex-1">
@@ -135,7 +138,7 @@ export default function BedroomGuide() {
               </p>
               <Link 
                 href="/products?category=bedroom" 
-                className="font-sans text-xs tracking-wider uppercase text-[var(--text-primary)] hover:text-[var(--accent-primary)] transition-colors underline underline-offset-4"
+                className="inline-block font-sans text-xs md:text-sm tracking-widest uppercase px-6 py-4 border border-[var(--border-secondary)] text-[var(--text-primary)] bg-transparent group-hover:border-[var(--text-primary)] transition-all duration-300 ease-out text-center"
               >
                 Shop Accent Rugs &rarr;
               </Link>
