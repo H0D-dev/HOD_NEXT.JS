@@ -28,9 +28,9 @@ export default function CustomRugsBanner() {
   }, { scope: containerRef });
 
   return (
-    <section className="w-full py-8 md:py-12 bg-[#F9F9F6]">
+    <section className="w-full pt-6 pb-2 md:py-8 lg:py-12 bg-[#F9F9F6]">
       <div className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-16" ref={containerRef}>
-        <div className="relative w-full overflow-hidden min-h-[400px] md:min-h-[500px] flex items-center bg-[#E6E3DB]">
+        <div className="relative w-full overflow-hidden min-h-[300px] md:min-h-[500px] flex items-center bg-[#E6E3DB]">
           
           {/* Background Image (Covering the full section) */}
           <div className="absolute inset-0 w-full h-full">
@@ -49,7 +49,7 @@ export default function CustomRugsBanner() {
             <span className="font-sans text-[11px] md:text-xs uppercase tracking-[0.15em] text-[#2C251F]/70 mb-5 block">
               CUSTOM RUGS
             </span>
-            <h2 className="font-serif text-3xl md:text-4xl lg:text-[42px] text-[#2C251F] leading-[1.15] mb-6">
+            <h2 className="font-serif text-2xl md:text-4xl lg:text-[42px] text-[#2C251F] leading-[1.15] mb-4 md:mb-6">
               YOUR VISION,<br />OUR CRAFT
             </h2>
             <p className="font-sans text-[#2C251F]/80 text-sm md:text-[15px] leading-[1.6] mb-8 max-w-[300px]">

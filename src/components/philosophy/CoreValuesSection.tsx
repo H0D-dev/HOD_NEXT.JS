@@ -53,21 +53,21 @@ export default function CoreValuesSection() {
   return (
     <section ref={sectionRef} className="w-full bg-[#F5F2ED] py-8 md:py-12 border-b border-[#2C251F]/5">
       <div className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-16">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-y-12 md:gap-y-0">
+        <div className="grid grid-cols-4 gap-2 md:gap-0">
           {features.map((feature, index) => (
             <div 
               key={index} 
-              className={`feature-item flex flex-col items-center text-center px-2 md:px-4 ${
-                index !== features.length - 1 ? 'md:border-r md:border-[#2C251F]/10' : ''
+              className={`feature-item flex flex-col items-center justify-start text-center px-1 md:px-4 ${
+                index !== features.length - 1 ? 'border-r border-[#2C251F]/10' : ''
               }`}
             >
-              <div className="mb-6 text-[#2C251F]/80">
-                <feature.icon strokeWidth={1} size={36} />
+              <div className="mb-3 md:mb-6 text-[#2C251F]/80 flex items-center justify-center">
+                <feature.icon strokeWidth={1} className="w-7 h-7 md:w-9 md:h-9" />
               </div>
-              <h3 className="font-sans text-[11px] md:text-xs uppercase tracking-[0.15em] text-[#2C251F] mb-4 whitespace-pre-line leading-relaxed">
+              <h3 className="font-sans text-[8px] sm:text-[9px] md:text-xs uppercase tracking-widest md:tracking-[0.15em] text-[#2C251F] mb-0 md:mb-4 whitespace-pre-line leading-relaxed">
                 {feature.title}
               </h3>
-              <p className="font-sans text-[#2C251F]/70 text-sm md:text-[15px] leading-[1.6] whitespace-pre-line max-w-[240px]">
+              <p className="hidden md:block font-sans text-[#2C251F]/70 text-sm md:text-[15px] leading-[1.6] whitespace-pre-line max-w-[240px]">
                 {feature.description}
               </p>
             </div>

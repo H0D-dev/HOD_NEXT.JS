@@ -21,6 +21,7 @@ const feedImages = [
 
 export default function SocialFeedSection() {
   const sectionRef = useRef<HTMLElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
     gsap.from(".social-image", {
@@ -34,10 +35,32 @@ export default function SocialFeedSection() {
         start: "top 85%",
       }
     });
+
+    // Auto-scroll hint on mobile to the middle card
+    ScrollTrigger.create({
+      trigger: sectionRef.current,
+      start: "top 60%",
+      onEnter: () => {
+        if (window.innerWidth < 768 && scrollContainerRef.current) {
+          // Add a slight delay so the user notices the movement
+          setTimeout(() => {
+            const container = scrollContainerRef.current;
+            if (!container) return;
+            const middleCard = container.children[2] as HTMLElement;
+            if (middleCard) {
+              container.scrollTo({
+                left: middleCard.offsetLeft - (window.innerWidth - middleCard.offsetWidth) / 2,
+                behavior: "smooth"
+              });
+            }
+          }, 800);
+        }
+      }
+    });
   }, { scope: sectionRef });
 
   return (
-    <section ref={sectionRef} className="w-full bg-[#F9F9F6] py-8 md:py-12 border-t border-[#2C251F]/5">
+    <section ref={sectionRef} className="w-full bg-[#F9F9F6] pt-6 pb-2 md:py-8 lg:py-12 border-t border-[#2C251F]/5">
       <div className="w-full max-w-[1920px] mx-auto">
         <div className="text-center mb-10 md:mb-16 px-6">
           <Link 
@@ -50,13 +73,16 @@ export default function SocialFeedSection() {
           </Link>
         </div>
         
-        {/* Full width or near full width grid with small gaps */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 px-4 md:px-8 lg:px-12">
+        {/* Horizontal scroll on mobile, Grid on desktop */}
+        <div 
+          ref={scrollContainerRef}
+          className="flex overflow-x-auto md:grid md:grid-cols-3 lg:grid-cols-5 snap-x snap-mandatory md:snap-none gap-4 px-4 md:px-8 lg:px-12 pb-4 md:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+        >
           {feedImages.map((image, index) => (
             <div 
               key={index} 
-              className={`social-image relative w-full aspect-square overflow-hidden group ${
-                index === 4 ? 'hidden lg:block' : index === 3 ? 'hidden md:block lg:block' : ''
+              className={`social-image relative min-w-[70vw] sm:min-w-[45vw] md:min-w-0 md:w-full aspect-square overflow-hidden group snap-center shrink-0 ${
+                index === 4 ? 'block' : index === 3 ? 'block' : ''
               }`}
             >
               <Link href="https://instagram.com" target="_blank" rel="noopener noreferrer">
@@ -65,7 +91,7 @@ export default function SocialFeedSection() {
                   alt={image.alt}
                   fill
                   className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.05]"
-                  sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                  sizes="(max-width: 768px) 70vw, (max-width: 1024px) 33vw, 20vw"
                 />
                 <div className="absolute inset-0 bg-[#2C251F]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
               </Link>

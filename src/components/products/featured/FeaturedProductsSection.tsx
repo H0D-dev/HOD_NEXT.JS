@@ -54,10 +54,10 @@ const MOCK_RUGS_PRODUCTS = [
 ];
 
 export default async function FeaturedProductsSection() {
-  // Fetch products from WooCommerce API
-  const rugsProducts = await getFeaturedProducts("rugs");
+  // Fetch featured products from WooCommerce API (all categories)
+  const rugsProducts = await getFeaturedProducts();
 
-  // Fallback to mock data if the API returns an empty array
+  // Fallback to mock data if the API returns an empty array or fails
   const finalRugs = rugsProducts.length > 0 ? rugsProducts : MOCK_RUGS_PRODUCTS;
 
   return (

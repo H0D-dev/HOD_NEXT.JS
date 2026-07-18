@@ -62,11 +62,12 @@ export default function ProjectsSection() {
   }, { scope: sectionRef });
 
   return (
-    <section ref={sectionRef} className="w-full bg-[#F9F9F6] py-8 md:py-12 overflow-hidden" id="projects-section">
-      <div className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-16 mb-8 md:mb-12">
-        <div ref={headerRef} className="flex justify-between items-end mb-8 md:mb-12">
-          <div>
-            <h2 className="font-serif text-3xl md:text-4xl lg:text-[42px] text-[#2C251F] leading-[1.15] mb-6">
+    <section ref={sectionRef} className="w-full bg-[#F9F9F6] pt-8 pb-2 md:pt-12 md:pb-4 lg:pt-12 lg:pb-2 overflow-hidden" id="projects-section">
+      <div className="mx-auto max-w-[1536px] px-6 sm:px-12 md:px-16 lg:px-24 mb-6 md:mb-10">
+
+        <div className="text-center mb-6 md:mb-10" ref={headerRef}>
+          <div className="flex flex-col items-center justify-center">
+            <h2 className="font-serif text-2xl md:text-4xl lg:text-[42px] text-[#2C251F] leading-[1.15] mb-2 md:mb-4">
               Featured projects
             </h2>
           </div>

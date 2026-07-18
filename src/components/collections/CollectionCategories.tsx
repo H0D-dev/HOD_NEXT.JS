@@ -24,6 +24,18 @@ export default function CollectionCategories() {
   const headerRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
 
+  const scrollPrev = () => {
+    if (gridRef.current) {
+      gridRef.current.scrollBy({ left: -window.innerWidth * 0.65, behavior: "smooth" });
+    }
+  };
+
+  const scrollNext = () => {
+    if (gridRef.current) {
+      gridRef.current.scrollBy({ left: window.innerWidth * 0.65, behavior: "smooth" });
+    }
+  };
+
   useGSAP(() => {
     gsap.from(headerRef.current, {
       y: 40,
@@ -60,22 +72,25 @@ export default function CollectionCategories() {
   }, { scope: sectionRef });
 
   return (
-    <section ref={sectionRef} className="w-full bg-brand-light py-8 md:py-12 overflow-hidden" id="collections-section">
-      <div className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-16 mb-8 md:mb-12 flex justify-between items-end" ref={headerRef}>
-        <div>
-          <h2 className="font-serif text-3xl md:text-4xl lg:text-[42px] text-[#2C251F] leading-[1.15] mb-6">
+    <section ref={sectionRef} className="w-full bg-brand-light pt-2 pb-2 md:py-4 lg:py-6 overflow-hidden" id="collections-section">
+      <div className="mx-auto max-w-[1536px] px-6 sm:px-12 md:px-16 lg:px-24 mb-6 md:mb-10 text-center" ref={headerRef}>
+        <div className="flex flex-col items-center justify-center">
+          <h2 className="font-serif text-2xl md:text-4xl lg:text-[42px] text-[#2C251F] leading-[1.15] mb-2 md:mb-4">
             Explore our collections
           </h2>
         </div>
       </div>
 
       <div className="max-w-[1600px] mx-auto px-4 md:px-8 lg:px-12">
-        {/* 4-Column Grid */}
-        <div ref={gridRef} className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
+        {/* Horizontal scroll on mobile, 4-Column Grid on desktop */}
+        <div 
+          ref={gridRef} 
+          className="flex overflow-x-auto md:grid md:grid-cols-2 lg:grid-cols-4 snap-x snap-mandatory md:snap-none gap-4 md:gap-8 hide-scrollbar [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+        >
           {collections.map((collection, index) => (
             <div
               key={index}
-              className="relative group overflow-hidden aspect-[2/3] cursor-pointer collection-card"
+              className="relative group overflow-hidden aspect-[2/3] w-[65vw] min-w-[65vw] sm:min-w-[45vw] md:w-full md:min-w-0 snap-start shrink-0 cursor-pointer collection-card"
               onMouseEnter={() => setCursorMode("view")}
               onMouseLeave={() => setCursorMode("default")}
             >
@@ -100,6 +115,24 @@ export default function CollectionCategories() {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Navigation Arrows (Mobile Only) */}
+        <div className="flex justify-end gap-2 mt-2 md:hidden">
+          <button 
+            onClick={scrollPrev}
+            className="w-10 h-10 border border-[#2C251F]/20 flex items-center justify-center rounded-full text-[#2C251F] hover:bg-[#2C251F] hover:text-white transition-colors duration-300"
+            aria-label="Previous"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <button 
+            onClick={scrollNext}
+            className="w-10 h-10 border border-[#2C251F]/20 flex items-center justify-center rounded-full text-[#2C251F] hover:bg-[#2C251F] hover:text-white transition-colors duration-300"
+            aria-label="Next"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
         </div>
 
       </div>

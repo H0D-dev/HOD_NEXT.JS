@@ -46,8 +46,8 @@ export default function HeroSection() {
   return (
     <section ref={sectionRef} className="relative w-full h-screen flex flex-col justify-end lg:justify-center overflow-hidden bg-black" id="hero-section">
       
-      {/* ── Background Image ── */}
-      <div className="absolute inset-0 w-full h-[120%] -top-[10%] z-0" ref={bgRef}>
+      {/* ── Background Image Desktop (Parallax) ── */}
+      <div className="absolute inset-0 w-full h-[120%] -top-[10%] z-0 hidden md:block" ref={bgRef}>
         <Image
           src="/hero_background.png"
           alt="Luxury architectural interior"
@@ -60,26 +60,36 @@ export default function HeroSection() {
         <div className="absolute inset-0 bg-black/40 md:bg-gradient-to-r from-black/70 to-transparent z-10"></div>
       </div>
 
+      {/* ── Background Image Mobile (Static to prevent jitter) ── */}
+      <div className="absolute inset-0 w-full h-full z-0 block md:hidden">
+        <Image
+          src="/hero_background.png"
+          alt="Luxury architectural interior"
+          fill
+          priority
+          className="object-cover object-[center_30%]"
+          sizes="100vw"
+        />
+        {/* Subtle gradient overlay for text legibility */}
+        <div className="absolute inset-0 bg-black/50 z-10"></div>
+      </div>
+
       {/* ── Content ── */}
-      <div className="w-full px-6 sm:px-12 md:px-16 lg:px-24 xl:px-32 relative z-20 flex flex-col py-24 md:py-32 lg:pb-0">
+      <div className="w-full px-6 sm:px-12 md:px-16 lg:px-24 xl:px-32 relative z-20 flex flex-col pt-32 pb-24 md:py-32 lg:pb-0 mt-20 md:mt-12 lg:mt-16">
           {/* Hero Content Layer */}
-          <div ref={contentRef} className="flex flex-col items-start gap-0 lg:-mt-16">
+          <div ref={contentRef} className="flex flex-col items-start gap-0 text-white text-left">
             
-            <h1 className="font-serif text-[2.75rem] md:text-[4rem] lg:text-[4.75rem] leading-[1.1] tracking-tight text-white mb-4">
+            <h1 className="font-serif text-[2.75rem] md:text-[4rem] lg:text-[4.75rem] leading-[1.1] tracking-tight mb-4 max-w-4xl text-left">
               Luxury Beneath <br /> Every Space.
             </h1>
             
-            <p className="font-sans text-lg md:text-xl font-light italic mt-6 max-w-xl text-neutral-300">
+            <p className="font-sans max-w-xl text-neutral-300 text-[10px] md:text-xs uppercase tracking-[0.2em] mt-6 leading-relaxed mb-4 text-left">
               Premium handwoven rugs and bespoke curtains crafted for architectural interiors. Where heritage techniques meet modern luxury.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center mt-10">
-              <Link href="/bespoke" className="bg-brand-gold hover:bg-brand-gold-dark text-white text-[10px] md:text-xs uppercase tracking-[0.2em] py-4 px-8 transition-colors duration-300 font-sans text-center sm:text-left w-full sm:w-auto">
+            <div className="flex flex-col sm:flex-row gap-4 items-start justify-start mt-4 w-full sm:w-auto">
+              <Link href="/bespoke" className="bg-brand-gold hover:bg-brand-gold-dark text-white text-[10px] md:text-xs uppercase tracking-[0.2em] py-4 px-8 sm:px-12 sm:py-5 transition-colors duration-300 font-sans text-center sm:text-left w-full sm:w-auto font-medium">
                 Start Your Project
-              </Link>
-              
-              <Link href="/collections" className="bg-transparent border border-white/40 hover:border-brand-gold hover:text-brand-gold text-white text-[10px] md:text-xs uppercase tracking-[0.2em] py-4 px-8 transition-colors duration-300 font-sans text-center sm:text-left w-full sm:w-auto">
-                Explore Our World
               </Link>
             </div>
           </div>
