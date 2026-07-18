@@ -29,7 +29,7 @@ const testimonials = [
 
 export default function TestimonialsSection() {
   const containerRef = useRef<HTMLElement>(null);
-  const cursorRef = useRef<HTMLDivElement>(null);
+
   const [activeIndex, setActiveIndex] = useState(0);
 
   useGSAP(() => {
@@ -50,58 +50,23 @@ export default function TestimonialsSection() {
       }
     );
 
-    // Custom cursor logic
-    if (cursorRef.current && containerRef.current) {
-      const xTo = gsap.quickTo(cursorRef.current, "x", { duration: 0.2, ease: "power3" });
-      const yTo = gsap.quickTo(cursorRef.current, "y", { duration: 0.2, ease: "power3" });
-
-      const moveCursor = (e: MouseEvent) => {
-        xTo(e.clientX);
-        yTo(e.clientY);
-      };
-
-      const handleMouseEnter = () => {
-        gsap.to(cursorRef.current, { opacity: 1, scale: 1, duration: 0.3 });
-      };
-
-      const handleMouseLeave = () => {
-        gsap.to(cursorRef.current, { opacity: 0, scale: 0.5, duration: 0.3 });
-      };
-
-      const container = containerRef.current;
-      container.addEventListener("mousemove", moveCursor);
-      container.addEventListener("mouseenter", handleMouseEnter);
-      container.addEventListener("mouseleave", handleMouseLeave);
-
-      return () => {
-        container.removeEventListener("mousemove", moveCursor);
-        container.removeEventListener("mouseenter", handleMouseEnter);
-        container.removeEventListener("mouseleave", handleMouseLeave);
-      };
-    }
   }, { scope: containerRef });
 
   return (
     <section 
       ref={containerRef} 
-      className="py-12 md:py-20 bg-[var(--bg-primary)] border-b border-[var(--border-secondary)] overflow-hidden cursor-none"
+      className="py-6 md:py-8 bg-[var(--bg-primary)] border-b border-[var(--border-secondary)] overflow-hidden"
     >
-      {/* Custom Cursor */}
-      <div 
-        ref={cursorRef} 
-        className="hidden md:block pointer-events-none fixed top-0 left-0 w-16 h-16 border border-[var(--border-primary)] rounded-full z-50 -translate-x-1/2 -translate-y-1/2 opacity-0 scale-50 mix-blend-difference"
-      >
-      </div>
 
       <div className="container mx-auto px-6 relative z-10">
         
         <div className="flex flex-col mb-8 border-b border-[var(--border-secondary)] pb-4">
-          <div className="flex flex-col md:flex-row justify-between items-end w-full">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end w-full">
             <div className="flex flex-col max-w-2xl">
-              <span className="test-elem text-[10px] uppercase tracking-[0.1em] font-medium text-[var(--text-secondary)] mb-2 font-sans">
+              <span className="test-elem text-[10px] uppercase tracking-[0.1em] font-medium text-[var(--text-secondary)] mb-2">
                 Client Perspectives
               </span>
-              <h2 className="test-elem font-serif text-lg md:text-xl lg:text-2xl leading-[1.2] tracking-tight text-[var(--text-primary)] mb-4 md:mb-0">
+              <h2 className="test-elem font-medium text-lg md:text-xl lg:text-2xl leading-[1.2] tracking-tight text-[var(--text-primary)] mb-4 md:mb-0">
                 A Legacy of Trust.
               </h2>
             </div>
@@ -131,23 +96,23 @@ export default function TestimonialsSection() {
           </div>
         </div>
 
-        {/* Height drastically reduced for new compact font sizing */}
-        <div className="test-elem relative h-[250px] sm:h-[180px] lg:h-[150px]">
+        {/* Dynamic height container using grid stacking */}
+        <div className="test-elem grid">
           {testimonials.map((test, idx) => (
             <div 
               key={idx}
-              className={`absolute top-0 left-0 w-full transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+              className={`[grid-area:1/1] transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                 idx === activeIndex 
-                  ? 'opacity-100 translate-y-0 pointer-events-auto' 
-                  : 'opacity-0 translate-y-8 pointer-events-none'
+                  ? 'opacity-100 translate-y-0 pointer-events-auto z-10' 
+                  : 'opacity-0 translate-y-8 pointer-events-none z-0 invisible'
               }`}
             >
-              <p className="font-serif text-lg md:text-xl lg:text-2xl leading-[1.4] text-[var(--text-primary)] max-w-4xl mb-6">
+              <p className="font-light text-lg md:text-xl lg:text-2xl leading-[1.4] text-[var(--text-primary)] max-w-4xl mb-6">
                 &ldquo;{test.quote}&rdquo;
               </p>
               <div className="flex flex-col">
-                <span className="font-serif text-lg text-[var(--text-primary)] mb-1">{test.author}</span>
-                <span className="font-sans text-xs text-[var(--text-secondary)]">{test.role}</span>
+                <span className="font-medium text-lg text-[var(--text-primary)] mb-1">{test.author}</span>
+                <span className="text-xs text-[var(--text-secondary)]">{test.role}</span>
               </div>
             </div>
           ))}

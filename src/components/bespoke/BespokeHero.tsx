@@ -16,11 +16,10 @@ export default function BespokeHero() {
   const bgRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    gsap.fromTo(
+    gsap.to(
       bgRef.current,
-      { yPercent: -15 },
       {
-        yPercent: 15,
+        yPercent: 10,
         ease: "none",
         scrollTrigger: {
           trigger: containerRef.current,
@@ -65,20 +64,20 @@ export default function BespokeHero() {
       </div>
 
       {/* Content */}
-      <div className="w-full px-6 sm:px-12 md:px-16 lg:px-24 xl:px-32 relative z-20 flex flex-col py-24 md:py-32 lg:pb-0">
-        <div className="flex flex-col items-start gap-0 lg:-mt-16 text-white">
-          <h1 className="animate-hero font-serif text-[2.75rem] md:text-[4rem] lg:text-[4.75rem] leading-[1.1] tracking-tight mb-4 max-w-4xl text-left">
+      <div className="w-full px-6 sm:px-12 md:px-16 lg:px-24 xl:px-32 relative z-20 flex flex-col pt-32 pb-24 md:py-32 lg:pb-0 mt-20 md:mt-12 lg:mt-16">
+        <div className="flex flex-col items-start gap-0 text-white text-left">
+          <h1 className="animate-hero font-light text-[2.25rem] sm:text-[2.75rem] md:text-[4rem] lg:text-[4rem] leading-[1.1] tracking-wide mb-4 max-w-4xl text-left">
             Bespoke Rugs,<br />
             Crafted as Architecture
           </h1>
-          <p className="animate-hero font-sans max-w-xl text-neutral-300 text-[10px] md:text-xs uppercase tracking-[0.2em] mt-6 leading-relaxed mb-10 text-left">
+          <p className="animate-hero max-w-xl text-neutral-300 text-[10px] md:text-xs uppercase tracking-[0.2em] mt-6 leading-relaxed mb-10 text-left">
             Every space deserves a signature. We design and craft rugs tailored to your vision, scale, and story.
           </p>
 
           <div className="animate-hero flex flex-col sm:flex-row items-start justify-start w-full sm:w-auto">
-            <Link href="https://wa.me/971521236888?text=Hello%2C%20I%20would%20like%20to%20start%20my%20bespoke%20project!" target="_blank" rel="noopener noreferrer" className="group relative w-full sm:w-auto inline-flex items-center justify-center px-6 py-4 sm:px-12 sm:py-5 border border-white overflow-hidden text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-center">
-              <span className="relative z-10 transition-colors duration-[0.6s] group-hover:text-black">Start Your Bespoke Project</span>
-              <div className="absolute inset-0 bg-white translate-y-[101%] group-hover:translate-y-0 transition-transform duration-[0.6s] ease-[cubic-bezier(0.22,1,0.36,1)] z-0" />
+            <Link href="https://wa.me/971521236888?text=Hello%2C%20I%20would%20like%20to%20start%20my%20bespoke%20project!" target="_blank" rel="noopener noreferrer" className="group relative w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 sm:px-10 sm:py-4 border-[0.5px] border-white/60 overflow-hidden text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-center">
+              <span className="relative z-10 transition-colors duration-[0.6s] group-hover:text-white">Start Your Bespoke Project</span>
+              <div className="absolute inset-0 bg-[var(--accent-primary)] translate-y-[101%] group-hover:translate-y-0 transition-transform duration-[0.6s] ease-[cubic-bezier(0.22,1,0.36,1)] z-0" />
             </Link>
           </div>
         </div>

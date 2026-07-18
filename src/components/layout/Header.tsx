@@ -14,7 +14,7 @@ import "./Header.css";
 
 /* ── Navigation Links Data ── */
 const NAV_LINKS = [
-  { label: "Home", href: "/" },
+  { label: "Bespoke", href: "/bespoke" },
   { label: "Products", href: "/products" },
   { label: "Projects", href: "/projects" },
   { label: "About", href: "/about" },
@@ -181,7 +181,7 @@ export default function Header() {
               <div className="header__currency-selector relative block" ref={currencyRef}>
                 <button
                   onClick={() => setIsCurrencyOpen(!isCurrencyOpen)}
-                  className={`flex items-center gap-1 bg-transparent border-none ${isTransparent ? 'text-white' : 'text-[var(--text-primary)]'} text-[var(--text-sm)] font-medium outline-none cursor-pointer tracking-wider hover:opacity-70 transition-opacity`}
+                  className={`flex items-center gap-1 bg-transparent border-none ${isTransparent ? 'text-white' : 'text-[var(--text-primary)]'} text-[12px] font-normal uppercase tracking-[0.15em] outline-none cursor-pointer hover:opacity-70 transition-opacity`}
                   aria-label="Select Currency"
                 >
                   {currency}

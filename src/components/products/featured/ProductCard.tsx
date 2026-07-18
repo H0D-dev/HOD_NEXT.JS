@@ -43,7 +43,7 @@ export default function ProductCard({ product, onMouseEnter, onMouseLeave }: Pro
         />
       </div>
       <div className="flex justify-between items-center px-1">
-        <h3 className="font-sans text-sm font-medium text-brand-dark">
+        <h3 className="text-sm font-medium text-brand-dark">
           {product.name}
         </h3>
       </div>

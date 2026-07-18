@@ -62,12 +62,12 @@ export default function ProjectsSection() {
   }, { scope: sectionRef });
 
   return (
-    <section ref={sectionRef} className="w-full bg-[#F9F9F6] pt-8 pb-2 md:pt-12 md:pb-4 lg:pt-12 lg:pb-2 overflow-hidden" id="projects-section">
+    <section ref={sectionRef} className="w-full bg-[var(--bg-primary)] pt-8 pb-2 md:pt-12 md:pb-4 lg:pt-12 lg:pb-2 overflow-hidden" id="projects-section">
       <div className="mx-auto max-w-[1536px] px-6 sm:px-12 md:px-16 lg:px-24 mb-6 md:mb-10">
 
         <div className="text-center mb-6 md:mb-10" ref={headerRef}>
           <div className="flex flex-col items-center justify-center">
-            <h2 className="font-serif text-2xl md:text-4xl lg:text-[42px] text-[#2C251F] leading-[1.15] mb-2 md:mb-4">
+            <h2 className="text-xl lg:text-2xl font-medium text-[var(--text-primary)] leading-[1.15] mb-2 md:mb-4">
               Featured projects
             </h2>
           </div>
@@ -95,7 +95,7 @@ export default function ProjectsSection() {
               </div>
 
               {/* Text Below Image */}
-              <span className="font-sans text-[10px] md:text-xs uppercase tracking-widest text-[#2C251F]/70 mt-5 transition-colors group-hover:text-[#2C251F]">
+              <span className="text-[10px] md:text-xs uppercase tracking-widest text-[var(--text-secondary)] mt-5 transition-colors group-hover:text-[var(--text-primary)]">
                 {project.title}
               </span>
 

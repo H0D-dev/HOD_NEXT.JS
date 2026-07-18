@@ -10,7 +10,7 @@ export default function AboutSection() {
 
           {/* LEFT SIDE: Heading & Staggered Image Grid */}
           <div className="flex flex-col lg:col-span-5">
-            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl mb-12 tracking-wide text-[var(--text-primary)]">
+            <h2 className="text-2xl md:text-3xl font-light mb-12 tracking-wide text-[var(--text-primary)]">
               The Art of Weaving
             </h2>
 
@@ -63,11 +63,11 @@ export default function AboutSection() {
 
           {/* RIGHT SIDE: Text Content & CTA */}
           <div className="flex flex-col justify-center lg:col-span-6 lg:col-start-7 lg:pl-8 mt-8 md:mt-0">
-            <p className="text-[var(--text-secondary)] text-sm md:text-base leading-relaxed mb-6 md:mb-8 font-sans">
+            <p className="text-[var(--text-secondary)] text-sm md:text-base leading-relaxed mb-6 md:mb-8">
               Every House of Décor creation begins with a profound respect for heritage. Our master artisans employ centuries-old techniques, meticulously hand-knotting the finest silks and wools to breathe life into modern geometric and classical patterns.
             </p>
 
-            <p className="text-[var(--text-secondary)] text-sm md:text-base leading-relaxed mb-10 md:mb-12 font-sans">
+            <p className="text-[var(--text-secondary)] text-sm md:text-base leading-relaxed mb-10 md:mb-12">
               We believe true luxury lies in the details. From the initial dye of the yarn to the final shear, our process is a slow, deliberate pursuit of perfection, resulting in textiles that are not merely decor, but enduring works of art.
             </p>
 

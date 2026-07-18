@@ -79,17 +79,18 @@ export default function HeroSection() {
           {/* Hero Content Layer */}
           <div ref={contentRef} className="flex flex-col items-start gap-0 text-white text-left">
             
-            <h1 className="font-serif text-[2.75rem] md:text-[4rem] lg:text-[4.75rem] leading-[1.1] tracking-tight mb-4 max-w-4xl text-left">
+            <h1 className="font-light text-[2.75rem] md:text-[4rem] lg:text-[4.75rem] leading-[1.1] tracking-wide mb-4 max-w-4xl text-left">
               Luxury Beneath <br /> Every Space.
             </h1>
             
-            <p className="font-sans max-w-xl text-neutral-300 text-[10px] md:text-xs uppercase tracking-[0.2em] mt-6 leading-relaxed mb-4 text-left">
+            <p className="max-w-xl text-neutral-300 text-[10px] md:text-xs uppercase tracking-[0.2em] mt-6 leading-relaxed mb-4 text-left">
               Premium handwoven rugs and bespoke curtains crafted for architectural interiors. Where heritage techniques meet modern luxury.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 items-start justify-start mt-4 w-full sm:w-auto">
-              <Link href="/bespoke" className="bg-brand-gold hover:bg-brand-gold-dark text-white text-[10px] md:text-xs uppercase tracking-[0.2em] py-4 px-8 sm:px-12 sm:py-5 transition-colors duration-300 font-sans text-center sm:text-left w-full sm:w-auto font-medium">
-                Start Your Project
+              <Link href="/bespoke" className="group relative w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 sm:px-10 sm:py-4 border-[0.5px] border-white/60 overflow-hidden text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-center text-white">
+                <span className="relative z-10 transition-colors duration-[0.6s] group-hover:text-white">Start Your Project</span>
+                <div className="absolute inset-0 bg-[var(--accent-primary)] translate-y-[101%] group-hover:translate-y-0 transition-transform duration-[0.6s] ease-[cubic-bezier(0.22,1,0.36,1)] z-0" />
               </Link>
             </div>
           </div>
@@ -97,7 +98,7 @@ export default function HeroSection() {
 
         {/* Bottom Element: Vertical SCROLL indicator */}
         <div className="absolute bottom-8 right-8 flex flex-col items-center gap-4 z-20 pb-0 hidden md:flex">
-          <span className="font-sans text-[10px] text-white uppercase tracking-[0.3em]" style={{ writingMode: 'vertical-rl' }}>
+          <span className="text-[10px] text-white uppercase tracking-[0.3em]" style={{ writingMode: 'vertical-rl' }}>
             SCROLL
           </span>
           <div className="w-[1px] h-16 bg-white/30 overflow-hidden">

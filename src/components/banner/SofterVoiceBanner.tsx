@@ -13,7 +13,7 @@ export default function SofterVoiceBanner() {
         viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
       >
-        <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-[var(--text-primary)] font-normal leading-tight tracking-tight flex flex-col md:flex-row items-center gap-2 md:gap-4">
+        <h2 className="text-3xl md:text-4xl lg:text-5xl text-[var(--text-primary)] font-normal leading-tight tracking-tight flex flex-col md:flex-row items-center gap-2 md:gap-4">
           <span className="relative flex items-center gap-3">
             Give Your Home
           </span>

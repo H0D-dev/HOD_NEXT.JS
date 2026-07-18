@@ -109,7 +109,7 @@
 }
 
 .process__heading em {
-  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-family: var(--font-jost), 'Jost', sans-serif;
   font-style: italic;
   font-weight: 300;
 }
@@ -312,7 +312,7 @@
 }
 
 .process__quote-icon {
-  font-family: var(--font-inter), 'Inter', sans-serif;
+  font-family: var(--font-jost), 'Jost', sans-serif;
   font-size: 24px;
   font-weight: 700;
   color: var(--text-primary);
@@ -321,7 +321,7 @@
 }
 
 .process__quote-text {
-  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-family: var(--font-jost), 'Jost', sans-serif;
   font-size: var(--text-lg);
   font-weight: 400;
   color: var(--text-primary);

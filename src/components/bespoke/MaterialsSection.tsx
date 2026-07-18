@@ -2,69 +2,63 @@
 
 import React, { useRef } from "react";
 import Image from "next/image";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 const materials = [
   { img: "/images/bespoke/bamboo_silk.png", title: "Bamboo Silk", desc: "Luminous, soft, and sustainably sourced for a stunning visual sheen." },
   { img: "/images/bespoke/nz_wool.png", title: "New Zealand Wool", desc: "Incredibly durable, tactile, and rich with natural insulating properties." },
-  { img: "/images/bespoke/bamboo_silk.png", title: "Silk Blends", desc: "A masterful combination of strength and undeniable luxury." },
-  { img: "/images/bespoke/nz_wool.png", title: "Natural Dyes", desc: "Time-honored extraction methods for deep, enduring colorways." },
+  { img: "/images/bespoke/cashmere_blend.png", title: "Cashmere Blends", desc: "A masterful combination of strength and undeniable luxury." },
+  { img: "/images/materials.png", title: "Natural Dyes", desc: "Time-honored extraction methods for deep, enduring colorways." },
 ];
-
-const getTopClass = (idx: number) => {
-  const zIndexes = ["z-10", "z-20", "z-30", "z-40", "z-50"];
-  switch (idx) {
-    case 0: return `top-[4rem] md:top-[6rem] ${zIndexes[0]}`;
-    case 1: return `top-[4.5rem] md:top-[6.5rem] ${zIndexes[1]}`;
-    case 2: return `top-[5rem] md:top-[7rem] ${zIndexes[2]}`;
-    case 3: return `top-[5.5rem] md:top-[7.5rem] ${zIndexes[3]}`;
-    default: return `top-[6rem] md:top-[8rem] ${zIndexes[4]}`;
-  }
-};
 
 export default function MaterialsSection() {
   const containerRef = useRef<HTMLElement>(null);
 
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"],
+  });
+
+  const imgY = useTransform(scrollYProgress, [0, 1], ["-15%", "15%"]);
+
   return (
-    <section ref={containerRef} className="w-full bg-[#2C251F] pb-16 md:pb-32 pt-16 md:pt-32">
+    <section ref={containerRef} className="w-full bg-[#2C251F] py-8 md:py-10 lg:py-12 border-b border-[#3d332b]">
       <div className="container mx-auto px-6 max-w-[1400px]">
         {/* Top Header */}
-        <div className="flex flex-col items-center text-center w-full mb-16 md:mb-24 px-4 md:px-8">
-          <span className="text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-[#F7F77E] mb-6 font-sans">
+        <div className="flex flex-col items-center text-center w-full mb-8 md:mb-10 px-4 md:px-8">
+          <span className="text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-[var(--accent-primary)] mb-4">
             Our Materials
           </span>
-          <h2 className="font-serif text-xl md:text-4xl lg:text-[2.75rem] leading-[1.2] tracking-wide text-white max-w-4xl">
+          <h2 className="font-light text-xl md:text-2xl lg:text-3xl leading-[1.2] tracking-wide text-white max-w-3xl">
             Materials chosen not for trends, but for timelessness.
           </h2>
         </div>
 
-        {/* Sticky Stacking Grid */}
-        <div className="flex flex-col w-full relative space-y-12 md:space-y-24">
+        {/* 4 Cards Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           {materials.map((mat, idx) => (
-            <div
-              key={idx}
-              className={`craft-panel sticky ${getTopClass(idx)} w-full relative min-h-[450px] md:h-[550px] overflow-hidden shadow-[0_-10px_40px_rgba(0,0,0,0.5)]`}
-            >
-              {/* Full Background Image */}
-              <div className="absolute inset-0 w-full h-full z-0">
-                <Image
-                  src={mat.img}
-                  alt={mat.title}
-                  fill
-                  className="object-cover"
-                />
-                {/* Gradient Overlay for text legibility */}
-                <div className="absolute inset-0 bg-gradient-to-r from-[#2C251F]/90 via-[#2C251F]/50 to-transparent"></div>
+            <div key={idx} className="group flex flex-col cursor-pointer">
+              <div className="relative w-full aspect-[3/4] overflow-hidden bg-[#1f1a16] mb-5">
+                <motion.div 
+                  className="absolute inset-0 w-full h-[130%] -top-[15%]"
+                  style={{ y: imgY }}
+                >
+                  <Image
+                    src={mat.img}
+                    alt={mat.title}
+                    fill
+                    className="object-cover transition-transform duration-[1s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
+                  />
+                </motion.div>
               </div>
-
-              {/* Text Overlay */}
-              <div className="relative z-10 w-full h-full md:w-[70%] lg:w-[60%] flex flex-col justify-center items-start p-8 md:p-16 lg:p-24 text-white">
-                <span className="text-[10px] md:text-xs uppercase tracking-[0.2em] text-neutral-300 mb-4 block font-sans">
+              <div className="flex flex-col">
+                <span className="text-[10px] uppercase tracking-[0.2em] text-[var(--accent-primary)] mb-2 block font-medium">
                   0{idx + 1}
                 </span>
-                <h3 className="font-serif text-[2.75rem] md:text-[4rem] lg:text-[4.75rem] leading-[1.1] tracking-tight text-white mb-6">
+                <h3 className="font-medium text-base md:text-lg leading-tight text-white mb-2">
                   {mat.title}
                 </h3>
-                <p className="font-sans max-w-xl text-neutral-300 text-sm md:text-base leading-relaxed mb-10">
+                <p className="text-neutral-400 text-xs md:text-sm font-light leading-relaxed max-w-sm">
                   {mat.desc}
                 </p>
               </div>

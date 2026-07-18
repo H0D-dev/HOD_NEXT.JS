@@ -29,10 +29,10 @@ export default function FeaturedProductsClientSection({ rugsProducts }: Featured
 
       <div className="mx-auto max-w-[1536px] px-6 sm:px-12 md:px-16 lg:px-24 mb-8 md:mb-16 text-center">
         <div className="flex flex-col items-center justify-center">
-          <h2 className="font-serif text-2xl md:text-4xl lg:text-[42px] text-[#2C251F] leading-[1.15] mb-4 md:mb-6">
+          <h2 className="text-xl lg:text-2xl font-medium text-[#2C251F] leading-[1.15] mb-4 md:mb-6">
             Featured Rugs
           </h2>
-          <p className="font-sans text-[#2C251F]/80 text-sm md:text-[15px] leading-[1.6] max-w-md">
+          <p className="text-[#2C251F]/80 text-sm md:text-[15px] leading-[1.6] max-w-md">
             Explore our curated collection of handcrafted rugs designed for luxury interiors.
           </p>
         </div>

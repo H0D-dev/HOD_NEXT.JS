@@ -75,7 +75,7 @@ export default function CollectionCategories() {
     <section ref={sectionRef} className="w-full bg-brand-light pt-2 pb-2 md:py-4 lg:py-6 overflow-hidden" id="collections-section">
       <div className="mx-auto max-w-[1536px] px-6 sm:px-12 md:px-16 lg:px-24 mb-6 md:mb-10 text-center" ref={headerRef}>
         <div className="flex flex-col items-center justify-center">
-          <h2 className="font-serif text-2xl md:text-4xl lg:text-[42px] text-[#2C251F] leading-[1.15] mb-2 md:mb-4">
+          <h2 className="text-xl lg:text-2xl font-medium text-[#2C251F] leading-[1.15] mb-2 md:mb-4">
             Explore our collections
           </h2>
         </div>
@@ -109,7 +109,7 @@ export default function CollectionCategories() {
 
               {/* Text inside the card */}
               <div className="absolute bottom-8 w-full text-center px-4 pointer-events-none z-20">
-                <h3 className="font-sans text-xs md:text-sm uppercase tracking-[0.2em] text-white">
+                <h3 className="text-xs md:text-sm uppercase tracking-[0.2em] text-white">
                   {collection.title}
                 </h3>
               </div>

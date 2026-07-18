@@ -63,14 +63,14 @@ export default function NewsletterSection() {
             >
             <motion.span 
               variants={itemVariants}
-              className="uppercase text-[10px] md:text-xs tracking-[0.2em] text-[var(--text-muted)] mb-4 md:mb-6 block font-sans"
+              className="uppercase text-[10px] md:text-xs tracking-[0.2em] text-[var(--text-muted)] mb-4 md:mb-6 block"
             >
               Stay Inspired
             </motion.span>
             
             <motion.h2 
               variants={itemVariants}
-              className="font-serif text-[38px] md:text-5xl lg:text-6xl mb-5 md:mb-8 leading-[1.1] md:leading-[0.9] text-[var(--text-primary)] relative inline-flex items-start"
+              className="text-2xl md:text-3xl font-light mb-5 md:mb-8 leading-[1.1] md:leading-[0.9] text-[var(--text-primary)] relative inline-flex items-start"
             >
               <span className="inline-block max-w-[220px] md:max-w-none">
                 Bring Luxury Home
@@ -80,7 +80,7 @@ export default function NewsletterSection() {
             
             <motion.p 
               variants={itemVariants}
-              className="text-[var(--text-secondary)] text-base md:text-lg leading-relaxed mb-8 md:mb-12 font-sans font-light"
+              className="text-[var(--text-secondary)] text-base md:text-lg leading-relaxed mb-8 md:mb-12 font-light"
             >
               Get exclusive access to new collections, design inspiration, and bespoke interior insights curated for refined living.
             </motion.p>
@@ -91,7 +91,7 @@ export default function NewsletterSection() {
                 animate={{ opacity: 1 }} 
                 className="p-8 border border-[var(--border-secondary)] bg-[var(--bg-secondary)] text-center"
               >
-                <h3 className="font-sans text-2xl mb-2 text-[var(--accent-primary)] font-medium">Welcome to the Community</h3>
+                <h3 className="text-2xl mb-2 text-[var(--accent-primary)] font-medium">Welcome to the Community</h3>
                 <p className="text-[var(--text-secondary)] font-light">Thank you for joining. We will be in touch soon.</p>
               </motion.div>
             ) : (
@@ -108,7 +108,7 @@ export default function NewsletterSection() {
                       id="firstName" 
                       name="firstName" 
                       placeholder="First Name" 
-                      className="w-full h-[54px] px-6 bg-white text-black border border-[#d1d1d1] focus:outline-none focus:border-black transition-colors font-sans placeholder-[#888] rounded-none"
+                      className="w-full h-[54px] px-6 bg-white text-black border border-[#d1d1d1] focus:outline-none focus:border-black transition-colors placeholder-[#888] rounded-none"
                     />
                   </div>
                   <div className="flex flex-col">
@@ -118,7 +118,7 @@ export default function NewsletterSection() {
                       id="lastName" 
                       name="lastName" 
                       placeholder="Last Name" 
-                      className="w-full h-[54px] px-6 bg-white text-black border border-[#d1d1d1] focus:outline-none focus:border-black transition-colors font-sans placeholder-[#888] rounded-none"
+                      className="w-full h-[54px] px-6 bg-white text-black border border-[#d1d1d1] focus:outline-none focus:border-black transition-colors placeholder-[#888] rounded-none"
                     />
                   </div>
                 </div>
@@ -130,7 +130,7 @@ export default function NewsletterSection() {
                     id="email" 
                     name="email" 
                     placeholder="Email Address" 
-                    className="w-full h-[54px] px-6 bg-white text-black border border-[#d1d1d1] focus:outline-none focus:border-black transition-colors font-sans placeholder-[#888] rounded-none"
+                    className="w-full h-[54px] px-6 bg-white text-black border border-[#d1d1d1] focus:outline-none focus:border-black transition-colors placeholder-[#888] rounded-none"
                   />
                 </div>
 
