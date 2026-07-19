@@ -21,16 +21,16 @@ export default function CareHero() {
       className="w-full pt-24 pb-12 lg:pt-32 lg:pb-16 px-4 md:px-8 bg-[var(--bg-primary)] border-b border-[var(--border-secondary)]"
     >
       <div className="max-w-[1440px] mx-auto flex flex-col items-center text-center">
-        <span className="care-hero-el block text-[var(--text-muted)] font-sans text-xs md:text-sm uppercase tracking-widest mb-6 md:mb-8 font-medium">
+        <span className="care-hero-el block text-[var(--accent-primary)] font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] mb-6 md:mb-8 font-medium">
           Guidance
         </span>
-        <h1 className="care-hero-el font-serif text-3xl md:text-5xl lg:text-[4rem] leading-[1.1] tracking-tight text-[var(--text-primary)] mb-6">
+        <h1 className="care-hero-el font-sans text-[clamp(32px,5vw,64px)] font-light leading-none tracking-wide text-[var(--text-primary)] mb-6">
           Care & Cleaning
         </h1>
-        <h2 className="care-hero-el font-sans text-[var(--text-primary)] text-base md:text-lg leading-relaxed mb-6">
+        <h2 className="care-hero-el font-sans text-[var(--text-primary)] text-sm md:text-base lg:text-lg font-light leading-relaxed mb-6">
           Designed for Real Life
         </h2>
-        <p className="care-hero-el font-sans text-[var(--text-secondary)] text-base md:text-lg leading-relaxed max-w-xl mx-auto mb-12">
+        <p className="care-hero-el font-sans text-[var(--text-secondary)] text-xs md:text-sm lg:text-base leading-relaxed max-w-xl mx-auto mb-12">
           With proper care and understanding of natural materials, your House of Décor pieces will age gracefully for generations.
         </p>
 

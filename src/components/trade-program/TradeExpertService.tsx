@@ -41,55 +41,49 @@ export default function TradeExpertService() {
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any }}
           className="text-center mb-8 md:mb-12"
         >
-          <span className="block text-[var(--text-muted)] font-sans text-xs uppercase tracking-widest mb-4">
-            Our Commitment
-          </span>
-          <h2 className="font-serif text-xl md:text-2xl lg:text-3xl leading-[1.2] text-[var(--text-primary)] tracking-tight">
-            Expert Service & <br className="hidden md:block" /> Trusted Guidance
+          <h2 className="font-sans text-xl lg:text-2xl font-light text-[var(--text-primary)] tracking-tight">
+            Expert Services
           </h2>
         </motion.div>
 
-        <div className="flex flex-col gap-16 md:gap-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16">
           {services.map((service, index) => {
-            const isReversed = index % 2 !== 0;
-
             return (
               <div
                 key={service.id}
-                className={`flex flex-col ${isReversed ? "md:flex-row-reverse" : "md:flex-row"
-                  } items-center gap-8 md:gap-16`}
+                className="flex flex-col gap-6 group"
               >
                 {/* Image Side */}
                 <motion.div
-                  initial={{ opacity: 0, x: isReversed ? 40 : -40 }}
-                  whileInView={{ opacity: 1, x: 0 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] as any }}
-                  className="flex-1 w-full aspect-[4/3] md:aspect-[4/3] relative overflow-hidden bg-[var(--bg-secondary)]"
+                  transition={{ duration: 0.8, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] as any }}
+                  className="w-full aspect-[16/9] relative overflow-hidden bg-[var(--bg-secondary)]"
                 >
                   <Image
                     src={service.image}
                     alt={service.title}
                     fill
-                    className="object-cover transition-transform duration-[1.5s] hover:scale-105 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                    className="object-cover transition-transform duration-[1.5s] group-hover:scale-105 ease-[cubic-bezier(0.22,1,0.36,1)]"
                   />
                 </motion.div>
 
                 {/* Text Side */}
                 <motion.div
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] as any }}
-                  className="flex-1 w-full flex flex-col justify-center"
+                  transition={{ duration: 0.8, delay: index * 0.1 + 0.2, ease: [0.22, 1, 0.36, 1] as any }}
+                  className="w-full flex flex-col"
                 >
                   <span className="font-sans text-xs text-[var(--text-muted)] tracking-widest mb-3">
                     0{service.id}
                   </span>
-                  <h3 className="font-serif text-2xl lg:text-3xl leading-[1.2] text-[var(--text-primary)] mb-4">
+                  <h3 className="font-sans text-xl lg:text-2xl font-light text-[var(--text-primary)] mb-2">
                     {service.title}
                   </h3>
-                  <p className="font-sans text-sm md:text-base text-[var(--text-secondary)] leading-relaxed max-w-md">
+                  <p className="font-sans text-sm md:text-base font-light text-[var(--text-secondary)] leading-relaxed max-w-md">
                     {service.description}
                   </p>
                 </motion.div>

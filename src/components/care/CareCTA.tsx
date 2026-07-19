@@ -35,10 +35,10 @@ export default function CareCTA() {
         <span className="cta-element block text-[var(--text-muted)] font-sans text-xs uppercase tracking-widest mb-6">
           Restoration & Maintenance
         </span>
-        <h2 className="cta-element font-serif text-xl md:text-3xl lg:text-4xl leading-[1.2] tracking-tight text-[var(--text-primary)] mb-4 md:mb-6">
+        <h2 className="cta-element font-sans font-light text-xl md:text-2xl lg:text-3xl leading-[1.2] tracking-wide text-[var(--text-primary)] mb-4 md:mb-6">
           Need Professional Assistance?
         </h2>
-        <p className="cta-element font-sans text-[var(--text-secondary)] text-sm md:text-base leading-relaxed mb-10 max-w-xl">
+        <p className="cta-element font-sans text-[var(--text-secondary)] text-xs md:text-sm lg:text-base leading-relaxed mb-10 max-w-xl">
           If your piece requires deep cleaning, stain removal, or professional restoration, our team can recommend certified specialists.
         </p>
         

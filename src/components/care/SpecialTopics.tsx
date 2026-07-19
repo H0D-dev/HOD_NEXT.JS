@@ -68,7 +68,7 @@ export default function SpecialTopics() {
           <span className="block text-[var(--text-muted)] font-sans text-xs uppercase tracking-widest mb-3 md:mb-4">
             Expert Knowledge
           </span>
-          <h2 className="font-serif text-xl md:text-2xl lg:text-3xl leading-[1.2] text-[var(--text-primary)] tracking-tight">
+          <h2 className="font-sans font-light text-xl md:text-2xl lg:text-3xl leading-[1.2] tracking-wide text-[var(--text-primary)]">
             Special Topics
           </h2>
         </div>
@@ -79,10 +79,10 @@ export default function SpecialTopics() {
               key={topic.id}
               className="special-card flex flex-col pt-4 md:pt-6 border-t border-[var(--border-secondary)]"
             >
-              <h3 className="font-sans text-base md:text-lg font-medium text-[var(--text-primary)] mb-4">
+              <h3 className="font-sans font-light text-base md:text-lg lg:text-xl text-[var(--text-primary)] mb-3 md:mb-4">
                 {topic.title}
               </h3>
-              <p className="font-sans text-[var(--text-secondary)] text-sm leading-relaxed">
+              <p className="font-sans text-[var(--text-secondary)] text-xs md:text-sm lg:text-base leading-relaxed">
                 {topic.description}
               </p>
             </div>

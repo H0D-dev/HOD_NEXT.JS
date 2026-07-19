@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export default function TradeHero() {
   return (
-    <section className="w-full flex flex-col lg:flex-row bg-[var(--bg-primary)] pt-24 pb-12 lg:pt-32 lg:pb-16 min-h-[70vh]">
+    <section className="w-full flex flex-col lg:flex-row bg-[var(--bg-primary)] pt-24 pb-8 md:pb-12 lg:pt-32 lg:pb-16 lg:min-h-[70vh]">
       {/* Left Content */}
       <div className="flex-1 flex flex-col justify-center px-6 py-12 md:px-16 lg:px-24 xl:px-32 relative z-10">
         <motion.div
@@ -17,10 +17,10 @@ export default function TradeHero() {
           <span className="block text-[var(--accent-primary)] font-sans text-xs md:text-sm uppercase tracking-widest mb-6 md:mb-8 font-medium">
             Partnership
           </span>
-          <h1 className="font-serif text-3xl md:text-5xl lg:text-[4rem] leading-[1.1] tracking-tight text-[var(--text-primary)] mb-8">
+          <h1 className="font-sans text-[clamp(36px,6vw,72px)] font-light leading-none tracking-wide text-[var(--text-primary)] mb-6">
             Designer Trade Program
           </h1>
-          <p className="font-sans text-[var(--text-secondary)] text-base md:text-lg leading-relaxed mb-12 max-w-md">
+          <p className="font-sans text-[var(--text-secondary)] text-base md:text-lg font-light leading-relaxed mb-8 max-w-md">
             Exclusive benefits for interior design professionals. Elevate your spaces with our premium handmade rugs and bespoke carpets.
           </p>
           <a 
@@ -35,12 +35,12 @@ export default function TradeHero() {
       </div>
 
       {/* Right Image */}
-      <div className="flex-1 relative min-h-[50vh] lg:min-h-full p-6 md:p-12 lg:p-16 flex items-center justify-center">
+      <div className="hidden md:flex flex-1 relative min-h-[50vh] lg:min-h-full p-6 md:p-12 lg:p-16 items-center justify-center">
         <motion.div
           initial={{ opacity: 0, scale: 1.05 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] as any }}
-          className="w-full h-full min-h-[400px] relative overflow-hidden"
+          className="w-full h-full min-h-[250px] md:min-h-[400px] relative overflow-hidden"
         >
           <Image
             src="/curtains/set2-room.png"

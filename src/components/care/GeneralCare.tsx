@@ -74,8 +74,8 @@ export default function GeneralCare() {
   return (
     <section ref={containerRef} className="w-full py-8 md:py-12 px-4 md:px-8 bg-[var(--bg-secondary)]">
       <div className="max-w-[1440px] mx-auto">
-        <div className="gen-care-header text-center mb-10 md:mb-12">
-          <h2 className="font-serif text-xl md:text-2xl lg:text-3xl leading-[1.2] text-[var(--text-primary)] tracking-tight">
+        <div className="gen-care-header text-center mb-8 md:mb-10">
+          <h2 className="font-sans font-light text-xl md:text-2xl lg:text-3xl leading-[1.2] text-[var(--text-primary)] tracking-wide">
             General Maintenance
           </h2>
         </div>
@@ -86,15 +86,15 @@ export default function GeneralCare() {
             return (
               <div
                 key={topic.id}
-                className="gen-care-card bg-[var(--surface-primary)] p-8 md:p-10 hover:bg-[var(--bg-tertiary)] transition-colors duration-500 flex flex-col group h-full"
+                className="gen-care-card bg-[var(--surface-primary)] p-5 md:p-8 hover:bg-[var(--bg-tertiary)] transition-colors duration-500 flex flex-col group h-full"
               >
-                <div className="mb-8 p-4 bg-transparent border border-[var(--border-primary)] rounded-none text-[var(--text-primary)] group-hover:bg-[var(--text-primary)] group-hover:text-[var(--bg-primary)] transition-colors duration-500 self-start">
-                  <Icon size={24} strokeWidth={1.5} />
+                <div className="mb-4 md:mb-6 p-3 bg-transparent border border-[var(--border-primary)] rounded-none text-[var(--text-primary)] group-hover:bg-[var(--text-primary)] group-hover:text-[var(--bg-primary)] transition-colors duration-500 self-start">
+                  <Icon size={24} strokeWidth={1} />
                 </div>
-                <h3 className="font-sans text-base md:text-lg font-medium text-[var(--text-primary)] mb-4">
+                <h3 className="font-sans text-base md:text-lg lg:text-xl font-light text-[var(--text-primary)] mb-2 md:mb-3">
                   {topic.title}
                 </h3>
-                <p className="font-sans text-[var(--text-secondary)] text-sm leading-relaxed mt-auto">
+                <p className="font-sans text-[var(--text-secondary)] text-xs md:text-sm lg:text-base leading-relaxed mt-auto">
                   {topic.description}
                 </p>
               </div>

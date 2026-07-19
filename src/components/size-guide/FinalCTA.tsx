@@ -32,7 +32,7 @@ export default function FinalCTA() {
   return (
     <section ref={ctaRef} className="w-full py-8 md:py-12 px-4 md:px-8 bg-[var(--bg-secondary)] text-[var(--text-primary)] flex justify-center items-center border-t border-[var(--border-secondary)]">
       <div className="max-w-[800px] mx-auto flex flex-col items-center text-center">
-        <h2 className="cta-element font-serif text-2xl md:text-3xl lg:text-4xl mb-4 md:mb-6">
+        <h2 className="cta-element font-sans text-xl md:text-2xl lg:text-3xl font-light mb-4 md:mb-6">
           Need Expert Guidance?
         </h2>
         <p className="cta-element font-sans text-sm md:text-base font-light leading-relaxed max-w-[500px] mb-8 md:mb-10 text-[var(--text-secondary)]">

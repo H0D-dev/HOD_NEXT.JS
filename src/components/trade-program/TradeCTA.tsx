@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export default function TradeCTA() {
   return (
-    <section className="w-full pt-4 pb-12 md:pt-8 md:pb-20 px-6 md:px-16 lg:px-24 bg-[var(--bg-secondary)] text-[var(--text-primary)]">
+    <section className="w-full py-8 lg:py-12 px-6 md:px-16 lg:px-24 bg-[var(--bg-secondary)] text-[var(--text-primary)]">
       <div className="max-w-[var(--container-md)] mx-auto text-center flex flex-col items-center">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -16,10 +16,10 @@ export default function TradeCTA() {
           <span className="block text-[var(--text-secondary)] font-sans text-xs uppercase tracking-widest mb-8">
             Join The Program
           </span>
-          <h2 className="font-serif text-xl md:text-3xl lg:text-4xl leading-[1.2] tracking-tight mb-4 md:mb-6">
+          <h2 className="font-sans text-xl md:text-2xl lg:text-3xl font-light leading-[1.2] tracking-tight mb-4 md:mb-6">
             Ready to begin your design journey?
           </h2>
-          <p className="font-sans text-[var(--text-secondary)] text-sm md:text-base leading-relaxed mb-10 max-w-xl">
+          <p className="font-sans text-[var(--text-secondary)] text-sm md:text-base font-light leading-relaxed mb-8 max-w-xl">
             Gain exclusive access to premium handmade rugs, bespoke carpets, and unparalleled trade benefits.
           </p>
 

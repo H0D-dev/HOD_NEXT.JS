@@ -17,7 +17,7 @@ const expertiseAreas = [
   },
   {
     id: "02",
-    title: "Inspiration & Design Support",
+    title: "Design Support",
     description: "Work with senior designers to conceptualize spaces and refine palettes.",
   },
   {
@@ -71,14 +71,14 @@ export default function TradeExpertise() {
   }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} className="w-full py-12 md:py-20 px-6 md:px-16 lg:px-24 bg-[var(--bg-secondary)] border-t border-[var(--border-secondary)]">
+    <section ref={containerRef} className="w-full py-10 md:py-14 px-6 md:px-16 lg:px-24 bg-[var(--bg-secondary)] border-t border-[var(--border-secondary)]">
       <div className="max-w-[var(--container-lg)] mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-8">
           <div className="expertise-header max-w-2xl">
-            <h2 className="font-serif text-xl md:text-2xl lg:text-3xl leading-[1.2] text-[var(--text-primary)] tracking-tight mb-3">
+            <h2 className="font-sans text-xl lg:text-2xl font-light text-[var(--text-primary)] tracking-tight mb-3">
               World-Class Expertise
             </h2>
-            <p className="font-sans text-[var(--text-secondary)] text-sm md:text-base leading-relaxed">
+            <p className="hidden md:block font-sans text-[var(--text-secondary)] text-sm md:text-base leading-relaxed">
               We provide end-to-end solutions, giving designers absolute control over quality, timeline, and aesthetic execution.
             </p>
           </div>
@@ -88,15 +88,15 @@ export default function TradeExpertise() {
           {expertiseAreas.map((item) => (
             <div
               key={item.id}
-              className="expertise-card p-8 md:p-12 border-r border-b border-[var(--border-secondary)] bg-[var(--surface-primary)] hover:bg-[var(--bg-tertiary)] transition-colors duration-[0.6s] ease-[cubic-bezier(0.22,1,0.36,1)] group flex flex-col h-full"
+              className="expertise-card p-6 lg:p-8 border-r border-b border-[var(--border-secondary)] bg-[var(--surface-primary)] hover:bg-[var(--bg-tertiary)] transition-colors duration-[0.6s] ease-[cubic-bezier(0.22,1,0.36,1)] group flex flex-col h-full"
             >
-              <span className="font-sans text-xs text-[var(--text-muted)] tracking-widest mb-12 block group-hover:text-[var(--text-primary)] transition-colors duration-500">
+              <span className="font-sans text-xs text-[var(--text-muted)] tracking-widest mb-6 block group-hover:text-[var(--text-primary)] transition-colors duration-500">
                 {item.id}
               </span>
-              <h3 className="font-serif text-2xl text-[var(--text-primary)] mb-6">
+              <h3 className="font-sans text-xl font-light text-[var(--text-primary)] mb-4">
                 {item.title}
               </h3>
-              <p className="font-sans text-[var(--text-secondary)] text-sm leading-relaxed mt-auto">
+              <p className="font-sans text-sm font-light text-[var(--text-secondary)] leading-relaxed mt-auto">
                 {item.description}
               </p>
             </div>

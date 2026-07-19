@@ -19,24 +19,16 @@ export default function SizeGuideHero() {
   return (
     <section 
       ref={containerRef}
-      className="min-h-[70vh] w-full flex flex-col justify-center items-center px-4 md:px-8 py-24 md:py-32 bg-[var(--bg-primary)] text-[var(--text-primary)]"
+      className="relative min-h-[50vh] lg:min-h-[60vh] w-full flex flex-col justify-center items-center px-4 md:px-8 py-24 md:py-32 bg-[var(--bg-primary)] text-[var(--text-primary)]"
     >
       <div className="max-w-[768px] mx-auto flex flex-col items-center text-center">
-        <span className="hero-element font-sans text-xs md:text-sm tracking-[0.2em] uppercase mb-8 text-[var(--text-muted)]">
+        <span className="hero-element font-sans text-[10px] md:text-xs tracking-[0.2em] uppercase mb-6 md:mb-8 text-[var(--accent-primary)] font-medium">
           Guide
         </span>
         
-        <h1 className="hero-element font-serif text-3xl md:text-5xl lg:text-[4rem] leading-[1.1] tracking-tight mb-8">
+        <h1 className="hero-element font-sans text-[clamp(32px,5vw,64px)] font-light leading-none tracking-wide text-[var(--text-primary)] mb-8 md:mb-12">
           Size & Fitting Guide
         </h1>
-        
-        <h2 className="hero-element font-sans text-lg md:text-xl lg:text-2xl font-light mb-8 max-w-[600px] mx-auto text-[var(--text-secondary)]">
-          For Rugs & Bespoke Interior Styling
-        </h2>
-        
-        <p className="hero-element font-sans text-base md:text-lg leading-relaxed mb-12 max-w-[500px] mx-auto text-[var(--text-secondary)]">
-          Selecting the right rug size transforms a space. Our design experts help you understand ideal proportions and placement.
-        </p>
         
         <a 
           href="https://wa.me/971521236888?text=Hello,%20I%20need%20help%20with%20sizing%20for%20my%20space."
@@ -47,6 +39,9 @@ export default function SizeGuideHero() {
           Need Help in Size?
         </a>
       </div>
+
+      {/* Premium connecting line spanning the gap */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[1px] h-16 lg:h-24 bg-[var(--border-primary)] block"></div>
     </section>
   );
 }

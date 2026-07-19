@@ -53,6 +53,28 @@ const materials = [
       "Brush the pile gently with a soft bristle brush to restore sheen."
     ],
     image: "/images/care/care_cashmere_1782566466289.png" // reused due to quota
+  },
+  {
+    id: "jute-hemp",
+    title: "Jute / Hemp",
+    description: "These rough and tough natural fibers bring a lot more to the table than their raw look and texture. They can be brilliant choices for spaces that would be otherwise unloved.",
+    careTips: [
+      "Vacuum regularly on low suction to manage natural shedding.",
+      "Avoid excess moisture as natural plant fibers can trap water and weaken.",
+      "Blot spills immediately with a dry cloth; never rub the coarse fibers."
+    ],
+    image: "/images/care/care_wool_1782566454512.png" // reused due to quota
+  },
+  {
+    id: "other",
+    title: "Other (Synthetics, Cotton & Linen)",
+    description: "Synthetic fibers, Cotton & Linen are familiar to most as they are widely used, but can also bring in interesting qualities to rugs.",
+    careTips: [
+      "Cotton and linen pieces can often be machine washed gently if the size permits.",
+      "Synthetic fibers are highly stain-resistant; use mild detergent and warm water for spot cleaning.",
+      "Vacuum regularly to prevent dirt from settling deep into the woven fibers."
+    ],
+    image: "/images/care/care_cashmere_1782566466289.png" // reused due to quota
   }
 ];
 
@@ -74,10 +96,9 @@ export default function MaterialCare() {
       ScrollTrigger.create({
         trigger: ".desktop-material-wrapper",
         start: "top top",
-        end: "+=300%", // 300vh for scrolling
+        end: "+=500%", // Increased scroll distance to accommodate 6 items smoothly without jitter
         pin: desktopInnerRef.current,
         scrub: true,
-        anticipatePin: 1,
         invalidateOnRefresh: true,
         onUpdate: (self) => {
           // Determine which tab should be active based on progress (0 to 1)
@@ -97,12 +118,12 @@ export default function MaterialCare() {
       
       {/* Mobile Layout */}
       <div className="md:hidden w-full flex flex-col py-8 px-6 border-t border-[var(--border-secondary)]">
-        <h2 className="font-serif text-xl md:text-2xl lg:text-3xl leading-[1.2] tracking-tight text-[var(--text-primary)] mb-6">Material Care</h2>
+        <h2 className="font-sans font-light text-2xl md:text-3xl lg:text-4xl leading-[1.2] tracking-wide text-[var(--text-primary)] mb-6">Material Care</h2>
         {materials.map((material) => (
           <div key={`mobile-${material.id}`} className="border-b border-[var(--border-secondary)]">
             <button
               onClick={() => handleAccordionClick(material.id)}
-              className="w-full py-6 flex items-center justify-between font-sans text-base md:text-lg font-medium text-[var(--text-primary)]"
+              className="w-full py-6 flex items-center justify-between font-sans text-base md:text-lg lg:text-xl font-light text-[var(--text-primary)]"
             >
               {material.title}
               <ChevronDown 
@@ -121,10 +142,10 @@ export default function MaterialCare() {
                   className="overflow-hidden"
                 >
                   <div className="pb-8 flex flex-col gap-6">
-                    <p className="font-sans text-[var(--text-secondary)] text-base leading-relaxed">
+                    <p className="font-sans text-[var(--text-secondary)] text-xs md:text-sm lg:text-base leading-relaxed">
                       {material.description}
                     </p>
-                    <div className="bg-[var(--surface-secondary)] p-6 border border-[var(--border-secondary)]">
+                    <div className="bg-[var(--surface-secondary)] p-6 border border-[var(--border-secondary)] border-l-2 border-l-[var(--accent-primary)]">
                       <h4 className="font-sans text-xs uppercase tracking-widest text-[var(--text-primary)] mb-4">Care Tips</h4>
                       <ul className="flex flex-col gap-3">
                         {material.careTips.map((tip, idx) => (
@@ -157,7 +178,7 @@ export default function MaterialCare() {
                 {materials.map((material, idx) => (
                   <li key={`desktop-${material.id}`}>
                     <button
-                      className={`w-full text-left px-6 py-4 font-sans text-base transition-all duration-500 border-l-2 -ml-[1px] ${
+                      className={`w-full text-left px-6 py-4 font-sans font-light text-base md:text-lg transition-all duration-500 border-l-2 -ml-[1px] ${
                         activeIndex === idx
                           ? "text-[var(--text-primary)] border-[var(--border-primary)] bg-[var(--surface-secondary)]"
                           : "text-[var(--text-muted)] border-transparent"
@@ -182,14 +203,14 @@ export default function MaterialCare() {
                   className="flex flex-col xl:flex-row gap-12 items-center w-full"
                 >
                   <div className="flex-1 flex flex-col gap-8">
-                    <h2 className="font-serif text-xl md:text-2xl lg:text-3xl leading-[1.2] tracking-tight text-[var(--text-primary)]">
+                    <h2 className="font-sans font-light text-2xl md:text-3xl lg:text-4xl leading-[1.2] tracking-wide text-[var(--text-primary)]">
                       {materials[activeIndex].title}
                     </h2>
-                    <p className="font-sans text-[var(--text-secondary)] text-sm md:text-base leading-relaxed max-w-xl">
+                    <p className="font-sans text-[var(--text-secondary)] text-xs md:text-sm lg:text-base leading-relaxed max-w-xl">
                       {materials[activeIndex].description}
                     </p>
                     
-                    <div className="bg-[var(--surface-secondary)] p-8 border border-[var(--border-secondary)] mt-4">
+                    <div className="bg-[var(--surface-secondary)] p-8 border border-[var(--border-secondary)] mt-4 border-l-2 border-l-[var(--accent-primary)]">
                       <h4 className="font-sans text-sm font-medium tracking-widest uppercase text-[var(--text-primary)] mb-6">
                         Essential Care Tips
                       </h4>

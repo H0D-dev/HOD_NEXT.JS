@@ -29,44 +29,52 @@ export default function GuideOverview() {
   }, { scope: sectionRef });
 
   return (
-    <section id="overview" ref={sectionRef} className="w-full py-8 md:py-12 px-4 md:px-8 bg-[var(--bg-primary)]">
-      <div className="max-w-[1000px] mx-auto">
-        {/* Section Header */}
-        <div className="overview-item mb-12 md:mb-16 text-center">
-          <h2 className="font-serif text-2xl md:text-3xl lg:text-4xl leading-[1.2] text-[var(--text-primary)]">
+    <section id="overview" ref={sectionRef} className="w-full pt-0 pb-12 lg:pb-16 px-4 md:px-8 lg:px-24 bg-[var(--bg-primary)]">
+      <div className="max-w-[1440px] mx-auto bg-[var(--bg-secondary)] border-t border-[var(--border-secondary)] px-6 md:px-12 lg:px-16 py-12 md:py-16">
+        {/* Section Header & Quote */}
+        <div className="overview-item mb-8 md:mb-16 text-center flex flex-col items-center">
+          <h2 className="font-sans text-xl lg:text-2xl font-light leading-[1.2] text-[var(--text-primary)] mb-6 md:mb-12">
             Choosing the Right Fit
           </h2>
+          <div className="max-w-[800px] mx-auto text-center px-2">
+            <h3 className="font-sans text-base md:text-xl lg:text-2xl font-light italic leading-relaxed md:leading-relaxed text-[var(--text-primary)] mb-4 md:mb-6">
+              “A beautifully proportioned rug can anchor a room, define a space, and completely transform how a home feels.”
+            </h3>
+            <span className="font-sans text-[10px] md:text-xs tracking-[0.2em] uppercase text-[var(--text-muted)]">
+              House of Décor
+            </span>
+          </div>
         </div>
 
         {/* Content Blocks */}
-        <div className="flex flex-col md:flex-row gap-8 md:gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
           {/* Content Block 1 */}
-          <div className="overview-item flex-1 py-6 md:py-8 border-t border-[var(--border-secondary)]">
-            <h3 className="font-sans text-xs md:text-sm font-semibold tracking-widest uppercase mb-4 text-[var(--text-primary)]">
-              Positioning & Balance
+          <div className="overview-item border border-[var(--border-secondary)] bg-[var(--bg-primary)] p-6 flex flex-col items-center text-center">
+            <h3 className="font-sans text-sm md:text-base font-light tracking-wide uppercase text-[var(--text-primary)] mb-3">
+              Positioning
             </h3>
-            <p className="font-sans text-sm md:text-base leading-relaxed text-[var(--text-secondary)]">
-              A well-placed rug grounds the furniture, creating a cohesive visual anchor. Proportions and positioning are vital to harmonizing the entire architectural flow.
+            <p className="font-sans text-xs md:text-sm font-light leading-relaxed text-[var(--text-secondary)]">
+              A well-placed rug grounds the furniture, creating a cohesive visual anchor.
             </p>
           </div>
 
           {/* Content Block 2 */}
-          <div className="overview-item flex-1 py-6 md:py-8 border-t border-[var(--border-secondary)]">
-            <h3 className="font-sans text-xs md:text-sm font-semibold tracking-widest uppercase mb-4 text-[var(--text-primary)]">
+          <div className="overview-item border border-[var(--border-secondary)] bg-[var(--bg-primary)] p-6 flex flex-col items-center text-center">
+            <h3 className="font-sans text-sm md:text-base font-light tracking-wide uppercase text-[var(--text-primary)] mb-3">
               Size & Comfort
             </h3>
-            <p className="font-sans text-sm md:text-base leading-relaxed text-[var(--text-secondary)]">
-              Going too small can make a room feel disjointed. Opting for generous proportions ensures comfort underfoot and adds an undeniable sense of luxury.
+            <p className="font-sans text-xs md:text-sm font-light leading-relaxed text-[var(--text-secondary)]">
+              Generous proportions ensure comfort underfoot and add an undeniable sense of luxury.
             </p>
           </div>
 
           {/* Content Block 3 */}
-          <div className="overview-item flex-1 py-6 md:py-8 border-t border-[var(--border-secondary)]">
-            <h3 className="font-sans text-xs md:text-sm font-semibold tracking-widest uppercase mb-4 text-[var(--text-primary)]">
-              Borders & Patterns
+          <div className="overview-item border border-[var(--border-secondary)] bg-[var(--bg-primary)] p-6 flex flex-col items-center text-center">
+            <h3 className="font-sans text-sm md:text-base font-light tracking-wide uppercase text-[var(--text-primary)] mb-3">
+              Design Flow
             </h3>
-            <p className="font-sans text-sm md:text-base leading-relaxed text-[var(--text-secondary)]">
-              Consider how furniture placement affects the visibility of intricate borders or central medallions. Allow adequate floor clearance to frame the design beautifully.
+            <p className="font-sans text-xs md:text-sm font-light leading-relaxed text-[var(--text-secondary)]">
+              Allow adequate floor clearance to beautifully frame intricate borders and medallions.
             </p>
           </div>
         </div>
