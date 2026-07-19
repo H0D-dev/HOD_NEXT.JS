@@ -45,23 +45,23 @@ export default function ProcessFinishing() {
   const [showAllMobile, setShowAllMobile] = useState(false);
 
   return (
-    <section className="w-full py-16 md:py-32 px-6 md:px-16 lg:px-24 bg-[var(--bg-secondary)]">
+    <section className="w-full py-12 lg:py-16 px-6 md:px-16 lg:px-24 bg-[var(--bg-secondary)]">
       <div className="max-w-[var(--container-lg)] mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any }}
-          className="text-center mb-16 md:mb-24"
+          className="text-center mb-8 md:mb-12"
         >
-          <span className="block text-[var(--accent-primary)] font-sans text-xs uppercase tracking-widest mb-6 font-medium">
+          <span className="block text-[var(--accent-primary)] font-sans text-xs uppercase tracking-widest mb-3 font-medium">
             Meticulous Detailing
           </span>
-          <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-[var(--text-primary)] tracking-tight mb-8 leading-tight">
+          <h2 className="font-sans text-2xl md:text-3xl lg:text-4xl font-light text-[var(--text-primary)] mb-4 leading-tight">
             The 18 Steps of Finishing
           </h2>
           <div className="flex flex-col gap-6 text-center max-w-2xl mx-auto">
-            <p className="font-sans text-[var(--text-secondary)] text-lg md:text-xl leading-relaxed font-light">
+            <p className="font-sans text-[var(--text-secondary)] text-base md:text-lg leading-relaxed font-light">
               Completing a hand-crafted carpet involves 18 meticulous finishing steps, perfecting the rug to a gleaming finish over the course of a month.
             </p>
           </div>
@@ -72,21 +72,21 @@ export default function ProcessFinishing() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4"
         >
           {finishingSteps.map((step, idx) => (
             <motion.div
               key={step.step}
               variants={itemVariants}
-              className={`bg-[var(--surface-primary)] p-6 md:p-8 border border-[var(--border-secondary)] flex flex-col group hover:border-[var(--border-primary)] transition-colors duration-[0.6s] ${!showAllMobile && idx >= 3 ? 'hidden md:flex' : 'flex'}`}
+              className={`bg-[var(--surface-primary)] p-4 md:p-5 border border-[var(--border-secondary)] flex flex-col group hover:border-[var(--border-primary)] transition-colors duration-[0.6s] ${!showAllMobile && idx >= 4 ? 'hidden sm:flex' : 'flex'}`}
             >
-              <span className="font-serif text-5xl text-[var(--border-primary)] group-hover:text-[var(--text-primary)] transition-colors duration-[0.6s] mb-6 opacity-30 group-hover:opacity-100">
+              <span className="font-sans font-light text-3xl text-[var(--border-primary)] group-hover:text-[var(--text-primary)] transition-colors duration-[0.6s] mb-3 opacity-30 group-hover:opacity-100">
                 {step.step.toString().padStart(2, '0')}
               </span>
-              <h3 className="font-sans font-medium text-lg text-[var(--text-primary)] mb-4">
+              <h3 className="font-sans font-medium text-base text-[var(--text-primary)] mb-2">
                 {step.title}
               </h3>
-              <p className="font-sans text-sm text-[var(--text-secondary)] leading-relaxed">
+              <p className="font-sans text-xs text-[var(--text-secondary)] leading-relaxed">
                 {step.desc}
               </p>
             </motion.div>
@@ -94,7 +94,7 @@ export default function ProcessFinishing() {
         </motion.div>
 
         {!showAllMobile && (
-          <div className="mt-12 flex justify-center md:hidden">
+          <div className="mt-8 flex justify-center sm:hidden">
             <button
               onClick={() => setShowAllMobile(true)}
               className="px-8 py-4 border border-[var(--border-primary)] text-[var(--text-primary)] font-sans text-sm tracking-widest uppercase hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors duration-300"

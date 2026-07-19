@@ -1,13 +1,21 @@
 "use client";
 
+import { useRef } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const techniques = [
   {
     id: "hand-knotted",
     title: "Hand Knotted",
-    image: "/rugs/set1-texture.png",
+    image: "/images/craftsmanship.png",
     paragraphs: [
       "A meticulous, time-honored process taking up to a year, where each knot is individually tied to build incredibly dense and intricate patterns."
     ]
@@ -15,7 +23,7 @@ const techniques = [
   {
     id: "hand-tufted",
     title: "Hand Tufted",
-    image: "/rugs/set2-texture.png",
+    image: "/images/bespoke/artisan_weaving.png",
     paragraphs: [
       "Artisans use a tufting tool to punch yarn through a canvas backing, creating plush, beautifully textured designs with remarkable efficiency."
     ]
@@ -23,7 +31,7 @@ const techniques = [
   {
     id: "handloom",
     title: "Handloom",
-    image: "/rugs/set3-texture.png",
+    image: "/rugs/weaving_techniques.png",
     paragraphs: [
       "Woven on a traditional loom by interlocking warp and weft threads, offering a refined, printed finish that perfectly highlights natural fibers."
     ]
@@ -31,7 +39,7 @@ const techniques = [
   {
     id: "flat-weave",
     title: "Flat Weave",
-    image: "/rugs/set1-room.png",
+    image: "/images/architecture.png",
     paragraphs: [
       "Highly versatile and durable, these rugs are created without a pile, making them lightweight and perfect for displaying striking geometric patterns."
     ]
@@ -39,10 +47,30 @@ const techniques = [
 ];
 
 export default function TechniqueList() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const imagesRef = useRef<(HTMLImageElement | null)[]>([]);
+
+  useGSAP(() => {
+    imagesRef.current.forEach((img, i) => {
+      if (img) {
+        gsap.to(img, {
+          yPercent: 15,
+          ease: "none",
+          scrollTrigger: {
+            trigger: img.parentElement,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          }
+        });
+      }
+    });
+  }, { scope: sectionRef });
+
   return (
-    <section className="w-full pb-16 md:pb-40 px-6 md:px-16 lg:px-24 bg-[var(--bg-primary)] pt-12 md:pt-20">
-      <div className="max-w-[var(--container-lg)] mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 lg:gap-24">
+    <section ref={sectionRef} className="w-full pt-0 pb-12 lg:pb-16 px-6 md:px-16 lg:px-24 bg-[var(--bg-primary)]">
+      <div className="max-w-[1600px] mx-auto bg-[var(--bg-secondary)] border-t border-[var(--border-secondary)] px-4 md:px-6 lg:px-8 pb-12 lg:pb-16 pt-6 lg:pt-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 lg:gap-4">
           {techniques.map((technique, index) => (
             <motion.div
               key={technique.id}
@@ -50,27 +78,28 @@ export default function TechniqueList() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.8, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] as any }}
-              className="flex flex-col group cursor-pointer"
+              className="flex flex-col items-start group cursor-pointer"
             >
-              {/* Image */}
-              <div className="w-full aspect-[4/3] relative overflow-hidden bg-[var(--surface-primary)] border border-[var(--border-secondary)] mb-8">
+              {/* Image with GSAP Parallax */}
+              <div className="w-full aspect-square md:aspect-[2/3] relative overflow-hidden mb-4">
                 <Image
+                  ref={el => { imagesRef.current[index] = el; }}
                   src={technique.image}
                   alt={technique.title}
                   fill
-                  className="object-cover transition-transform duration-[1.5s] group-hover:scale-105 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                  className="absolute -top-[7.5%] h-[115%] object-cover transition-transform duration-[1.5s] group-hover:scale-105 ease-[cubic-bezier(0.22,1,0.36,1)]"
                 />
               </div>
 
               {/* Text */}
-              <span className="font-sans text-[10px] md:text-xs text-[var(--text-muted)] tracking-widest mb-4 uppercase">
-                Technique 0{index + 1}
+              <span className="font-sans text-[10px] lg:text-xs text-[var(--text-muted)] tracking-widest mb-1 uppercase">
+                0{index + 1}
               </span>
-              <h2 className="font-serif text-3xl md:text-4xl text-[var(--text-primary)] mb-4 transition-colors duration-300">
+              <h2 className="font-sans text-sm font-medium text-[var(--text-primary)] mb-1 transition-colors duration-300">
                 {technique.title}
               </h2>
               {technique.paragraphs.map((p, i) => (
-                <p key={i} className="font-sans text-sm md:text-base text-[var(--text-secondary)] leading-relaxed">
+                <p key={i} className="font-sans text-sm font-light text-[var(--text-secondary)] leading-relaxed mb-4 max-w-[400px]">
                   {p}
                 </p>
               ))}

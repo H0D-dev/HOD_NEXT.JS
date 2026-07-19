@@ -44,24 +44,21 @@ export default function GuideHero() {
   };
 
   return (
-    <section className="w-full pt-20 pb-16 md:pt-48 md:pb-32 px-6 md:px-16 lg:px-24 bg-[var(--bg-primary)] border-b border-[var(--border-secondary)]">
+    <section className="relative w-full flex flex-col justify-center items-center pt-24 lg:pt-32 pb-16 lg:pb-24 px-6 md:px-16 lg:px-24 bg-[var(--bg-primary)]">
       <div className="max-w-[var(--container-lg)] mx-auto flex flex-col items-center">
         {/* Hero Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any }}
-          className="text-center max-w-4xl mb-24"
+          className="text-center max-w-4xl mb-12 lg:mb-16"
         >
           <span className="block text-[var(--accent-primary)] font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] mb-6 md:mb-8 font-medium">
             Know Your Rug
           </span>
-          <h1 className="font-serif text-[2.75rem] md:text-[4rem] lg:text-[4.75rem] leading-[1.1] tracking-tight text-[var(--text-primary)] mb-8">
+          <h1 className="font-sans text-[clamp(36px,6vw,72px)] font-light leading-none tracking-wide text-[var(--text-primary)]">
             Rug Guide
           </h1>
-          <h2 className="font-sans text-[var(--text-secondary)] text-lg md:text-xl font-light tracking-wide">
-            Discover the Art of Rug Selection: Your Guide to Finding the Ideal Piece!
-          </h2>
         </motion.div>
 
         {/* Selection Guide Section */}
@@ -71,17 +68,14 @@ export default function GuideHero() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] as any }}
-            className="mb-12 text-center"
+            className="mb-8 text-center"
           >
-            <h3 className="font-serif text-3xl md:text-4xl text-[var(--text-primary)] mb-6">
-              Guide to Choosing the Right Rug
-            </h3>
-            <p className="font-sans text-[var(--text-secondary)] text-lg">
+            <p className="font-sans text-[var(--text-secondary)] text-base md:text-lg font-light">
               When selecting the perfect rug, these key questions can guide your decision-making process:
             </p>
           </motion.div>
 
-          <div className="flex flex-col border-t border-[var(--border-secondary)] mt-16">
+          <div className="flex flex-col border-t border-[var(--border-secondary)]">
             {selectionQuestions.map((item, idx) => (
               <motion.div
                 key={idx}
@@ -93,7 +87,7 @@ export default function GuideHero() {
               >
                 <button
                   onClick={() => handleAccordionClick(idx)}
-                  className="w-full py-8 flex items-center justify-between font-serif text-2xl md:text-3xl text-[var(--text-primary)] text-left"
+                  className="w-full py-4 lg:py-6 flex items-center justify-between font-sans text-xl lg:text-2xl font-light text-[var(--text-primary)] text-left"
                 >
                   {item.question}
                   <ChevronDown
@@ -111,10 +105,10 @@ export default function GuideHero() {
                       transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] as any }}
                       className="overflow-hidden"
                     >
-                      <div className="pb-8">
-                        <ul className="flex flex-col gap-6 bg-[var(--surface-primary)] p-6 md:p-8 border-l-2 border-[var(--accent-primary)]">
+                      <div className="pb-0">
+                        <ul className="flex flex-col gap-4 bg-[var(--surface-primary)] p-6 md:p-8 border-l-2 border-[var(--accent-primary)]">
                           {item.points.map((pt, i) => (
-                            <li key={i} className="font-sans text-base md:text-lg leading-relaxed text-[var(--text-secondary)]">
+                            <li key={i} className="font-sans text-sm md:text-base leading-relaxed text-[var(--text-secondary)]">
                               <strong className="text-[var(--text-primary)] font-medium mr-2">
                                 {pt.bold}:
                               </strong>
@@ -131,6 +125,8 @@ export default function GuideHero() {
           </div>
         </div>
       </div>
+      {/* Premium connecting line spanning the gap */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[1px] h-16 lg:h-24 bg-[var(--accent-primary)] opacity-50 hidden sm:block"></div>
     </section>
   );
 }

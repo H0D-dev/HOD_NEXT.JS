@@ -177,17 +177,17 @@ export default function FibersContent() {
   };
 
   return (
-    <section className="w-full py-16 md:py-32 px-6 md:px-16 lg:px-24 bg-[var(--bg-secondary)]">
+    <section className="w-full pt-16 lg:pt-24 pb-12 lg:pb-16 px-6 md:px-16 lg:px-24 bg-[var(--bg-secondary)]">
       <div className="max-w-[var(--container-lg)] mx-auto flex flex-col md:flex-row gap-12 lg:gap-24 relative">
         
         {/* Mobile Accordion */}
         <div className="lg:hidden w-full flex flex-col border-t border-[var(--border-secondary)]">
-          <h2 className="font-serif text-[clamp(24px,5vw,36px)] text-[var(--text-primary)] mb-8 pt-8">Material Guide</h2>
+          <h2 className="font-sans text-xl lg:text-2xl font-light text-[var(--text-primary)] mb-4 pt-4">Material Guide</h2>
           {fiberData.map((fiber) => (
             <div key={`mobile-${fiber.id}`} className="border-b border-[var(--border-secondary)]">
               <button
                 onClick={() => handleAccordionClick(fiber.id)}
-                className="w-full py-6 flex items-center justify-between font-serif text-3xl md:text-4xl text-[var(--text-primary)]"
+                className="w-full py-4 flex items-center justify-between font-sans text-xl lg:text-2xl font-light text-[var(--text-primary)]"
               >
                 {fiber.title}
                 <ChevronDown 
@@ -266,7 +266,7 @@ export default function FibersContent() {
                       )}
 
                       <div className="bg-[var(--surface-secondary)] p-6 border-l-2 border-[var(--accent-primary)]">
-                        <p className="font-serif text-xl md:text-2xl text-[var(--text-primary)] italic leading-relaxed">
+                        <p className="font-sans text-base md:text-lg font-light text-[var(--text-primary)] italic leading-relaxed">
                           "{fiber.summary}"
                         </p>
                       </div>
@@ -321,7 +321,7 @@ export default function FibersContent() {
                 className="flex flex-col gap-12 scroll-mt-32"
               >
                 <div className="border-b border-[var(--border-secondary)] pb-8">
-                  <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-[var(--text-primary)] mb-4 leading-tight">
+                  <h2 className="font-sans text-2xl md:text-3xl lg:text-4xl font-light text-[var(--text-primary)] mb-4 leading-tight">
                     {fiber.title}
                   </h2>
                   <h3 className="font-sans text-[var(--text-secondary)] text-xl font-light mb-8">
@@ -394,7 +394,7 @@ export default function FibersContent() {
                 </div>
 
                 <div className="bg-[var(--surface-primary)] p-8 lg:p-12 border-l-4 border-[var(--accent-primary)] mt-4">
-                  <p className="font-serif text-2xl lg:text-3xl text-[var(--text-primary)] italic leading-relaxed">
+                  <p className="font-sans text-lg md:text-xl font-light text-[var(--text-primary)] italic leading-relaxed">
                     "{fiber.summary}"
                   </p>
                 </div>

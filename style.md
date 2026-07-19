@@ -231,7 +231,7 @@ Usage: Main headline text over hero slider images (e.g., "From the House of Déc
 Usage: Titles that introduce new grids, sliders, or content blocks on the homepage and inner pages.
 
 * **Size:** `text-xl lg:text-2xl` — or fluid: `clamp(20px, 2.5vw, 28px)`
-* **Weight:** `font-medium` (500) — solid but not heavy
+* **Weight:** `font-medium` (500) for homepage e-commerce grids. Use `font-light` (300) for nested informational pages (e.g., Guides, Process, Materials) to prevent heaviness and keep typography elegant.
 * **Case:** Title Case (e.g., "Collections", "Featured")
 * **Alignment:** Left-aligned with content, paired with a right-aligned "View All" link
 * **Spacing:** `mb-10 md:mb-12` below
@@ -640,6 +640,12 @@ Whitespace is a primary structural element of luxury design, but it must be appl
    * Keep paddings extremely tight to prevent "endless scrolling" through blank space.
    * *Example:* `py-8` or `py-12` on mobile.
    * Ensure fixed-height containers are heavily reduced on mobile (e.g., `h-[250px] md:h-[400px] lg:min-h-[70svh]`).
+
+3. **Nested Informational Pages & Accordions (Compactness):**
+   * Do not use excessive negative space inside informational grids, content cards, and lists.
+   * *Accordion spacing:* Keep interactive buttons to `py-4 lg:py-6` (do not use `py-8` which causes too much scrolling and bloated lists).
+   * *Grid gaps:* Use tighter gaps like `gap-8 lg:gap-12` or `gap-16` for inner content cards. Do not use massive `gap-24` or `gap-32` inside structural sections. Reserve massive gaps only for major page-level breaks.
+   * *Nested Heroes:* Minimalist approach. Only use an overline and the main title. Do not clutter informational heroes with large paragraphs of descriptive text or secondary headings that compete with the primary hero title.
 
 The UI must feel intentionally dense and compact. Never let content feel completely suffocated, but aggressively avoid large empty vertical voids.
 

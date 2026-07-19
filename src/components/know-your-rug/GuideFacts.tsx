@@ -33,11 +33,11 @@ const facts = [
 
 export default function GuideFacts() {
   return (
-    <section className="w-full py-16 md:py-32 px-6 md:px-16 lg:px-24 bg-[var(--bg-primary)]">
-      <div className="max-w-[var(--container-lg)] mx-auto flex flex-col gap-24 lg:gap-32">
+    <section className="w-full py-12 lg:py-16 px-6 md:px-16 lg:px-24 bg-[var(--bg-primary)]">
+      <div className="max-w-[var(--container-lg)] mx-auto flex flex-col gap-12 lg:gap-16">
         
         {/* Common Mistakes */}
-        <div className="flex flex-col lg:flex-row gap-16">
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -48,7 +48,7 @@ export default function GuideFacts() {
             <div className="w-12 h-12 rounded-full bg-[var(--surface-primary)] border border-[var(--border-secondary)] flex items-center justify-center">
               <AlertTriangle size={20} className="text-[var(--text-primary)]" strokeWidth={1.5} />
             </div>
-            <h3 className="font-serif text-3xl md:text-4xl text-[var(--text-primary)]">
+            <h3 className="font-sans text-xl lg:text-2xl font-light text-[var(--text-primary)]">
               Common Mistakes When Choosing a Rug
             </h3>
           </motion.div>
@@ -61,12 +61,12 @@ export default function GuideFacts() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.6, delay: idx * 0.1, ease: [0.22, 1, 0.36, 1] as any }}
-                className="bg-[var(--surface-primary)] p-8 border border-[var(--border-secondary)] flex flex-col gap-4"
+                className="bg-[var(--surface-primary)] p-5 lg:p-6 border border-[var(--border-secondary)] flex flex-col gap-3"
               >
-                <h4 className="font-sans font-medium text-[var(--text-primary)] text-lg">
+                <h4 className="font-sans font-medium text-[var(--text-primary)] text-base">
                   {mistake.title}
                 </h4>
-                <p className="font-sans text-[var(--text-secondary)] text-base leading-relaxed">
+                <p className="font-sans text-[var(--text-secondary)] text-sm font-light leading-relaxed">
                   {mistake.desc}
                 </p>
               </motion.div>
@@ -75,7 +75,7 @@ export default function GuideFacts() {
         </div>
 
         {/* Quick Facts */}
-        <div className="flex flex-col lg:flex-row gap-16 border-t border-[var(--border-secondary)] pt-24">
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 border-t border-[var(--border-secondary)] pt-12 lg:pt-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -86,7 +86,7 @@ export default function GuideFacts() {
             <div className="w-12 h-12 rounded-full bg-[var(--surface-primary)] border border-[var(--border-secondary)] flex items-center justify-center">
               <Info size={20} className="text-[var(--text-primary)]" strokeWidth={1.5} />
             </div>
-            <h3 className="font-serif text-3xl md:text-4xl text-[var(--text-primary)]">
+            <h3 className="font-sans text-xl lg:text-2xl font-light text-[var(--text-primary)]">
               Quick Facts About Handcrafted Rugs
             </h3>
           </motion.div>
@@ -99,12 +99,12 @@ export default function GuideFacts() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.6, delay: idx * 0.1, ease: [0.22, 1, 0.36, 1] as any }}
-                className="flex items-start gap-4 p-6 bg-[var(--surface-primary)] border-l-2 border-[var(--accent-primary)]"
+                className="flex items-start gap-4 p-4 lg:p-5 bg-[var(--surface-primary)] border-l-2 border-[var(--accent-primary)]"
               >
-                <span className="font-serif text-[var(--text-muted)] text-xl mt-1">
+                <span className="font-sans text-[var(--text-muted)] text-lg mt-1">
                   {(idx + 1).toString().padStart(2, '0')}
                 </span>
-                <p className="font-sans text-[var(--text-primary)] text-lg leading-relaxed">
+                <p className="font-sans text-[var(--text-primary)] text-base font-light leading-relaxed">
                   {fact}
                 </p>
               </motion.div>

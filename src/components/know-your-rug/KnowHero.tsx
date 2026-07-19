@@ -63,7 +63,7 @@ export default function KnowHero() {
       {/* ── Background Image Mobile ── */}
       <div className="absolute inset-0 w-full h-[120%] -top-[10%] z-0 block md:hidden" ref={bgRefMobile}>
         <Image
-          src="/know_your_rug_hero_mobile.png"
+          src="/know_your_rug_hero_mobile_v2.png"
           alt="Macro close-up of luxurious hand-knotted rug"
           fill
           priority
@@ -71,28 +71,30 @@ export default function KnowHero() {
           sizes="100vw"
         />
         {/* Subtle gradient overlay for text legibility */}
-        <div className="absolute inset-0 bg-black/50 z-10"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent z-10"></div>
       </div>
 
       {/* ── Content ── */}
-      <div className="w-full px-6 sm:px-12 md:px-16 lg:px-24 xl:px-32 relative z-20 flex flex-col py-24 md:py-32 lg:pb-0">
-          {/* Hero Content Layer */}
-          <div ref={contentRef} className="flex flex-col items-start gap-0 lg:-mt-16">
-            
-            <h1 className="font-serif text-[2.75rem] md:text-[4rem] lg:text-[4.75rem] leading-[1.1] tracking-tight text-white mb-4">
-              Know <br /> Your Rug
-            </h1>
-            
-            <p className="font-sans max-w-xl text-neutral-300 text-[10px] md:text-xs uppercase tracking-[0.2em] mt-6 leading-relaxed">
-              UNDERSTANDING CRAFTSMANSHIP, MATERIALS, <br className="hidden sm:block" />
-              TEXTURES, AND TECHNIQUES BEHIND TIMELESS <br className="hidden sm:block" />
-              HANDMADE RUGS.
-            </p>
+      <div className="w-full px-6 sm:px-12 md:px-16 lg:px-24 xl:px-32 relative z-20 flex flex-col pt-32 pb-24 md:py-32 lg:pb-0 mt-20 md:mt-12 lg:mt-16">
+        <div ref={contentRef} className="flex flex-col items-start gap-0 text-white text-left">
+          
+          <h1 className="font-light text-[2.75rem] md:text-[4rem] lg:text-[4.75rem] leading-[1.1] tracking-wide mb-4 max-w-4xl text-left font-sans">
+            Know <br /> Your Rug
+          </h1>
+          
+          <p className="max-w-xl text-neutral-300 text-[10px] md:text-xs uppercase tracking-[0.2em] mt-6 leading-relaxed mb-4 text-left font-sans">
+            UNDERSTANDING CRAFTSMANSHIP, MATERIALS, TEXTURES, AND TECHNIQUES BEHIND TIMELESS HANDMADE RUGS.
+          </p>
 
-            <div className="mt-8 border-t border-white/30 w-16 mb-4"></div>
-            
+          <div className="mt-2 group cursor-pointer">
+            <span className="font-sans text-[10px] md:text-xs font-semibold uppercase tracking-[0.2em] text-white flex items-center gap-2 relative pb-1">
+              EXPLORE CRAFTSMANSHIP
+              <span className="absolute left-0 bottom-0 w-0 h-[1px] bg-white transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:w-full"></span>
+            </span>
           </div>
+          
         </div>
+      </div>
 
     </section>
   );
