@@ -8,7 +8,7 @@ import { Blog } from "../../lib/data/blogs";
 
 export default function BlogList({ blogs = [] }: { blogs?: Blog[] }) {
   return (
-    <section className="w-full py-16 md:py-32 lg:py-48 px-5 md:px-10 lg:px-16 bg-[var(--bg-primary)]">
+    <section className="w-full pt-32 pb-16 md:pt-40 md:pb-24 lg:pt-48 lg:pb-32 px-5 md:px-10 lg:px-16 bg-[var(--bg-primary)]">
       <div className="max-w-[var(--container-lg)] mx-auto flex flex-col gap-10 md:gap-16 lg:gap-24">
         
         {/* Header */}
@@ -18,10 +18,8 @@ export default function BlogList({ blogs = [] }: { blogs?: Blog[] }) {
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any }}
           className="text-center"
         >
-          <span className="block text-[var(--text-secondary)] font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] mb-6 font-medium">
-            Journal
-          </span>
-          <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl text-[var(--text-primary)] mb-6">
+
+          <h1 className="font-sans font-light text-[2.25rem] sm:text-[2.75rem] md:text-[4rem] lg:text-[4rem] leading-[1.1] tracking-wide text-[var(--text-primary)] mb-6">
             The Edit
           </h1>
           <p className="font-sans text-sm md:text-base leading-relaxed text-[var(--text-secondary)] max-w-2xl mx-auto">
@@ -38,9 +36,9 @@ export default function BlogList({ blogs = [] }: { blogs?: Blog[] }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.8, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] as any }}
-              className="group flex flex-col gap-4"
+              className="group flex flex-col gap-4 bg-[var(--bg-secondary)] p-4 md:p-6"
             >
-              <Link href={`/blog/${blog.slug}`} className="w-full aspect-[4/3] relative overflow-hidden bg-[var(--surface-primary)] border border-[var(--border-secondary)] block">
+              <Link href={`/blog/${blog.slug}`} className="w-full aspect-[4/3] relative overflow-hidden block">
                 <Image
                   src={blog.image}
                   alt={blog.title}
@@ -54,7 +52,7 @@ export default function BlogList({ blogs = [] }: { blogs?: Blog[] }) {
                   {blog.date}
                 </span>
                 <Link href={`/blog/${blog.slug}`}>
-                  <h3 className="font-serif text-lg md:text-xl lg:text-2xl text-[var(--text-primary)] group-hover:text-[var(--text-secondary)] transition-colors duration-300 line-clamp-2">
+                  <h3 className="font-sans font-light text-xl lg:text-2xl text-[var(--text-primary)] group-hover:text-[var(--text-secondary)] transition-colors duration-300 line-clamp-2">
                     {blog.title}
                   </h3>
                 </Link>

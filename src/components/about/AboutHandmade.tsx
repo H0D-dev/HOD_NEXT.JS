@@ -13,7 +13,7 @@ export default function AboutHandmade() {
 
   return (
     <section className="w-full bg-[var(--bg-secondary)]">
-      <div className="w-full px-6 md:px-12 lg:px-16 py-8 lg:py-12 flex flex-col lg:flex-row gap-12 lg:gap-0 justify-between items-center max-w-[var(--container-lg)] mx-auto">
+      <div className="w-full px-6 md:px-12 lg:px-16 py-8 md:py-12 lg:py-16 flex flex-col lg:flex-row gap-12 lg:gap-0 justify-between items-center max-w-[var(--container-lg)] mx-auto">
         
         {/* Text Side (Left) */}
         <motion.div
@@ -23,17 +23,17 @@ export default function AboutHandmade() {
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any }}
           className="w-full lg:w-[25%] flex flex-col items-start text-left shrink-0"
         >
-          <h2 className="font-sans text-xs md:text-sm font-semibold tracking-[0.2em] text-[var(--text-primary)] mb-4 uppercase">
-            THE ART OF HANDMADE
+          <h2 className="font-sans font-light text-xl lg:text-2xl leading-[1.2] tracking-wide text-[var(--text-primary)] mb-4">
+            The Art of Handmade
           </h2>
           
-          <p className="font-sans text-sm md:text-base leading-relaxed text-[var(--text-secondary)] mb-8 w-full">
+          <p className="font-sans text-sm md:text-base font-light leading-relaxed text-[var(--text-secondary)] mb-8 w-full">
             From the selection of the finest wool and silk to the final wash and finish, every step is carried out by hand. The result is a rug with soul, character, and timeless beauty.
           </p>
           
           <Link
             href="/know-your-rug/rug-making-process"
-            className="inline-block border-b border-[var(--text-primary)] text-[var(--text-primary)] font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium pb-1 transition-colors hover:text-[var(--text-secondary)] hover:border-[var(--text-secondary)]"
+            className="inline-block border-b border-[var(--text-primary)] text-[var(--text-primary)] font-sans text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-semibold pb-1 transition-colors hover:text-[var(--text-secondary)] hover:border-[var(--text-secondary)]"
           >
             DISCOVER THE PROCESS
           </Link>

@@ -76,7 +76,7 @@ export default function ContactInfoSection() {
   };
 
   return (
-    <section className="w-full pt-8 pb-16 md:pt-12 md:pb-20 px-4 md:px-8 lg:px-16 bg-[var(--bg-primary)]">
+    <section className="w-full pt-4 md:pt-6 lg:pt-8 pb-8 md:pb-12 lg:pb-16 px-4 md:px-8 lg:px-16 bg-[var(--bg-primary)]">
       <div className="max-w-[1200px] mx-auto">
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -90,7 +90,7 @@ export default function ContactInfoSection() {
             className="flex flex-col justify-center gap-10 py-4"
           >
             <div>
-              <h2 className="font-serif italic text-2xl lg:text-3xl text-[var(--accent-primary)] font-light leading-tight mb-6">
+              <h2 className="font-sans italic text-[clamp(24px,5vw,56px)] text-[var(--accent-primary)] font-light leading-tight mb-6">
                 &quot;Every exceptional space begins with a conversation.&quot;
               </h2>
               <p className="font-sans text-sm text-[var(--text-secondary)] leading-relaxed max-w-[90%]">
@@ -99,7 +99,7 @@ export default function ContactInfoSection() {
             </div>
 
             <div className="flex flex-col gap-6">
-              <h4 className="font-sans text-[11px] uppercase tracking-widest text-[var(--text-primary)] font-semibold border-b border-[var(--border-secondary)] pb-2">
+              <h4 className="font-sans text-[10px] md:text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--text-primary)] border-b border-[var(--border-secondary)] pb-2">
                 Direct Studio Contact
               </h4>
               <div className="flex flex-col gap-4">
@@ -129,7 +129,7 @@ export default function ContactInfoSection() {
             className="bg-[var(--bg-secondary)] p-6 md:p-8 border border-[var(--border-secondary)] shadow-sm flex flex-col h-full"
           >
             <div className="text-center mb-6">
-              <h3 className="font-sans text-sm uppercase tracking-widest text-[var(--text-primary)] font-semibold mb-1.5">
+              <h3 className="font-sans text-[10px] md:text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--text-primary)] mb-1.5">
                 Studio Request
               </h3>
               <p className="font-sans text-[11px] md:text-xs text-[var(--text-secondary)]">
@@ -183,11 +183,10 @@ export default function ContactInfoSection() {
                   onChange={handleChange}
                   className="w-full appearance-none bg-[var(--bg-primary)] border border-[var(--border-secondary)] px-3 py-2.5 text-xs font-sans outline-none focus:border-[var(--border-primary)] transition-colors text-[var(--text-secondary)]"
                 >
-                  <option value="" disabled>Project Type</option>
-                  <option value="residential">Residential</option>
-                  <option value="commercial">Commercial / Hospitality</option>
-                  <option value="yacht">Yacht / Aviation</option>
-                  <option value="other">Other</option>
+                  <option value="" disabled className="bg-[var(--bg-secondary)]">Project Type</option>
+                  <option value="residential" className="bg-[var(--bg-secondary)]">Residential</option>
+                  <option value="commercial" className="bg-[var(--bg-secondary)]">Commercial / Hospitality</option>
+                  <option value="other" className="bg-[var(--bg-secondary)]">Other</option>
                 </select>
                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-[var(--text-secondary)]">
                   <svg className="fill-current h-3 w-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>

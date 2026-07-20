@@ -21,12 +21,12 @@ export default function ContactFAQ() {
   };
 
   return (
-    <section className="w-full pt-10 pb-4 md:pt-16 md:pb-8 bg-[var(--bg-primary)]">
+    <section className="w-full py-8 md:py-12 lg:py-16 bg-[var(--bg-primary)]">
       <div className="max-w-[1000px] mx-auto px-4 md:px-8">
         
         {/* Title */}
         <div className="text-center mb-12">
-          <h3 className="font-sans text-xs md:text-sm uppercase tracking-widest text-[var(--text-primary)] font-semibold relative inline-block">
+          <h3 className="font-sans font-light text-xl lg:text-2xl text-[var(--text-primary)] relative inline-block">
             Frequently Asked Questions
           </h3>
         </div>
@@ -56,7 +56,7 @@ export default function ContactFAQ() {
                     className="border-t border-[var(--border-secondary)] bg-[var(--bg-secondary)]"
                   >
                     <div className="p-4 md:p-5">
-                      <p className="font-sans text-[11px] md:text-xs text-[var(--text-secondary)] leading-relaxed">
+                      <p className="font-sans text-[11px] md:text-xs font-light text-[var(--text-secondary)] leading-relaxed">
                         {faq.answer}
                       </p>
                     </div>

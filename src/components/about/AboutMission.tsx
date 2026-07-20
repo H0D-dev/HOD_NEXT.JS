@@ -14,7 +14,7 @@ export default function AboutMission() {
   return (
     <section className="w-full bg-[var(--bg-primary)]">
       {/* Text Section */}
-      <div className="w-full py-8 lg:py-12 px-6 md:px-12 flex flex-col items-center text-center">
+      <div className="w-full py-8 md:py-12 lg:py-16 px-6 md:px-12 flex flex-col items-center text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -23,15 +23,15 @@ export default function AboutMission() {
           className="flex flex-col items-center max-w-2xl gap-6 md:gap-8"
         >
           <div className="flex flex-col items-center gap-4">
-            <span className="font-sans text-xs md:text-sm font-semibold tracking-[0.2em] uppercase text-[var(--text-secondary)]">
+            <span className="font-sans text-[10px] sm:text-[11px] font-semibold tracking-[0.2em] uppercase text-[var(--text-secondary)]">
               ROOTED IN HERITAGE. MADE FOR TODAY.
             </span>
-            <h2 className="font-serif text-xl md:text-2xl lg:text-3xl leading-[1.2] tracking-tight text-[var(--text-primary)]">
-              OUR STORY
+            <h2 className="font-sans font-light text-xl lg:text-2xl leading-[1.2] tracking-wide text-[var(--text-primary)]">
+              Our Story
             </h2>
           </div>
 
-          <p className="font-sans text-sm md:text-base leading-relaxed text-[var(--text-secondary)]">
+          <p className="font-sans text-sm md:text-base font-light leading-relaxed text-[var(--text-secondary)] max-w-lg">
             We collaborate with master artisans whose skills have been passed down through generations. Each rug is a work of art—hand-knotted, hand-finished, and created using the finest natural materials.
           </p>
 

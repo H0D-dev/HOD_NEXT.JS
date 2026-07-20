@@ -7,7 +7,7 @@ import Image from "next/image";
 export default function AboutConclusion() {
   return (
     <section className="w-full bg-[var(--bg-primary)]">
-      <div className="w-full px-6 md:px-12 lg:px-16 py-8 lg:py-12 flex flex-col lg:flex-row gap-12 lg:gap-16 justify-between items-center max-w-[var(--container-lg)] mx-auto">
+      <div className="w-full px-6 md:px-12 lg:px-16 py-8 md:py-12 lg:py-16 flex flex-col lg:flex-row gap-12 lg:gap-16 justify-between items-center max-w-[var(--container-lg)] mx-auto">
         
         {/* Text Side (Left) */}
         <motion.div
@@ -17,17 +17,17 @@ export default function AboutConclusion() {
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any }}
           className="w-full lg:w-[40%] flex flex-col items-start text-left"
         >
-          <h2 className="font-sans text-xs md:text-sm font-semibold tracking-[0.2em] text-[var(--text-primary)] mb-4 uppercase">
-            DESIGNED FOR BEAUTIFUL SPACES
+          <h2 className="font-sans font-light text-xl lg:text-2xl leading-[1.2] tracking-wide text-[var(--text-primary)] mb-4">
+            Designed for Beautiful Spaces
           </h2>
           
-          <p className="font-sans text-sm md:text-base leading-relaxed text-[var(--text-secondary)] mb-8">
+          <p className="font-sans text-sm md:text-base font-light leading-relaxed text-[var(--text-secondary)] mb-8">
             "A rug is not just a piece of decor; it is the foundation of a room, the soul of a space." We believe that every space should reflect the character of its inhabitants. Our bespoke creations are crafted to anchor your home with timeless elegance and unparalleled quality.
           </p>
           
           <Link
             href="/bespoke"
-            className="inline-block border-b border-[var(--text-primary)] text-[var(--text-primary)] font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium pb-1 transition-colors hover:text-[var(--text-secondary)] hover:border-[var(--text-secondary)]"
+            className="inline-block border-b border-[var(--text-primary)] text-[var(--text-primary)] font-sans text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-semibold pb-1 transition-colors hover:text-[var(--text-secondary)] hover:border-[var(--text-secondary)]"
           >
             DISCOVER BESPOKE
           </Link>

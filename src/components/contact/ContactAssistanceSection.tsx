@@ -11,7 +11,7 @@ const assistanceItems = [
   },
   {
     id: 2,
-    title: "Interior Design Collaboration",
+    title: "Interior Design",
     icon: Armchair,
   },
   {
@@ -21,11 +21,6 @@ const assistanceItems = [
   },
   {
     id: 4,
-    title: "Yacht & Private\nAviation Interiors",
-    icon: Ship,
-  },
-  {
-    id: 5,
     title: "General\nInquiry",
     icon: Mail,
   },
@@ -61,11 +56,11 @@ export default function ContactAssistanceSection() {
   };
 
   return (
-    <section className="w-full bg-[var(--bg-primary)] pt-16 pb-8 md:pt-20 md:pb-12">
+    <section className="w-full bg-[var(--bg-primary)] pt-4 md:pt-6 lg:pt-8 pb-4 md:pb-6 lg:pb-8">
       <div className="max-w-[var(--container-lg)] mx-auto px-4 md:px-12 lg:px-16">
         
-        <div className="text-center mb-12 md:mb-16">
-          <h2 className="font-sans text-xs md:text-sm uppercase tracking-[0.2em] text-[var(--text-secondary)] font-medium">
+        <div className="text-center mb-6 md:mb-8">
+          <h2 className="font-sans font-light text-xl lg:text-2xl text-[var(--text-primary)]">
             How Can We Assist You?
           </h2>
         </div>
@@ -74,8 +69,7 @@ export default function ContactAssistanceSection() {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
-          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6"
+          className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6"
         >
           {assistanceItems.map((item) => {
             const Icon = item.icon;
@@ -84,12 +78,12 @@ export default function ContactAssistanceSection() {
                 key={item.id}
                 variants={itemVariants}
                 onClick={() => handleCardClick(item.title)}
-                className="flex flex-col items-center justify-center text-center p-6 md:p-8 border border-[var(--border-secondary)] bg-[var(--surface-primary)] hover:border-[var(--accent-primary)] hover:shadow-sm transition-all duration-300 group cursor-pointer"
+                className="flex flex-col items-center justify-center text-center p-4 md:p-5 lg:p-6 bg-[var(--surface-primary)] hover:shadow-md transition-all duration-300 group cursor-pointer"
               >
-                <div className="text-[var(--accent-primary)] mb-6 transition-transform duration-500 group-hover:scale-110">
-                  <Icon size={40} strokeWidth={1} />
+                <div className="text-[var(--accent-primary)] mb-3 transition-transform duration-500 group-hover:scale-110">
+                  <Icon size={36} strokeWidth={1} />
                 </div>
-                <h3 className="font-sans text-xs md:text-sm text-[var(--text-primary)] font-medium whitespace-pre-line leading-relaxed group-hover:text-[var(--accent-primary)] transition-colors duration-300">
+                <h3 className="font-sans text-[10px] md:text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--text-primary)] whitespace-pre-line leading-relaxed group-hover:text-[var(--accent-primary)] transition-colors duration-300">
                   {item.title}
                 </h3>
               </motion.div>

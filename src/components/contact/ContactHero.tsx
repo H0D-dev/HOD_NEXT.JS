@@ -75,15 +75,15 @@ export default function ContactHero() {
       </div>
 
       {/* ── Content ── */}
-      <div className="w-full px-6 sm:px-12 md:px-16 lg:px-24 xl:px-32 relative z-20 flex flex-col py-24 md:py-32 lg:pb-0">
+      <div className="w-full px-6 sm:px-12 md:px-16 lg:px-24 xl:px-32 relative z-20 flex flex-col pt-32 pb-24 md:py-32 lg:pb-0 mt-20 md:mt-12 lg:mt-16">
           {/* Hero Content Layer */}
           <div ref={contentRef} className="flex flex-col items-start gap-0 lg:-mt-16">
             
-            <h1 className="font-serif text-[2.75rem] md:text-[4rem] lg:text-[4.75rem] leading-[1.1] tracking-tight text-white mb-4">
+            <h1 className="font-sans text-[2.25rem] sm:text-[2.75rem] md:text-[4rem] lg:text-[4rem] font-light leading-[1.1] tracking-wide text-white mb-4">
               Let&apos;s Begin <br /> a Conversation
             </h1>
             
-            <p className="font-sans max-w-xl text-neutral-300 text-[10px] md:text-xs uppercase tracking-[0.2em] mt-6 leading-relaxed">
+            <p className="font-sans max-w-xl text-white/90 text-[10px] md:text-xs uppercase tracking-[0.2em] mt-6 leading-relaxed">
               FOR BESPOKE RUGS, INTERIOR COLLABORATIONS, <br className="hidden sm:block" />
               HOSPITALITY PROJECTS, AND PRIVATE COMMISSIONS.
             </p>

@@ -76,25 +76,28 @@ export default function AboutHero() {
       </div>
 
       {/* ── Content ── */}
-      <div className="w-full px-6 sm:px-12 md:px-16 lg:px-24 xl:px-32 relative z-20 flex flex-col py-24 md:py-32 lg:pb-0">
+      <div className="w-full px-6 sm:px-12 md:px-16 lg:px-24 xl:px-32 relative z-20 flex flex-col pt-32 pb-24 md:py-32 lg:pb-0 mt-20 md:mt-12 lg:mt-16">
           {/* Hero Content Layer */}
-          <div ref={contentRef} className="flex flex-col items-start gap-0 lg:-mt-16 max-w-2xl">
+          <div ref={contentRef} className="flex flex-col items-start gap-0 lg:-mt-16 max-w-2xl text-left">
             
-            <h1 className="font-serif text-[2.75rem] md:text-[4rem] lg:text-[4.75rem] leading-[1.1] tracking-tight text-white mb-2 md:mb-4">
+            <h1 className="font-sans text-[2.25rem] sm:text-[2.75rem] md:text-[4rem] lg:text-[4rem] font-light leading-[1.1] tracking-wide text-white mb-2 md:mb-4 text-left">
               About Us
             </h1>
             
-            <h2 className="font-sans text-xs md:text-sm font-semibold tracking-[0.2em] text-white mb-6 uppercase">
+            <h2 className="font-sans text-[10px] md:text-xs font-semibold tracking-[0.2em] text-white mb-6 uppercase text-left">
               THE HOUSE OF DÉCOR PHILOSOPHY
             </h2>
             
-            <p className="font-sans text-sm md:text-base leading-relaxed text-neutral-200 mb-8 max-w-md">
+            <p className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] leading-relaxed text-white/90 mb-8 max-w-md text-left">
               House of Décor is a Dubai-based luxury rug brand creating timeless, handcrafted rugs with integrity, passion, and purpose.
             </p>
 
-            <Link href="#our-story" className="inline-block border-b border-white text-white font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium pb-1 transition-colors hover:text-white/70 hover:border-white/70">
-              DISCOVER OUR STORY
-            </Link>
+            <div className="flex flex-col sm:flex-row items-start justify-start w-full sm:w-auto">
+              <Link href="#our-story" className="group relative w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 sm:px-10 sm:py-4 border-[0.5px] border-white/60 overflow-hidden text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-center text-white">
+                <span className="relative z-10 transition-colors duration-[0.6s] group-hover:text-black">DISCOVER OUR STORY</span>
+                <div className="absolute inset-0 bg-white translate-y-[101%] group-hover:translate-y-0 transition-transform duration-[0.6s] ease-[cubic-bezier(0.22,1,0.36,1)] z-0" />
+              </Link>
+            </div>
             
           </div>
         </div>

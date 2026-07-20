@@ -17,7 +17,7 @@ export default function BlogContent({ blog }: { blog: Blog }) {
     offset: ["start end", "end start"]
   });
 
-  const imageScale = useTransform(scrollYProgress, [0.3, 1], [1, 0.85]);
+  const imageScale = useTransform(scrollYProgress, [0, 0.7], [1, 0.9]);
   const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
 
   // Intersection Observer for Desktop Sidebar
@@ -67,7 +67,7 @@ export default function BlogContent({ blog }: { blog: Blog }) {
               <span className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-[var(--text-secondary)]">
                 {blog.date}
               </span>
-              <h1 className="font-serif text-2xl md:text-3xl lg:text-4xl text-[var(--text-primary)] mb-4">
+              <h1 className="font-sans font-light text-[2.25rem] sm:text-[2.75rem] md:text-[4rem] lg:text-[4rem] leading-[1.1] tracking-wide text-[var(--text-primary)] mb-4">
                 {blog.title}
               </h1>
               <p className="font-sans text-sm md:text-base leading-relaxed text-[var(--text-secondary)]">
@@ -79,10 +79,10 @@ export default function BlogContent({ blog }: { blog: Blog }) {
       </section>
 
       {/* Featured Image */}
-      <div ref={imageContainerRef} className="w-full px-5 md:px-10 lg:px-16 py-8 md:py-12 lg:py-16 bg-[var(--bg-primary)] border-b border-[var(--border-secondary)] overflow-hidden">
+      <div ref={imageContainerRef} className="w-full pt-4 md:pt-6 lg:pt-8 pb-8 md:pb-12 lg:pb-16 bg-[var(--bg-primary)] border-b border-[var(--border-secondary)] overflow-hidden flex justify-center">
         <motion.div 
           style={{ scale: imageScale, y: imageY }}
-          className="max-w-[var(--container-lg)] mx-auto w-full aspect-[4/3] lg:aspect-[16/9] min-h-[50vh] lg:min-h-[60vh] max-h-[85vh] relative bg-[var(--surface-primary)]"
+          className="w-full aspect-[4/3] lg:aspect-[16/9] min-h-[50vh] lg:min-h-[60vh] max-h-[85vh] relative bg-[var(--surface-primary)]"
         >
           <Image
             src={blog.image}
@@ -95,19 +95,19 @@ export default function BlogContent({ blog }: { blog: Blog }) {
       </div>
 
       {/* Blog Content with Sticky Sidebar */}
-      <section className="w-full py-16 md:py-32 lg:py-48 px-5 md:px-10 lg:px-16 bg-[var(--bg-secondary)]">
+      <section className="w-full py-8 md:py-12 lg:py-16 px-5 md:px-10 lg:px-16 bg-[var(--bg-secondary)]">
         <div className="max-w-[var(--container-lg)] mx-auto flex flex-col md:flex-row gap-12 lg:gap-24 relative">
 
           {blog.sections && blog.sections.length > 0 ? (
             <>
               {/* Mobile Accordion Navigation */}
               <div className="md:hidden w-full flex flex-col border-t border-[var(--border-secondary)]">
-                <h2 className="font-serif text-xl md:text-2xl text-[var(--text-primary)] mb-8 pt-8">Article Contents</h2>
+                <h2 className="font-sans font-light text-xl lg:text-2xl text-[var(--text-primary)] mb-8 pt-8">Article Contents</h2>
                 {blog.sections.map((section) => (
                   <div key={`mobile-${section.id}`} className="border-b border-[var(--border-secondary)]">
                     <button
                       onClick={() => handleAccordionClick(section.id)}
-                      className="w-full py-6 flex items-center justify-between font-serif text-lg md:text-xl text-[var(--text-primary)]"
+                      className="w-full py-6 flex items-center justify-between font-sans font-light text-lg md:text-xl text-[var(--text-primary)]"
                     >
                       {section.title}
                       <ChevronDown
@@ -180,7 +180,7 @@ export default function BlogContent({ blog }: { blog: Blog }) {
                       transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any }}
                       className="flex flex-col gap-8 scroll-mt-32"
                     >
-                      <h2 className="font-serif text-2xl md:text-3xl lg:text-4xl text-[var(--text-primary)] border-b border-[var(--border-secondary)] pb-6 mb-2">
+                      <h2 className="font-sans font-light text-xl lg:text-2xl text-[var(--text-primary)] border-b border-[var(--border-secondary)] pb-6 mb-2">
                         {section.title}
                       </h2>
                       <div className="flex flex-col gap-6">

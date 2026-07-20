@@ -216,13 +216,13 @@ Apply these globally on `<body>` for crisp text:
 
 Usage: Main headline text over hero slider images (e.g., "From the House of Décor with love.")
 
-* **Size:** `text-4xl md:text-5xl lg:text-6xl` — or fluid: `clamp(36px, 6vw, 64px)`
+* **Size:** EXACTLY `text-[2.25rem] sm:text-[2.75rem] md:text-[4rem] lg:text-[4rem]` (Do not use clamp to ensure precise matching across all hero banners)
 * **Weight:** `font-light` (300) — thin letterforms against full-bleed imagery
 * **Case:** Sentence case or Title Case (NOT all uppercase for the headline itself)
 * **Tracking:** `tracking-wide` (0.05em) — airy, breathable
-* **Line-height:** `leading-none` or `leading-tight` (0.9–1.1)
+* **Line-height:** `leading-[1.1]`
 * **Color:** White with subtle `drop-shadow-md` for readability
-* **CTA below hero text:** `text-xs font-semibold uppercase tracking-[0.2em]`
+* **CTA below hero text:** `text-[10px] md:text-xs font-semibold uppercase tracking-[0.2em]`
 
 ---
 
@@ -230,10 +230,10 @@ Usage: Main headline text over hero slider images (e.g., "From the House of Déc
 
 Usage: Titles that introduce new grids, sliders, or content blocks on the homepage and inner pages.
 
-* **Size:** `text-xl lg:text-2xl` — or fluid: `clamp(20px, 2.5vw, 28px)`
+* **Size:** EXACTLY `text-xl lg:text-2xl` (Do not use clamp, 3xl, or Monumental sizing for standard sections)
 * **Weight:** `font-medium` (500) for homepage e-commerce grids. Use `font-light` (300) for nested informational pages (e.g., Guides, Process, Materials) to prevent heaviness and keep typography elegant.
 * **Case:** Title Case (e.g., "Collections", "Featured")
-* **Alignment:** Left-aligned with content, paired with a right-aligned "View All" link
+* **Alignment:** Left-aligned or Center-aligned depending on layout
 * **Spacing:** `mb-10 md:mb-12` below
 * **Superscript counter:** Small `(04)` style counters: `text-[10px] font-medium ml-1`
 
@@ -368,15 +368,15 @@ Usage: Email input fields, subscribe buttons, form headings.
 ## Fluid Typography & Responsive Consistency
 
 To maintain the luxury aesthetic across all devices, **never use abrupt font size jumps**.
-Use CSS `clamp()` for all major headings and large text elements.
+For components like hero banners and section headers, we now strictly rely on explicitly defined responsive breakpoints (e.g. `text-xl lg:text-2xl` or `text-[2.25rem] sm:text-[2.75rem] md:text-[4rem] lg:text-[4rem]`) instead of `clamp()` to ensure pixel-perfect consistency across all distinct pages.
 
 **Examples:**
-* **Hero/Monumental Headings:** `text-[clamp(48px,8vw,96px)]`
-* **Section Headings:** `text-[clamp(20px,2.5vw,28px)]`
-* **Banner/Quote Text:** `text-[clamp(28px,5vw,56px)]`
+* **Hero Headings:** `text-[2.25rem] sm:text-[2.75rem] md:text-[4rem] lg:text-[4rem]`
+* **Monumental Architectural Headings:** `text-[clamp(28px,5vw,48px)]` (Only for massive quote sections)
+* **Standard Section Headings:** strictly `text-xl lg:text-2xl`
 * **Large Quotes:** `text-[clamp(24px,5vw,56px)]`
 
-This guarantees that typography always feels perfectly proportioned, whether on a 320px phone or a 4K display.
+This guarantees that typography always feels perfectly proportioned, whether on a 320px phone or a 4K display, while maintaining exact 1:1 parity across different pages.
 
 ---
 
@@ -444,10 +444,11 @@ Full-bleed, viewport-height hero with overlaid text.
 * **Container:** `relative w-full h-[100svh] overflow-hidden`
 * **Background:** Full-bleed `<Image>` with `object-cover`, parallax via Framer Motion `useTransform`
 * **Overlay:** Gradient overlay for text readability — `bg-gradient-to-t from-black/80 via-black/40 to-transparent` (mobile) / `bg-gradient-to-r from-black/60 via-black/10 to-transparent` (desktop)
-* **Text Position:** Left-aligned on desktop (`w-1/2 px-20`), bottom-aligned on mobile
-* **Headline:** `font-[Jost] clamp(2.5rem, 8vw, 4.5rem) font-medium leading-[1.1] text-white`
-* **Subtitle:** `text-sm sm:text-base font-light text-white/90 leading-relaxed`
-* **CTA:** `text-[10px] font-semibold uppercase tracking-[0.2em] text-white` with animated line
+* **Content Wrapper Padding & Margin:** Exactly `pt-32 pb-24 md:py-32 lg:pb-0 mt-20 md:mt-12 lg:mt-16` to ensure the text block sits at the perfect height and does not float too high up.
+* **Text Position:** Left-aligned or Center-aligned, constrained max-width (e.g. `max-w-2xl`)
+* **Headline:** `font-sans font-light text-[2.25rem] sm:text-[2.75rem] md:text-[4rem] lg:text-[4rem] leading-[1.1] tracking-wide text-white`
+* **Subtitle:** `text-[10px] md:text-xs uppercase tracking-[0.2em] leading-relaxed text-white/90`
+* **CTA:** `text-[10px] md:text-xs font-medium uppercase tracking-[0.2em] text-white` with animated line
 
 ---
 
@@ -581,6 +582,18 @@ Email capture section at the bottom of pages.
 
 ---
 
+## N. Dynamic Grid Stacking (Carousels/Testimonials)
+
+When building cross-fading carousels or testimonial rotators, **do not** use fixed-height containers with `absolute` children, as long text on mobile will bleed out of the container and break the layout.
+
+**Solution:** Use CSS Grid stacking.
+* Wrap items in a container with `grid`.
+* Apply `[grid-area:1/1]` to every child item.
+* This forces all items into the exact same grid cell. The container will automatically and fluidly scale its height to match the tallest child item.
+* Use `opacity-0 pointer-events-none invisible` for inactive items, and `opacity-100 pointer-events-auto z-10 relative` for active items.
+
+---
+
 # Border System
 
 Use hard edges.
@@ -640,6 +653,7 @@ Whitespace is a primary structural element of luxury design, but it must be appl
    * Keep paddings extremely tight to prevent "endless scrolling" through blank space.
    * *Example:* `py-8` or `py-12` on mobile.
    * Ensure fixed-height containers are heavily reduced on mobile (e.g., `h-[250px] md:h-[400px] lg:min-h-[70svh]`).
+   * **Mobile Grids:** For feature/process cards, avoid stacking 6 items vertically in 1 column (`grid-cols-1`). Instead, use `grid-cols-2` on mobile with scaled-down text (`text-sm`) to save vertical space, or use horizontal snap scrolling (`flex overflow-x-auto snap-x`).
 
 3. **Nested Informational Pages & Accordions (Compactness):**
    * Do not use excessive negative space inside informational grids, content cards, and lists.
@@ -698,6 +712,11 @@ Use:
 * White / `var(--bg-primary)` backgrounds
 * 1px borders (optional — can also be borderless for product cards)
 * No shadows (or extremely subtle: `shadow-[0_8px_30px_rgb(0,0,0,0.04)]` on hover only)
+
+**Hover Interactions for Cards:**
+Instead of changing the full border color (which can feel harsh), use a **Progress Bar Hover Effect** for a more premium, subtle interaction:
+* Add a `relative` wrapper to the card.
+* Place an absolute `div` at the top: `absolute top-0 left-0 h-[2px] bg-[var(--accent-primary)] w-0 group-hover:w-full transition-all duration-[0.8s] ease-[cubic-bezier(0.22,1,0.36,1)] z-10`
 
 Avoid:
 
