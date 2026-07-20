@@ -98,7 +98,7 @@ export default function Header() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const isTransparentRoute = pathname === "/" || pathname === "/contact" || pathname === "/know-your-rug" || pathname === "/bespoke" || pathname === "/about" || pathname === "/services";
+  const isTransparentRoute = pathname === "/" || pathname === "/contact" || pathname === "/know-your-rug" || pathname === "/bespoke" || pathname === "/about" || pathname === "/services" || pathname === "/products";
   const isTransparent = isTransparentRoute && !isScrolled && !isMobileMenuOpen;
 
   return (

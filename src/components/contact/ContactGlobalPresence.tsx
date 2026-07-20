@@ -30,7 +30,7 @@ export default function ContactGlobalPresence() {
   ];
 
   const benefits = [
-    { icon: <PenTool size={24} strokeWidth={1.5} />, text: "BESPOKE DESIGN ONLY" },
+    { icon: <PenTool size={24} strokeWidth={1.5} />, text: "BESPOKE DESIGN" },
     { icon: <Users size={24} strokeWidth={1.5} />, text: "ARCHITECT & DESIGNER COLLABORATION" },
     { icon: <Globe size={24} strokeWidth={1.5} />, text: "DELIVERY WORLDWIDE" },
     { icon: <Shield size={24} strokeWidth={1.5} />, text: "CONFIDENTIAL LUXURY PROJECTS" },
@@ -47,7 +47,7 @@ export default function ContactGlobalPresence() {
   return (
     <section className="w-full py-8 md:py-12 lg:py-16 bg-[var(--bg-secondary)] border-t border-[var(--border-secondary)]">
       <div className="max-w-[1200px] mx-auto px-4 md:px-8 lg:px-16">
-        
+
         {/* Title */}
         <div className="text-center mb-10">
           <h3 className="font-sans font-light text-xl lg:text-2xl text-[var(--text-primary)] relative inline-block">
@@ -59,12 +59,12 @@ export default function ContactGlobalPresence() {
         {/* Locations Grid - Mobile Carousel */}
         <div className="block md:hidden mb-12">
           <div className="w-full flex flex-col items-center text-center cursor-pointer">
-            
+
             {/* Cross-fading Text */}
             <div className="mb-4 text-[var(--text-primary)] relative h-10 w-full flex justify-center items-center">
               {locations.map((loc, idx) => (
-                <div 
-                  key={idx} 
+                <div
+                  key={idx}
                   className={`absolute w-full flex flex-col items-center transition-opacity duration-500 ${activeIndex === idx ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
                 >
                   <h4 className="font-sans text-[10px] md:text-[11px] font-semibold uppercase tracking-[0.2em]">{loc.city}</h4>
@@ -76,14 +76,14 @@ export default function ContactGlobalPresence() {
             {/* Cross-fading Images */}
             <div className="w-full relative h-64 rounded border border-[var(--border-secondary)] overflow-hidden shadow-sm bg-[var(--bg-primary)]">
               {locations.map((loc, idx) => (
-                <div 
+                <div
                   key={idx}
                   className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${activeIndex === idx ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
                 >
-                  <Image 
-                    src={loc.img} 
-                    alt={loc.city} 
-                    fill 
+                  <Image
+                    src={loc.img}
+                    alt={loc.city}
+                    fill
                     priority
                     sizes="(max-width: 768px) 100vw, 33vw"
                     className="object-cover opacity-80 mix-blend-multiply"
@@ -93,7 +93,7 @@ export default function ContactGlobalPresence() {
             </div>
 
           </div>
-          
+
           {/* Pagination Dots */}
           <div className="flex justify-center gap-3 mt-6 items-center h-4">
             {locations.map((_, idx) => (
@@ -123,10 +123,10 @@ export default function ContactGlobalPresence() {
                 <p className="font-sans text-[10px] uppercase tracking-[0.2em] text-[var(--text-secondary)] mt-1 font-semibold">{loc.country}</p>
               </div>
               <div className="w-full relative h-48 md:h-56 lg:h-64 rounded border border-[var(--border-secondary)] overflow-hidden transition-all duration-500 group-hover:border-[var(--accent-primary)] shadow-sm">
-                <Image 
-                  src={loc.img} 
-                  alt={loc.city} 
-                  fill 
+                <Image
+                  src={loc.img}
+                  alt={loc.city}
+                  fill
                   className="object-cover opacity-80 mix-blend-multiply transition-transform duration-700 group-hover:scale-105"
                 />
               </div>
