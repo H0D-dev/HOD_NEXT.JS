@@ -30,7 +30,7 @@ const projects = [
   },
 ];
 
-export default function ProjectsSection() {
+export default function ServicesExpertise() {
   const setCursorMode = useCursorStore((state) => state.setMode);
   const sectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -62,13 +62,16 @@ export default function ProjectsSection() {
   }, { scope: sectionRef });
 
   return (
-    <section ref={sectionRef} className="w-full bg-[var(--bg-primary)] pt-8 pb-2 md:pt-12 md:pb-4 lg:pt-12 lg:pb-2 overflow-hidden" id="projects-section">
+    <section ref={sectionRef} className="w-full bg-[var(--bg-primary)] pt-8 pb-2 md:pt-12 md:pb-4 lg:pt-16 lg:pb-8 overflow-hidden">
       <div className="mx-auto max-w-[1536px] px-6 sm:px-12 md:px-16 lg:px-24 mb-6 md:mb-10">
 
-        <div className="text-center mb-6 md:mb-10" ref={headerRef}>
+        <div className="text-center mb-10 md:mb-16" ref={headerRef}>
           <div className="flex flex-col items-center justify-center">
-            <h2 className="text-xl lg:text-2xl font-medium text-[var(--text-primary)] leading-[1.15] mb-2 md:mb-4">
-              Featured projects
+            <span className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] text-[var(--text-secondary)] mb-4 md:mb-6 font-medium">
+              Project Expertise
+            </span>
+            <h2 className="text-xl lg:text-2xl font-light text-[var(--text-primary)] leading-[1.15]">
+              Spaces That Inspire.
             </h2>
           </div>
         </div>
@@ -95,7 +98,7 @@ export default function ProjectsSection() {
               </div>
 
               {/* Text Below Image */}
-              <span className="text-[10px] md:text-xs uppercase tracking-widest text-[var(--text-secondary)] mt-5 transition-colors group-hover:text-[var(--text-primary)]">
+              <span className="text-[10px] md:text-xs uppercase tracking-widest text-[var(--text-secondary)] mt-5 transition-colors group-hover:text-[var(--accent-primary)]">
                 {project.title}
               </span>
 

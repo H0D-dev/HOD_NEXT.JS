@@ -1,25 +1,38 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function ServicesHero() {
   return (
-    <section className="w-full pt-32 pb-16 md:pt-48 md:pb-32 px-6 md:px-16 lg:px-24 bg-[var(--bg-primary)] border-b border-[var(--border-secondary)]">
-      <div className="max-w-[var(--container-md)] mx-auto text-center flex flex-col items-center">
+    <section className="relative w-full h-screen flex flex-col justify-end lg:justify-center overflow-hidden bg-black border-b border-[var(--border-secondary)]">
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/services_hero.png"
+          alt="Luxury living room with panoramic city view"
+          fill
+          priority
+          className="object-cover object-center"
+          sizes="100vw"
+        />
+        {/* Subtle overlay for text readability if needed */}
+        <div className="absolute inset-0 bg-black/20" />
+      </div>
+
+      {/* Content */}
+      <div className="w-full px-6 sm:px-12 md:px-16 lg:px-24 xl:px-32 relative z-20 flex flex-col pt-32 pb-8 md:pb-32 md:pt-32 lg:pb-0 mt-20 md:mt-12 lg:mt-16">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any }}
-          className="max-w-4xl"
+          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] as any }}
+          className="flex flex-col items-start gap-0 text-white text-left max-w-4xl"
         >
-          <span className="block text-[var(--accent-primary)] font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] mb-6 md:mb-8 font-medium">
-            House of Décor
-          </span>
-          <h1 className="font-serif text-[2.75rem] md:text-[4rem] lg:text-[4.75rem] leading-[1.1] tracking-tight text-[var(--text-primary)] mb-12">
-            Our Services
+          <h1 className="font-sans font-light text-[2.25rem] sm:text-[2.75rem] md:text-[3.5rem] lg:text-[4rem] leading-[1.1] tracking-wide mb-4 drop-shadow-lg text-left">
+            Services Crafted<br />Around Every Space.
           </h1>
-          <p className="font-sans text-[var(--text-secondary)] text-sm md:text-base leading-relaxed text-left md:text-center">
-            At House of Décor, we specialize in creating luxurious, custom-made home décor solutions that transform spaces into breathtaking masterpieces. Our extensive range of offerings connects you to the rich traditions and skills of artisans from around the globe.
+          <p className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] mt-6 leading-relaxed mb-10 text-white/90 max-w-xl drop-shadow-md text-left">
+            Bespoke handmade rugs, expert guidance, and flawless execution — tailored for luxury residential and hospitality interiors.
           </p>
         </motion.div>
       </div>

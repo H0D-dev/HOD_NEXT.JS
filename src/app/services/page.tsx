@@ -1,6 +1,9 @@
 import ServicesHero from "../../components/services/ServicesHero";
-import PrimaryOfferings from "../../components/services/PrimaryOfferings";
-import SupportServices from "../../components/services/SupportServices";
+import ServicesList from "../../components/services/ServicesList";
+import ServicesProcess from "../../components/services/ServicesProcess";
+import ServicesCraftsmanship from "../../components/services/ServicesCraftsmanship";
+import ServicesExpertise from "../../components/services/ServicesExpertise";
+import ServicesWhyUs from "../../components/services/ServicesWhyUs";
 import ServicesCTA from "../../components/services/ServicesCTA";
 
 export const metadata = {
@@ -12,8 +15,11 @@ export default function ServicesPage() {
   return (
     <main className="w-full flex flex-col bg-[var(--bg-primary)]">
       <ServicesHero />
-      <PrimaryOfferings />
-      <SupportServices />
+      <ServicesList />
+      <ServicesProcess />
+      <ServicesCraftsmanship />
+      <ServicesExpertise />
+      <ServicesWhyUs />
       <ServicesCTA />
     </main>
   );
