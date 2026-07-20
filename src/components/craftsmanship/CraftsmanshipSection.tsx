@@ -27,7 +27,7 @@ export default function CraftsmanshipSection() {
           {/* Text Overlay */}
           <div className="relative z-10 w-full h-full md:w-[60%] lg:w-[50%] flex flex-col justify-center items-start p-6 md:p-16 lg:p-24 text-white">
             <span className="text-xs uppercase tracking-[0.2em] text-neutral-300 mb-2 md:mb-4 block">CRAFTSMANSHIP</span>
-            <h2 className="text-lg md:text-xl lg:text-2xl font-serif leading-tight">Rooted in heritage.<br />Defined by detail.</h2>
+            <h2 className="font-sans font-light text-xl lg:text-2xl leading-[1.2] tracking-wide text-white">Rooted in heritage.<br />Defined by detail.</h2>
             <a href="#" className="mt-6 md:mt-8 text-[10px] md:text-xs uppercase tracking-[0.2em] text-neutral-300 hover:text-brand-gold transition-colors duration-300 font-sans w-fit flex">
               EXPLORE MORE &rarr;
             </a>
@@ -51,7 +51,7 @@ export default function CraftsmanshipSection() {
           {/* Text Overlay */}
           <div className="relative z-10 w-full h-full md:w-[60%] lg:w-[50%] flex flex-col justify-center items-start p-6 md:p-16 lg:p-24 text-white">
             <span className="text-xs uppercase tracking-[0.2em] text-neutral-300 mb-2 md:mb-4 block">MATERIALS</span>
-            <ul className="text-lg md:text-xl lg:text-2xl font-serif leading-tight text-white space-y-1 md:space-y-2">
+            <ul className="font-sans font-light text-xl lg:text-2xl leading-[1.2] tracking-wide text-white space-y-1 md:space-y-2">
               <li>Bamboo Silk</li>
               <li>New Zealand Wool</li>
               <li>Silk</li>
@@ -81,7 +81,7 @@ export default function CraftsmanshipSection() {
           {/* Text Overlay */}
           <div className="relative z-10 w-full h-full md:w-[60%] lg:w-[50%] flex flex-col justify-center items-start p-6 md:p-16 lg:p-24 text-white">
             <span className="text-xs uppercase tracking-[0.2em] text-neutral-300 mb-2 md:mb-4 block">WHY HOUSE OF DÉCOR</span>
-            <ul className="text-lg md:text-xl lg:text-2xl font-serif leading-tight text-white space-y-1 md:space-y-2">
+            <ul className="font-sans font-light text-xl lg:text-2xl leading-[1.2] tracking-wide text-white space-y-1 md:space-y-2">
               <li>Architectural Design</li>
               <li>Master Artisans</li>
               <li>Bespoke Customization</li>

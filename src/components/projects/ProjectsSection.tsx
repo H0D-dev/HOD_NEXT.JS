@@ -67,7 +67,7 @@ export default function ProjectsSection() {
 
         <div className="text-center mb-6 md:mb-10" ref={headerRef}>
           <div className="flex flex-col items-center justify-center">
-            <h2 className="text-xl lg:text-2xl font-medium text-[var(--text-primary)] leading-[1.15] mb-2 md:mb-4">
+            <h2 className="font-sans font-light text-xl lg:text-2xl leading-[1.2] tracking-wide text-[var(--text-primary)] mb-2 md:mb-4">
               Featured projects
             </h2>
           </div>
@@ -95,7 +95,7 @@ export default function ProjectsSection() {
               </div>
 
               {/* Text Below Image */}
-              <span className="text-[10px] md:text-xs uppercase tracking-widest text-[var(--text-secondary)] mt-5 transition-colors group-hover:text-[var(--text-primary)]">
+              <span className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--text-secondary)] mt-5 transition-colors group-hover:text-[var(--text-primary)]">
                 {project.title}
               </span>
 

@@ -79,7 +79,7 @@ export default function HeroSection() {
           {/* Hero Content Layer */}
           <div ref={contentRef} className="flex flex-col items-start gap-0 text-white text-left">
             
-            <h1 className="font-light text-[2.75rem] md:text-[4rem] lg:text-[4.75rem] leading-[1.1] tracking-wide mb-4 max-w-4xl text-left">
+            <h1 className="font-light text-[2.25rem] sm:text-[2.75rem] md:text-[4rem] lg:text-[4rem] leading-[1.1] tracking-wide mb-4 max-w-4xl text-left">
               Luxury Beneath <br /> Every Space.
             </h1>
             

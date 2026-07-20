@@ -28,7 +28,7 @@ export default function ServicesCTA() {
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any }}
           className="flex flex-col items-center w-full"
         >
-          <h2 className="font-sans font-light text-2xl sm:text-3xl md:text-5xl text-white leading-[1.2] mb-6 drop-shadow-lg">
+          <h2 className="font-sans font-light text-2xl md:text-3xl lg:text-4xl text-white leading-[1.2] mb-6 drop-shadow-lg">
             Let's Create<br />Something Exceptional.
           </h2>
           <p className="font-sans text-sm md:text-base text-white/90 mb-10 max-w-md drop-shadow-md">

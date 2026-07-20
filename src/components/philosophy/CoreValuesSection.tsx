@@ -64,10 +64,10 @@ export default function CoreValuesSection() {
               <div className="mb-3 md:mb-6 text-[#2C251F]/80 flex items-center justify-center">
                 <feature.icon strokeWidth={1} className="w-7 h-7 md:w-9 md:h-9" />
               </div>
-              <h3 className="font-sans text-[8px] sm:text-[9px] md:text-xs uppercase tracking-widest md:tracking-[0.15em] text-[#2C251F] mb-0 md:mb-4 whitespace-pre-line leading-relaxed">
+              <h3 className="font-sans text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-semibold text-[var(--text-primary)] mb-0 md:mb-4 whitespace-pre-line leading-relaxed">
                 {feature.title}
               </h3>
-              <p className="hidden md:block font-sans text-[#2C251F]/70 text-sm md:text-[15px] leading-[1.6] whitespace-pre-line max-w-[240px]">
+              <p className="hidden md:block font-sans text-[var(--text-secondary)] font-light text-sm lg:text-base leading-relaxed whitespace-pre-line max-w-[240px]">
                 {feature.description}
               </p>
             </div>

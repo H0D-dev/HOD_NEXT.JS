@@ -63,10 +63,9 @@ export default function KnowGrid() {
     <section ref={sectionRef} className="w-full bg-[var(--bg-primary)] py-12 lg:py-16" id="know-grid-section">
       <div className="w-full max-w-[var(--container-lg)] mx-auto px-4 md:px-8">
         
-        <div className="flex justify-between items-end mb-10 md:mb-12">
-          <h2 className="font-sans text-xl lg:text-2xl font-medium">
+        <div className="flex justify-center items-center text-center mb-10 md:mb-12">
+          <h2 className="font-sans font-light text-xl lg:text-2xl leading-[1.2] tracking-wide text-[var(--text-primary)]">
             The Craftsmanship
-            <span className="text-[10px] font-medium ml-1 align-top">(04)</span>
           </h2>
         </div>
 

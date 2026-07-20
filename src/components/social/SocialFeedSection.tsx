@@ -67,7 +67,7 @@ export default function SocialFeedSection() {
             href="https://instagram.com/houseofdecor.rugs" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="inline-block font-sans text-[11px] md:text-xs uppercase tracking-[0.15em] text-[#2C251F]/70 hover:text-[#2C251F] transition-colors"
+            className="inline-block text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
           >
             FOLLOW US @HOUSEOFDECOR.RUGS
           </Link>
