@@ -39,12 +39,13 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
 
   // Reset to page 1 when filters or sorting change
   useEffect(() => {
-    setCurrentPage(1);
+    setCurrentPage(prev => prev === 1 ? prev : 1);
   }, [selectedFilters, sortOption]);
 
   // Clear price range filter when currency changes
   useEffect(() => {
     setSelectedFilters(prev => {
+      if (!prev["price-range"]) return prev;
       const next = { ...prev };
       delete next["price-range"];
       return next;
