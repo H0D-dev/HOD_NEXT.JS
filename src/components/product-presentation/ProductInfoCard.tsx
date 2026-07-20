@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { Share2, Globe, ShieldCheck, Clock, Truck, Plus, Minus } from "lucide-react";
+import { Share2, Globe, ShieldCheck, Clock, Truck, Plus, Minus, ChevronDown } from "lucide-react";
 import { ProductColor, Product, ProductVariation } from "./ProductPresentation";
 import { useCartStore } from "@/src/lib/store/useCartStore";
 import { useCurrencyStore } from "@/src/lib/store/useCurrencyStore";
@@ -23,6 +23,20 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
   const { addItem, openDrawer } = useCartStore();
   const { currency, setCurrency } = useCurrencyStore();
   const [quantity, setQuantity] = useState(1);
+  const [openAccordion, setOpenAccordion] = useState<string | null>(null);
+
+  const toggleAccordion = (id: string) => {
+    setOpenAccordion(prev => (prev === id ? null : id));
+  };
+
+  const computedDetails = useMemo(() => {
+    const details = { ...product.details };
+    if (selectedVariation) {
+      if (selectedVariation.dimensions) details.dimensions = selectedVariation.dimensions;
+      if (selectedVariation.weight) details.weight = selectedVariation.weight;
+    }
+    return details;
+  }, [product.details, selectedVariation]);
 
   const isVariable = product.productType === "variable" && Array.isArray(product.variations) && product.variations.length > 0;
 
@@ -189,9 +203,9 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
             <h1 className="font-sans text-lg md:text-xl lg:text-2xl font-medium text-[var(--text-primary)] leading-tight tracking-tight">
               {product.name}
             </h1>
-            {/* 2. Description as Subtitle */}
+            {/* 2. Short Description as Subtitle */}
             <p className="font-sans text-sm md:text-base leading-snug text-[var(--text-secondary)]">
-              {product.description || "A contemporary hand-tufted rug inspired by natural landscapes, crafted using New Zealand wool and bamboo silk for exceptional softness and depth."}
+              {product.shortDescription || (product.description && product.description.length > 150 ? product.description.substring(0, 150) + "..." : product.description) || "A contemporary hand-tufted rug inspired by natural landscapes, crafted using New Zealand wool and bamboo silk for exceptional softness and depth."}
             </p>
           </div>
           <button
@@ -347,7 +361,136 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
         </button>
       </div>
 
-      {/* 8. Trust Badges / Icons */}
+      {/* 8. Expandable Accordions */}
+      <div className="flex flex-col w-full mt-4 border-t border-[var(--border-secondary)]">
+        
+        {/* Product Details Accordion */}
+        <div className="border-b border-[var(--border-secondary)]">
+          <button 
+            onClick={() => toggleAccordion('details')}
+            className="w-full py-4 flex items-center justify-between group"
+          >
+            <span className="font-sans text-[10px] font-medium text-[var(--text-primary)] uppercase tracking-widest">Product Details</span>
+            <ChevronDown size={16} strokeWidth={1.5} className={`text-[var(--text-secondary)] transition-transform duration-300 ${openAccordion === 'details' ? 'rotate-180' : ''}`} />
+          </button>
+          <AnimatePresence>
+            {openAccordion === 'details' && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                className="overflow-hidden"
+              >
+                <div className="pb-5 pt-1 flex flex-col gap-2">
+                  {Object.entries(computedDetails).map(([key, value]) => {
+                    if (!value) return null;
+                    const hiddenKeys = ['washable', 'petfriendly', 'pet', 'weight', 'story'];
+                    if (hiddenKeys.includes(key.toLowerCase())) return null;
+                    const formattedKey = key.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase());
+                    let displayValue = value;
+                    if (key.toLowerCase() === 'dimensions' && !String(value).toLowerCase().includes('cm')) {
+                      displayValue = `${value} cm`;
+                    }
+                    return (
+                      <div key={key} className="flex justify-between items-start font-sans text-xs">
+                        <span className="text-[var(--text-secondary)] capitalize">{formattedKey}</span>
+                        <span className="text-[var(--text-primary)] text-right font-medium max-w-[60%]">{displayValue}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* Washing & Care Accordion */}
+        <div className="border-b border-[var(--border-secondary)]">
+          <button 
+            onClick={() => toggleAccordion('care')}
+            className="w-full py-4 flex items-center justify-between group"
+          >
+            <span className="font-sans text-[10px] font-medium text-[var(--text-primary)] uppercase tracking-widest">Washing & Care</span>
+            <ChevronDown size={16} strokeWidth={1.5} className={`text-[var(--text-secondary)] transition-transform duration-300 ${openAccordion === 'care' ? 'rotate-180' : ''}`} />
+          </button>
+          <AnimatePresence>
+            {openAccordion === 'care' && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                className="overflow-hidden"
+              >
+                <div className="pb-5 pt-1 flex flex-col gap-3 font-sans text-xs text-[var(--text-secondary)]">
+                  <p>• Vacuum regularly using low suction.</p>
+                  <p>• Rotate every six months.</p>
+                  <p>• Professional cleaning recommended.</p>
+                  <p>• Avoid prolonged direct sunlight.</p>
+                  {computedDetails.careInstructions && (
+                    <p className="mt-2 text-[var(--text-primary)]">{computedDetails.careInstructions}</p>
+                  )}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* Shipping & Returns Accordion */}
+        <div className="border-b border-[var(--border-secondary)]">
+          <button 
+            onClick={() => toggleAccordion('shipping')}
+            className="w-full py-4 flex items-center justify-between group"
+          >
+            <span className="font-sans text-[10px] font-medium text-[var(--text-primary)] uppercase tracking-widest">Shipping & Returns</span>
+            <ChevronDown size={16} strokeWidth={1.5} className={`text-[var(--text-secondary)] transition-transform duration-300 ${openAccordion === 'shipping' ? 'rotate-180' : ''}`} />
+          </button>
+          <AnimatePresence>
+            {openAccordion === 'shipping' && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                className="overflow-hidden"
+              >
+                <div className="pb-5 pt-1 flex flex-col gap-3 font-sans text-xs text-[var(--text-secondary)]">
+                  <p>All items are crafted with care and dispatched globally.</p>
+                  <p><strong>Processing Time:</strong> Most orders are made-to-order and require 4-6 weeks of craftsmanship.</p>
+                  <p><strong>Returns:</strong> Returns accepted within 14 days of delivery for eligible items in original condition.</p>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* About This Design Accordion */}
+        <div className="border-b border-[var(--border-secondary)]">
+          <button 
+            onClick={() => toggleAccordion('story')}
+            className="w-full py-4 flex items-center justify-between group"
+          >
+            <span className="font-sans text-[10px] font-medium text-[var(--text-primary)] uppercase tracking-widest">About This Design</span>
+            <ChevronDown size={16} strokeWidth={1.5} className={`text-[var(--text-secondary)] transition-transform duration-300 ${openAccordion === 'story' ? 'rotate-180' : ''}`} />
+          </button>
+          <AnimatePresence>
+            {openAccordion === 'story' && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                className="overflow-hidden"
+              >
+                <div className="pb-5 pt-1">
+                  <p className="font-sans text-xs text-[var(--text-secondary)] leading-relaxed">
+                    {computedDetails.story || product.description || "A meticulously crafted piece designed to anchor your space with understated luxury and unparalleled texture."}
+                  </p>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
+
+      {/* 9. Trust Badges / Icons */}
       <div className="grid grid-cols-2 gap-y-6 gap-x-2 md:flex md:justify-between items-start mt-auto pt-8 border-t border-[var(--border-secondary)]">
         <div className="flex flex-col items-center gap-3 flex-1 text-center">
           <Globe size={28} strokeWidth={1} className="text-[var(--text-primary)]" />

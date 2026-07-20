@@ -8,6 +8,7 @@ interface WooProduct {
   slug: string;
   type: string;
   description: string;
+  short_description: string;
   price: string;
   regular_price: string;
   sale_price: string;
@@ -163,8 +164,8 @@ function transformProduct(
     id: p.id.toString(),
     name: p.name,
     slug: p.slug,
-    description:
-      p.description?.replace(/<[^>]*>?/gm, "") || "Handcrafted premium product.",
+    description: p.description?.replace(/<[^>]*>?/gm, "") || "Handcrafted premium product.",
+    shortDescription: p.short_description?.replace(/<[^>]*>?/gm, "").trim() || undefined,
     collection:
       acf.country_of_origin?.toUpperCase() ||
       p.categories?.[0]?.name ||
@@ -222,7 +223,7 @@ export async function getProductBySlug(
 ): Promise<Product | null> {
   try {
     const fields =
-      "id,name,slug,type,description,price,regular_price,sale_price,on_sale,sku,categories,images,attributes,variations,meta_data,permalink,dimensions,stock_status,weight,default_attributes,manual_prices";
+      "id,name,slug,type,description,short_description,price,regular_price,sale_price,on_sale,sku,categories,images,attributes,variations,meta_data,permalink,dimensions,stock_status,weight,default_attributes,manual_prices";
     const productUrl = `${API_CONFIG.baseUrl}/wp-json/wc/v3/products?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&slug=${slug}&_fields=${fields}`;
 
     const res = await fetch(productUrl, { cache: "no-store" });

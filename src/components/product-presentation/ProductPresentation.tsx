@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import ProductGallery from "./ProductGallery";
-import ProductSpecifications from "./ProductSpecifications";
 import ProductInfoCard from "./ProductInfoCard";
 import ExploreMore from "./ExploreMore";
 
@@ -45,6 +44,7 @@ export type Product = {
   name: string;
   slug: string;
   description: string;
+  shortDescription?: string;
   collection: string;
   design: string;
   colors: ProductColor[];
@@ -134,11 +134,6 @@ export default function ProductPresentation({ product }: ProductPresentationProp
 
         </div>
       </section>
-
-      {/* Specifications Section Below */}
-      <div className="relative z-20">
-        <ProductSpecifications product={product} selectedVariation={selectedVariation} />
-      </div>
 
       <ExploreMore />
     </>
