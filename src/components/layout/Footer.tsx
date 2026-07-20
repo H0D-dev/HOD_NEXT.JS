@@ -147,7 +147,7 @@ export default function Footer() {
                 </a>
               ))}
             </div>
-            
+
             {/* Newsletter (Desktop) */}
             <div className="mt-12 flex flex-col">
               <h4 className="font-sans font-medium text-base tracking-[0.15em] uppercase mb-4">Newsletter</h4>

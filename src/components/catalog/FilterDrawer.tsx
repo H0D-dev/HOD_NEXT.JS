@@ -51,7 +51,7 @@ export default function FilterDrawer({ isOpen, onClose, filters, selectedFilters
           >
             {/* Drawer Header */}
             <div className="flex justify-between items-center p-6 lg:p-8 border-b border-[var(--border-secondary)]">
-              <h2 className="font-sans text-[var(--text-lg)] font-medium text-[var(--text-primary)] uppercase tracking-widest">
+              <h2 className="font-sans text-[11px] md:text-xs font-medium text-[var(--text-primary)] uppercase tracking-[0.2em]">
                 Filters
               </h2>
               <button 
@@ -71,7 +71,7 @@ export default function FilterDrawer({ isOpen, onClose, filters, selectedFilters
                 <div key={filter.id} className="border-b border-[var(--border-secondary)] py-5">
                   <button 
                     onClick={() => toggleSection(filter.id)}
-                    className="w-full flex justify-between items-center font-sans text-[var(--text-sm)] uppercase tracking-widest text-[var(--text-primary)] bg-transparent cursor-pointer"
+                    className="w-full flex justify-between items-center font-sans text-[10px] md:text-[11px] uppercase tracking-[0.15em] text-[var(--text-primary)] bg-transparent cursor-pointer"
                   >
                     {filter.label}
                     <svg 
@@ -102,12 +102,12 @@ export default function FilterDrawer({ isOpen, onClose, filters, selectedFilters
                               >
                                 {filter.id !== "color" && (
                                   <>
-                                    <div className={`w-4 h-4 border flex items-center justify-center transition-colors ${isSelected ? "bg-[var(--accent-primary)] border-[var(--accent-primary)]" : "border-[var(--border-primary)] group-hover:bg-[var(--bg-secondary)]"}`}>
-                                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={isSelected ? "#111111" : "transparent"} strokeWidth="3" className={!isSelected ? "group-hover:stroke-[var(--text-muted)]" : ""}>
+                                    <div className={`w-4 h-4 border flex items-center justify-center transition-colors ${isSelected ? "bg-[#d4b06a] border-[#d4b06a]" : "border-[var(--border-primary)] group-hover:bg-[var(--bg-secondary)]"}`}>
+                                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={isSelected ? "#111111" : "transparent"} strokeWidth="3" className={!isSelected ? "group-hover:stroke-[#8C8C8C]" : ""}>
                                         <polyline points="20 6 9 17 4 12"></polyline>
                                       </svg>
                                     </div>
-                                    <span className={`font-sans text-[var(--text-sm)] transition-colors ${isSelected ? "text-[var(--text-primary)] font-medium" : "text-[var(--text-secondary)] group-hover:text-[var(--text-primary)]"}`}>
+                                    <span className={`font-sans text-[10px] uppercase tracking-[0.1em] transition-colors ${isSelected ? "text-[var(--text-primary)] font-medium" : "text-[#8C8C8C] group-hover:text-[var(--text-primary)]"}`}>
                                       {opt.label}
                                     </span>
                                   </>
@@ -134,13 +134,13 @@ export default function FilterDrawer({ isOpen, onClose, filters, selectedFilters
             {/* Footer Actions */}
             <div className="p-6 lg:p-8 border-t border-[var(--border-secondary)] bg-[var(--bg-primary)] grid grid-cols-2 gap-4">
               <button 
-                className="border border-[var(--border-secondary)] py-4 font-sans text-[var(--text-sm)] uppercase tracking-widest text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--border-primary)] transition-colors bg-transparent cursor-pointer"
+                className="border border-[var(--border-secondary)] py-4 font-sans text-[10px] uppercase tracking-[0.15em] text-[#8C8C8C] hover:text-[var(--text-primary)] hover:border-[var(--border-primary)] transition-colors bg-transparent cursor-pointer"
                 onClick={clearAll}
               >
                 Clear All
               </button>
               <button 
-                className="bg-[var(--accent-primary)] border border-[var(--accent-primary)] text-[#111111] py-4 font-sans text-[var(--text-sm)] font-medium uppercase tracking-widest hover:brightness-95 transition-all cursor-pointer"
+                className="bg-[#d4b06a] border border-[#d4b06a] text-[#111111] py-4 font-sans text-[10px] font-medium uppercase tracking-[0.15em] hover:bg-[#e0bc75] transition-colors cursor-pointer"
                 onClick={onClose}
               >
                 Apply Filter

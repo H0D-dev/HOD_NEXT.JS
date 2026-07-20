@@ -35,7 +35,7 @@ export default function CatalogControls({ onFilterClick, resultCount, sortOption
     <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-center py-4 gap-4">
       <button 
         onClick={onFilterClick}
-        className="flex items-center justify-center w-full md:w-auto gap-3 border border-[var(--border-primary)] px-8 py-3 font-sans text-[var(--text-sm)] uppercase tracking-widest text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-colors"
+        className="flex items-center justify-center w-full md:w-auto gap-3 border border-[var(--border-primary)] px-8 py-3 font-sans text-[10px] md:text-[11px] uppercase tracking-[0.15em] text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-colors cursor-pointer"
       >
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter">
           <line x1="4" y1="21" x2="4" y2="14"></line>
@@ -58,7 +58,7 @@ export default function CatalogControls({ onFilterClick, resultCount, sortOption
       <div className="relative w-full md:w-auto" ref={dropdownRef}>
         <button 
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          className="appearance-none w-full md:w-auto border border-[var(--border-secondary)] bg-[var(--bg-primary)] px-6 py-3 pr-12 font-sans text-[var(--text-sm)] text-[var(--text-primary)] cursor-pointer hover:border-[var(--border-primary)] transition-colors outline-none rounded-none text-left flex items-center justify-between min-w-[240px]"
+          className="appearance-none w-full md:w-auto border border-[var(--border-secondary)] bg-[var(--bg-primary)] px-6 py-3 pr-12 font-sans text-[10px] md:text-[11px] uppercase tracking-[0.15em] text-[var(--text-primary)] cursor-pointer hover:border-[var(--border-primary)] transition-colors outline-none rounded-none text-left flex items-center justify-between min-w-[240px]"
         >
           {currentOptionLabel}
           <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-[var(--text-secondary)]">
@@ -77,7 +77,7 @@ export default function CatalogControls({ onFilterClick, resultCount, sortOption
                   onSortChange(opt.value);
                   setIsDropdownOpen(false);
                 }}
-                className={`text-left px-6 py-3 font-sans text-[var(--text-sm)] transition-colors cursor-pointer w-full hover:bg-black/5 ${sortOption === opt.value ? 'text-[var(--text-primary)] font-medium' : 'text-[var(--text-secondary)]'}`}
+                className={`text-left px-6 py-3 font-sans text-[10px] uppercase tracking-[0.15em] transition-colors cursor-pointer w-full hover:bg-black/5 ${sortOption === opt.value ? 'text-[var(--text-primary)] font-medium' : 'text-[#8C8C8C]'}`}
               >
                 {opt.label}
               </button>

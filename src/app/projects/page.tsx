@@ -51,7 +51,7 @@ export default function ProjectsPage() {
           Whether you're designing a private residence, luxury hotel or commercial development, our team will help bring your vision to life.
         </p>
         <div className="flex gap-4">
-          <a href="/contact" className="px-8 py-4 bg-[var(--accent-primary)] text-white text-[10px] font-semibold uppercase tracking-[0.15em] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors duration-500">
+          <a href="/contact" className="px-8 py-4 border border-[var(--accent-primary)] bg-[var(--accent-primary)] text-white text-[10px] font-semibold uppercase tracking-[0.15em] hover:bg-transparent hover:text-[var(--accent-primary)] transition-colors duration-500">
             Request Consultation
           </a>
         </div>

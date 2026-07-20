@@ -15,7 +15,7 @@ export default function ProductCard({ product, baseRoute }: ProductCardProps) {
   const { currency } = useCurrencyStore();
 
   return (
-    <Link 
+    <Link
       href={`${baseRoute}/${product.slug}`}
       className="group block relative w-full transition-all duration-500 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] bg-[var(--bg-primary)] pb-4"
     >
@@ -27,15 +27,15 @@ export default function ProductCard({ product, baseRoute }: ProductCardProps) {
           className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
         />
-        
+
 
       </div>
 
-      <div className="flex flex-col items-start px-2">
-        <h3 className="font-serif text-[var(--text-lg)] text-[var(--text-primary)] leading-tight mb-1">
+      <div className="flex flex-col items-start px-2 mt-2">
+        <h3 className="font-sans text-[11px] md:text-xs uppercase tracking-widest text-[var(--text-primary)] transition-colors duration-300 group-hover:text-[#d4b06a] mb-1">
           {product.title}
         </h3>
-        <p className="font-sans text-[var(--text-sm)] text-[var(--text-secondary)]">
+        <p className="font-sans text-[9px] md:text-[10px] text-[#8C8C8C] uppercase tracking-wider">
           {product.price ? (
             <>
               {product.price} &bull; {product.category}

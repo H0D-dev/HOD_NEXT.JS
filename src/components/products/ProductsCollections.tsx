@@ -57,17 +57,20 @@ export default function ProductsCollections() {
     if (loading || collections.length === 0) return;
 
     // Grid Stagger
-    gsap.from(gsap.utils.toArray(gridRef.current?.children || []), {
-      y: 40,
-      opacity: 0,
-      duration: 1,
-      stagger: 0.15,
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: gridRef.current,
-        start: "top 85%",
+    gsap.fromTo(gsap.utils.toArray(gridRef.current?.children || []), 
+      { y: 40, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        stagger: 0.15,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: gridRef.current,
+          start: "top 85%",
+        }
       }
-    });
+    );
 
   }, { scope: containerRef, dependencies: [loading, collections] });
 
