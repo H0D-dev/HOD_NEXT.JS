@@ -38,7 +38,7 @@ export default function ExploreMore() {
         
         {/* Section Heading */}
         <div className="flex justify-center md:justify-between items-end mb-8 md:mb-10">
-          <h2 className="font-serif text-lg md:text-xl tracking-[0.15em] uppercase text-[var(--text-primary)] font-medium text-center md:text-left">
+          <h2 className="font-sans text-xl lg:text-2xl text-[var(--text-primary)] font-medium text-center md:text-left">
             Explore More
           </h2>
           <button className="hidden md:flex items-center gap-2 font-sans text-xs uppercase tracking-widest text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
@@ -51,9 +51,9 @@ export default function ExploreMore() {
           {EXPLORE_PRODUCTS.map((prod) => (
             <div
               key={prod.id}
-              className="group relative flex-shrink-0 w-[260px] md:w-[280px] lg:w-full snap-center cursor-pointer"
+              className="group block relative flex-shrink-0 w-[260px] md:w-[280px] lg:w-full snap-center cursor-pointer transition-all duration-500 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] bg-[var(--bg-primary)] pb-4"
             >
-              <div className="relative w-full aspect-[4/5] overflow-hidden bg-[var(--bg-secondary)] mb-4 border border-[var(--border-secondary)]">
+              <div className="relative w-full aspect-square overflow-hidden mb-4 bg-[var(--bg-secondary)] border border-[var(--border-secondary)]">
                 <Image
                   src={prod.image}
                   alt={prod.name}
@@ -62,11 +62,11 @@ export default function ExploreMore() {
                   sizes="(max-width: 768px) 240px, (max-width: 1024px) 280px, 300px"
                 />
               </div>
-              <div className="flex flex-col items-start">
-                <h3 className="font-sans text-sm md:text-[15px] font-medium text-[var(--text-primary)] tracking-tight mb-1">
+              <div className="flex flex-col items-start px-2 mt-2">
+                <h3 className="font-sans text-[11px] md:text-xs uppercase tracking-widest text-[var(--text-primary)] transition-colors duration-300 group-hover:text-[#d4b06a] mb-1">
                   {prod.name}
                 </h3>
-                <p className="font-sans text-[10px] md:text-[11px] uppercase tracking-widest text-[var(--text-secondary)]">
+                <p className="font-sans text-[9px] md:text-[10px] text-[#8C8C8C] uppercase tracking-wider">
                   {prod.collection}
                 </p>
               </div>
