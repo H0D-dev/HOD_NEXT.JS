@@ -192,7 +192,7 @@ export default function Header() {
 
                 {isCurrencyOpen && (
                   <div className="absolute top-full right-0 mt-4 w-24 bg-[var(--bg-primary)] border border-[var(--border-secondary)] shadow-lg py-1 z-50 flex flex-col rounded-sm">
-                    {["AED", "INR", "USD", "EUR"].map(cur => (
+                    {["AED", "USD", "EUR"].map(cur => (
                       <button
                         key={cur}
                         className={`text-left px-4 py-2 text-[var(--text-sm)] tracking-wider hover:bg-[var(--bg-secondary)] transition-colors ${currency === cur ? 'font-bold text-[var(--text-primary)]' : 'text-[var(--text-secondary)]'}`}

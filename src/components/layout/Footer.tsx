@@ -199,7 +199,7 @@ export default function Footer() {
 
               {isCurrencyOpen && (
                 <div className="absolute bottom-full left-0 mb-2 w-24 bg-[#1A1A1A] border border-[#333333] shadow-lg py-1 z-50 flex flex-col rounded-sm">
-                  {["AED", "INR", "USD", "EUR"].map(cur => (
+                  {["AED", "USD", "EUR"].map(cur => (
                     <button
                       key={cur}
                       className={`text-left px-4 py-2 text-xs tracking-wider hover:bg-[#2A2A2A] transition-colors ${currency === cur ? 'font-bold text-[#f5f3ef]' : 'text-[#8C8C8C]'}`}
@@ -379,7 +379,7 @@ export default function Footer() {
           </div>
           <div className="flex flex-col items-center mt-2 w-full">
             <div className="flex gap-2">
-              {["AED", "INR", "USD", "EUR"].map(cur => (
+              {["AED", "USD", "EUR"].map(cur => (
                 <button
                   key={cur}
                   className={`px-3 py-1.5 text-xs tracking-wider border rounded-sm transition-colors ${currency === cur ? 'border-[#f5f3ef] font-bold text-[#f5f3ef]' : 'border-[#333333] text-[#8C8C8C] hover:border-[#f5f3ef]'}`}

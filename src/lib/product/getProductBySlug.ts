@@ -22,6 +22,7 @@ interface WooProduct {
   images: { id: number; src: string; alt: string }[];
   attributes: { id: number; name: string; options: string[] }[];
   variations: number[];
+  related_ids?: number[];
   meta_data: { key: string; value: any }[];
   manual_prices?: { inr?: string; usd?: string; eur?: string };
   default_attributes?: { id: number; name: string; option: string }[];
@@ -179,6 +180,7 @@ function transformProduct(
     stockStatus: p.stock_status || undefined,
     productType: (isVariable ? "variable" : p.type) as Product["productType"],
     variations: isVariable ? variations : undefined,
+    relatedIds: p.related_ids,
     defaultVariationId,
     details: {
       material: acf.construction || "100% Wool",
@@ -223,7 +225,7 @@ export async function getProductBySlug(
 ): Promise<Product | null> {
   try {
     const fields =
-      "id,name,slug,type,description,short_description,price,regular_price,sale_price,on_sale,sku,categories,images,attributes,variations,meta_data,permalink,dimensions,stock_status,weight,default_attributes,manual_prices";
+      "id,name,slug,type,description,short_description,price,regular_price,sale_price,on_sale,sku,categories,images,attributes,variations,meta_data,permalink,dimensions,stock_status,weight,default_attributes,manual_prices,related_ids";
     const productUrl = `${API_CONFIG.baseUrl}/wp-json/wc/v3/products?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&slug=${slug}&_fields=${fields}`;
 
     const res = await fetch(productUrl, { cache: "no-store" });
@@ -287,3 +289,25 @@ export async function getProductBySlug(
     return null;
   }
 }
+
+export async function getRelatedProducts(ids: number[]): Promise<Product[]> {
+  if (!ids || ids.length === 0) return [];
+  try {
+    const fields =
+      "id,name,slug,type,description,short_description,price,regular_price,sale_price,on_sale,sku,categories,images,attributes,variations,meta_data,permalink,dimensions,stock_status,weight,default_attributes,manual_prices,related_ids";
+    const idsString = ids.slice(0, 8).join(','); // max 8 products
+    const url = `${API_CONFIG.baseUrl}/wp-json/wc/v3/products?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&include=${idsString}&_fields=${fields}`;
+    const res = await fetch(url, { cache: "no-store" });
+    const data: WooProduct[] = await res.json();
+    
+    if (!Array.isArray(data)) return [];
+    
+    // We don't fetch all variations and family colors for related products to save time,
+    // since we only need the basic info for the card.
+    return data.map((p) => transformProduct(p, [buildColorEntry(p)], []));
+  } catch (error) {
+    console.error("Failed to fetch related products:", error);
+    return [];
+  }
+}
+

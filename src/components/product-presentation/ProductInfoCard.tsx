@@ -3,7 +3,7 @@
 import React, { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { Share2, Globe, ShieldCheck, Clock, Truck, Plus, Minus, ChevronDown } from "lucide-react";
+import { Share2, Globe, ShieldCheck, Clock, Truck, Plus, Minus, ChevronDown, Wind, RefreshCw, Sparkles, Sun } from "lucide-react";
 import { ProductColor, Product, ProductVariation } from "./ProductPresentation";
 import { useCartStore } from "@/src/lib/store/useCartStore";
 import { useCurrencyStore } from "@/src/lib/store/useCurrencyStore";
@@ -200,7 +200,7 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
 
         <div className="flex items-start justify-between gap-4">
           <div className="flex flex-col gap-2">
-            <h1 className="font-sans text-lg md:text-xl lg:text-2xl font-medium text-[var(--text-primary)] leading-tight tracking-tight">
+            <h1 className="font-sans text-lg md:text-xl lg:text-2xl font-normal text-[var(--text-primary)] leading-tight tracking-tight">
               {product.name}
             </h1>
             {/* 2. Short Description as Subtitle */}
@@ -303,10 +303,10 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
                   onClick={() => !isOutOfStock && handleSizeClick(variation)}
                   disabled={isOutOfStock}
                   className={`p-3 rounded-none font-sans flex flex-col items-center justify-center text-center transition-all duration-300 border ${isOutOfStock
-                      ? "border-[var(--border-secondary)] bg-[var(--surface-secondary)] text-[var(--text-muted)] opacity-50 cursor-not-allowed line-through"
-                      : isActive
-                        ? "border-[var(--border-primary)] bg-transparent shadow-[0_0_0_0.5px_var(--border-primary)]"
-                        : "border-[var(--border-secondary)] hover:border-[var(--border-primary)] bg-transparent"
+                    ? "border-[var(--border-secondary)] bg-[var(--surface-secondary)] text-[var(--text-muted)] opacity-50 cursor-not-allowed line-through"
+                    : isActive
+                      ? "border-[var(--border-primary)] bg-transparent shadow-[0_0_0_0.5px_var(--border-primary)]"
+                      : "border-[var(--border-secondary)] hover:border-[var(--border-primary)] bg-transparent"
                     }`}
                 >
                   <span className={`text-xs whitespace-normal break-words px-1 ${isActive ? 'text-[var(--text-primary)] font-medium' : 'text-[var(--text-secondary)]'}`}>
@@ -363,14 +363,14 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
 
       {/* 8. Expandable Accordions */}
       <div className="flex flex-col w-full mt-4 border-t border-[var(--border-secondary)]">
-        
+
         {/* Product Details Accordion */}
         <div className="border-b border-[var(--border-secondary)]">
-          <button 
+          <button
             onClick={() => toggleAccordion('details')}
-            className="w-full py-4 flex items-center justify-between group"
+            className="w-full py-4 flex items-center justify-between group cursor-pointer"
           >
-            <span className="font-sans text-[10px] font-medium text-[var(--text-primary)] uppercase tracking-widest">Product Details</span>
+            <span className="font-sans text-[11px] md:text-xs font-medium text-[var(--text-primary)] uppercase tracking-widest">Product Details</span>
             <ChevronDown size={16} strokeWidth={1.5} className={`text-[var(--text-secondary)] transition-transform duration-300 ${openAccordion === 'details' ? 'rotate-180' : ''}`} />
           </button>
           <AnimatePresence>
@@ -392,7 +392,7 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
                       displayValue = `${value} cm`;
                     }
                     return (
-                      <div key={key} className="flex justify-between items-start font-sans text-xs">
+                      <div key={key} className="flex justify-between items-start font-sans text-[13px] md:text-sm">
                         <span className="text-[var(--text-secondary)] capitalize">{formattedKey}</span>
                         <span className="text-[var(--text-primary)] text-right font-medium max-w-[60%]">{displayValue}</span>
                       </div>
@@ -406,11 +406,11 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
 
         {/* Washing & Care Accordion */}
         <div className="border-b border-[var(--border-secondary)]">
-          <button 
+          <button
             onClick={() => toggleAccordion('care')}
-            className="w-full py-4 flex items-center justify-between group"
+            className="w-full py-4 flex items-center justify-between group cursor-pointer"
           >
-            <span className="font-sans text-[10px] font-medium text-[var(--text-primary)] uppercase tracking-widest">Washing & Care</span>
+            <span className="font-sans text-[11px] md:text-xs font-medium text-[var(--text-primary)] uppercase tracking-widest">Washing & Care</span>
             <ChevronDown size={16} strokeWidth={1.5} className={`text-[var(--text-secondary)] transition-transform duration-300 ${openAccordion === 'care' ? 'rotate-180' : ''}`} />
           </button>
           <AnimatePresence>
@@ -421,11 +421,31 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
                 exit={{ height: 0, opacity: 0 }}
                 className="overflow-hidden"
               >
-                <div className="pb-5 pt-1 flex flex-col gap-3 font-sans text-xs text-[var(--text-secondary)]">
-                  <p>• Vacuum regularly using low suction.</p>
-                  <p>• Rotate every six months.</p>
-                  <p>• Professional cleaning recommended.</p>
-                  <p>• Avoid prolonged direct sunlight.</p>
+                <div className="pb-5 pt-1 flex flex-col gap-4 font-sans text-[13px] md:text-sm text-[var(--text-secondary)] leading-relaxed">
+                  <div className="flex items-start gap-4">
+                    <div className="flex items-center justify-center shrink-0 w-8 h-8 rounded-full border border-[var(--text-primary)]">
+                      <Wind size={14} strokeWidth={1.5} className="text-[var(--text-primary)]" />
+                    </div>
+                    <span className="mt-1 text-[var(--text-primary)]">Vacuum regularly using low suction.</span>
+                  </div>
+                  <div className="flex items-start gap-4">
+                    <div className="flex items-center justify-center shrink-0 w-8 h-8 rounded-full border border-[var(--text-primary)]">
+                      <RefreshCw size={14} strokeWidth={1.5} className="text-[var(--text-primary)]" />
+                    </div>
+                    <span className="mt-1 text-[var(--text-primary)]">Rotate every six months.</span>
+                  </div>
+                  <div className="flex items-start gap-4">
+                    <div className="flex items-center justify-center shrink-0 w-8 h-8 rounded-full border border-[var(--text-primary)]">
+                      <Sparkles size={14} strokeWidth={1.5} className="text-[var(--text-primary)]" />
+                    </div>
+                    <span className="mt-1 text-[var(--text-primary)]">Professional cleaning recommended.</span>
+                  </div>
+                  <div className="flex items-start gap-4">
+                    <div className="flex items-center justify-center shrink-0 w-8 h-8 rounded-full border border-[var(--text-primary)]">
+                      <Sun size={14} strokeWidth={1.5} className="text-[var(--text-primary)]" />
+                    </div>
+                    <span className="mt-1 text-[var(--text-primary)]">Avoid prolonged direct sunlight.</span>
+                  </div>
                   {computedDetails.careInstructions && (
                     <p className="mt-2 text-[var(--text-primary)]">{computedDetails.careInstructions}</p>
                   )}
@@ -437,11 +457,11 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
 
         {/* Shipping & Returns Accordion */}
         <div className="border-b border-[var(--border-secondary)]">
-          <button 
+          <button
             onClick={() => toggleAccordion('shipping')}
-            className="w-full py-4 flex items-center justify-between group"
+            className="w-full py-4 flex items-center justify-between group cursor-pointer"
           >
-            <span className="font-sans text-[10px] font-medium text-[var(--text-primary)] uppercase tracking-widest">Shipping & Returns</span>
+            <span className="font-sans text-[11px] md:text-xs font-medium text-[var(--text-primary)] uppercase tracking-widest">Shipping & Returns</span>
             <ChevronDown size={16} strokeWidth={1.5} className={`text-[var(--text-secondary)] transition-transform duration-300 ${openAccordion === 'shipping' ? 'rotate-180' : ''}`} />
           </button>
           <AnimatePresence>
@@ -452,7 +472,7 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
                 exit={{ height: 0, opacity: 0 }}
                 className="overflow-hidden"
               >
-                <div className="pb-5 pt-1 flex flex-col gap-3 font-sans text-xs text-[var(--text-secondary)]">
+                <div className="pb-5 pt-1 flex flex-col gap-3 font-sans text-[13px] md:text-sm text-[var(--text-secondary)] leading-relaxed">
                   <p>All items are crafted with care and dispatched globally.</p>
                   <p><strong>Processing Time:</strong> Most orders are made-to-order and require 4-6 weeks of craftsmanship.</p>
                   <p><strong>Returns:</strong> Returns accepted within 14 days of delivery for eligible items in original condition.</p>
@@ -463,12 +483,12 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
         </div>
 
         {/* About This Design Accordion */}
-        <div className="border-b border-[var(--border-secondary)]">
-          <button 
+        <div className="">
+          <button
             onClick={() => toggleAccordion('story')}
-            className="w-full py-4 flex items-center justify-between group"
+            className="w-full py-4 flex items-center justify-between group cursor-pointer"
           >
-            <span className="font-sans text-[10px] font-medium text-[var(--text-primary)] uppercase tracking-widest">About This Design</span>
+            <span className="font-sans text-[11px] md:text-xs font-medium text-[var(--text-primary)] uppercase tracking-widest">About This Design</span>
             <ChevronDown size={16} strokeWidth={1.5} className={`text-[var(--text-secondary)] transition-transform duration-300 ${openAccordion === 'story' ? 'rotate-180' : ''}`} />
           </button>
           <AnimatePresence>
@@ -480,7 +500,7 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
                 className="overflow-hidden"
               >
                 <div className="pb-5 pt-1">
-                  <p className="font-sans text-xs text-[var(--text-secondary)] leading-relaxed">
+                  <p className="font-sans text-[13px] md:text-sm text-[var(--text-secondary)] leading-relaxed">
                     {computedDetails.story || product.description || "A meticulously crafted piece designed to anchor your space with understated luxury and unparalleled texture."}
                   </p>
                 </div>

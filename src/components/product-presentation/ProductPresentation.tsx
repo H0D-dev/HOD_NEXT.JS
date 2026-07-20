@@ -73,14 +73,16 @@ export type Product = {
     [key: string]: string | undefined;
   };
   defaultVariationId?: number;
+  relatedIds?: number[];
   currencyPrices: CurrencyPrices;
 };
 
 interface ProductPresentationProps {
   product: Product | null;
+  relatedProducts?: Product[];
 }
 
-export default function ProductPresentation({ product }: ProductPresentationProps) {
+export default function ProductPresentation({ product, relatedProducts }: ProductPresentationProps) {
   // Ensure we handle missing data gracefully
   const [activeColor, setActiveColor] = useState<ProductColor | null>(
     product?.colors?.[0] || null
@@ -135,7 +137,7 @@ export default function ProductPresentation({ product }: ProductPresentationProp
         </div>
       </section>
 
-      <ExploreMore />
+      <ExploreMore relatedProducts={relatedProducts} />
     </>
   );
 }

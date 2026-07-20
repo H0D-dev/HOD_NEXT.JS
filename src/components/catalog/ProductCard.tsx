@@ -35,7 +35,7 @@ export default function ProductCard({ product, baseRoute }: ProductCardProps) {
         <h3 className="font-sans text-[11px] md:text-xs uppercase tracking-widest text-[var(--text-primary)] transition-colors duration-300 group-hover:text-[#d4b06a] mb-1">
           {product.title}
         </h3>
-        <p className="font-sans text-[9px] md:text-[10px] text-[#8C8C8C] uppercase tracking-wider">
+        <p className="font-sans text-[11px] md:text-xs text-[var(--text-primary)] font-medium tracking-wide mt-1">
           {product.price ? (
             <>
               {product.price} &bull; {product.category}
