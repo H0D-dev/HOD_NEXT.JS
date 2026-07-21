@@ -1,0 +1,11 @@
+# Data Directory
+Place product CSV/DOCX files here for the importer.
+
+# Dry run (parse + validate only, no WooCommerce API calls)
+npm run import-products:dry
+
+# Live import to WooCommerce
+npm run import-products
+
+# Custom file path
+npx tsx src/importer/cli.ts --file "Bauhaus Blend - Sheet1.csv"

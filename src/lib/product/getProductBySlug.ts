@@ -39,6 +39,7 @@ interface WooVariation {
   weight: string;
   dimensions: { length: string; width: string; height: string };
   attributes: { id: number; name: string; option: string }[];
+  meta_data?: { key: string; value: any }[];
   manual_prices?: { inr?: string; usd?: string; eur?: string };
 }
 
@@ -161,6 +162,7 @@ function transformProduct(
     }
   }
 
+
   return {
     id: p.id.toString(),
     name: p.name,
@@ -237,12 +239,12 @@ export async function getProductBySlug(
 
     const p: WooProduct = data[0];
     const acf = extractAcf(p.meta_data);
-    const familyId: string | undefined = acf.product_family_id;
+    const designId: string | undefined = acf.design_id;
 
-    // --- Resolve color variants ---
+    // --- Resolve color variants by design_id ---
     let colors: ProductColor[] = [];
 
-    if (familyId) {
+    if (designId) {
       const mainCategory = p.categories?.find(c =>
         c.name.toLowerCase() === 'curtains' || c.name.toLowerCase() === 'rugs'
       );
@@ -254,20 +256,20 @@ export async function getProductBySlug(
         const allProducts: WooProduct[] = await siblingRes.json();
 
         if (Array.isArray(allProducts)) {
-          const familyProducts = allProducts.filter((prod) => {
+          const designProducts = allProducts.filter((prod) => {
             const prodAcf = extractAcf(prod.meta_data);
-            return prodAcf.product_family_id === familyId;
+            return prodAcf.design_id === designId;
           });
 
           const currentEntry = buildColorEntry(p);
-          const siblingEntries = familyProducts
+          const siblingEntries = designProducts
             .filter((prod) => prod.id !== p.id)
             .map(buildColorEntry);
 
           const allEntries = [currentEntry, ...siblingEntries];
           colors = allEntries.filter(
             (item, index, self) =>
-              index === self.findIndex((c) => c.name === item.name)
+              index === self.findIndex((c) => c.id === item.id)
           );
         }
       }
