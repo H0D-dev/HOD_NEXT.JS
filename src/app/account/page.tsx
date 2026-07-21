@@ -171,20 +171,20 @@ export default function AccountPage() {
       case 'dashboard':
         return (
           <div className="account-dashboard animate-element">
-            <h2 className="font-playfair text-2xl mb-[var(--space-4)]">
+            <h2 className="font-sans text-xl lg:text-2xl font-light tracking-tight mb-[var(--space-4)]">
               Welcome back, {user?.first_name || user?.email?.split('@')[0]}
             </h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-[var(--space-4)] mt-[var(--space-6)]">
               <div className="p-[var(--space-4)] border border-[var(--border-primary)]">
-                <h3 className="font-inter text-xs uppercase tracking-[0.05em] text-[var(--text-secondary)] mb-[var(--space-3)]">
+                <h3 className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-semibold text-[var(--text-secondary)] mb-[var(--space-3)]">
                   Profile Snapshot
                 </h3>
-                <p className="font-inter text-sm mb-2">
-                  <strong>Name:</strong> {user?.first_name} {user?.last_name}
+                <p className="font-sans text-sm font-light mb-2">
+                  <strong className="font-medium">Name:</strong> {user?.first_name} {user?.last_name}
                 </p>
-                <p className="font-inter text-sm mb-4">
-                  <strong>Email:</strong> {user?.email}
+                <p className="font-sans text-sm font-light mb-4">
+                  <strong className="font-medium">Email:</strong> {user?.email}
                 </p>
                 <button onClick={() => setActiveTab('details')} className="account-inline-link text-sm">
                   Edit Details
@@ -193,10 +193,10 @@ export default function AccountPage() {
 
               <div className="p-[var(--space-4)] border border-[var(--border-primary)] flex flex-col justify-between">
                 <div>
-                  <h3 className="font-inter text-xs uppercase tracking-[0.05em] text-[var(--text-secondary)] mb-[var(--space-3)]">
+                  <h3 className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-semibold text-[var(--text-secondary)] mb-[var(--space-3)]">
                     Quick Actions
                   </h3>
-                  <p className="font-inter text-sm text-[var(--text-secondary)] mb-4">
+                  <p className="font-sans text-sm font-light text-[var(--text-secondary)] mb-4">
                     Ready to discover your next luxury piece? Explore our latest curated collections.
                   </p>
                 </div>
@@ -213,24 +213,24 @@ export default function AccountPage() {
           return (
             <div className="account-order-details animate-element">
               <button onClick={() => setSelectedOrder(null)} className="account-inline-link mb-4">← Back to Orders</button>
-              <h2 className="font-playfair text-2xl mb-4">Order #{selectedOrder.id}</h2>
-              <p className="font-inter text-sm text-[var(--text-secondary)] mb-6">
-                Placed on {new Date(selectedOrder.date_created).toLocaleDateString()} and is currently <strong>{selectedOrder.status}</strong>.
+              <h2 className="font-sans text-xl lg:text-2xl font-light mb-4 tracking-tight">Order #{selectedOrder.id}</h2>
+              <p className="font-sans text-sm font-light text-[var(--text-secondary)] mb-6">
+                Placed on {new Date(selectedOrder.date_created).toLocaleDateString()} and is currently <strong className="font-medium">{selectedOrder.status}</strong>.
               </p>
               
               <div className="border border-[var(--border-primary)] p-4 mb-6">
-                <h3 className="font-inter font-semibold mb-4 border-b border-[var(--border-primary)] pb-2">Order Details</h3>
+                <h3 className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-semibold mb-4 border-b border-[var(--border-primary)] pb-2 text-[var(--text-secondary)]">Order Details</h3>
                 <ul className="flex flex-col gap-3 mb-4">
                   {selectedOrder.line_items.map((item: any) => (
-                    <li key={item.id} className="flex justify-between font-inter text-sm">
-                      <span>{item.name} <strong className="ml-2">× {item.quantity}</strong></span>
-                      <span>{selectedOrder.currency} {item.total}</span>
+                    <li key={item.id} className="flex justify-between font-sans text-sm font-medium">
+                      <span>{item.name} <strong className="ml-2 font-semibold">× {item.quantity}</strong></span>
+                      <span className="font-semibold">{selectedOrder.currency} {item.total}</span>
                     </li>
                   ))}
                 </ul>
-                <div className="flex justify-between font-inter text-sm font-semibold border-t border-[var(--border-primary)] pt-3">
-                  <span>Total</span>
-                  <span>{selectedOrder.currency} {selectedOrder.total}</span>
+                <div className="flex justify-between font-sans text-sm font-semibold border-t border-[var(--border-primary)] pt-3">
+                  <span className="text-[10px] md:text-xs uppercase tracking-[0.2em] font-semibold text-[var(--text-secondary)]">Total</span>
+                  <span className="text-xl md:text-2xl font-medium tracking-tight">{selectedOrder.currency} {selectedOrder.total}</span>
                 </div>
               </div>
             </div>
@@ -280,7 +280,7 @@ export default function AccountPage() {
           return (
             <div className="account-address-edit animate-element">
               <button onClick={() => setEditingAddress(null)} className="account-inline-link mb-4">← Back to Addresses</button>
-              <h2 className="font-playfair text-2xl mb-[var(--space-4)]">Edit {type} address</h2>
+              <h2 className="font-sans text-xl lg:text-2xl font-light mb-[var(--space-4)] tracking-tight">Edit {type} address</h2>
               
               {formMessage.text && (
                 <div className={`p-3 mb-4 text-sm ${formMessage.type === 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'}`}>
@@ -422,7 +422,7 @@ export default function AccountPage() {
     <div className="account-page" ref={containerRef}>
       <div className="account-container">
         
-        <h1 className="account-title animate-element mb-[var(--space-6)]">My account</h1>
+        <h1 className="account-title font-sans text-3xl md:text-4xl font-light tracking-wide animate-element mb-[var(--space-6)]">My account</h1>
 
         <div className="account-layout">
           {/* Sidebar Navigation */}

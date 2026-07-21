@@ -21,20 +21,20 @@ export default function CartPage() {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center text-center py-20 px-6">
         <ShoppingBag size={48} strokeWidth={1} className="text-[var(--text-secondary)] mb-6" />
-        <h2 className="font-serif text-3xl md:text-4xl text-[var(--text-primary)] font-normal mb-3">Your cart is empty</h2>
-        <p className="font-sans text-sm md:text-base text-[var(--text-secondary)] mb-10 max-w-[400px]">
+        <h2 className="font-sans text-3xl md:text-4xl text-[var(--text-primary)] font-light mb-3 tracking-wide">Your cart is empty</h2>
+        <p className="font-sans text-sm md:text-base font-light text-[var(--text-secondary)] mb-10 max-w-[400px] leading-relaxed">
           Discover our curated collections of premium rugs and curtains.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
           <Link 
             href="/products" 
-            className="py-4 px-8 border border-[var(--border-secondary)] text-[var(--text-primary)] font-sans text-xs uppercase tracking-[0.15em] transition-colors hover:bg-[var(--bg-secondary)] whitespace-nowrap text-center"
+            className="py-[12px] px-[32px] border-[0.5px] border-[var(--border-primary)] text-[var(--text-primary)] font-sans text-[10px] md:text-xs font-semibold uppercase tracking-[0.2em] transition-colors hover:bg-[var(--bg-secondary)] whitespace-nowrap text-center"
           >
             Explore Rugs
           </Link>
           <Link 
             href="/products/curtains" 
-            className="py-4 px-8 border border-[var(--border-secondary)] text-[var(--text-primary)] font-sans text-xs uppercase tracking-[0.15em] transition-colors hover:bg-[var(--bg-secondary)] whitespace-nowrap text-center"
+            className="py-[12px] px-[32px] border-[0.5px] border-[var(--border-primary)] text-[var(--text-primary)] font-sans text-[10px] md:text-xs font-semibold uppercase tracking-[0.2em] transition-colors hover:bg-[var(--bg-secondary)] whitespace-nowrap text-center"
           >
             Explore Curtains
           </Link>
@@ -48,10 +48,10 @@ export default function CartPage() {
       <div className="max-w-[1200px] mx-auto px-6 lg:px-12">
         
         <div className="mb-6 md:mb-10 flex items-end justify-between border-b border-[var(--border-secondary)] pb-4">
-          <h1 className="font-sans text-xs md:text-sm font-medium uppercase tracking-[0.2em] text-[var(--text-primary)] m-0">
+          <h1 className="font-sans text-xl lg:text-2xl font-light text-[var(--text-primary)] m-0">
             Your Cart
           </h1>
-          <span className="font-sans text-xs text-[var(--text-secondary)] uppercase tracking-[0.15em]">
+          <span className="font-sans text-[10px] lg:text-xs text-[var(--text-secondary)] uppercase tracking-[0.15em]">
             {items.length} {items.length === 1 ? 'Item' : 'Items'}
           </span>
         </div>

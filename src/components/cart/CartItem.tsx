@@ -32,10 +32,10 @@ export default function CartItem({ item, context = "drawer" }: CartItemProps) {
         {/* Top Section: Info & Price */}
         <div className="flex justify-between items-start gap-4">
           <div className="flex flex-col">
-            <h4 className="font-sans text-base md:text-lg font-medium text-[var(--text-primary)] leading-tight m-0 tracking-tight">
+            <h4 className="font-sans text-sm font-medium text-[var(--text-primary)] leading-tight m-0">
               {item.name}
             </h4>
-            <p className="font-sans text-[10px] md:text-[11px] text-[var(--text-secondary)] uppercase tracking-[0.05em] mt-1">
+            <p className="font-sans text-[10px] lg:text-xs text-[var(--text-muted)] uppercase tracking-widest mt-1">
               {item.category === "rug" ? "Rug" : "Curtain"}
             </p>
           </div>
@@ -48,7 +48,7 @@ export default function CartItem({ item, context = "drawer" }: CartItemProps) {
             >
               <X size={16} strokeWidth={1} />
             </button>
-            <div className="font-sans text-base md:text-lg text-[var(--text-primary)] font-normal tracking-tight hidden md:block">
+            <div className="font-sans text-base md:text-lg text-[var(--text-primary)] font-semibold tracking-tight hidden md:block">
               {formatPrice(item.price, item.currency || "AED")}
             </div>
           </div>
@@ -58,7 +58,7 @@ export default function CartItem({ item, context = "drawer" }: CartItemProps) {
         <div className="flex justify-between items-end mt-4 md:mt-0 gap-4">
           
           {/* Variants/Details */}
-          <div className="flex flex-col gap-[2px] font-sans text-xs md:text-sm text-[var(--text-secondary)]">
+          <div className="flex flex-col gap-[2px] font-sans text-[10px] lg:text-xs uppercase tracking-widest text-[var(--text-muted)]">
             {item.category === "rug" && item.variant && (
               <>
                 {item.variant.size && <span>Size: {item.variant.size.replace(/\s*cm\s*$/i, '')} cm</span>}
@@ -89,7 +89,7 @@ export default function CartItem({ item, context = "drawer" }: CartItemProps) {
 
           {/* Quantity & Actions */}
           <div className="flex flex-col items-end gap-3 shrink-0">
-            <div className="font-sans text-base md:text-lg text-[var(--text-primary)] font-normal tracking-tight md:hidden">
+            <div className="font-sans text-base md:text-lg text-[var(--text-primary)] font-semibold tracking-tight md:hidden">
               {formatPrice(item.price, item.currency || "AED")}
             </div>
             

@@ -289,14 +289,14 @@ export default function CheckoutPage() {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center text-center py-20 px-6">
         <ShoppingBag size={48} strokeWidth={1} className="text-[var(--text-secondary)] mb-6" />
-        <h2 className="font-serif text-3xl md:text-4xl text-[var(--text-primary)] font-normal mb-3">Your cart is empty</h2>
-        <p className="font-sans text-sm md:text-base text-[var(--text-secondary)] mb-10 max-w-[400px]">
+        <h2 className="font-sans text-3xl md:text-4xl text-[var(--text-primary)] font-light mb-3 tracking-wide">Your cart is empty</h2>
+        <p className="font-sans text-sm md:text-base font-light text-[var(--text-secondary)] mb-10 max-w-[400px] leading-relaxed">
           Add some products before checking out.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
           <Link 
             href="/products" 
-            className="py-4 px-8 bg-[var(--accent-primary)] text-[#111] border border-[var(--border-thin)] font-sans text-xs uppercase tracking-[0.15em] transition-colors hover:bg-[var(--accent-secondary)] whitespace-nowrap text-center"
+            className="py-[12px] px-[32px] bg-[var(--accent-primary)] text-[#111] border-[0.5px] border-[var(--border-primary)] font-sans text-[10px] md:text-xs font-semibold uppercase tracking-[0.2em] transition-colors hover:bg-[var(--accent-secondary)] whitespace-nowrap text-center"
           >
             Explore Collection
           </Link>
@@ -352,10 +352,10 @@ export default function CheckoutPage() {
       <div className="max-w-[1200px] mx-auto px-6 lg:px-12">
         
         <div className="mb-6 md:mb-10 flex items-end justify-between border-b border-[var(--border-secondary)] pb-4">
-          <h1 className="font-sans text-xs md:text-sm font-medium uppercase tracking-[0.2em] text-[var(--text-primary)] m-0">
+          <h1 className="font-sans text-xl lg:text-2xl font-light text-[var(--text-primary)] m-0">
             Secure Checkout
           </h1>
-          <span className="font-sans text-xs text-[var(--text-secondary)] uppercase tracking-[0.15em]">
+          <span className="font-sans text-[10px] lg:text-xs text-[var(--text-secondary)] uppercase tracking-[0.15em]">
             {items.length} {items.length === 1 ? 'Item' : 'Items'}
           </span>
         </div>
@@ -391,10 +391,10 @@ export default function CheckoutPage() {
 
             {/* Billing */}
             <div>
-              <h2 className="font-serif text-lg md:text-xl font-medium text-[var(--text-primary)] mb-4 tracking-tight">Billing Details</h2>
+              <h2 className="font-sans text-lg md:text-xl font-light text-[var(--text-primary)] mb-4 tracking-tight">Billing Details</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 md:gap-x-5 gap-y-4 md:gap-y-5">
                 <div className="flex flex-col gap-2">
-                  <label className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-[var(--text-secondary)] flex items-center" htmlFor="first_name">First Name <span className="text-red-500 ml-1">*</span></label>
+                  <label className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-semibold text-[var(--text-secondary)] flex items-center" htmlFor="first_name">First Name <span className="text-red-500 ml-1">*</span></label>
                   <input
                     id="first_name"
                     name="first_name"
@@ -408,7 +408,7 @@ export default function CheckoutPage() {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <label className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-[var(--text-secondary)] flex items-center" htmlFor="last_name">Last Name <span className="text-red-500 ml-1">*</span></label>
+                  <label className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-semibold text-[var(--text-secondary)] flex items-center" htmlFor="last_name">Last Name <span className="text-red-500 ml-1">*</span></label>
                   <input
                     id="last_name"
                     name="last_name"
@@ -422,7 +422,7 @@ export default function CheckoutPage() {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <label className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-[var(--text-secondary)] flex items-center" htmlFor="email">Email <span className="text-red-500 ml-1">*</span></label>
+                  <label className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-semibold text-[var(--text-secondary)] flex items-center" htmlFor="email">Email <span className="text-red-500 ml-1">*</span></label>
                   <input
                     id="email"
                     name="email"
@@ -436,7 +436,7 @@ export default function CheckoutPage() {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <label className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-[var(--text-secondary)] flex items-center" htmlFor="phone">Phone <span className="text-red-500 ml-1">*</span></label>
+                  <label className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-semibold text-[var(--text-secondary)] flex items-center" htmlFor="phone">Phone <span className="text-red-500 ml-1">*</span></label>
                   <input
                     id="phone"
                     name="phone"
@@ -453,10 +453,10 @@ export default function CheckoutPage() {
 
             {/* Shipping */}
             <div>
-              <h2 className="font-serif text-lg md:text-xl font-medium text-[var(--text-primary)] mb-4 tracking-tight">Shipping Address</h2>
+              <h2 className="font-sans text-lg md:text-xl font-light text-[var(--text-primary)] mb-4 tracking-tight">Shipping Address</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 md:gap-x-5 gap-y-4 md:gap-y-5">
                 <div className="flex flex-col gap-2 md:col-span-2">
-                  <label className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-[var(--text-secondary)] flex items-center" htmlFor="address_1">Street Address <span className="text-red-500 ml-1">*</span></label>
+                  <label className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-semibold text-[var(--text-secondary)] flex items-center" htmlFor="address_1">Street Address <span className="text-red-500 ml-1">*</span></label>
                   <input
                     id="address_1"
                     name="address_1"
@@ -470,7 +470,7 @@ export default function CheckoutPage() {
                 </div>
 
                 <div className="flex flex-col gap-2 md:col-span-2">
-                  <label className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-[var(--text-secondary)] flex items-center" htmlFor="address_2">Apartment / Suite</label>
+                  <label className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-semibold text-[var(--text-secondary)] flex items-center" htmlFor="address_2">Apartment / Suite</label>
                   <input
                     id="address_2"
                     name="address_2"
@@ -483,7 +483,7 @@ export default function CheckoutPage() {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <label className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-[var(--text-secondary)] flex items-center" htmlFor="city">City <span className="text-red-500 ml-1">*</span></label>
+                  <label className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-semibold text-[var(--text-secondary)] flex items-center" htmlFor="city">City <span className="text-red-500 ml-1">*</span></label>
                   <input
                     id="city"
                     name="city"
@@ -497,7 +497,7 @@ export default function CheckoutPage() {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <label className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-[var(--text-secondary)] flex items-center" htmlFor="state">State / Province / Region</label>
+                  <label className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-semibold text-[var(--text-secondary)] flex items-center" htmlFor="state">State / Province / Region</label>
                   <input
                     id="state"
                     name="state"
@@ -510,7 +510,7 @@ export default function CheckoutPage() {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <label className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-[var(--text-secondary)] flex items-center" htmlFor="country">Country <span className="text-red-500 ml-1">*</span></label>
+                  <label className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-semibold text-[var(--text-secondary)] flex items-center" htmlFor="country">Country <span className="text-red-500 ml-1">*</span></label>
                   <select
                     id="country"
                     name="country"
@@ -527,7 +527,7 @@ export default function CheckoutPage() {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <label className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-[var(--text-secondary)] flex items-center" htmlFor="postcode">ZIP / Postal Code</label>
+                  <label className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-semibold text-[var(--text-secondary)] flex items-center" htmlFor="postcode">ZIP / Postal Code</label>
                   <input
                     id="postcode"
                     name="postcode"
@@ -543,7 +543,7 @@ export default function CheckoutPage() {
 
             {/* Order Notes */}
             <div>
-              <h2 className="font-serif text-lg md:text-xl font-medium text-[var(--text-primary)] mb-4 tracking-tight">Order Notes</h2>
+              <h2 className="font-sans text-lg md:text-xl font-light text-[var(--text-primary)] mb-4 tracking-tight">Order Notes</h2>
               <div className="flex flex-col gap-2">
                 <textarea
                   id="order_notes"
@@ -558,7 +558,7 @@ export default function CheckoutPage() {
 
             {/* Payment Method */}
             <div>
-              <h2 className="font-serif text-lg md:text-xl font-medium text-[var(--text-primary)] mb-4 tracking-tight">Payment Method</h2>
+              <h2 className="font-sans text-lg md:text-xl font-light text-[var(--text-primary)] mb-4 tracking-tight">Payment Method</h2>
               <div className="flex flex-col gap-4">
                 <div
                   className={`p-4 border cursor-pointer transition-colors flex items-center gap-3 md:gap-4 ${formData.payment_method === "online" ? "border-[var(--border-primary)] bg-[var(--bg-secondary)]" : "border-[var(--border-secondary)] hover:border-[var(--border-primary)]"}`}
@@ -579,7 +579,7 @@ export default function CheckoutPage() {
           {/* ── Right: Order Summary ── */}
           <div className="lg:col-span-5">
             <div className="sticky top-[100px] p-6 md:p-8 lg:p-10 border border-[var(--border-secondary)] bg-[var(--surface-primary)] flex flex-col">
-              <h3 className="font-serif text-xl md:text-2xl font-normal text-[var(--text-primary)] mb-6 md:mb-8 tracking-tight">Order Summary</h3>
+              <h3 className="font-sans text-lg md:text-xl font-light text-[var(--text-primary)] mb-6 md:mb-8 tracking-tight">Order Summary</h3>
 
             <div className="flex flex-col gap-6 mb-8 pb-8 border-b border-[var(--border-secondary)]">
               {items.map((item) => (
@@ -590,8 +590,8 @@ export default function CheckoutPage() {
                   </div>
                   <div className="flex flex-col flex-1 min-w-0">
                     <div className="flex justify-between items-start gap-2">
-                      <p className="font-sans text-xs md:text-sm font-medium text-[var(--text-primary)] leading-snug mb-0.5">{item.name}</p>
-                      <span className="font-sans text-xs md:text-sm font-normal text-[var(--text-primary)] shrink-0">
+                      <p className="font-sans text-sm font-medium text-[var(--text-primary)] leading-snug mb-0.5">{item.name}</p>
+                      <span className="font-sans text-xs md:text-sm font-semibold text-[var(--text-primary)] shrink-0">
                         {formatPrice(item.price * item.quantity, cartCurrency || "AED")}
                       </span>
                     </div>
@@ -604,7 +604,7 @@ export default function CheckoutPage() {
             <div className="flex flex-col gap-3 md:gap-4">
               <div className="flex justify-between items-center">
                 <span className="font-sans text-[10px] md:text-xs text-[var(--text-secondary)] uppercase tracking-[0.2em] font-medium">Subtotal</span>
-                <span className="font-sans text-[15px] text-[var(--text-primary)] font-normal tracking-tight">{formatPrice(subtotal, cartCurrency || "AED")}</span>
+                <span className="font-sans text-[15px] text-[var(--text-primary)] font-semibold tracking-tight">{formatPrice(subtotal, cartCurrency || "AED")}</span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="font-sans text-[10px] md:text-xs text-[var(--text-secondary)] uppercase tracking-[0.2em] font-medium">Shipping</span>
@@ -618,11 +618,11 @@ export default function CheckoutPage() {
 
             <div className="flex justify-between items-end mt-6 pt-6 border-t border-[var(--border-secondary)] mb-8">
               <span className="font-sans text-[10px] md:text-xs text-[var(--text-secondary)] uppercase tracking-[0.2em] font-medium mb-1">Total</span>
-              <span className="font-sans text-xl md:text-2xl font-normal text-[var(--text-primary)] tracking-tight">{formatPrice(subtotal, cartCurrency || "AED")}</span>
+              <span className="font-sans text-xl md:text-2xl font-medium text-[var(--text-primary)] tracking-tight">{formatPrice(subtotal, cartCurrency || "AED")}</span>
             </div>
 
             <button
-              className="w-full h-12 md:h-14 bg-[var(--accent-primary)] text-[#111] border border-[var(--border-thin)] font-sans text-xs md:text-sm uppercase tracking-[0.2em] font-medium transition-colors hover:bg-[var(--accent-secondary)] flex items-center justify-center disabled:opacity-70 disabled:cursor-not-allowed"
+              className="w-full py-[12px] px-[32px] bg-[var(--accent-primary)] text-[#111] border-[0.5px] border-[var(--border-primary)] font-sans text-[10px] md:text-xs font-semibold uppercase tracking-[0.2em] transition-colors hover:bg-[var(--accent-secondary)] flex items-center justify-center disabled:opacity-70 disabled:cursor-not-allowed"
               onClick={handlePlaceOrder}
               disabled={isProcessing}
             >
