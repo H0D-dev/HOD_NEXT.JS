@@ -17,8 +17,6 @@ const NAV_LINKS = [
   { label: "Bespoke", href: "/bespoke" },
   { label: "Products", href: "/products" },
   { label: "Projects", href: "/projects" },
-  { label: "About", href: "/about" },
-  { label: "Contact", href: "/contact" },
 ];
 
 export default function Header() {
@@ -113,20 +111,16 @@ export default function Header() {
       <header className={`header ${isScrolled ? "header--scrolled" : ""} ${isTransparent ? "header--transparent" : ""}`}>
         <div className="header__container">
           <div className="header__left">
-            {/* ── Logo ── */}
-            <Link href="/" className="header__logo">
-              <Image
-                src="/logo/HOD_LOGO.webp"
-                alt="House of Décor"
-                width={160}
-                height={36}
-                priority
-                loading="eager"
-                fetchPriority="high"
-                className="header__logo-img"
-              />
-            </Link>
-
+            {/* ── Hamburger Menu Button (Mobile) ── */}
+            <button
+              className="header__hamburger-btn"
+              aria-label="Open menu"
+              onClick={() => setIsMobileMenuOpen(true)}
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
             {/* ── Navigation Links ── */}
             <nav className={`header__nav ${isMobileMenuOpen ? "header__nav--open" : ""}`} aria-label="Main Navigation">
               <div className="header__nav-header">
@@ -150,17 +144,6 @@ export default function Header() {
                 ))}
               </ul>
               <div className="header__mobile-cart" style={{ gap: "2rem", alignItems: "center" }}>
-                <button className="header__cart-btn" aria-label="Open cart" onClick={openDrawer}>
-                  <div className="header__cart-icon-wrapper">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke="currentColor" strokeWidth="1" strokeLinecap="square" />
-                    </svg>
-                    {mounted && totalItems > 0 && (
-                      <span className="header__cart-badge">{totalItems}</span>
-                    )}
-                  </div>
-                  <span className="header__mobile-cart-label">Cart</span>
-                </button>
                 <button className="header__cart-btn" aria-label="Profile" onClick={handleProfileClick}>
                   <div className="header__cart-icon-wrapper">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -172,6 +155,22 @@ export default function Header() {
                 </button>
               </div>
             </nav>
+          </div>
+
+          <div className="header__center">
+            {/* ── Logo ── */}
+            <Link href="/" className="header__logo">
+              <Image
+                src="/logo/new_logo.png"
+                alt="House of Décor"
+                width={300}
+                height={60}
+                priority
+                loading="eager"
+                fetchPriority="high"
+                className="header__logo-img"
+              />
+            </Link>
           </div>
 
           {/* ── Right Group ── */}
@@ -208,7 +207,7 @@ export default function Header() {
                 )}
               </div>
             )}
-            <button className="header__cart-btn !hidden lg:!flex" aria-label="Open cart" onClick={openDrawer}>
+            <button className="header__cart-btn" aria-label="Open cart" onClick={openDrawer}>
               <div className="header__cart-icon-wrapper">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke="currentColor" strokeWidth="1" strokeLinecap="square" />
@@ -218,22 +217,13 @@ export default function Header() {
                 )}
               </div>
             </button>
-            <button className="header__cart-btn !hidden lg:!flex" aria-label="Profile" onClick={handleProfileClick}>
+            <button className="header__cart-btn !hidden md:!flex" aria-label="Profile" onClick={handleProfileClick}>
               <div className="header__cart-icon-wrapper">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" strokeWidth="1" strokeLinecap="square" />
                   <circle cx="12" cy="7" r="4" stroke="currentColor" strokeWidth="1" strokeLinecap="square" />
                 </svg>
               </div>
-            </button>
-            <button
-              className="header__hamburger-btn"
-              aria-label="Open menu"
-              onClick={() => setIsMobileMenuOpen(true)}
-            >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
             </button>
           </div>
         </div>

@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   description:
     "Tailoring luxury, one thread at a time. Discover premium handmade rugs, bespoke curtains, and curated interior solutions by House of Décor.",
   icons: {
-    icon: "/logo/HOD_LOGO.webp",
+    icon: "/logo/new_logo.png",
   },
 };
 

@@ -70,7 +70,7 @@ export default function Footer() {
           <div className="flex flex-col lg:col-span-4 lg:pr-12">
             <Link href="/" className="mb-8 inline-block">
               <Image
-                src="/logo/HOD_LOGO.webp"
+                src="/logo/new_logo_footer.png"
                 alt="House of Décor"
                 width={200}
                 height={45}
@@ -241,7 +241,7 @@ export default function Footer() {
         <div className="flex flex-col items-center text-center mb-10">
           <Link href="/" className="mb-6 inline-block">
             <Image
-              src="/logo/HOD_LOGO.webp"
+              src="/logo/new_logo_footer.png"
               alt="House of Décor"
               width={160}
               height={36}

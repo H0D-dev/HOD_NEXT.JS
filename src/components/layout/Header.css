@@ -26,14 +26,30 @@
   justify-content: space-between;
   width: 100%;
   max-width: 100%;
-  padding: 20px 4vw;
+  padding: 24px 4vw;
+  position: relative;
+}
+
+.header__left,
+.header__right {
+  display: flex;
+  align-items: center;
+  flex: 1;
 }
 
 .header__left {
+  justify-content: flex-start;
+}
+
+.header__right {
+  justify-content: flex-end;
+}
+
+.header__center {
+  flex: 0 0 auto;
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap: var(--space-7);
-  /* wide gap between logo and nav */
 }
 
 /* ── Left Side: Navigation ── */
@@ -101,7 +117,7 @@
 }
 
 .header__logo-img {
-  height: 28px;
+  height: 36px;
   width: auto;
   object-fit: contain;
   filter: brightness(0);
@@ -112,11 +128,14 @@
   .header__logo-text {
     font-size: 32px;
   }
+  .header__logo-img {
+    height: 56px;
+  }
 }
 
 /* ── Right Side ── */
 .header__right {
-  display: flex;
+  justify-content: flex-end;
   align-items: center;
   gap: 6px;
 }
@@ -209,11 +228,11 @@
   }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 768px) {
 
   .header__hamburger-btn {
     display: flex;
-    margin-left: 4px;
+    margin-right: 16px;
   }
 
   .header__nav {
