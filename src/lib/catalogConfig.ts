@@ -8,6 +8,7 @@ export type ProductStub = {
   collectionName: string;
   category: string; // e.g. "Wall-to-wall" or "Hand-knotted"
   color: string;
+  sizeInfo?: string;
   image: string;
   price?: string;
   isFallbackPrice?: boolean;

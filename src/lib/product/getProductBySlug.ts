@@ -162,10 +162,26 @@ function transformProduct(
     }
   }
 
+  const materialAttr = p.attributes?.find(a => a.name.toLowerCase() === 'material');
+  const material = materialAttr?.options?.[0] || acf.construction || "100% Wool";
+
+  function decodeHtml(str: string) {
+    if (!str) return str;
+    return str
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#039;/g, "'")
+      .replace(/&#8211;/g, '-')
+      .replace(/&#8212;/g, '—')
+      .replace(/&#8216;/g, "'")
+      .replace(/&#8217;/g, "'");
+  }
 
   return {
     id: p.id.toString(),
-    name: p.name,
+    name: decodeHtml(p.name),
     slug: p.slug,
     description: p.description?.replace(/<[^>]*>?/gm, "") || "Handcrafted premium product.",
     shortDescription: p.short_description?.replace(/<[^>]*>?/gm, "").trim() || undefined,
@@ -185,7 +201,7 @@ function transformProduct(
     relatedIds: p.related_ids,
     defaultVariationId,
     details: {
-      material: acf.construction || "100% Wool",
+      material,
       construction: acf.construction || "Hand-knotted",
       origin: acf.country_of_origin || "Nepal",
       weaveType: "Cut Pile",

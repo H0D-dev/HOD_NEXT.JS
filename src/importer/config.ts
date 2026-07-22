@@ -13,7 +13,7 @@ export const CONFIG = {
   DEFAULT_STATUS: 'publish' as const,
   DEFAULT_CATALOG_VISIBILITY: 'visible' as const,
   DEFAULT_STOCK_STATUS: 'instock' as const,
-  DEFAULT_CATEGORY_IDS: [16], // Rugs
+  DEFAULT_CATEGORY_IDS: [16, 84], // Rugs, Bauhaus Blend
 
   // Brand / Origin defaults
   DEFAULT_BRAND: 'House of Decor',
@@ -48,6 +48,8 @@ export const CONFIG = {
     washable: '0',
     pile_thickness: '10',
     lead_time: '4-6 weeks',
+    care_instructions: 'Professional cleaning recommended. Vacuum regularly without a beater bar.',
+    room_type: 'Living Room, Bedroom, Dining Room',
   } as Record<string, string>,
 
   // ACF hidden reference keys (required for fields to show in the WP Admin backend)
@@ -61,6 +63,8 @@ export const CONFIG = {
     product_color: 'field_6a4613ea08a61',
     pet_friendly: 'field_6a4200ab10cca',
     washable: 'field_6a4200df10ccc',
+    care_instructions: 'field_6a4200ee10ccd',
+    room_type: 'field_6a473ad1761ea',
     price_usd: 'field_6a60b9389e801', // Standard ACF field hashes for prices if they existed
     price_eur: 'field_6a60b9499e802',
   } as Record<string, string>,

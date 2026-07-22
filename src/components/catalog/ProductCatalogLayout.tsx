@@ -171,8 +171,14 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
       });
     }
 
-    // Color (dynamically built from ACF productColor)
-    const colorOptions = getUniqueValues(p => p.acf?.productColor);
+    // Color (dynamically built from Attributes)
+    const colorOptions = getUniqueValues(p => {
+      const colorAttr = p.attributes?.find((a: any) => a.name.toLowerCase() === 'colour' || a.name.toLowerCase() === 'color');
+      if (colorAttr && colorAttr.options && colorAttr.options.length > 0) {
+        return colorAttr.options.join(',');
+      }
+      return p.acf?.productColor;
+    }, /,/);
     if (colorOptions.length > 0) {
       filters.push({
         id: "color",
@@ -252,8 +258,14 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
            if (!matchFound) return false;
            continue; 
          } else if (filterId === "color") {
-           const productColor = p.acf?.productColor?.toLowerCase() || "";
-           if (!selectedValues.includes(productColor)) return false;
+           const colorAttr = p.attributes?.find((a: any) => a.name.toLowerCase() === 'colour' || a.name.toLowerCase() === 'color');
+           let hasMatch = false;
+           if (colorAttr && colorAttr.options) {
+             hasMatch = colorAttr.options.some((opt: string) => selectedValues.includes(opt.toLowerCase().trim()));
+           } else if (p.acf?.productColor) {
+             hasMatch = selectedValues.includes(p.acf.productColor.toLowerCase().trim());
+           }
+           if (!hasMatch) return false;
            continue;
          } else if (filterId === "price-range") {
            const currencyKey = currency.toLowerCase();
@@ -345,6 +357,12 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
   const displayProducts: ProductStub[] = filteredProducts.map(p => {
     const colorVal = p.acf?.productColor || "";
     
+    const sizeAttr = p.attributes?.find((a: any) => a.name.toLowerCase() === 'size');
+    let sizeInfo = "";
+    if (sizeAttr && sizeAttr.options?.length > 0) {
+      sizeInfo = sizeAttr.options.join(", ");
+    }
+
     const currencyKey = currency.toLowerCase();
     let priceToUse = 0;
     let isFallback = false;
@@ -362,6 +380,7 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
       collectionName: String(p.acf?.countryOfOrigin || "").toUpperCase(),
       category: String(p.acf?.construction || p.categories?.[0]?.name || ""),
       color: colorVal, 
+      sizeInfo,
       image: p.mainImage?.src || (category === "rugs" ? "/rugs/set1-full.png" : "/curtains/set1-room.png"),
       price: priceToUse > 0 ? formatPrice(priceToUse, isFallback ? "AED" : currency) : "",
       isFallbackPrice: isFallback

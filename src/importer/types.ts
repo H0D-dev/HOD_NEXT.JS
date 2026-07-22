@@ -12,6 +12,7 @@ export interface RawCsvRow {
   'Weaving Technique'?: string;
   'Material'?: string;
   'Colour Attributes'?: string;
+  'Product Color'?: string;
   'Shape'?: string;
   'Size'?: string;
   'Price (AED)'?: string;
@@ -43,6 +44,7 @@ export interface RawProduct {
   weavingTechnique: string;
   material: string;
   colourAttributes: string;
+  productColor: string;
   shape: string;
   designId: string;
   sku: string;
@@ -65,6 +67,7 @@ export interface NormalizedProduct {
   construction: string;
   material: string;
   colours: string[];
+  productColor: string;
   shape: string;
   sizes: SizePriceEntry[];
   pattern: string;

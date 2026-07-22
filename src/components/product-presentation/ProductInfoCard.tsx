@@ -337,7 +337,7 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
           <div className="flex items-center border border-[var(--border-secondary)] w-fit rounded-none overflow-hidden bg-transparent">
             <button
               onClick={() => setQuantity(Math.max(1, quantity - 1))}
-              className="w-10 h-10 flex items-center justify-center text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] transition-colors"
+              className="w-10 h-10 flex items-center justify-center text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] transition-colors cursor-pointer"
             >
               <Minus size={14} strokeWidth={2} />
             </button>
@@ -346,7 +346,7 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
             </div>
             <button
               onClick={() => setQuantity(quantity + 1)}
-              className="w-10 h-10 flex items-center justify-center text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] transition-colors"
+              className="w-10 h-10 flex items-center justify-center text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] transition-colors cursor-pointer"
             >
               <Plus size={14} strokeWidth={2} />
             </button>
@@ -355,7 +355,7 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
 
         <button
           onClick={handleAddToCart}
-          className="w-full py-4 mt-2 bg-[#A38A61] hover:bg-[#8F7752] text-white font-sans text-sm tracking-widest uppercase font-medium transition-colors duration-300 rounded-none"
+          className="w-full py-4 mt-2 bg-[#A38A61] hover:bg-[#8F7752] text-white font-sans text-sm tracking-widest uppercase font-medium transition-colors duration-300 rounded-none cursor-pointer"
         >
           ADD TO CART
         </button>
@@ -384,7 +384,7 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
                 <div className="pb-5 pt-1 flex flex-col gap-2">
                   {Object.entries(computedDetails).map(([key, value]) => {
                     if (!value) return null;
-                    const hiddenKeys = ['washable', 'petfriendly', 'pet', 'weight', 'story'];
+                    const hiddenKeys = ['washable', 'petfriendly', 'pet', 'weight', 'story', 'careinstructions'];
                     if (hiddenKeys.includes(key.toLowerCase())) return null;
                     const formattedKey = key.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase());
                     let displayValue = value;

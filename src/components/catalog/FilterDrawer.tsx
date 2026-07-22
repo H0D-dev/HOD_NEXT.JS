@@ -100,7 +100,6 @@ export default function FilterDrawer({ isOpen, onClose, filters, selectedFilters
                                 className={`flex items-center gap-3 cursor-pointer group`}
                                 onClick={() => toggleFilter(filter.id, opt.value)}
                               >
-                                {filter.id !== "color" && (
                                   <>
                                     <div className={`w-4 h-4 border flex items-center justify-center transition-colors ${isSelected ? "bg-[#d4b06a] border-[#d4b06a]" : "border-[var(--border-primary)] group-hover:bg-[var(--bg-secondary)]"}`}>
                                       <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={isSelected ? "#111111" : "transparent"} strokeWidth="3" className={!isSelected ? "group-hover:stroke-[#8C8C8C]" : ""}>
@@ -111,15 +110,6 @@ export default function FilterDrawer({ isOpen, onClose, filters, selectedFilters
                                       {opt.label}
                                     </span>
                                   </>
-                                )}
-
-                                {filter.id === "color" && (
-                                  <span 
-                                    className={`w-8 h-8 rounded-sm inline-block shrink-0 shadow-sm transition-all duration-200 ${isSelected ? "scale-110 border-2 border-black outline outline-2 outline-offset-1 outline-[var(--text-primary)]" : "border border-black/20 hover:scale-105"}`} 
-                                    style={{ backgroundColor: opt.label.startsWith("#") ? opt.label : opt.value }} 
-                                    aria-label={`Color ${opt.label}`}
-                                  />
-                                )}
                               </div>
                             );
                           })}

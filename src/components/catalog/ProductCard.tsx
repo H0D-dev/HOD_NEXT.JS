@@ -46,6 +46,11 @@ export default function ProductCard({ product, baseRoute }: ProductCardProps) {
             </>
           )}
         </p>
+        {product.sizeInfo && (
+          <p className="font-sans text-[10px] md:text-[11px] text-[var(--text-secondary)] mt-1">
+            Sizes (cm): {product.sizeInfo}
+          </p>
+        )}
         {product.isFallbackPrice && (
           <p className="text-[9px] lg:text-[10px] text-orange-600 mt-1 leading-tight">
             * {currency} pricing not available. Showing in AED.

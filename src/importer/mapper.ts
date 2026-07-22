@@ -33,13 +33,14 @@ export function rawToNormalized(raw: RawProduct): NormalizedProduct {
     : [];
 
   return {
-    name: raw.name,
+    name: raw.name ? raw.name.replace(/&/g, 'and') : raw.name,
     description: raw.description,
     designId: raw.designId,
     sku: raw.sku,
     construction: raw.weavingTechnique,
     material: raw.material,
     colours,
+    productColor: raw.productColor,
     shape: raw.shape,
     sizes: raw.sizes,
     pattern: raw.pattern,
@@ -210,8 +211,8 @@ function buildMetaData(product: NormalizedProduct): WCMetaData[] {
   meta.push({ key: CONFIG.META_KEYS.ITEM_NUMBER, value: product.sku });
 
   // Product Color — critical for frontend color grouping to distinguish siblings
-  if (product.colours && product.colours.length > 0) {
-    meta.push({ key: CONFIG.META_KEYS.PRODUCT_COLOR, value: product.colours.join(' / ') });
+  if (product.productColor) {
+    meta.push({ key: CONFIG.META_KEYS.PRODUCT_COLOR, value: product.productColor });
   }
 
   // Construction / weaving technique

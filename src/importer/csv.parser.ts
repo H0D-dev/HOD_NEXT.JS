@@ -69,6 +69,7 @@ function parseCsv(content: string): RawProduct[] {
         weavingTechnique: row['Weaving Technique']?.trim() || '',
         material: row['Material']?.trim() || '',
         colourAttributes: row['Colour Attributes']?.trim() || '',
+        productColor: row['Product Color']?.trim() || '',
         shape: row['Shape']?.trim() || '',
         designId: row['Design ID']?.trim() || '',
         sku: row['Item Number (SKU)']?.trim() || '',
