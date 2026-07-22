@@ -1,24 +1,14 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
-import Image from "next/image";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { ArrowLeft, ChevronDown } from "lucide-react";
+import { ArrowLeft, ChevronDown, ArrowRight } from "lucide-react";
 import { Blog } from "../../lib/data/blogs";
 
-export default function BlogContent({ blog }: { blog: Blog }) {
+export default function BlogContent({ blog, nextBlog }: { blog: Blog, nextBlog?: Blog | null }) {
   const [activeSection, setActiveSection] = useState<string | undefined>(blog?.sections?.[0]?.id);
   const [openAccordion, setOpenAccordion] = useState<string | null>(blog?.sections?.[0]?.id || null);
-
-  const imageContainerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: imageContainerRef,
-    offset: ["start end", "end start"]
-  });
-
-  const imageScale = useTransform(scrollYProgress, [0, 0.7], [1, 0.9]);
-  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
 
   // Intersection Observer for Desktop Sidebar
   useEffect(() => {
@@ -50,52 +40,34 @@ export default function BlogContent({ blog }: { blog: Blog }) {
   return (
     <article className="w-full bg-[var(--bg-primary)]">
 
-      {/* Blog Hero */}
-      <section className="w-full pt-12 md:pt-20 lg:pt-28 px-5 md:px-10 lg:px-16">
-        <div className="max-w-[var(--container-lg)] mx-auto pb-8 md:pb-12 lg:pb-16 border-b border-[var(--border-secondary)]">
-          <div className="max-w-[var(--container-md)] mx-auto flex flex-col gap-6">
-            <Link href="/blog" className="group flex items-center gap-2 font-sans text-[10px] md:text-xs tracking-[0.2em] uppercase text-[var(--text-muted)] hover:text-[var(--text-primary)] w-fit transition-colors font-medium">
-              <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
-              Back to Journal
-            </Link>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any }}
-              className="flex flex-col gap-6"
-            >
-              <span className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-[var(--text-secondary)]">
-                {blog.date}
-              </span>
-              <h1 className="font-sans font-light text-[2.25rem] sm:text-[2.75rem] md:text-[4rem] lg:text-[4rem] leading-[1.1] tracking-wide text-[var(--text-primary)] mb-4">
-                {blog.title}
-              </h1>
-              <p className="font-sans text-sm md:text-base leading-relaxed text-[var(--text-secondary)]">
-                {blog.excerpt}
-              </p>
-            </motion.div>
-          </div>
+      {/* Blog Header */}
+      <section className="w-full pt-20 lg:pt-32 pb-12 md:pb-16 lg:pb-20 px-4 md:px-6 lg:px-10 flex flex-col items-center text-center">
+        <div className="max-w-4xl mx-auto flex flex-col items-center">
+          <Link href="/blog" className="group flex items-center gap-2 font-sans text-[10px] md:text-xs tracking-[0.2em] uppercase text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors font-medium mb-10">
+            <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+            Back to Journal
+          </Link>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any }}
+            className="flex flex-col items-center gap-6"
+          >
+            <span className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-[var(--text-secondary)]">
+              {blog.date}
+            </span>
+            <h1 className="font-sans font-light text-xl md:text-2xl lg:text-3xl leading-tight tracking-wide text-[var(--text-primary)] max-w-3xl">
+              {blog.title}
+            </h1>
+            <p className="font-sans text-sm md:text-base font-light leading-relaxed text-[var(--text-secondary)] max-w-2xl mt-2">
+              {blog.excerpt}
+            </p>
+          </motion.div>
         </div>
       </section>
 
-      {/* Featured Image */}
-      <div ref={imageContainerRef} className="w-full pt-4 md:pt-6 lg:pt-8 pb-8 md:pb-12 lg:pb-16 bg-[var(--bg-primary)] border-b border-[var(--border-secondary)] overflow-hidden flex justify-center">
-        <motion.div 
-          style={{ scale: imageScale, y: imageY }}
-          className="w-full aspect-[4/3] lg:aspect-[16/9] min-h-[50vh] lg:min-h-[60vh] max-h-[85vh] relative bg-[var(--surface-primary)]"
-        >
-          <Image
-            src={blog.image}
-            alt={blog.title}
-            fill
-            priority
-            className="object-cover origin-bottom"
-          />
-        </motion.div>
-      </div>
-
       {/* Blog Content with Sticky Sidebar */}
-      <section className="w-full py-8 md:py-12 lg:py-16 px-5 md:px-10 lg:px-16 bg-[var(--bg-secondary)]">
+      <section className="w-full py-8 md:py-12 lg:py-16 px-4 md:px-6 lg:px-10 bg-[var(--bg-secondary)]">
         <div className="max-w-[var(--container-lg)] mx-auto flex flex-col md:flex-row gap-12 lg:gap-24 relative">
 
           {blog.sections && blog.sections.length > 0 ? (
@@ -168,7 +140,7 @@ export default function BlogContent({ blog }: { blog: Blog }) {
               </aside>
 
               {/* Desktop Content Area (Continuous Scroll) */}
-              <div className="hidden md:block flex-1 pb-32">
+              <div className="hidden md:block flex-1">
                 <div className="flex flex-col gap-24">
                   {blog.sections.map((section) => (
                     <motion.div
@@ -180,7 +152,7 @@ export default function BlogContent({ blog }: { blog: Blog }) {
                       transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any }}
                       className="flex flex-col gap-8 scroll-mt-32"
                     >
-                      <h2 className="font-sans font-light text-xl lg:text-2xl text-[var(--text-primary)] border-b border-[var(--border-secondary)] pb-6 mb-2">
+                      <h2 className="font-sans font-light text-4xl lg:text-5xl text-[var(--text-primary)] border-b border-[var(--border-secondary)] pb-6 mb-2">
                         {section.title}
                       </h2>
                       <div className="flex flex-col gap-6">
@@ -197,13 +169,41 @@ export default function BlogContent({ blog }: { blog: Blog }) {
             </>
           ) : (
             <div 
-              className="blog-content w-full max-w-[800px] mx-auto pb-32" 
+              className="blog-content w-full max-w-[800px] mx-auto" 
               dangerouslySetInnerHTML={{ __html: blog.content || '' }} 
             />
           )}
 
         </div>
       </section>
+
+      {/* Next Article Section */}
+      {nextBlog && (
+        <section className="w-full py-6 md:py-8 lg:py-10 bg-[var(--bg-primary)] px-4 md:px-6 lg:px-10">
+          <div className={`mx-auto ${blog.sections && blog.sections.length > 0 ? 'max-w-[var(--container-lg)]' : 'max-w-[800px]'}`}>
+            <span className="block font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-[var(--text-muted)] mb-4 md:mb-6 text-left">
+              Read Next
+            </span>
+            <Link href={`/blog/${nextBlog.slug}`} className="group flex flex-col md:flex-row gap-6 md:gap-8 justify-between items-start md:items-center">
+              <div className="flex flex-col gap-2 md:gap-3 flex-1 pr-4 lg:pr-8">
+                <h2 className="font-sans font-medium text-xl md:text-2xl text-[var(--text-primary)] leading-tight group-hover:text-[var(--accent-primary)] transition-colors duration-500 line-clamp-2">
+                  {nextBlog.title}
+                </h2>
+                <p className="font-sans text-sm text-[var(--text-secondary)] line-clamp-2">
+                  {nextBlog.excerpt}
+                </p>
+              </div>
+              <div className="shrink-0">
+                <div className="flex items-center gap-2 font-sans text-[10px] md:text-xs uppercase tracking-[0.15em] font-medium text-[var(--text-primary)] pb-1 border-b border-[var(--border-primary)] group-hover:gap-4 transition-all duration-300">
+                  Read Article
+                  <ArrowRight size={14} />
+                </div>
+              </div>
+            </Link>
+          </div>
+        </section>
+      )}
+
     </article>
   );
 }
