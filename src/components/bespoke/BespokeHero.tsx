@@ -47,7 +47,7 @@ export default function BespokeHero() {
   return (
     <section
       ref={containerRef}
-      className="relative w-full h-screen flex flex-col justify-end lg:justify-center overflow-hidden bg-black"
+      className="relative w-full h-[70vh] lg:h-screen flex flex-col justify-end lg:justify-center overflow-hidden bg-black"
     >
       {/* Background */}
       <div className="absolute inset-0 w-full h-full overflow-hidden z-0">

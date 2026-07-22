@@ -44,7 +44,7 @@ export default function ContactHero() {
   }, { scope: sectionRef });
 
   return (
-    <section ref={sectionRef} className="relative w-full h-screen flex flex-col justify-end lg:justify-center overflow-hidden bg-black" id="contact-hero-section">
+    <section ref={sectionRef} className="relative w-full h-[70vh] lg:h-screen flex flex-col justify-end lg:justify-center overflow-hidden bg-black" id="contact-hero-section">
       
       {/* ── Background Image Desktop ── */}
       <div className="absolute inset-0 w-full h-[120%] -top-[10%] z-0 hidden md:block" ref={bgRefDesktop}>

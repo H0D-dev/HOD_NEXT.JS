@@ -44,7 +44,7 @@ export default function HeroSection() {
   }, { scope: sectionRef });
 
   return (
-    <section ref={sectionRef} className="relative w-full h-screen flex flex-col justify-end lg:justify-center overflow-hidden bg-black" id="hero-section">
+    <section ref={sectionRef} className="relative w-full h-[70vh] lg:h-screen flex flex-col justify-end lg:justify-center overflow-hidden bg-black" id="hero-section">
       
       {/* ── Background Image Desktop (Parallax) ── */}
       <div className="absolute inset-0 w-full h-[120%] -top-[10%] z-0 hidden md:block" ref={bgRef}>
@@ -54,7 +54,7 @@ export default function HeroSection() {
           fill
           priority
           className="object-cover"
-          sizes="100vw"
+          sizes="(max-width: 768px) 0vw, 100vw"
         />
         {/* Subtle gradient overlay for text legibility */}
         <div className="absolute inset-0 bg-black/40 md:bg-gradient-to-r from-black/70 to-transparent z-10"></div>
@@ -68,7 +68,7 @@ export default function HeroSection() {
           fill
           priority
           className="object-cover object-[center_30%]"
-          sizes="100vw"
+          sizes="(max-width: 768px) 100vw, 0vw"
         />
         {/* Subtle gradient overlay for text legibility */}
         <div className="absolute inset-0 bg-black/50 z-10"></div>

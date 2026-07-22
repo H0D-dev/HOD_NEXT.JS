@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export default function ServicesHero() {
   return (
-    <section className="relative w-full h-screen flex flex-col justify-end lg:justify-center overflow-hidden bg-black border-b border-[var(--border-secondary)]">
+    <section className="relative w-full h-[70vh] lg:h-screen flex flex-col justify-end lg:justify-center overflow-hidden bg-black border-b border-[var(--border-secondary)]">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <Image

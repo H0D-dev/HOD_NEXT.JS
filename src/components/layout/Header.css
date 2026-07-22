@@ -215,7 +215,17 @@
 /* ── Responsive ── */
 @media (max-width: 1024px) {
   .header__container {
-    padding: 16px 5vw;
+    padding: 16px 4vw;
+  }
+  .header__nav-list {
+    gap: var(--space-3);
+  }
+  .header__nav-link {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+  }
+  .header__logo-img {
+    height: 40px;
   }
 }
 
