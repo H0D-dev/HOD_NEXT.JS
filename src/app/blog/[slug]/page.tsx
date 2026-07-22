@@ -2,13 +2,7 @@ import { notFound } from "next/navigation";
 import BlogContent from "../../../components/blog/BlogContent";
 import { getPosts, getPostBySlug } from "../../../services/Posts";
 
-export async function generateStaticParams() {
-  const blogs = await getPosts();
-  if (!blogs || !Array.isArray(blogs)) return [];
-  return blogs.map((blog) => ({
-    slug: blog.slug,
-  }));
-}
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -25,15 +19,25 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const blog = await getPostBySlug(slug);
+  const posts = await getPosts();
   
-  if (!blog) {
+  if (!posts || posts.error || !Array.isArray(posts)) {
     notFound();
   }
 
+  const currentIndex = posts.findIndex(p => p.slug.toLowerCase() === slug.toLowerCase());
+  
+  if (currentIndex === -1) {
+    notFound();
+  }
+
+  const blog = posts[currentIndex];
+  // Determine next blog (loop back to first if at the end)
+  const nextBlog = posts.length > 1 ? posts[(currentIndex + 1) % posts.length] : null;
+
   return (
     <main className="w-full flex flex-col bg-[var(--bg-primary)]">
-      <BlogContent blog={blog} />
+      <BlogContent blog={blog} nextBlog={nextBlog} />
     </main>
   );
 }

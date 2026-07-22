@@ -381,7 +381,7 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
       category: String(p.acf?.construction || p.categories?.[0]?.name || ""),
       color: colorVal, 
       sizeInfo,
-      image: p.mainImage?.src || (category === "rugs" ? "/rugs/set1-full.png" : "/curtains/set1-room.png"),
+      image: p.mainImage?.src || (category === "rugs" ? "/hero_background.png" : "/projects_hero.png"),
       price: priceToUse > 0 ? formatPrice(priceToUse, isFallback ? "AED" : currency) : "",
       isFallbackPrice: isFallback
     };

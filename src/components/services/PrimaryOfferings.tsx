@@ -7,7 +7,7 @@ const offerings = [
   {
     title: "Custom Rugs and Carpets",
     desc: "Handcrafted to your specifications, our rugs and carpets combine exquisite design with unparalleled quality, perfect for enhancing any room.",
-    image: "/rugs/set1-room.png"
+    image: "/products_hero.png"
   },
   {
     title: "Custom Flatweaves",

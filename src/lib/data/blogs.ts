@@ -20,7 +20,7 @@ export const blogs: Blog[] = [
     title: "The Art of Layering Rugs: A Guide to Texture and Color",
     date: "March 15, 2026",
     excerpt: "Discover how to elevate your interior design by mastering the art of layering rugs, combining textures and colors for a luxurious feel.",
-    image: "/rugs/set1-room.png",
+    image: "/products_hero.png",
     sections: [
       {
         id: "introduction",

@@ -39,7 +39,7 @@ export default function ProductsCollections() {
             setCollections(rugs.map(r => ({
               title: r.name,
               slug: r.slug,
-              image: r.image?.src || "/rugs/set1-room.png"
+              image: r.image?.src || "/products_hero.png"
             })));
           }
         }

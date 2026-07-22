@@ -71,7 +71,7 @@ export const RUGS_CONFIG: CatalogConfig = {
       collectionName: "SIGNATURE",
       category: "Hand-knotted",
       color: "Pewter Grey",
-      image: "/rugs/set1-full.png"
+      image: "/hero_background.png"
     },
     {
       id: "rug-2",
@@ -98,7 +98,7 @@ export const RUGS_CONFIG: CatalogConfig = {
       collectionName: "SIGNATURE",
       category: "Hand-knotted",
       color: "Charcoal",
-      image: "/rugs/set1-texture.png"
+      image: "/images/materials.png"
     },
     {
       id: "rug-5",
@@ -186,7 +186,7 @@ export const CURTAINS_CONFIG: CatalogConfig = {
       collectionName: "SUSTAINABLE",
       category: "Sheers",
       color: "Charcoal",
-      image: "/curtains/set1-room.png"
+      image: "/projects_hero.png"
     },
     {
       id: "cur-3",

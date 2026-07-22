@@ -154,7 +154,7 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
       slug: product.slug,
       name: product.name,
       category: isRug ? "rug" : "curtain",
-      image: activeColor.textureUrl || product.image || "/rugs/set1-room.png",
+      image: activeColor.textureUrl || product.image || "/products_hero.png",
       price: displayPrice,
       currency: isFallbackPrice ? "AED" : currency,
       quantity: quantity,

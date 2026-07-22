@@ -38,13 +38,21 @@ export default function BlogList({ blogs = [] }: { blogs?: Blog[] }) {
               transition={{ duration: 0.8, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] as any }}
               className="group flex flex-col gap-4 bg-[var(--bg-secondary)] p-4 md:p-6"
             >
-              <Link href={`/blog/${blog.slug}`} className="w-full aspect-[4/3] relative overflow-hidden block">
+              <Link href={`/blog/${blog.slug}`} className="w-full aspect-[16/10] relative overflow-hidden block bg-[var(--surface-primary)]">
+                {/* Ambient blurred backdrop for letterbox areas */}
+                <Image
+                  src={blog.image}
+                  alt=""
+                  fill
+                  className="object-cover blur-xl opacity-30 scale-110"
+                />
+                {/* Complete uncropped cover image */}
                 <Image
                   src={blog.image}
                   alt={blog.title}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className="object-cover transition-transform duration-[1.5s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
+                  className="object-contain relative z-10 transition-transform duration-[1.5s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
                 />
               </Link>
               <div className="flex flex-col gap-2 md:gap-3 items-start">

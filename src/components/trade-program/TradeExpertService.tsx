@@ -8,13 +8,13 @@ const services = [
     id: 1,
     title: "Virtual Sales Representative",
     description: "Connect with a dedicated expert for immediate assistance and custom requirements.",
-    image: "/curtains/set1-room.png",
+    image: "/projects_hero.png",
   },
   {
     id: 2,
     title: "Budget & Project Management",
     description: "Comprehensive project support ensuring designs meet timelines and budgets.",
-    image: "/rugs/set1-room.png",
+    image: "/products_hero.png",
   },
   {
     id: 3,
