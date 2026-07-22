@@ -7,6 +7,28 @@ import { footer } from "framer-motion/client";
 import { useCurrencySwitcher } from "@/src/lib/hooks/useCurrencySwitcher";
 import { Currency } from "@/src/components/product-presentation/ProductPresentation";
 
+const ABOUT_LINKS = [
+  { label: 'About', href: '/about' },
+  { label: 'Services', href: '/services' },
+  { label: 'Rugs', href: '/products/rugs' },
+  { label: 'Contact', href: '/contact' },
+  { label: 'Blog', href: '/blog' }
+];
+
+const RESOURCE_LINKS = [
+  { label: 'Bespoke Rugs', href: '/bespoke' },
+  { label: 'Know Your Rug', href: '/know-your-rug' },
+  { label: 'Designer Trade Program', href: '/designer-trade-program' },
+  { label: 'Size & Fitting Guide', href: '/size-fitting-guide' },
+  { label: 'Care & Cleaning', href: '/care-cleaning' }
+];
+
+const LEGAL_LINKS = [
+  { label: 'Privacy Policy', href: '/privacy-policy' },
+  { label: 'Terms of Service', href: '/terms-conditions' },
+  { label: 'Cookie Policy', href: '/cookie-policy' }
+];
+
 export default function Footer() {
   const [mobileAboutOpen, setMobileAboutOpen] = useState(false);
   const [mobileResourcesOpen, setMobileResourcesOpen] = useState(false);
@@ -58,16 +80,16 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-[#080808] md:bg-[#111111] text-[#f5f3ef] md:text-white pt-16 md:pt-20 lg:pt-32 pb-8 border-t border-[#222222] md:border-[#333333]">
+    <footer className="bg-[#080808] md:bg-[#111111] text-[#f5f3ef] md:text-white pt-12 md:pt-16 pb-8 border-t border-[#222222] md:border-[#333333]">
       <div className="max-w-[var(--container-lg)] mx-auto px-8 md:px-6">
 
         {/* ================================================== */}
         {/* DESKTOP FOOTER (min-width: 768px)                  */}
         {/* ================================================== */}
-        <div className="hidden md:grid grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-20">
+        <div className="hidden md:grid md:grid-cols-6 lg:grid-cols-12 gap-12 lg:gap-8 mb-20 w-full">
 
           {/* Column 1: Brand */}
-          <div className="flex flex-col lg:col-span-4 lg:pr-12">
+          <div className="flex flex-col items-start md:items-center md:text-center lg:items-start lg:text-left md:col-span-6 lg:col-span-4 lg:pr-12">
             <Link href="/" className="mb-8 inline-block">
               <Image
                 src="/logo/new_logo_footer.png"
@@ -78,26 +100,20 @@ export default function Footer() {
                 className="h-12 w-auto object-contain brightness-0 invert opacity-90"
               />
             </Link>
-            <p className="text-[#D0D0D0] text-base leading-relaxed font-light mb-8 max-w-sm">
+            <p className="text-[#D0D0D0] text-base leading-relaxed font-light mb-8 max-w-sm md:mx-auto lg:mx-0">
               Premium handwoven rugs and curtains crafted with timeless artistry and delivered with excellence.
             </p>
           </div>
 
           {/* Column 2: About Us */}
-          <div className="flex flex-col lg:col-span-2">
-            <h4 className="font-sans font-medium text-base tracking-[0.15em] uppercase mb-8">About Us</h4>
-            <ul className="flex flex-col gap-5">
-              {[
-                { label: 'About', href: '/about' },
-                { label: 'Services', href: '/services' },
-                { label: 'Rugs', href: '/products/rugs' },
-                { label: 'Contact', href: '/contact' },
-                { label: 'Blog', href: '/blog' }
-              ].map((link) => (
+          <div className="flex flex-col md:col-span-2 lg:col-span-2">
+            <h4 className="font-sans text-xs tracking-widest font-medium uppercase mb-6 text-[#f5f3ef]">About Us</h4>
+            <ul className="flex flex-col gap-4">
+              {ABOUT_LINKS.map((link) => (
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-[#8C8C8C] hover:text-[var(--bg-primary)] transition-colors duration-300 font-light text-base"
+                    className="text-sm font-normal text-[#8C8C8C] hover:text-[#f5f3ef] transition-colors duration-300"
                   >
                     {link.label}
                   </Link>
@@ -107,20 +123,14 @@ export default function Footer() {
           </div>
 
           {/* Column 3: Resources */}
-          <div className="flex flex-col lg:col-span-3">
-            <h4 className="font-sans font-medium text-base tracking-[0.15em] uppercase mb-8">Resources</h4>
-            <ul className="flex flex-col gap-5">
-              {[
-                { label: 'Bespoke Rugs', href: '/bespoke' },
-                { label: 'Know Your Rug', href: '/know-your-rug' },
-                { label: 'Designer Trade Program', href: '/designer-trade-program' },
-                { label: 'Size & Fitting Guide', href: '/size-fitting-guide' },
-                { label: 'Care & Cleaning', href: '/care-cleaning' }
-              ].map((link) => (
+          <div className="flex flex-col md:col-span-2 lg:col-span-3">
+            <h4 className="font-sans text-xs tracking-widest font-medium uppercase mb-6 text-[#f5f3ef]">Resources</h4>
+            <ul className="flex flex-col gap-4">
+              {RESOURCE_LINKS.map((link) => (
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-[#8C8C8C] hover:text-[var(--bg-primary)] transition-colors duration-300 font-light text-base"
+                    className="text-sm font-normal text-[#8C8C8C] hover:text-[#f5f3ef] transition-colors duration-300"
                   >
                     {link.label}
                   </Link>
@@ -130,8 +140,8 @@ export default function Footer() {
           </div>
 
           {/* Column 4: Stay Connected */}
-          <div className="flex flex-col lg:col-span-3">
-            <h4 className="font-sans font-medium text-base tracking-[0.15em] uppercase mb-8">Stay Connected</h4>
+          <div className="flex flex-col md:col-span-2 lg:col-span-3">
+            <h4 className="font-sans text-xs tracking-widest font-medium uppercase mb-6 text-[#f5f3ef]">Stay Connected</h4>
             <div className="flex gap-4">
               {/* Social Icons (Square, 1px border) */}
               {socialIcons.map((social) => (
@@ -150,7 +160,7 @@ export default function Footer() {
 
             {/* Newsletter (Desktop) */}
             <div className="mt-12 flex flex-col">
-              <h4 className="font-sans font-medium text-base tracking-[0.15em] uppercase mb-4">Newsletter</h4>
+              <h4 className="font-sans text-xs tracking-widest font-medium uppercase mb-4 text-[#f5f3ef]">Newsletter</h4>
               <form onSubmit={handleNewsletterSubmit} className="flex flex-col gap-2">
                 <input
                   type="email"
@@ -163,10 +173,10 @@ export default function Footer() {
                 <button
                   type="submit"
                   disabled={status === "loading"}
-                  className="mt-4 text-left uppercase text-sm tracking-[0.15em] font-medium text-[#D0D0D0] hover:text-[#f5f3ef] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-between"
+                  className="mt-4 text-left uppercase text-[10px] tracking-[0.15em] font-medium text-[#D0D0D0] hover:text-[#f5f3ef] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-between"
                 >
                   {status === "loading" ? "Subscribing..." : "Subscribe"}
-                  <span className="text-[#d4b06a] ml-2">→</span>
+                  <span className="text-[var(--accent-primary)] ml-2">→</span>
                 </button>
                 {status === "success" && (
                   <span className="text-[#d4b06a] text-sm mt-3">Thank you for subscribing!</span>
@@ -214,11 +224,7 @@ export default function Footer() {
                 </div>
               )}
             </div>
-            {[
-              { label: 'Privacy Policy', href: '/privacy-policy' },
-              { label: 'Terms of Service', href: '/terms-conditions' },
-              { label: 'Cookie Policy', href: '/cookie-policy' }
-            ].map((link) => (
+            {LEGAL_LINKS.map((link) => (
               <Link
                 key={link.label}
                 href={link.href}
@@ -273,10 +279,10 @@ export default function Footer() {
                 }`}
             >
               <ul className="flex flex-col gap-4">
-                {['About', 'Services', 'Rugs', 'Contact', 'Blog'].map((link) => (
-                  <li key={link}>
-                    <Link href={`/${link.toLowerCase()}`} className="text-[#b8b8b8] hover:text-[#d4b06a] font-sans font-light text-sm transition-colors block">
-                      {link}
+                {ABOUT_LINKS.map((link) => (
+                  <li key={link.label}>
+                    <Link href={link.href} className="text-[#8C8C8C] hover:text-[#f5f3ef] font-sans font-normal text-sm transition-colors block">
+                      {link.label}
                     </Link>
                   </li>
                 ))}
@@ -300,15 +306,9 @@ export default function Footer() {
                 }`}
             >
               <ul className="flex flex-col gap-4">
-                {[
-                  { label: 'Create Your Rug', href: '/create-your-own-rug' },
-                  { label: 'Know Your Rug', href: '/know-your-rug' },
-                  { label: 'Designer Trade Program', href: '/designer-trade-program' },
-                  { label: 'Size & Fitting Guide', href: '/size-fitting-guide' },
-                  { label: 'Care & Cleaning', href: '/care-cleaning' }
-                ].map((link) => (
+                {RESOURCE_LINKS.map((link) => (
                   <li key={link.label}>
-                    <Link href={link.href} className="text-[#b8b8b8] hover:text-[#d4b06a] font-sans font-light text-sm transition-colors block">
+                    <Link href={link.href} className="text-[#8C8C8C] hover:text-[#f5f3ef] font-sans font-normal text-sm transition-colors block">
                       {link.label}
                     </Link>
                   </li>
@@ -350,10 +350,10 @@ export default function Footer() {
             <button
               type="submit"
               disabled={status === "loading"}
-              className="mt-2 text-left uppercase text-xs tracking-[0.15em] font-medium text-[#D0D0D0] hover:text-[#f5f3ef] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-between"
+              className="mt-2 text-left uppercase text-[10px] tracking-[0.15em] font-medium text-[#D0D0D0] hover:text-[#f5f3ef] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-between"
             >
               {status === "loading" ? "Subscribing..." : "Subscribe"}
-              <span className="text-[#d4b06a] ml-2">→</span>
+              <span className="text-[var(--accent-primary)] ml-2">→</span>
             </button>
             {status === "success" && (
               <span className="text-[#d4b06a] text-xs mt-2">Thank you for subscribing!</span>
@@ -367,12 +367,8 @@ export default function Footer() {
         {/* 4. Bottom Legal Section */}
         <div className="flex flex-col items-center pt-8 border-t border-[#222222] gap-4">
           <div className="flex flex-wrap justify-center gap-x-6 gap-y-3">
-            {[
-              { label: 'Privacy Policy', href: '/privacy-policy' },
-              { label: 'Terms of Service', href: '/terms-conditions' },
-              { label: 'Cookie Policy', href: '/cookie-policy' }
-            ].map((link) => (
-              <Link key={link.label} href={link.href} className="text-[#b8b8b8] hover:text-[#f5f3ef] text-xs font-sans tracking-wide transition-colors">
+            {LEGAL_LINKS.map((link) => (
+              <Link key={link.label} href={link.href} className="text-[#8C8C8C] hover:text-[#f5f3ef] text-xs font-sans tracking-wide transition-colors">
                 {link.label}
               </Link>
             ))}
