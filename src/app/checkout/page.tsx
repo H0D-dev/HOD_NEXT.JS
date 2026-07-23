@@ -622,7 +622,7 @@ export default function CheckoutPage() {
             </div>
 
             <button
-              className="w-full py-[12px] px-[32px] bg-[var(--accent-primary)] text-[#111] border-[0.5px] border-[var(--border-primary)] font-sans text-[10px] md:text-xs font-semibold uppercase tracking-[0.2em] transition-colors hover:bg-[var(--accent-secondary)] flex items-center justify-center disabled:opacity-70 disabled:cursor-not-allowed"
+              className="w-full py-[12px] px-[32px] bg-[var(--accent-primary)] text-[#111] border-[0.5px] border-[var(--border-primary)] font-sans text-[10px] md:text-xs font-semibold uppercase tracking-[0.2em] transition-colors hover:bg-[var(--accent-secondary)] flex items-center justify-center disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
               onClick={handlePlaceOrder}
               disabled={isProcessing}
             >
