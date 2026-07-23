@@ -25,7 +25,7 @@ const phases = [
     id: "carding-spinning",
     title: "Carding & Spinning",
     subtitle: "A Heritage of Craft",
-    image: "/about/mid_artisan_yarn_1784353795576.png",
+    image: "/images/know-yout-rug/rug-making-process/KYR-Carding%20Spinning.png",
     paragraphs: [
       "Once washed, wool is hand-carded to remove impurities, then spun into durable yarn on a traditional charka, preserving centuries of Indian heritage."
     ]
@@ -34,7 +34,7 @@ const phases = [
     id: "dyeing",
     title: "Dyeing",
     subtitle: "Art in Color",
-    image: "/rugs/set3-room.png",
+    image: "/images/know-yout-rug/rug-making-process/KYR-Dyeing.png",
     paragraphs: [
       "Yarn is immersed in boiling vats of eco-friendly dye and sun-dried, creating subtle, beautiful color variations known as Abrash that give each rug its unique character."
     ]
@@ -43,7 +43,7 @@ const phases = [
     id: "weaving",
     title: "Weaving",
     subtitle: "The Craft of Precision",
-    image: "/about/mid_artisan_weaving_1784353786135.png",
+    image: "/images/know-yout-rug/rug-making-process/KYR-Weaving.png",
     paragraphs: [
       "The heart of rug-making. Skilled artisans meticulously transform yarn into intricate patterns, working knot by knot with breathtaking precision and centuries-old expertise."
     ]

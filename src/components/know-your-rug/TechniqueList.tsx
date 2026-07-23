@@ -15,7 +15,7 @@ const techniques = [
   {
     id: "hand-knotted",
     title: "Hand Knotted",
-    image: "/images/craftsmanship.png",
+    image: "/images/know-yout-rug/weaving_tech/KYR-Hand-Knotted-Production.png",
     paragraphs: [
       "A meticulous, time-honored process taking up to a year, where each knot is individually tied to build incredibly dense and intricate patterns."
     ]
@@ -23,7 +23,7 @@ const techniques = [
   {
     id: "hand-tufted",
     title: "Hand Tufted",
-    image: "/images/bespoke/artisan_weaving.png",
+    image: "/images/know-yout-rug/weaving_tech/KYR-handTufted.png",
     paragraphs: [
       "Artisans use a tufting tool to punch yarn through a canvas backing, creating plush, beautifully textured designs with remarkable efficiency."
     ]
@@ -31,7 +31,7 @@ const techniques = [
   {
     id: "handloom",
     title: "Handloom",
-    image: "/rugs/weaving_techniques.png",
+    image: "/images/know-yout-rug/weaving_tech/KYR-Handloom-Production.png",
     paragraphs: [
       "Woven on a traditional loom by interlocking warp and weft threads, offering a refined, printed finish that perfectly highlights natural fibers."
     ]
@@ -39,7 +39,7 @@ const techniques = [
   {
     id: "flat-weave",
     title: "Flat Weave",
-    image: "/images/architecture.png",
+    image: "/images/know-yout-rug/weaving_tech/KYR-Flat-Weave-Production.png",
     paragraphs: [
       "Highly versatile and durable, these rugs are created without a pile, making them lightweight and perfect for displaying striking geometric patterns."
     ]

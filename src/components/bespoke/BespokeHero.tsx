@@ -53,7 +53,7 @@ export default function BespokeHero() {
       <div className="absolute inset-0 w-full h-full overflow-hidden z-0">
         <div ref={bgRef} className="absolute inset-0 w-full h-[130%] -top-[15%]">
           <Image
-            src="/images/bespoke/bespoke_hero_bg.png"
+            src="/images/bespoke/beskope_hero_bg.png"
             alt="Bespoke luxury rug in an architectural space"
             fill
             className="object-cover"

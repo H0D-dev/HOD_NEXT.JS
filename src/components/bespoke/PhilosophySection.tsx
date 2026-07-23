@@ -28,8 +28,8 @@ export default function PhilosophySection() {
         >
           <motion.div className="absolute inset-0 w-full h-[120%]" style={{ y }}>
             <Image
-              src="/images/bespoke/artisan_weaving.png"
-              alt="Artisan weaving luxury rug"
+              src="/images/bespoke/beskope_Our_Philosophy.png"
+              alt="Our Philosophy"
               fill
               className="object-cover object-center"
             />

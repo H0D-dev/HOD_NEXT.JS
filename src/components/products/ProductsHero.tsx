@@ -9,7 +9,7 @@ export default function ProductsHero() {
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/products_hero.png"
+          src="/images/products/Product-hero.png"
           alt="Luxury living room featuring a handcrafted area rug"
           fill
           priority
