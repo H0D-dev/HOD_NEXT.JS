@@ -161,7 +161,7 @@ export default function Header() {
             {/* ── Logo ── */}
             <Link href="/" className="header__logo">
               <Image
-                src="/logo/new_logo.png"
+                src="/logo/new_logo_header.png"
                 alt="House of Décor"
                 width={300}
                 height={60}

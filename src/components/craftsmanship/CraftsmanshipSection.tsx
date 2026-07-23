@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function CraftsmanshipSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -28,9 +29,9 @@ export default function CraftsmanshipSection() {
           <div className="relative z-10 w-full h-full md:w-[60%] lg:w-[50%] flex flex-col justify-center items-start p-6 md:p-16 lg:p-24 text-white">
             <span className="text-xs uppercase tracking-[0.2em] text-neutral-300 mb-2 md:mb-4 block">CRAFTSMANSHIP</span>
             <h2 className="font-sans font-light text-xl lg:text-2xl leading-[1.2] tracking-wide text-white">Rooted in heritage.<br />Defined by detail.</h2>
-            <a href="#" className="mt-6 md:mt-8 text-[10px] md:text-xs uppercase tracking-[0.2em] text-neutral-300 hover:text-brand-gold transition-colors duration-300 font-sans w-fit flex">
+            <Link href="/know-your-rug/weaving-techniques" className="mt-6 md:mt-8 text-[10px] md:text-xs uppercase tracking-[0.2em] text-neutral-300 hover:text-brand-gold transition-colors duration-300 font-sans w-fit flex">
               EXPLORE MORE &rarr;
-            </a>
+            </Link>
           </div>
         </div>
 
@@ -58,9 +59,9 @@ export default function CraftsmanshipSection() {
               <li>Linen Blends</li>
               <li>Natural Dyes</li>
             </ul>
-            <a href="#" className="mt-6 md:mt-8 text-[10px] md:text-xs uppercase tracking-[0.2em] text-neutral-300 hover:text-brand-gold transition-colors duration-300 font-sans w-fit flex">
+            <Link href="/know-your-rug/fibers-material" className="mt-6 md:mt-8 text-[10px] md:text-xs uppercase tracking-[0.2em] text-neutral-300 hover:text-brand-gold transition-colors duration-300 font-sans w-fit flex">
               EXPLORE MATERIALS &rarr;
-            </a>
+            </Link>
           </div>
         </div>
 
@@ -87,9 +88,9 @@ export default function CraftsmanshipSection() {
               <li>Bespoke Customization</li>
               <li>Natural Materials</li>
             </ul>
-            <a href="#" className="mt-6 md:mt-8 text-[10px] md:text-xs uppercase tracking-[0.2em] text-neutral-300 hover:text-brand-gold transition-colors duration-300 font-sans w-fit flex">
+            <Link href="/bespoke" className="mt-6 md:mt-8 text-[10px] md:text-xs uppercase tracking-[0.2em] text-neutral-300 hover:text-brand-gold transition-colors duration-300 font-sans w-fit flex">
               DISCOVER MORE &rarr;
-            </a>
+            </Link>
           </div>
         </div>
 
