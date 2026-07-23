@@ -353,9 +353,16 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
           </div>
         </div>
 
+        {computedDetails.leadTime && (
+          <div className="text-center mt-2 mb-1">
+            <span className="font-sans text-[11px] md:text-xs text-[var(--text-secondary)] uppercase tracking-wider">
+              Lead Time: {computedDetails.leadTime}
+            </span>
+          </div>
+        )}
         <button
           onClick={handleAddToCart}
-          className="w-full py-4 mt-2 bg-[#A38A61] hover:bg-[#8F7752] text-white font-sans text-sm tracking-widest uppercase font-medium transition-colors duration-300 rounded-none cursor-pointer"
+          className="w-full py-4 bg-[#A38A61] hover:bg-[#8F7752] text-white font-sans text-sm tracking-widest uppercase font-medium transition-colors duration-300 rounded-none cursor-pointer"
         >
           ADD TO CART
         </button>
@@ -384,11 +391,14 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
                 <div className="pb-5 pt-1 flex flex-col gap-2">
                   {Object.entries(computedDetails).map(([key, value]) => {
                     if (!value) return null;
-                    const hiddenKeys = ['washable', 'petfriendly', 'pet', 'weight', 'story', 'careinstructions'];
+                    const hiddenKeys = ['washable', 'petfriendly', 'pet', 'weight', 'story', 'careinstructions', 'leadtime'];
                     if (hiddenKeys.includes(key.toLowerCase())) return null;
                     const formattedKey = key.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase());
                     let displayValue = value;
                     if (key.toLowerCase() === 'dimensions' && !String(value).toLowerCase().includes('cm')) {
+                      displayValue = `${value} cm`;
+                    }
+                    if (key.toLowerCase() === 'pilethickness' && !String(value).toLowerCase().includes('cm')) {
                       displayValue = `${value} cm`;
                     }
                     return (
@@ -446,9 +456,6 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
                     </div>
                     <span className="mt-1 text-[var(--text-primary)]">Avoid prolonged direct sunlight.</span>
                   </div>
-                  {computedDetails.careInstructions && (
-                    <p className="mt-2 text-[var(--text-primary)]">{computedDetails.careInstructions}</p>
-                  )}
                 </div>
               </motion.div>
             )}

@@ -83,13 +83,16 @@ export default function ProductSpecifications({ product, selectedVariation }: Pr
             <div className="flex-1 flex flex-nowrap items-start justify-start md:justify-between gap-x-4 md:gap-x-6 overflow-x-auto hide-scrollbar w-full pb-2">
               {Object.entries(computedDetails).map(([key, value]) => {
                 if (!value) return null;
-                const hiddenKeys = ['washable', 'petfriendly', 'pet', 'weight', 'story'];
+                const hiddenKeys = ['washable', 'petfriendly', 'pet', 'weight', 'story', 'leadtime'];
                 if (hiddenKeys.includes(key.toLowerCase())) return null;
 
                 const formattedKey = key.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase());
 
                 let displayValue = value;
                 if (key.toLowerCase() === 'dimensions' && !String(value).toLowerCase().includes('cm')) {
+                  displayValue = `${value} cm`;
+                }
+                if (key.toLowerCase() === 'pilethickness' && !String(value).toLowerCase().includes('cm')) {
                   displayValue = `${value} cm`;
                 }
 

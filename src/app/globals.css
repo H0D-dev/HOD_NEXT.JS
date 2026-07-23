@@ -145,10 +145,14 @@
 @layer components {
     .blog-content {
         font-family: var(--font-jost), 'Jost', sans-serif;
-        font-size: 16px;
+        font-size: 18px !important;
         font-weight: 400;
         line-height: 1.8;
         color: var(--text-secondary);
+    }
+
+    .blog-content > :first-child {
+        margin-top: 0 !important;
     }
 
     .blog-content h2,
@@ -191,7 +195,7 @@
     .blog-content p {
         margin-bottom: var(--space-3) !important;
         color: var(--text-secondary);
-        font-size: var(--text-md);
+        font-size: 18px !important;
         line-height: 1.8;
     }
 
@@ -254,9 +258,30 @@
 
     .blog-content img {
         width: 100%;
+        max-width: 100%;
+        height: auto;
+        display: block !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
         margin-top: var(--space-5);
         margin-bottom: var(--space-5);
         border: 1px solid var(--border-secondary);
+    }
+
+    .blog-content figure,
+    .blog-content .wp-block-image {
+        margin-left: auto !important;
+        margin-right: auto !important;
+        text-align: center;
+        width: 100%;
+        max-width: 100%;
+        display: block;
+    }
+
+    .blog-content .aligncenter {
+        display: block;
+        margin-left: auto !important;
+        margin-right: auto !important;
     }
 
     @media (min-width: 768px) {

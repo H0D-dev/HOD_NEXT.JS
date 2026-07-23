@@ -224,6 +224,8 @@ function transformProduct(
           ? "No"
           : undefined,
       itemNumber: acf.item_number || undefined,
+      pileThickness: acf.pile_thickness || undefined,
+      leadTime: acf.lead_time || undefined,
     },
     colors,
     currencyPrices: {

@@ -85,7 +85,7 @@ export default function SocialFeedSection() {
                 index === 4 ? 'block' : index === 3 ? 'block' : ''
               }`}
             >
-              <Link href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+              <Link href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="block relative w-full h-full">
                 <Image
                   src={image.src}
                   alt={image.alt}

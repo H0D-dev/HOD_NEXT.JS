@@ -129,12 +129,13 @@ export default function ProductGallery({ product, activeColor }: ProductGalleryP
                   }`}
               >
                 <div className="relative w-full h-full overflow-hidden bg-[var(--bg-secondary)]">
-                  <Image
-                    src={img}
-                    alt={`${product.name} view ${idx + 1}`}
-                    fill
-                    className="object-cover"
-                  />
+                    <Image
+                      src={img}
+                      alt={`${product.name} view ${idx + 1}`}
+                      fill
+                      sizes="(max-width: 1024px) 15vw, 5vw"
+                      className="object-cover"
+                    />
                 </div>
               </button>
             ))}
@@ -183,6 +184,7 @@ export default function ProductGallery({ product, activeColor }: ProductGalleryP
                       src={mainImage}
                       alt={product.name}
                       fill
+                      sizes="(max-width: 1024px) 100vw, 50vw"
                       className="object-cover cursor-pointer"
                       priority
                     />

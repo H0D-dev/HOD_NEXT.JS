@@ -32,7 +32,9 @@ export async function GET(request) {
                 const varUrl = `${API_CONFIG.baseUrl}/wp-json/wc/v3/products/${p.id}/variations/${firstVarId}?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&_fields=id,price,regular_price,sale_price,meta_data,manual_prices`;
                 try {
                     const varRes = await fetch(varUrl, { cache: "no-store" });
-                    const v = await varRes.json();
+                    if (!varRes.ok) throw new Error(`HTTP error! status: ${varRes.status}`);
+                    const text = await varRes.text();
+                    const v = text ? JSON.parse(text) : null;
                     if (v && v.id) {
                         let manualPrices = v.manual_prices || null;
                         if (!manualPrices && Array.isArray(v.meta_data)) {
@@ -79,6 +81,8 @@ export async function GET(request) {
                 exactLengthCm: rawAcf.exact_length_cm || null,
                 exactHeightCm: rawAcf.exact_height_cm || null,
                 weightKg: rawAcf.weight_kg || null,
+                pileThickness: rawAcf.pile_thickness || null,
+                leadTime: rawAcf.lead_time || null,
             };
 
             // Check if variable product, inject variation pricing if found

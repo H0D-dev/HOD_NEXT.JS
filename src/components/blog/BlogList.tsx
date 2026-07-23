@@ -44,6 +44,7 @@ export default function BlogList({ blogs = [] }: { blogs?: Blog[] }) {
                   src={blog.image}
                   alt=""
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   className="object-cover blur-xl opacity-30 scale-110"
                 />
                 {/* Complete uncropped cover image */}
