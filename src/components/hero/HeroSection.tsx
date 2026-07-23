@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { motion, AnimatePresence } from "framer-motion";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -15,6 +16,20 @@ export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const images = [
+    "/images/home/Home-Hero-Image-1.png",
+    "/images/home/Home-Hero-Image-2.png",
+    "/images/home/Home-Hero-Image-3.png"
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % images.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [images.length]);
 
   useGSAP(() => {
     // Background parallax effect
@@ -48,30 +63,52 @@ export default function HeroSection() {
       
       {/* ── Background Image Desktop (Parallax) ── */}
       <div className="absolute inset-0 w-full h-[120%] -top-[10%] z-0 hidden md:block" ref={bgRef}>
-        <Image
-          src="/hero_background.png"
-          alt="Luxury architectural interior"
-          fill
-          priority
-          className="object-cover"
-          sizes="(max-width: 768px) 0vw, 100vw"
-        />
+        <AnimatePresence>
+          <motion.div
+            key={currentImageIndex}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.5, ease: "easeInOut" }}
+            className="absolute inset-0 w-full h-full"
+          >
+            <Image
+              src={images[currentImageIndex]}
+              alt="Luxury architectural interior"
+              fill
+              priority
+              className="object-cover"
+              sizes="(max-width: 768px) 0vw, 100vw"
+            />
+          </motion.div>
+        </AnimatePresence>
         {/* Subtle gradient overlay for text legibility */}
-        <div className="absolute inset-0 bg-black/40 md:bg-gradient-to-r from-black/70 to-transparent z-10"></div>
+        <div className="absolute inset-0 bg-black/40 md:bg-gradient-to-r from-black/70 to-transparent z-10 pointer-events-none"></div>
       </div>
 
       {/* ── Background Image Mobile (Static to prevent jitter) ── */}
       <div className="absolute inset-0 w-full h-full z-0 block md:hidden">
-        <Image
-          src="/hero_background.png"
-          alt="Luxury architectural interior"
-          fill
-          priority
-          className="object-cover object-[center_30%]"
-          sizes="(max-width: 768px) 100vw, 0vw"
-        />
+        <AnimatePresence>
+          <motion.div
+            key={currentImageIndex}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.5, ease: "easeInOut" }}
+            className="absolute inset-0 w-full h-full"
+          >
+            <Image
+              src={images[currentImageIndex]}
+              alt="Luxury architectural interior"
+              fill
+              priority
+              className="object-cover object-[center_30%]"
+              sizes="(max-width: 768px) 100vw, 0vw"
+            />
+          </motion.div>
+        </AnimatePresence>
         {/* Subtle gradient overlay for text legibility */}
-        <div className="absolute inset-0 bg-black/50 z-10"></div>
+        <div className="absolute inset-0 bg-black/50 z-10 pointer-events-none"></div>
       </div>
 
       {/* ── Content ── */}
