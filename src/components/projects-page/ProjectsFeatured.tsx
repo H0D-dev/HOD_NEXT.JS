@@ -17,25 +17,25 @@ const projects = [
     title: "VILLA LV01",
     meta: "Dubai, UAE • Luxury Villas • 2024",
     desc: "A bespoke hand-knotted rug designed for the grand living space, crafted in New Zealand wool and bamboo silk. The design seamlessly integrates with the villa's modern architectural lines, bringing warmth to the expansive marble floors. Our artisans spent over four months meticulously weaving the subtle gradient patterns.",
-    image: "/services_exp_1.png",
+    image: "/images/home/featured-projects/FP-Villa-LV.png",
   },
   {
     title: "LUXURY PENTHOUSE",
     meta: "Dubai, UAE • Residential • 2023",
     desc: "Custom rugs for luxury living areas and private suites, designed for comfort, durability and elegance. Featuring a blend of pure silk and hand-spun wool, the collection elevates the panoramic skyline views. Each piece was tailored to perfectly frame the custom Italian furniture arrangements.",
-    image: "/services_exp_2.png",
+    image: "/images/home/featured-projects/FP-Penthouse.png",
   },
   {
-    title: "PRIVATE PALACE",
-    meta: "Abu Dhabi, UAE • Royal Palaces • 2022",
+    title: "GHARAFA PALACE",
+    meta: "Qatar • Royal Palaces • 2022",
     desc: "Handcrafted palace-size rugs made using the finest materials and traditional weaving techniques to complement monumental architecture. The intricate floral motifs were inspired by the region's heritage, utilizing a rich palette of deep gold and sapphire. Installed across the main majlis and reception halls.",
-    image: "/services_exp_3.png",
+    image: "/images/home/featured-projects/FP-Gharafa-Palace-Qatar.png",
   },
   {
-    title: "BOUTIQUE HOTEL",
-    meta: "Dubai, UAE • Hospitality • 2023",
+    title: "DUBAI MALL",
+    meta: "Dubai, UAE • Commercial • 2023",
     desc: "Contemporary rugs for executive offices and meeting spaces, balancing aesthetics with high-traffic performance. The geometric designs introduce a subtle modern edge while maintaining the hotel's luxurious ambiance. Constructed with high-density commercial-grade wool for lasting durability.",
-    image: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&q=80&w=1200",
+    image: "/images/home/featured-projects/FP-Dubai-Mall.png",
   },
 ];
 

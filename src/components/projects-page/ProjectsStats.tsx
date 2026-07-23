@@ -86,19 +86,19 @@ export default function ProjectsStats() {
         {/* Right: Stats Grid */}
         <div className="w-full lg:w-1/3 grid grid-cols-2 gap-x-8 gap-y-12 pl-0 lg:pl-10">
           <div className="flex flex-col border-l border-[var(--border-secondary)] pl-4">
-            <span className="stat-number text-2xl md:text-4xl font-light text-[var(--text-primary)] mb-2" data-target="1000" data-suffix="+">0+</span>
+            <span className="stat-number text-lg lg:text-xl font-light text-[var(--text-primary)] mb-2" data-target="1000" data-suffix="+">0+</span>
             <span className="text-[9px] uppercase tracking-widest text-[var(--text-secondary)]">Bespoke Rugs<br/>Delivered</span>
           </div>
           <div className="flex flex-col border-l border-[var(--border-secondary)] pl-4">
-            <span className="stat-number text-2xl md:text-4xl font-light text-[var(--text-primary)] mb-2" data-target="150" data-suffix="+">0+</span>
+            <span className="stat-number text-lg lg:text-xl font-light text-[var(--text-primary)] mb-2" data-target="150" data-suffix="+">0+</span>
             <span className="text-[9px] uppercase tracking-widest text-[var(--text-secondary)]">Interior<br/>Projects</span>
           </div>
           <div className="flex flex-col border-l border-[var(--border-secondary)] pl-4">
-            <span className="stat-number text-2xl md:text-4xl font-light text-[var(--text-primary)] mb-2" data-target="20" data-suffix="+">0+</span>
+            <span className="stat-number text-lg lg:text-xl font-light text-[var(--text-primary)] mb-2" data-target="20" data-suffix="+">0+</span>
             <span className="text-[9px] uppercase tracking-widest text-[var(--text-secondary)]">Countries<br/>Served</span>
           </div>
           <div className="flex flex-col border-l border-[var(--border-secondary)] pl-4">
-            <span className="stat-number text-2xl md:text-4xl font-light text-[var(--text-primary)] mb-2" data-target="100" data-suffix="%">0%</span>
+            <span className="stat-number text-lg lg:text-xl font-light text-[var(--text-primary)] mb-2" data-target="100" data-suffix="%">0%</span>
             <span className="text-[9px] uppercase tracking-widest text-[var(--text-secondary)]">Handmade<br/>Craftsmanship</span>
           </div>
         </div>

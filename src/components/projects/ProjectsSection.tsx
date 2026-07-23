@@ -14,19 +14,19 @@ if (typeof window !== "undefined") {
 const projects = [
   {
     title: "VILLA LV01 - DUBAI",
-    image: "/services_exp_1.png",
+    image: "/images/home/featured-projects/FP-Villa-LV.png",
   },
   {
     title: "LUXURY PENTHOUSE",
-    image: "/services_exp_2.png",
+    image: "/images/home/featured-projects/FP-Penthouse.png",
   },
   {
-    title: "PRIVATE PALACE",
-    image: "/services_exp_3.png",
+    title: "GHARAFA PALACE - QATAR",
+    image: "/images/home/featured-projects/FP-Gharafa-Palace-Qatar.png",
   },
   {
-    title: "BOUTIQUE HOTEL",
-    image: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&q=80&w=1200",
+    title: "DUBAI MALL",
+    image: "/images/home/featured-projects/FP-Dubai-Mall.png",
   },
 ];
 

@@ -22,7 +22,7 @@ export default function ProjectsHero() {
       {/* Desktop Parallax Background */}
       <motion.div className="absolute inset-0 w-full h-full hidden md:block" style={{ y }}>
         <Image
-          src="/projects_hero.png"
+          src="/images/projects/Project-hero.png"
           alt="House of Décor Luxury Projects"
           fill
           priority
@@ -36,7 +36,7 @@ export default function ProjectsHero() {
       {/* Mobile Parallax Background */}
       <motion.div className="absolute inset-0 w-full h-full md:hidden" style={{ y }}>
         <Image
-          src="/projects_hero_mobile.png"
+          src="/images/projects/Project-hero.png"
           alt="House of Décor Luxury Projects"
           fill
           priority
