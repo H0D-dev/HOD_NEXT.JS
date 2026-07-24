@@ -85,7 +85,7 @@ export default function CollectionCategories() {
         {/* Horizontal scroll on mobile, 4-Column Grid on desktop */}
         <div 
           ref={gridRef} 
-          className="flex overflow-x-auto md:grid md:grid-cols-2 lg:grid-cols-4 snap-x snap-mandatory md:snap-none gap-4 md:gap-8 hide-scrollbar [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+          className="flex overflow-x-auto md:grid md:grid-cols-2 lg:grid-cols-4 snap-x snap-mandatory md:snap-none gap-2 md:gap-4 hide-scrollbar [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
         >
           {collections.map((collection, index) => (
             <div
