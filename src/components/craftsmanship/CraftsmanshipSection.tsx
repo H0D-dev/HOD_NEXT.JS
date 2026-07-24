@@ -3,12 +3,25 @@
 import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 export default function CraftsmanshipSection() {
   const sectionRef = useRef<HTMLElement>(null);
 
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start 120px", "start 20px"]
+  });
+
+  const backgroundColor = useTransform(scrollYProgress, [0, 1], ["#F5F2EC", "#2C251F"]);
+
   return (
-    <section ref={sectionRef} className="w-full bg-[#2C251F] pt-6 pb-2 md:py-8 lg:pb-16" id="craftsmanship-section">
+    <motion.section 
+      ref={sectionRef} 
+      style={{ backgroundColor }}
+      className="w-full pt-6 pb-2 md:py-8 lg:pb-16" 
+      id="craftsmanship-section"
+    >
       <div className="flex flex-col w-full max-w-[1400px] mx-auto relative px-4 md:px-8 lg:px-12 md:pt-12 space-y-12 md:space-y-24">
 
         {/* Panel 1: Craftsmanship */}
@@ -88,6 +101,6 @@ export default function CraftsmanshipSection() {
         </div>
 
       </div>
-    </section>
+    </motion.section>
   );
 }
