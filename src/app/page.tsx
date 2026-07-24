@@ -6,6 +6,7 @@ import CollectionCategories from "@/src/components/collections/CollectionCategor
 import ProjectsSection from "@/src/components/projects/ProjectsSection";
 import CraftsmanshipSection from "@/src/components/craftsmanship/CraftsmanshipSection";
 import SocialFeedSection from "@/src/components/social/SocialFeedSection";
+import TextMarquee from "@/src/components/marquee/TextMarquee";
 
 export const dynamic = "force-dynamic";
 
@@ -13,7 +14,8 @@ export default function Home() {
   return (
     <main className="bg-[#F9F9F6]">
       <HeroSection />
-      <CoreValuesSection />
+      <TextMarquee />
+      {/* <CoreValuesSection /> */}
       <FeaturedProductsSection />
       <CollectionCategories />
       <ProjectsSection />

@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "import-products": "npx tsx src/importer/cli.ts",
-    "import-products:dry": "npx tsx src/importer/cli.ts --dry-run"
+    "import-products:dry": "npx tsx src/importer/cli.ts --dry-run",
+    "tunnel": "npx localtunnel --port 3000"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
