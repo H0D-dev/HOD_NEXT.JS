@@ -25,7 +25,7 @@ export default function CraftsmanshipSection() {
       <div className="flex flex-col w-full max-w-[1400px] mx-auto relative px-4 md:px-8 lg:px-12 md:pt-12 space-y-4 md:space-y-6 lg:space-y-6">
 
         {/* Panel 1: Craftsmanship */}
-        <div className="craft-panel sticky top-16 md:top-24 w-full relative min-h-[280px] md:min-h-0 h-[280px] md:h-[450px] lg:h-[550px] shadow-[0_-10px_40px_rgba(0,0,0,0.5)] overflow-hidden z-10">
+        <div className="craft-panel sticky top-16 md:top-24 w-full relative min-h-[280px] md:min-h-0 h-[280px] md:h-[450px] lg:h-[550px] overflow-hidden z-10">
           {/* Full Background Image */}
           <div className="absolute inset-0 w-full h-full z-0">
             <Image
@@ -49,7 +49,7 @@ export default function CraftsmanshipSection() {
         </div>
 
         {/* Panel 2: Materials */}
-        <div className="craft-panel sticky top-20 md:top-32 w-full relative min-h-[280px] md:min-h-0 h-[280px] md:h-[450px] lg:h-[550px] shadow-[0_-10px_40px_rgba(0,0,0,0.5)] overflow-hidden z-20">
+        <div className="craft-panel sticky top-20 md:top-32 w-full relative min-h-[280px] md:min-h-0 h-[280px] md:h-[450px] lg:h-[550px] overflow-hidden z-20">
           {/* Full Background Image */}
           <div className="absolute inset-0 w-full h-full z-0">
             <Image
@@ -75,7 +75,7 @@ export default function CraftsmanshipSection() {
         </div>
 
         {/* Panel 3: Why House of Decor */}
-        <div className="craft-panel sticky top-24 md:top-40 w-full relative min-h-[280px] md:min-h-0 h-[280px] md:h-[450px] lg:h-[550px] shadow-[0_-10px_40px_rgba(0,0,0,0.5)] overflow-hidden z-30">
+        <div className="craft-panel sticky top-24 md:top-40 w-full relative min-h-[280px] md:min-h-0 h-[280px] md:h-[450px] lg:h-[550px] overflow-hidden z-30">
           {/* Full Background Image */}
           <div className="absolute inset-0 w-full h-full z-0">
             <Image
