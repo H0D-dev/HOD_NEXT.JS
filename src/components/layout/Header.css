@@ -236,6 +236,22 @@
   .header__logo-img {
     height: 48px;
   }
+  .header__hamburger-btn svg,
+  .header__close-btn svg {
+    width: 28px !important;
+    height: 28px !important;
+  }
+  .header__cart-btn svg {
+    width: 24px !important;
+    height: 24px !important;
+  }
+  .header__currency-selector button {
+    font-size: 14px !important;
+  }
+  .header__currency-selector button svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
 }
 
 @media (max-width: 768px) {
