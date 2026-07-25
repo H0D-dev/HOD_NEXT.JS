@@ -92,7 +92,7 @@ function formatDimensions(d: { length: string; width: string; height: string }):
 async function fetchVariations(productId: number): Promise<ProductVariation[]> {
   try {
     const url = `${API_CONFIG.baseUrl}/wp-json/wc/v3/products/${productId}/variations?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&per_page=100`;
-    const res = await fetch(url, { cache: "no-store" });
+    const res = await fetch(url, { next: { revalidate: 300 } });
     const data: WooVariation[] = await res.json();
 
     if (!Array.isArray(data) || data.length === 0) return [];
@@ -248,7 +248,7 @@ export async function getProductBySlug(
       "id,name,slug,type,description,short_description,price,regular_price,sale_price,on_sale,sku,categories,images,attributes,variations,meta_data,permalink,dimensions,stock_status,weight,default_attributes,manual_prices,related_ids";
     const productUrl = `${API_CONFIG.baseUrl}/wp-json/wc/v3/products?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&slug=${slug}&_fields=${fields}`;
 
-    const res = await fetch(productUrl, { cache: "no-store" });
+    const res = await fetch(productUrl, { next: { revalidate: 300 } });
     const data = await res.json();
 
     if (!Array.isArray(data) || data.length === 0) {
@@ -270,7 +270,7 @@ export async function getProductBySlug(
 
       if (categoryId) {
         const siblingUrl = `${API_CONFIG.baseUrl}/wp-json/wc/v3/products?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&category=${categoryId}&per_page=100&_fields=${fields}`;
-        const siblingRes = await fetch(siblingUrl, { cache: "no-store" });
+        const siblingRes = await fetch(siblingUrl, { next: { revalidate: 300 } });
         const allProducts: WooProduct[] = await siblingRes.json();
 
         if (Array.isArray(allProducts)) {
@@ -317,7 +317,7 @@ export async function getRelatedProducts(ids: number[]): Promise<Product[]> {
       "id,name,slug,type,description,short_description,price,regular_price,sale_price,on_sale,sku,categories,images,attributes,variations,meta_data,permalink,dimensions,stock_status,weight,default_attributes,manual_prices,related_ids";
     const idsString = ids.slice(0, 8).join(','); // max 8 products
     const url = `${API_CONFIG.baseUrl}/wp-json/wc/v3/products?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&include=${idsString}&_fields=${fields}`;
-    const res = await fetch(url, { cache: "no-store" });
+    const res = await fetch(url, { next: { revalidate: 300 } });
     const data: WooProduct[] = await res.json();
     
     if (!Array.isArray(data)) return [];
