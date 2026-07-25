@@ -107,10 +107,10 @@ export async function POST(request: Request) {
         if (key === 'samesite') cookieOptions.sameSite = process.env.NODE_ENV === 'development' ? 'lax' : v.toLowerCase();
       });
 
-      // Always force the parent domain in production so Next.js and WP share the session.
-      if (process.env.NODE_ENV !== 'development') {
-        cookieOptions.domain = '.houseofdecor.ae';
-      }
+      // Let the browser assign the cookie to the current host domain (fixes Vercel .app domain rejection)
+      // if (process.env.NODE_ENV !== 'development') {
+      //   cookieOptions.domain = '.houseofdecor.ae';
+      // }
 
       response.cookies.set(name, value, cookieOptions);
     });
@@ -122,8 +122,8 @@ export async function POST(request: Request) {
         httpOnly: true,
         secure: process.env.NODE_ENV !== 'development',
         sameSite: process.env.NODE_ENV === 'development' ? 'lax' : 'strict',
-        // In production, preserve the domain (e.g. .houseofdecor.ae) so it works across subdomains if needed
-        domain: process.env.NODE_ENV !== 'development' ? '.houseofdecor.ae' : undefined,
+        // Let browser handle domain automatically
+        // domain: process.env.NODE_ENV !== 'development' ? '.houseofdecor.ae' : undefined,
       });
     }
 
