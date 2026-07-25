@@ -128,6 +128,7 @@
   .header__logo-text {
     font-size: 32px;
   }
+
   .header__logo-img {
     height: 56px;
   }
@@ -217,13 +218,16 @@
   .header__container {
     padding: 16px 4vw;
   }
+
   .header__nav-list {
     gap: var(--space-3);
   }
+
   .header__nav-link {
     font-size: 11px;
     letter-spacing: 0.1em;
   }
+
   .header__logo-img {
     height: 40px;
   }
@@ -231,26 +235,11 @@
 
 @media (max-width: 768px) {
   .header__container {
-    padding: 16px 16px;
+    padding: 14px 14px;
   }
+
   .header__logo-img {
-    height: 48px;
-  }
-  .header__hamburger-btn svg,
-  .header__close-btn svg {
-    width: 28px !important;
-    height: 28px !important;
-  }
-  .header__cart-btn svg {
-    width: 24px !important;
-    height: 24px !important;
-  }
-  .header__currency-selector button {
-    font-size: 14px !important;
-  }
-  .header__currency-selector button svg {
-    width: 16px !important;
-    height: 16px !important;
+    height: 38px;
   }
 }
 
