@@ -38,25 +38,30 @@ export default function Footer() {
 
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
     setStatus("loading");
+    setErrorMessage("");
     try {
-      const response = await fetch("/api/hod/v1/newsletter", {
+      const response = await fetch("/api/newsletter", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, name: "" }),
+        body: JSON.stringify({ email }),
       });
-      if (response.ok) {
+      const data = await response.json().catch(() => ({}));
+      if (response.ok && data.success !== false) {
         setStatus("success");
         setEmail("");
       } else {
         setStatus("error");
+        setErrorMessage(data.message || "Something went wrong. Please try again.");
       }
-    } catch (error) {
+    } catch (error: any) {
       setStatus("error");
+      setErrorMessage("Unable to connect to server. Please try again.");
     }
   };
 
@@ -183,7 +188,7 @@ export default function Footer() {
                   <span className="text-[#d4b06a] text-sm mt-3">Thank you for subscribing!</span>
                 )}
                 {status === "error" && (
-                  <span className="text-red-400 text-sm mt-3">Something went wrong. Please try again.</span>
+                  <span className="text-red-400 text-sm mt-3">{errorMessage || "Something went wrong. Please try again."}</span>
                 )}
               </form>
             </div>
@@ -361,7 +366,7 @@ export default function Footer() {
               <span className="text-[#d4b06a] text-xs mt-2">Thank you for subscribing!</span>
             )}
             {status === "error" && (
-              <span className="text-red-400 text-xs mt-2">Something went wrong. Please try again.</span>
+              <span className="text-red-400 text-xs mt-2">{errorMessage || "Something went wrong. Please try again."}</span>
             )}
           </form>
         </div>
