@@ -96,6 +96,8 @@ export async function POST(request: Request) {
     let fetchBody: any;
     const fetchHeaders: Record<string, string> = {
       'Authorization': authHeader,
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+      "Accept": "application/json"
     };
 
     if (validFiles.length > 0) {
