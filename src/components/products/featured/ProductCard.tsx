@@ -18,11 +18,8 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product, onMouseEnter, onMouseLeave }: ProductCardProps) {
-  // Simple heuristic for demo routing
-  const routeCategory = product.category.toLowerCase().includes('weave') || 
-                        product.category.toLowerCase().includes('knotted') || 
-                        product.category.toLowerCase().includes('tufted') 
-                        ? 'rugs' : 'curtains';
+  // Since all featured products are currently rugs
+  const routeCategory = 'rugs';
 
   return (
     <Link 
