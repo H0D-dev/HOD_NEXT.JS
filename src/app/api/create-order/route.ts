@@ -81,7 +81,13 @@ export async function POST(request: Request) {
       const productUrl = item.variation_id
         ? `${API_CONFIG.baseUrl}/wp-json/wc/v3/products/${item.product_id}/variations/${item.variation_id}?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&_fields=${fields}`
         : `${API_CONFIG.baseUrl}/wp-json/wc/v3/products/${item.product_id}?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&_fields=${fields}`;
-      const productRes = await fetch(productUrl, { cache: "no-store" });
+      const productRes = await fetch(productUrl, { 
+        headers: {
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+          "Accept": "application/json"
+        },
+        cache: "no-store" 
+      });
 
       if (!productRes.ok) {
         return NextResponse.json(
@@ -208,7 +214,11 @@ export async function POST(request: Request) {
 
     const wooRes = await fetch(wooUrl, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Accept": "application/json"
+      },
       body: JSON.stringify(orderPayload),
     });
 

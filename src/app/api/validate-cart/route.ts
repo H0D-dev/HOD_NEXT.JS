@@ -43,7 +43,12 @@ export async function POST(request: Request) {
         ? `${API_CONFIG.baseUrl}/wp-json/wc/v3/products/${item.product_id}/variations/${item.variation_id}?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&_fields=id,name,price,regular_price,sale_price,stock_status,stock_quantity,manage_stock,status,manual_prices`
         : `${API_CONFIG.baseUrl}/wp-json/wc/v3/products/${item.product_id}?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&_fields=id,name,price,regular_price,sale_price,stock_status,stock_quantity,manage_stock,status,manual_prices`;
 
-      const res = await fetch(url, { cache: "no-store" });
+      const headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Accept": "application/json"
+      };
+
+      const res = await fetch(url, { headers, cache: "no-store" });
 
       if (!res.ok) {
         errors.push({
