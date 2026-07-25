@@ -150,9 +150,16 @@ export default function CheckoutPage() {
     if (user) {
       setFormData((prev) => ({
         ...prev,
-        first_name: prev.first_name || user.first_name || "",
-        last_name: prev.last_name || user.last_name || "",
-        email: prev.email || user.email || "",
+        first_name: prev.first_name || user.first_name || user.billing?.first_name || "",
+        last_name: prev.last_name || user.last_name || user.billing?.last_name || "",
+        email: prev.email || user.email || user.billing?.email || "",
+        phone: prev.phone || user.billing?.phone || "",
+        address_1: prev.address_1 || user.billing?.address_1 || user.shipping?.address_1 || "",
+        address_2: prev.address_2 || user.billing?.address_2 || user.shipping?.address_2 || "",
+        city: prev.city || user.billing?.city || user.shipping?.city || "",
+        state: prev.state || user.billing?.state || user.shipping?.state || "",
+        country: prev.country || user.billing?.country || user.shipping?.country || prev.country,
+        postcode: prev.postcode || user.billing?.postcode || user.shipping?.postcode || "",
       }));
     }
   }, [user]);
