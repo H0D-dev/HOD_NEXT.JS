@@ -15,7 +15,7 @@ export async function GET(request) {
         }
         
         const res = await fetch(URL, {
-            cache: "no-store",
+            next: { revalidate: 300 },
         });
         
         const categories = await res.json();

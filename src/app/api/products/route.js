@@ -12,7 +12,7 @@ export async function GET(request) {
         }
 
         const res = await fetch(URL, {
-            cache: "no-store",
+            next: { revalidate: 300 },
         });
 
         const rawProducts = await res.json();
@@ -31,7 +31,7 @@ export async function GET(request) {
                 const firstVarId = p.variations[0];
                 const varUrl = `${API_CONFIG.baseUrl}/wp-json/wc/v3/products/${p.id}/variations/${firstVarId}?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&_fields=id,price,regular_price,sale_price,meta_data,manual_prices`;
                 try {
-                    const varRes = await fetch(varUrl, { cache: "no-store" });
+                    const varRes = await fetch(varUrl, { next: { revalidate: 300 } });
                     if (!varRes.ok) throw new Error(`HTTP error! status: ${varRes.status}`);
                     const text = await varRes.text();
                     const v = text ? JSON.parse(text) : null;
