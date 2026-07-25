@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
-import { UploadCloud, Video, MapPin, Building2, MessageCircle, Mail } from "lucide-react";
+import { UploadCloud, Video, MapPin, Building2, MessageCircle, Mail, FileText, X } from "lucide-react";
 
 export default function ContactInfoSection() {
   const searchParams = useSearchParams();
@@ -27,29 +27,79 @@ export default function ContactInfoSection() {
 
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [responseMessage, setResponseMessage] = useState("");
+  const [files, setFiles] = useState<File[]>([]);
+  const [isDragging, setIsDragging] = useState(false);
+  const [fileError, setFileError] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleFilesAdded = (newFiles: FileList | File[] | null) => {
+    if (!newFiles) return;
+    setFileError("");
+    const fileArray = Array.from(newFiles);
+    const validTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
+    const maxSizeBytes = 25 * 1024 * 1024; // 25MB
+
+    const acceptedFiles: File[] = [];
+    for (const file of fileArray) {
+      const ext = file.name.split('.').pop()?.toLowerCase() || "";
+      if (!['pdf', 'jpg', 'jpeg', 'png'].includes(ext) || (!validTypes.includes(file.type) && file.type !== "")) {
+        setFileError(`Invalid format: ${file.name}. Only PDF, JPG, and PNG files are allowed.`);
+        return;
+      }
+      if (file.size > maxSizeBytes) {
+        setFileError(`File too large: ${file.name}. Maximum size is 25MB.`);
+        return;
+      }
+      acceptedFiles.push(file);
+    }
+
+    if (files.length + acceptedFiles.length > 5) {
+      setFileError("You can upload a maximum of 5 files.");
+      return;
+    }
+
+    setFiles((prev) => [...prev, ...acceptedFiles]);
+  };
+
+  const handleRemoveFile = (index: number) => {
+    setFiles((prev) => prev.filter((_, i) => i !== index));
+    setFileError("");
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("loading");
     setResponseMessage("");
+    setFileError("");
+
+    const submitData = new FormData();
+    submitData.append('fullName', formData.fullName);
+    submitData.append('email', formData.email);
+    submitData.append('phone', formData.phone);
+    submitData.append('location', formData.location);
+    submitData.append('projectType', formData.projectType);
+    submitData.append('subject', formData.subject);
+    submitData.append('message', formData.message);
+
+    files.forEach((file) => {
+      submitData.append('files', file);
+    });
     
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: submitData, // Browser sets multipart/form-data boundaries automatically
       });
 
       const data = await res.json();
 
       if (res.ok && data.success) {
         setStatus("success");
-        setResponseMessage(data.message || "Thank you. Your message has been sent successfully. We will get back to you within 24 hours.");
+        setResponseMessage(data.message || "Thank you. Your request has been sent successfully. We will get back to you within 24 hours.");
         setFormData({
           fullName: "",
           email: "",
@@ -59,6 +109,7 @@ export default function ContactInfoSection() {
           subject: "",
           message: "",
         });
+        setFiles([]);
         
         // Reset status after some time
         setTimeout(() => {
@@ -217,11 +268,64 @@ export default function ContactInfoSection() {
                 <p className="font-sans text-[10px] text-[var(--text-secondary)] mb-1.5">
                   Upload Floor Plans, Moodboards or Reference Images (Optional)
                 </p>
-                <div className="w-full border-2 border-dashed border-[var(--border-secondary)] bg-[var(--bg-primary)] hover:bg-[var(--bg-tertiary)] transition-colors py-4 flex flex-col items-center justify-center cursor-pointer">
+                <input
+                  type="file"
+                  id="studio-file-upload"
+                  multiple
+                  accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"
+                  className="hidden"
+                  onChange={(e) => handleFilesAdded(e.target.files)}
+                />
+                <label
+                  htmlFor="studio-file-upload"
+                  onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); setIsDragging(true); }}
+                  onDragLeave={(e) => { e.preventDefault(); e.stopPropagation(); setIsDragging(false); }}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setIsDragging(false);
+                    if (e.dataTransfer.files) {
+                      handleFilesAdded(e.dataTransfer.files);
+                    }
+                  }}
+                  className={`w-full border-2 border-dashed transition-colors py-4 flex flex-col items-center justify-center cursor-pointer ${
+                    isDragging
+                      ? "border-[var(--accent-primary)] bg-[var(--bg-tertiary)]"
+                      : "border-[var(--border-secondary)] bg-[var(--bg-primary)] hover:bg-[var(--bg-tertiary)]"
+                  }`}
+                >
                   <UploadCloud className="text-[var(--text-muted)] mb-1.5" size={20} />
                   <p className="font-sans text-[11px] text-[var(--text-primary)] font-medium">Drag & drop files here or browse</p>
-                  <p className="font-sans text-[9px] text-[var(--text-muted)] mt-0.5">PDF, JPG, PNG up to 25MB</p>
-                </div>
+                  <p className="font-sans text-[9px] text-[var(--text-muted)] mt-0.5">PDF, JPG, PNG up to 25MB (Max 5 files)</p>
+                </label>
+
+                {fileError && (
+                  <p className="text-[11px] font-sans text-red-600 mt-1.5">{fileError}</p>
+                )}
+
+                {files.length > 0 && (
+                  <ul className="mt-2 flex flex-col gap-1.5 max-h-36 overflow-y-auto pr-1">
+                    {files.map((file, idx) => (
+                      <li key={`${file.name}-${idx}`} className="flex items-center justify-between bg-[var(--bg-primary)] border border-[var(--border-secondary)] px-2.5 py-1.5 text-xs">
+                        <div className="flex items-center gap-2 overflow-hidden">
+                          <FileText size={14} className="text-[var(--accent-primary)] flex-shrink-0" />
+                          <span className="font-sans text-[11px] text-[var(--text-primary)] truncate max-w-[180px] md:max-w-[220px]">{file.name}</span>
+                          <span className="font-sans text-[10px] text-[var(--text-muted)] flex-shrink-0">
+                            ({(file.size / (1024 * 1024)).toFixed(2)} MB)
+                          </span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveFile(idx)}
+                          className="text-[var(--text-muted)] hover:text-red-600 transition-colors p-0.5 ml-2"
+                          aria-label="Remove file"
+                        >
+                          <X size={14} />
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
 
               <button
