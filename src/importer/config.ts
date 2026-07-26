@@ -73,10 +73,11 @@ export const CONFIG = {
   ATTRIBUTES: {
     SIZE: 'Size',           // variation = true
     MATERIAL: 'Material',   // visible, informational
-    CONSTRUCTION: 'Construction',
-    PATTERN: 'Pattern',
+    CONSTRUCTION: 'weaving technique',
+    PATTERN: 'pattern',
     SHAPE: 'Shape',
     COLOUR: 'Colour',
+    COLLECTION: 'Collection',
   } as const,
 
   // SKU generation

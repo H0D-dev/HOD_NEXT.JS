@@ -34,21 +34,26 @@ export interface SizePriceEntry {
   priceAED: number;
   priceUSD?: number;
   priceEUR?: number;
+  weight?: string;
 }
 
 /** Grouped product data after merging multi-row blocks */
 export interface RawProduct {
   serialNumber: string;
   name: string;
+  collectionName: string;
   description: string;
+  shortDescription: string;
   weavingTechnique: string;
   material: string;
+  pileThickness: string;
   colourAttributes: string;
   productColor: string;
   shape: string;
   designId: string;
   sku: string;
   pattern: string;
+  leadTime: string;
   altText: string;
   imageCaption: string;
   imageDescription: string;
@@ -61,16 +66,20 @@ export interface RawProduct {
 /** Clean, validated product model — parser output, mapper input */
 export interface NormalizedProduct {
   name: string;
+  collectionName: string;
   description: string;
+  shortDescription: string;
   designId: string;
   sku: string;
   construction: string;
   material: string;
+  pileThickness: string;
   colours: string[];
   productColor: string;
   shape: string;
   sizes: SizePriceEntry[];
   pattern: string;
+  leadTime: string;
   tags: string[];
   altText?: string;
   imageCaption?: string;
@@ -104,6 +113,7 @@ export interface WCProductPayload {
   regular_price?: string;
   manage_stock: boolean;
   stock_status: string;
+  weight?: string;
   featured: boolean;
   reviews_allowed: boolean;
   virtual: boolean;
@@ -119,6 +129,7 @@ export interface WCVariationPayload {
   regular_price: string;
   manage_stock: boolean;
   stock_status: string;
+  weight?: string;
   attributes: { name: string; option: string }[];
   meta_data: WCMetaData[];
 }

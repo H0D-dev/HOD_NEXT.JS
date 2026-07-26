@@ -65,15 +65,19 @@ function parseCsv(content: string): RawProduct[] {
       currentProduct = {
         serialNumber: row['Sr. No.']?.trim() || '',
         name: row['Product Name']!.trim(),
+        collectionName: row['Collection Name']?.trim() || '',
         description: row['Description']?.trim() || '',
+        shortDescription: row['Short Description']?.trim() || '',
         weavingTechnique: row['Weaving Technique']?.trim() || '',
         material: row['Material']?.trim() || '',
-        colourAttributes: row['Colour Attributes']?.trim() || '',
-        productColor: row['Product Color']?.trim() || '',
+        pileThickness: row['Pile Thickness (MM)']?.trim() || '',
+        colourAttributes: row['Colour Attributes for Filter']?.trim() || row['Colour Attributes']?.trim() || '',
+        productColor: row['Colour For Product Page']?.trim() || row['Product Color']?.trim() || '',
         shape: row['Shape']?.trim() || '',
         designId: row['Design ID']?.trim() || '',
         sku: row['Item Number (SKU)']?.trim() || '',
         pattern: row['Pattern']?.trim() || '',
+        leadTime: row['Lead Time']?.trim() || '',
         altText: row['alt Text']?.trim() || '',
         imageCaption: row['Image Title / Caption']?.trim() || '',
         imageDescription: row['Image description']?.trim() || '',
@@ -109,11 +113,13 @@ function buildSizeEntry(row: RawCsvRow): SizePriceEntry | null {
 
   const usd = row['Price (USD)']?.trim();
   const eur = row['Price (EUR)']?.trim();
+  const weight = row['Weight (KG)']?.trim();
 
   return {
     size,
     priceAED: aed,
     priceUSD: usd ? parseFloat(usd) || undefined : undefined,
     priceEUR: eur ? parseFloat(eur) || undefined : undefined,
+    weight,
   };
 }

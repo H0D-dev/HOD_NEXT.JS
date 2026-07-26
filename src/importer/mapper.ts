@@ -34,16 +34,20 @@ export function rawToNormalized(raw: RawProduct): NormalizedProduct {
 
   return {
     name: raw.name ? raw.name.replace(/&/g, 'and') : raw.name,
+    collectionName: raw.collectionName,
     description: raw.description,
+    shortDescription: raw.shortDescription,
     designId: raw.designId,
     sku: raw.sku,
     construction: raw.weavingTechnique,
     material: raw.material,
+    pileThickness: raw.pileThickness,
     colours,
     productColor: raw.productColor,
     shape: raw.shape,
     sizes: raw.sizes,
     pattern: raw.pattern,
+    leadTime: raw.leadTime,
     tags,
     altText: raw.altText || undefined,
     imageCaption: raw.imageCaption || undefined,
@@ -66,6 +70,7 @@ export function normalizedToWCPayload(
     status: CONFIG.DEFAULT_STATUS,
     catalog_visibility: CONFIG.DEFAULT_CATALOG_VISIBILITY,
     description: product.description,
+    short_description: product.shortDescription,
     sku: product.sku,
     manage_stock: CONFIG.DEFAULT_PRODUCT_SETTINGS.manage_stock,
     stock_status: CONFIG.DEFAULT_STOCK_STATUS,
@@ -117,6 +122,7 @@ export function buildVariationPayloads(
       regular_price: sizeEntry.priceAED.toString(),
       manage_stock: CONFIG.DEFAULT_PRODUCT_SETTINGS.manage_stock,
       stock_status: CONFIG.DEFAULT_STOCK_STATUS,
+      weight: sizeEntry.weight,
       attributes: [
         {
           name: CONFIG.ATTRIBUTES.SIZE,
@@ -142,6 +148,16 @@ function buildAttributes(product: NormalizedProduct): WCAttributePayload[] {
       visible: true,
       variation: true,
       options: product.sizes.map(s => s.size),
+    });
+  }
+
+  if (product.collectionName) {
+    attrs.push({
+      name: CONFIG.ATTRIBUTES.COLLECTION,
+      position: position++,
+      visible: true,
+      variation: false,
+      options: [product.collectionName],
     });
   }
 
@@ -237,9 +253,21 @@ function buildMetaData(product: NormalizedProduct): WCMetaData[] {
     }
   }
 
-  // ACF Checkboxes (1 for Yes, 0 for No)
+  // Pile Thickness
+  if (product.pileThickness) {
+    meta.push({ key: 'pile_thickness', value: product.pileThickness });
+  }
+
+  // Lead Time
+  if (product.leadTime) {
+    meta.push({ key: 'lead_time', value: product.leadTime });
+  }
+
+  // ACF Checkboxes and defaults
   for (const [key, value] of Object.entries(CONFIG.DEFAULT_METADATA)) {
-    meta.push({ key, value });
+    if (!meta.find(m => m.key === key)) {
+      meta.push({ key, value });
+    }
   }
 
   // Inject ACF Hidden Reference Keys so the data renders in the WP Admin backend UI
