@@ -92,8 +92,8 @@ export default function ProductSpecifications({ product, selectedVariation }: Pr
                 if (key.toLowerCase() === 'dimensions' && !String(value).toLowerCase().includes('cm')) {
                   displayValue = `${value} cm`;
                 }
-                if (key.toLowerCase() === 'pilethickness' && !String(value).toLowerCase().includes('cm')) {
-                  displayValue = `${value} cm`;
+                if (key.toLowerCase() === 'pilethickness' && !String(value).toLowerCase().includes('mm')) {
+                  displayValue = `${value} mm`;
                 }
 
                 return (

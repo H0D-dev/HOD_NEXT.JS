@@ -9,6 +9,7 @@
     "lint": "eslint",
     "import-products": "npx tsx src/importer/cli.ts",
     "import-products:dry": "npx tsx src/importer/cli.ts --dry-run",
+    "process-images": "npx tsx src/scripts/process-images.ts",
     "tunnel": "npx localtunnel --port 3000"
   },
   "dependencies": {
