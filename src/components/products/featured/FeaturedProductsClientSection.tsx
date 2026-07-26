@@ -57,14 +57,14 @@ export default function FeaturedProductsClientSection({ rugsProducts }: Featured
         >
           <button 
             onClick={() => sliderRef.current?.scrollPrev()}
-            className="w-10 h-10 md:w-12 md:h-12 border border-[#2C251F]/20 flex items-center justify-center rounded-full text-[#2C251F] hover:bg-[#2C251F] hover:text-white transition-colors duration-300"
+            className="cursor-pointer w-10 h-10 md:w-12 md:h-12 border border-[#2C251F]/20 flex items-center justify-center rounded-full text-[#2C251F] hover:bg-[#2C251F] hover:text-white transition-colors duration-300"
             aria-label="Previous"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
           </button>
           <button 
             onClick={() => sliderRef.current?.scrollNext()}
-            className="w-10 h-10 md:w-12 md:h-12 border border-[#2C251F]/20 flex items-center justify-center rounded-full text-[#2C251F] hover:bg-[#2C251F] hover:text-white transition-colors duration-300"
+            className="cursor-pointer w-10 h-10 md:w-12 md:h-12 border border-[#2C251F]/20 flex items-center justify-center rounded-full text-[#2C251F] hover:bg-[#2C251F] hover:text-white transition-colors duration-300"
             aria-label="Next"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>

@@ -35,17 +35,16 @@ async function processImages() {
 
     const inputPath = path.join(RAW_DIR, file);
     const fileNameWithoutExt = path.basename(file, path.extname(file));
-    const outputPath = path.join(PROCESSED_DIR, `${fileNameWithoutExt}.jpg`);
+    const outputPath = path.join(PROCESSED_DIR, `${fileNameWithoutExt}.webp`);
 
     try {
       console.log(`⏳ Converting: ${file} ...`);
       
       await sharp(inputPath)
-        // Convert to JPEG with optimized quality
-        .jpeg({ 
-          quality: 85, // Good balance of quality and size
-          mozjpeg: true, // Use mozjpeg to reduce file size further
-          chromaSubsampling: '4:4:4'
+        // Convert to WebP to preserve transparency with optimized quality
+        .webp({ 
+          quality: 85,
+          effort: 6
         })
         // Resize if it's too large (e.g., larger than 2000px wide) 
         // without upscaling smaller images
@@ -56,7 +55,7 @@ async function processImages() {
         })
         .toFile(outputPath);
 
-      console.log(`  ✅ Saved as: ${fileNameWithoutExt}.jpg`);
+      console.log(`  ✅ Saved as: ${fileNameWithoutExt}.webp`);
       processedCount++;
     } catch (err: any) {
       console.error(`  ❌ Failed to process ${file}:`, err.message);

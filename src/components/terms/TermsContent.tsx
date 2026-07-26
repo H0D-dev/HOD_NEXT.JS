@@ -151,7 +151,7 @@ export default function TermsContent() {
   };
 
   return (
-    <section className="w-full py-16 md:py-32 px-6 md:px-16 lg:px-24 bg-[var(--bg-primary)]">
+    <section className="w-full py-16 md:py-32 px-6 md:px-16 lg:px-24 bg-[var(--bg-secondary)]">
       <div className="max-w-[var(--container-lg)] mx-auto flex flex-col lg:flex-row gap-12 lg:gap-24">
         
         {/* Mobile & Tablet Navigation Dropdown */}
@@ -165,7 +165,7 @@ export default function TermsContent() {
           </button>
           
           {isMobileMenuOpen && (
-            <div className="absolute top-full left-0 w-full bg-[var(--bg-secondary)] border-b border-l border-r border-[var(--border-secondary)] max-h-[60vh] overflow-y-auto z-50">
+            <div className="w-full bg-[var(--bg-secondary)] border-t border-[var(--border-secondary)] max-h-[60vh] overflow-y-auto z-50">
               <ul className="flex flex-col">
                 {termsSections.map((section) => (
                   <li key={`mobile-${section.id}`}>
@@ -223,9 +223,11 @@ export default function TermsContent() {
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any }}
               className="scroll-mt-32"
             >
-              <h2 className="font-serif text-[clamp(24px,5vw,40px)] text-[var(--text-primary)] mb-8 pb-4 border-b border-[var(--border-secondary)]">
-                {section.title}
-              </h2>
+              <div className="border-b border-[var(--border-secondary)] pb-8 mb-8">
+                <h2 className="font-sans text-xl md:text-2xl font-light text-[var(--text-primary)] leading-tight">
+                  {section.title}
+                </h2>
+              </div>
               <ol className="list-decimal list-outside ml-5 space-y-6">
                 {section.content.map((clause, index) => (
                   <li 

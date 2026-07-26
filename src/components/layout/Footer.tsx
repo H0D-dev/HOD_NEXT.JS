@@ -94,15 +94,14 @@ export default function Footer() {
         <div className="hidden md:grid md:grid-cols-6 lg:grid-cols-12 gap-12 lg:gap-8 mb-20 w-full">
 
           {/* Column 1: Brand */}
-          <div className="flex flex-col items-start md:items-center md:text-center lg:items-start lg:text-left md:col-span-6 lg:col-span-4 lg:pr-12">
-            <Link href="/" className="mb-8 inline-block">
+          <div className="flex flex-col items-center text-center md:col-span-6 lg:col-span-4 lg:pr-12">
+            <Link href="/" className="mb-8 flex justify-center w-full">
               <Image
                 src="/logo/new_logo_footer.png"
                 alt="House of Décor"
                 width={200}
                 height={45}
-                style={{ width: "auto", height: "auto" }}
-                className="h-12 w-auto object-contain brightness-0 invert opacity-90"
+                className="h-30 w-auto object-contain brightness-0 invert opacity-90"
                 priority
               />
             </Link>
@@ -179,7 +178,7 @@ export default function Footer() {
                 <button
                   type="submit"
                   disabled={status === "loading"}
-                  className="mt-4 text-left uppercase text-[10px] tracking-[0.15em] font-medium text-[#D0D0D0] hover:text-[#f5f3ef] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-between"
+                  className="cursor-pointer mt-4 text-left uppercase text-[10px] tracking-[0.15em] font-medium text-[#D0D0D0] hover:text-[#f5f3ef] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-between"
                 >
                   {status === "loading" ? "Subscribing..." : "Subscribe"}
                   <span className="text-[var(--accent-primary)] ml-2">→</span>
@@ -250,15 +249,14 @@ export default function Footer() {
       <div className="md:hidden flex flex-col w-full px-8">
 
         {/* 1. Brand Block */}
-        <div className="flex flex-col items-center text-center mb-10">
-          <Link href="/" className="mb-6 inline-block">
+        <div className="flex flex-col items-center text-center mb-10 w-full">
+          <Link href="/" className="mb-6 flex justify-center w-full">
             <Image
               src="/logo/new_logo_footer.png"
               alt="House of Décor"
               width={160}
               height={36}
-              style={{ width: "auto", height: "auto" }}
-              className="h-10 w-auto object-contain brightness-0 invert opacity-90"
+              className="h-20 w-auto object-contain brightness-0 invert opacity-90"
               priority
             />
           </Link>
