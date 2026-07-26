@@ -10,6 +10,7 @@
     "import-products": "npx tsx src/importer/cli.ts",
     "import-products:dry": "npx tsx src/importer/cli.ts --dry-run",
     "process-images": "npx tsx src/scripts/process-images.ts",
+    "optimize-public": "npx tsx src/scripts/optimize-public.ts",
     "tunnel": "npx localtunnel --port 3000"
   },
   "dependencies": {
