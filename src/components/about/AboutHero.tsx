@@ -51,7 +51,7 @@ export default function AboutHero() {
       <div className="absolute inset-0 w-full h-[120%] -top-[10%] z-0 hidden md:block" ref={bgRefDesktop}>
         <Image
           src="/about_hero_desktop.png"
-          alt="House of Décor - Luxury Living Room"
+          alt="House of Decór - Luxury Living Room"
           fill
           priority
           className="object-cover"
@@ -65,7 +65,7 @@ export default function AboutHero() {
       <div className="absolute inset-0 w-full h-[120%] -top-[10%] z-0 block md:hidden" ref={bgRefMobile}>
         <Image
           src="/about_hero_mobile.png"
-          alt="House of Décor - Luxury Living Room"
+          alt="House of Decór - Luxury Living Room"
           fill
           priority
           className="object-cover"
@@ -85,11 +85,11 @@ export default function AboutHero() {
             </h1>
             
             <h2 className="font-sans text-[10px] md:text-xs font-semibold tracking-[0.2em] text-white mb-6 uppercase text-left">
-              THE HOUSE OF DÉCOR PHILOSOPHY
+              THE HOUSE OF DECÓR PHILOSOPHY
             </h2>
             
             <p className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] leading-relaxed text-white/90 mb-8 max-w-md text-left">
-              House of Décor is a Dubai-based luxury rug brand creating timeless, handcrafted rugs with integrity, passion, and purpose.
+              House of Decór is a Dubai-based luxury rug brand creating timeless, handcrafted rugs with integrity, passion, and purpose.
             </p>
 
             <div className="flex flex-col sm:flex-row items-start justify-start w-full sm:w-auto">

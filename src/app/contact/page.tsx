@@ -7,8 +7,8 @@ import ContactFAQ from "../../components/contact/ContactFAQ";
 import { Suspense } from "react";
 
 export const metadata = {
-  title: "Contact Us — House of Décor",
-  description: "Get in touch with House of Décor for bespoke interior solutions, luxury handmade rugs, and premium curtains.",
+  title: "Contact Us — House of Decór",
+  description: "Get in touch with House of Decór for bespoke interior solutions, luxury handmade rugs, and premium curtains.",
 };
 
 export default function ContactPage() {

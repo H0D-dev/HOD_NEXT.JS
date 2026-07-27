@@ -90,7 +90,7 @@ export default function CraftsmanshipSection() {
 
           {/* Text Overlay */}
           <div className="relative z-10 w-full h-full md:w-[60%] lg:w-[50%] flex flex-col justify-center items-start p-6 md:p-16 lg:p-24 text-white">
-            <span className="text-xs uppercase tracking-[0.2em] text-neutral-300 mb-2 md:mb-4 block">WHY HOUSE OF DÉCOR</span>
+            <span className="text-xs uppercase tracking-[0.2em] text-neutral-300 mb-2 md:mb-4 block">WHY HOUSE OF DECÓR</span>
             <h2 className="font-sans font-light text-xl lg:text-2xl leading-[1.2] tracking-wide text-white">
               Architectural design.<br />Bespoke customization.
             </h2>

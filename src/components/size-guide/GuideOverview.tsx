@@ -41,7 +41,7 @@ export default function GuideOverview() {
               “A beautifully proportioned rug can anchor a room, define a space, and completely transform how a home feels.”
             </h3>
             <span className="font-sans text-[10px] md:text-xs tracking-[0.2em] uppercase text-[var(--text-muted)]">
-              House of Décor
+              House of Decór
             </span>
           </div>
         </div>

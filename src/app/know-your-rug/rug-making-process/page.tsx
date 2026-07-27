@@ -3,7 +3,7 @@ import ProcessPhases from "../../../components/know-your-rug/ProcessPhases";
 import ProcessFinishing from "../../../components/know-your-rug/ProcessFinishing";
 
 export const metadata = {
-  title: "Rug Making Process — House of Décor",
+  title: "Rug Making Process — House of Decór",
   description: "Transforming designs into masterpieces. Explore the artisanal journey of sourcing, carding, dyeing, weaving, and the 18 steps of finishing a handcrafted rug.",
 };
 

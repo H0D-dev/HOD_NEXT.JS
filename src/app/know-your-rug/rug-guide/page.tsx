@@ -3,7 +3,7 @@ import GuideContent from "../../../components/know-your-rug/GuideContent";
 import GuideFacts from "../../../components/know-your-rug/GuideFacts";
 
 export const metadata = {
-  title: "Rug Guide — House of Décor",
+  title: "Rug Guide — House of Decór",
   description: "Discover the art of rug selection. Learn about handmade vs machine-made rugs, lighting conditions, common mistakes, and quick facts to help you find your ideal piece.",
 };
 

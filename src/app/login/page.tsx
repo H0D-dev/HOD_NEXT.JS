@@ -58,7 +58,7 @@ export default function LoginPage() {
     <div className="auth-page" ref={containerRef}>
       <div className="auth-container animate-element">
         <h1 className="auth-title">Welcome Back</h1>
-        <p className="auth-subtitle">Sign in to your House of Décor account</p>
+        <p className="auth-subtitle">Sign in to your House of Decór account</p>
 
         <form className="auth-form" onSubmit={handleSubmit}>
           {error && <div className="auth-error">{error}</div>}

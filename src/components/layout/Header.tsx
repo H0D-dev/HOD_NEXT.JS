@@ -162,7 +162,7 @@ export default function Header() {
             <Link href="/" className="header__logo">
               <Image
                 src="/logo/new_logo_header.png"
-                alt="House of Décor"
+                alt="House of Decór"
                 width={300}
                 height={60}
                 priority

@@ -23,7 +23,7 @@ export default function ProjectsHero() {
       <motion.div className="absolute inset-0 w-full h-full hidden md:block" style={{ y }}>
         <Image
           src="/images/projects/Project-hero.png"
-          alt="House of Décor Luxury Projects"
+          alt="House of Decór Luxury Projects"
           fill
           priority
           className="object-cover"
@@ -37,7 +37,7 @@ export default function ProjectsHero() {
       <motion.div className="absolute inset-0 w-full h-full md:hidden" style={{ y }}>
         <Image
           src="/images/projects/Project-hero.png"
-          alt="House of Décor Luxury Projects"
+          alt="House of Decór Luxury Projects"
           fill
           priority
           className="object-cover"

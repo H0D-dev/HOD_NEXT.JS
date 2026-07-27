@@ -58,16 +58,16 @@ export const blogs: Blog[] = [
   },
   {
     slug: "sustainable-materials-in-modern-decor",
-    title: "Embracing Sustainable Materials in Modern Décor",
+    title: "Embracing Sustainable Materials in Modern Decór",
     date: "April 02, 2026",
-    excerpt: "Explore how eco-friendly practices and sustainable materials are reshaping the luxury home décor industry.",
+    excerpt: "Explore how eco-friendly practices and sustainable materials are reshaping the luxury home decór industry.",
     image: "/rugs/set2-room.png",
     sections: [
       {
         id: "the-shift-to-sustainability",
         title: "The Shift to Sustainability",
         content: [
-          "In recent years, the luxury home décor industry has experienced a profound shift towards sustainability. Designers and homeowners alike are increasingly aware of the environmental impact of their choices, seeking out materials that are both beautiful and ecologically responsible.",
+          "In recent years, the luxury home decór industry has experienced a profound shift towards sustainability. Designers and homeowners alike are increasingly aware of the environmental impact of their choices, seeking out materials that are both beautiful and ecologically responsible.",
           "This movement is not just a trend; it is a fundamental evolution in how we view luxury. True luxury now encompasses the ethical sourcing of materials, the fair treatment of artisans, and the long-term environmental footprint of the products we bring into our homes."
         ]
       },

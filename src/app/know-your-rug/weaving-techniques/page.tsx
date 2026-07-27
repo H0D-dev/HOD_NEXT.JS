@@ -2,7 +2,7 @@ import TechniqueHero from "../../../components/know-your-rug/TechniqueHero";
 import TechniqueList from "../../../components/know-your-rug/TechniqueList";
 
 export const metadata = {
-  title: "Weaving Techniques — House of Décor",
+  title: "Weaving Techniques — House of Decór",
   description: "Explore the artistry behind our rugs with a deep dive into traditional and modern weaving techniques including hand-knotted, hand-tufted, handloom, and flat weaves.",
 };
 

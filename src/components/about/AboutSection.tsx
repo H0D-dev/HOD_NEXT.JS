@@ -64,7 +64,7 @@ export default function AboutSection() {
           {/* RIGHT SIDE: Text Content & CTA */}
           <div className="flex flex-col justify-center lg:col-span-6 lg:col-start-7 lg:pl-8 mt-8 md:mt-0">
             <p className="text-[var(--text-secondary)] text-sm md:text-base leading-relaxed mb-6 md:mb-8">
-              Every House of Décor creation begins with a profound respect for heritage. Our master artisans employ centuries-old techniques, meticulously hand-knotting the finest silks and wools to breathe life into modern geometric and classical patterns.
+              Every House of Decór creation begins with a profound respect for heritage. Our master artisans employ centuries-old techniques, meticulously hand-knotting the finest silks and wools to breathe life into modern geometric and classical patterns.
             </p>
 
             <p className="text-[var(--text-secondary)] text-sm md:text-base leading-relaxed mb-10 md:mb-12">

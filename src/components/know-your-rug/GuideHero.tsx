@@ -28,9 +28,9 @@ const selectionQuestions = [
     ]
   },
   {
-    question: "What Is My Current Décor Like?",
+    question: "What Is My Current Decór Like?",
     points: [
-      { bold: "Style", text: "Does the room’s décor call for a specific rug style?" },
+      { bold: "Style", text: "Does the room’s decór call for a specific rug style?" },
       { bold: "Color Palette", text: "What colors already exist in the room, and how will the rug complement them?" }
     ]
   }

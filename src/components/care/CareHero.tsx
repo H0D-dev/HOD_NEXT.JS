@@ -31,7 +31,7 @@ export default function CareHero() {
           Designed for Real Life
         </h2>
         <p className="care-hero-el font-sans text-[var(--text-secondary)] text-xs md:text-sm lg:text-base leading-relaxed max-w-xl mx-auto mb-12">
-          With proper care and understanding of natural materials, your House of Décor pieces will age gracefully for generations.
+          With proper care and understanding of natural materials, your House of Decór pieces will age gracefully for generations.
         </p>
 
         {/* Hero Image */}

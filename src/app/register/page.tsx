@@ -63,7 +63,7 @@ export default function RegisterPage() {
     <div className="auth-page" ref={containerRef}>
       <div className="auth-container animate-element">
         <h1 className="auth-title">Create Account</h1>
-        <p className="auth-subtitle">Join House of Décor for an exclusive experience</p>
+        <p className="auth-subtitle">Join House of Decór for an exclusive experience</p>
 
         <form className="auth-form" onSubmit={handleSubmit}>
           {error && <div className="auth-error">{error}</div>}

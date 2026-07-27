@@ -8,11 +8,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const product = await getProductBySlug(slug);
   
   if (!product) {
-    return { title: "Product Not Found | House of Décor" };
+    return { title: "Product Not Found | House of Decór" };
   }
 
   return {
-    title: `${product.name} | House of Décor`,
+    title: `${product.name} | House of Decór`,
     description: product.description,
   };
 }

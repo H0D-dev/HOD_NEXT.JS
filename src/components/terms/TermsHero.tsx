@@ -20,7 +20,7 @@ export default function TermsHero() {
           </h1>
           <div className="flex flex-col gap-8 text-center max-w-2xl mx-auto">
             <p className="font-sans text-[var(--text-secondary)] text-sm sm:text-base leading-relaxed font-light max-w-lg mx-auto">
-              Please review our policies carefully. These terms govern your use of our services and the purchase of goods from House of Décor.
+              Please review our policies carefully. These terms govern your use of our services and the purchase of goods from House of Decór.
             </p>
           </div>
           <p className="font-sans text-[var(--text-muted)] text-[10px] tracking-[0.2em] uppercase mt-8 font-medium">

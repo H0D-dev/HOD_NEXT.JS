@@ -98,7 +98,7 @@ export default function Footer() {
             <Link href="/" className="mb-8 flex justify-center w-full">
               <Image
                 src="/logo/new_logo_footer.png"
-                alt="House of Décor"
+                alt="House of Decór"
                 width={200}
                 height={45}
                 className="h-30 w-auto object-contain brightness-0 invert opacity-90"
@@ -197,7 +197,7 @@ export default function Footer() {
         {/* BOTTOM BAR (DESKTOP) */}
         <div className="hidden md:flex flex-row justify-between items-center pt-8 border-t border-[#333333] gap-6">
           <p className="text-[#8C8C8C] text-xs tracking-wide">
-            &copy; {new Date().getFullYear()} House of Décor. All rights reserved.
+            &copy; {new Date().getFullYear()} House of Decór. All rights reserved.
           </p>
           <div className="flex gap-6 items-center">
             <div className="relative flex items-center gap-2" ref={currencyRef}>
@@ -253,7 +253,7 @@ export default function Footer() {
           <Link href="/" className="mb-6 flex justify-center w-full">
             <Image
               src="/logo/new_logo_footer.png"
-              alt="House of Décor"
+              alt="House of Decór"
               width={160}
               height={36}
               className="h-20 w-auto object-contain brightness-0 invert opacity-90"
@@ -392,7 +392,7 @@ export default function Footer() {
             </div>
           </div>
           <p className="text-[#b8b8b8] text-xs tracking-wide font-sans mt-2">
-            &copy; {new Date().getFullYear()} House of Décor. All rights reserved.
+            &copy; {new Date().getFullYear()} House of Decór. All rights reserved.
           </p>
         </div>
 

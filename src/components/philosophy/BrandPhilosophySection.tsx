@@ -58,7 +58,7 @@ export default function BrandPhilosophySection() {
                 Crafted Beyond Decoration.
               </h2>
               <p className="font-sans text-[#2C251F]/80 text-base md:text-lg leading-snug max-w-lg">
-                House of Décor creates bespoke rugs that become part of architecture. Every commission is designed around the proportions, materials, and identity of the space, then handcrafted by master artisans using time-honoured techniques.
+                House of Decór creates bespoke rugs that become part of architecture. Every commission is designed around the proportions, materials, and identity of the space, then handcrafted by master artisans using time-honoured techniques.
               </p>
             </div>
 

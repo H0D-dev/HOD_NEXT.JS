@@ -60,7 +60,7 @@ export default function SupportServices() {
             Through our exclusive network of international suppliers, we provide architects, designers, and private clients with the highest quality materials to create stunning commercial and residential environments.
           </p>
           <p className="font-sans text-[var(--text-secondary)] text-sm md:text-base leading-relaxed">
-            Our mission extends beyond aesthetics; we are committed to promoting sustainable practices within the home décor industry. By sourcing eco-friendly materials and supporting artisan communities, we strive to create a sustainable business ecosystem that celebrates craftsmanship and creativity.
+            Our mission extends beyond aesthetics; we are committed to promoting sustainable practices within the home decór industry. By sourcing eco-friendly materials and supporting artisan communities, we strive to create a sustainable business ecosystem that celebrates craftsmanship and creativity.
           </p>
           <p className="font-sans text-base md:text-lg text-[var(--text-primary)] font-light italic leading-relaxed mt-4 border-l-4 border-[var(--accent-primary)] pl-4 md:pl-6 text-left">
             "Whether you’re looking to design a single statement piece or complete a comprehensive interior overhaul, our dedicated team is here to guide you every step of the way. Let us help you bring your vision to life with elegance and sustainability at the forefront of our service."

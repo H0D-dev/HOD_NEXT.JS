@@ -12,7 +12,7 @@ const termsSections = [
       "All prices are listed in local currency and are subject to change without prior notice.",
       "A non-refundable deposit of 50% is required to commence any bespoke or made-to-order production.",
       "The remaining balance must be cleared in full prior to the dispatch and scheduling of delivery or installation.",
-      "We accept major credit cards, bank transfers, and certified cheques. Goods remain the property of House of Décor until full payment is received."
+      "We accept major credit cards, bank transfers, and certified cheques. Goods remain the property of House of Decór until full payment is received."
     ]
   },
   {
@@ -31,14 +31,14 @@ const termsSections = [
     content: [
       "Standard orders may be cancelled within 24 hours of placement for a full refund.",
       "Bespoke and made-to-measure orders cannot be cancelled once production has commenced. Any deposits paid will be forfeited.",
-      "House of Décor reserves the right to cancel any order if materials become unavailable, in which case a full refund of the deposit will be issued."
+      "House of Decór reserves the right to cancel any order if materials become unavailable, in which case a full refund of the deposit will be issued."
     ]
   },
   {
     id: "credit-notes",
     title: "4. Credit Notes",
     content: [
-      "Credit notes issued by House of Décor are valid for a period of 12 months from the date of issue.",
+      "Credit notes issued by House of Decór are valid for a period of 12 months from the date of issue.",
       "Credit notes are strictly non-transferable and cannot be exchanged for cash.",
       "Original credit note documentation must be presented at the time of redemption."
     ]
@@ -48,7 +48,7 @@ const termsSections = [
     title: "5. Reservation & Storage",
     content: [
       "Upon notification of order completion, clients must accept delivery within 14 days.",
-      "If the client is unable to receive the goods, House of Décor will provide complimentary storage for up to 30 days.",
+      "If the client is unable to receive the goods, House of Decór will provide complimentary storage for up to 30 days.",
       "Beyond 30 days, a storage fee of 2% of the total invoice value per month will be charged, payable prior to eventual delivery."
     ]
   },
@@ -83,7 +83,7 @@ const termsSections = [
     id: "delays-beyond-control",
     title: "9. Delays Beyond Control",
     content: [
-      "House of Décor shall not be held liable for any failure or delay in performance arising out of circumstances beyond our reasonable control.",
+      "House of Decór shall not be held liable for any failure or delay in performance arising out of circumstances beyond our reasonable control.",
       "This includes, but is not limited to, acts of God, natural disasters, strikes, material shortages, or customs clearance delays (Force Majeure)."
     ]
   },
@@ -91,7 +91,7 @@ const termsSections = [
     id: "intellectual-property",
     title: "10. Intellectual Property",
     content: [
-      "All designs, sketches, 3D renderings, and physical samples remain the exclusive intellectual property of House of Décor.",
+      "All designs, sketches, 3D renderings, and physical samples remain the exclusive intellectual property of House of Decór.",
       "Reproduction, distribution, or unauthorized use of our designs by the client or third parties is strictly prohibited."
     ]
   },

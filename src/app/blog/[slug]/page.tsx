@@ -9,10 +9,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const blog = await getPostBySlug(slug);
   
   if (!blog) {
-    return { title: "House of Décor" };
+    return { title: "House of Decór" };
   }
   return {
-    title: `${blog.title} — House of Décor`,
+    title: `${blog.title} — House of Decór`,
     description: blog.excerpt,
   };
 }

@@ -21,7 +21,7 @@ const testimonials = [
     role: "Private Client, London",
   },
   {
-    quote: "House of Décor understands the subtlety of true craftsmanship. Their ability to translate a complex sketch into a woven reality is unmatched.",
+    quote: "House of Decór understands the subtlety of true craftsmanship. Their ability to translate a complex sketch into a woven reality is unmatched.",
     author: "Sarah V.",
     role: "Interior Designer",
   }

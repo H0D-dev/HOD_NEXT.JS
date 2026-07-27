@@ -37,7 +37,7 @@ export default function QuoteBlock() {
           “A beautifully proportioned rug can anchor a room, define a space, and completely transform how a home feels.”
         </h2>
         <span className="quote-text font-sans text-xs md:text-sm tracking-[0.2em] uppercase text-[var(--text-muted)]">
-          House of Décor
+          House of Decór
         </span>
       </div>
     </section>

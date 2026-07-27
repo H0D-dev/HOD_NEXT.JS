@@ -2,8 +2,8 @@ import PrivacyHero from "../../components/privacy/PrivacyHero";
 import PrivacyContent from "../../components/privacy/PrivacyContent";
 
 export const metadata = {
-  title: "Privacy Policy — House of Décor",
-  description: "Review the Privacy Policy for House of Décor services and products.",
+  title: "Privacy Policy — House of Decór",
+  description: "Review the Privacy Policy for House of Decór services and products.",
 };
 
 export default function PrivacyPolicyPage() {
