@@ -160,6 +160,7 @@ export default function Header() {
           <div className="header__center">
             {/* ── Logo ── */}
             <Link href="/" className="header__logo">
+              {/* Desktop Logo (hidden on lg-down, visible on lg-up) */}
               <Image
                 src="/logo/new_logo_header.png"
                 alt="House of Decór"
@@ -168,7 +169,29 @@ export default function Header() {
                 priority
                 loading="eager"
                 fetchPriority="high"
-                className="header__logo-img"
+                className="header__logo-img hidden lg:block"
+              />
+              {/* Tablet Logo (hidden on mobile and lg-up, visible on md) */}
+              <Image
+                src="/logo/new_logo_header_tablet.png"
+                alt="House of Decór"
+                width={250}
+                height={50}
+                priority
+                loading="eager"
+                fetchPriority="high"
+                className="header__logo-img hidden md:block lg:hidden"
+              />
+              {/* Mobile Logo (visible on mobile, hidden on md-up) */}
+              <Image
+                src="/logo/new_logo_header_mobile.png"
+                alt="House of Decór"
+                width={200}
+                height={40}
+                priority
+                loading="eager"
+                fetchPriority="high"
+                className="header__logo-img block md:hidden"
               />
             </Link>
           </div>
