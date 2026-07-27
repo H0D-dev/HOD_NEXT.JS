@@ -163,7 +163,7 @@ export async function POST(request: Request) {
     let customerId = 0;
     // Temporarily forcing customerId to 0 to prevent woocommerce order-pay login issues
     // caused by cross-domain cookie mismatch between Next.js and WP backend.
-    /*
+    
     try {
       const user = await getCurrentWpUser(request);
       if (user && user.id) {
@@ -172,8 +172,7 @@ export async function POST(request: Request) {
     } catch (err) {
       console.warn("Failed to extract customer ID from WP", err);
     }
-    */
-
+    
     // --- Build Woo order payload ---
     const orderPayload = {
       customer_id: customerId,
