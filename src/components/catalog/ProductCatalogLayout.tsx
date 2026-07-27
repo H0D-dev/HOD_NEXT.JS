@@ -25,11 +25,16 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
   // Filter state
   const { currency } = useCurrencyStore();
   const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>(() => {
+    const initFilters: Record<string, string[]> = {};
     const categoryParam = searchParams?.get("category");
     if (categoryParam) {
-      return { category: [categoryParam.toLowerCase()] };
+      initFilters.category = [categoryParam.toLowerCase()];
     }
-    return {} as Record<string, string[]>;
+    const collectionParam = searchParams?.get("collection");
+    if (collectionParam) {
+      initFilters.collection = [collectionParam.toLowerCase()];
+    }
+    return initFilters;
   });
   const [sortOption, setSortOption] = useState("default");
   
@@ -237,9 +242,23 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
         label: "Shape",
         options: shapeOptions
       });
-    }    // Country of Origin (from ACF)
-    // Removed per user request
+    }
 
+    // Collection (from Attributes)
+    const collectionOptions = getUniqueValues(p => {
+      const colAttr = p.attributes?.find((a: any) => a.name.toLowerCase() === 'collection');
+      if (colAttr && colAttr.options && colAttr.options.length > 0) {
+        return colAttr.options[0];
+      }
+      return undefined;
+    });
+    if (collectionOptions.length > 0) {
+      filters.push({
+        id: "collection",
+        label: "Collection",
+        options: collectionOptions
+      });
+    }
 
     return filters.length > 0 ? filters : config.filters;
   }, [products, config.filters, currency]);
@@ -307,6 +326,12 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
            const shapeStr = shapeAttr?.options?.[0]?.toLowerCase() || "";
            if (!selectedValues.includes(shapeStr)) return false;
            continue;
+         } else if (filterId === "collection") {
+           const attr = p.attributes?.find((a: any) => a.name.toLowerCase() === 'collection');
+           const val = attr?.options?.[0]?.toLowerCase().trim() || "";
+           const valSlug = val.replace(/\s+/g, '-');
+           if (!selectedValues.includes(val) && !selectedValues.includes(valSlug)) return false;
+           continue;
          } else if (filterId === "construction") {
            productValue = String(p.acf?.construction || "").toLowerCase().trim();
          } else if (filterId === "weaving-technique") {
@@ -329,7 +354,7 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
            continue;
          }
         
-        if (filterId !== "category" && filterId !== "color" && filterId !== "price-range" && filterId !== "actual-size" && filterId !== "shape") {
+        if (filterId !== "category" && filterId !== "color" && filterId !== "price-range" && filterId !== "actual-size" && filterId !== "shape" && filterId !== "collection") {
           if (!selectedValues.includes(productValue)) return false;
         }
       }

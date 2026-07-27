@@ -87,7 +87,7 @@ export default function ProductsCollections() {
   };
 
   return (
-    <section ref={containerRef} className="w-full pt-12 md:pt-16 lg:pt-20 pb-12 md:pb-16 lg:pb-24 px-5 md:px-10 lg:px-16 bg-[var(--bg-primary)]">
+    <section ref={containerRef} className="w-full pt-4 md:pt-6 lg:pt-8 pb-12 md:pb-16 lg:pb-24 px-5 md:px-10 lg:px-16 bg-[var(--bg-primary)]">
       <div className="max-w-[var(--container-lg)] mx-auto flex flex-col">
         
         {/* Centered Title */}
@@ -96,7 +96,7 @@ export default function ProductsCollections() {
             Explore
           </span>
           <h2 className="font-sans font-light text-xl lg:text-2xl text-[var(--text-primary)]">
-            Masterpieces By Design.
+            Categories
           </h2>
         </div>
 

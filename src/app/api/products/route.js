@@ -26,8 +26,8 @@ export async function GET(request) {
         const variationDataMap = {};
 
         if (variableProducts.length > 0) {
-            // Process in batches of 5 to avoid overwhelming the WooCommerce API and causing 500 errors
-            const batchSize = 5;
+            // Process in larger batches to decrease response time
+            const batchSize = 25;
             for (let i = 0; i < variableProducts.length; i += batchSize) {
                 const batch = variableProducts.slice(i, i + batchSize);
                 await Promise.all(batch.map(async (p) => {
