@@ -26,34 +26,42 @@ export async function GET(request) {
         const variationDataMap = {};
 
         if (variableProducts.length > 0) {
-            await Promise.all(variableProducts.map(async (p) => {
-                if (!p.variations || p.variations.length === 0) return;
-                const firstVarId = p.variations[0];
-                const varUrl = `${API_CONFIG.baseUrl}/wp-json/wc/v3/products/${p.id}/variations/${firstVarId}?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&_fields=id,price,regular_price,sale_price,meta_data,manual_prices`;
-                try {
-                    const varRes = await fetch(varUrl, { next: { revalidate: 300 } });
-                    if (!varRes.ok) throw new Error(`HTTP error! status: ${varRes.status}`);
-                    const text = await varRes.text();
-                    const v = text ? JSON.parse(text) : null;
-                    if (v && v.id) {
-                        let manualPrices = v.manual_prices || null;
-                        if (!manualPrices && Array.isArray(v.meta_data)) {
-                            const meta = v.meta_data.find(m => m.key === 'manual_prices' || m.key === '_manual_prices');
-                            if (meta && meta.value) {
-                                try {
-                                    manualPrices = typeof meta.value === 'string' ? JSON.parse(meta.value) : meta.value;
-                                } catch(e) {}
-                            }
+            // Process in batches of 5 to avoid overwhelming the WooCommerce API and causing 500 errors
+            const batchSize = 5;
+            for (let i = 0; i < variableProducts.length; i += batchSize) {
+                const batch = variableProducts.slice(i, i + batchSize);
+                await Promise.all(batch.map(async (p) => {
+                    if (!p.variations || p.variations.length === 0) return;
+                    const firstVarId = p.variations[0];
+                    const varUrl = `${API_CONFIG.baseUrl}/wp-json/wc/v3/products/${p.id}/variations/${firstVarId}?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&_fields=id,price,regular_price,sale_price,meta_data,manual_prices`;
+                    try {
+                        const varRes = await fetch(varUrl, { next: { revalidate: 300 } });
+                        if (!varRes.ok) {
+                            const errText = await varRes.text().catch(() => '');
+                            throw new Error(`HTTP error! status: ${varRes.status} body: ${errText.substring(0, 150)}`);
                         }
-                        variationDataMap[v.id] = {
-                            price: v.price,
-                            manualPrices
-                        };
+                        const text = await varRes.text();
+                        const v = text ? JSON.parse(text) : null;
+                        if (v && v.id) {
+                            let manualPrices = v.manual_prices || null;
+                            if (!manualPrices && Array.isArray(v.meta_data)) {
+                                const meta = v.meta_data.find(m => m.key === 'manual_prices' || m.key === '_manual_prices');
+                                if (meta && meta.value) {
+                                    try {
+                                        manualPrices = typeof meta.value === 'string' ? JSON.parse(meta.value) : meta.value;
+                                    } catch(e) {}
+                                }
+                            }
+                            variationDataMap[v.id] = {
+                                price: v.price,
+                                manualPrices
+                            };
+                        }
+                    } catch (err) {
+                        console.warn(`Failed to fetch first variation for product ${p.id}: ${err.message}`);
                     }
-                } catch (err) {
-                    console.warn(`Failed to fetch first variation for product ${p.id}:`, err);
-                }
-            }));
+                }));
+            }
         }
         // -------------------------------------------------------------------------
 

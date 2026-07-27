@@ -106,11 +106,11 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
     };
 
     // Subcategories (excluding the main one)
-    const subCats = new Set<string>();
+    const subCats = new Map<string, string>();
     products.forEach(p => {
       p.categories?.forEach((c: any) => {
-        if (c.name.toLowerCase() !== "rugs" && c.name.toLowerCase() !== "curtains") {
-          subCats.add(c.name);
+        if (c.slug && c.slug !== "rugs" && c.slug !== "curtains") {
+          subCats.set(c.slug, c.name);
         }
       });
     });
@@ -118,7 +118,7 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
       filters.push({
         id: "category",
         label: "Category",
-        options: Array.from(subCats).map(c => ({ label: c, value: c.toLowerCase() }))
+        options: Array.from(subCats.entries()).map(([slug, name]) => ({ label: name, value: slug }))
       });
     }
 
@@ -254,7 +254,7 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
         let matchFound = false;
         
         if (filterId === "category") {
-           matchFound = p.categories?.some((c: any) => selectedValues.includes(c.name.toLowerCase()));
+           matchFound = p.categories?.some((c: any) => selectedValues.includes(c.slug) || selectedValues.includes(c.name.toLowerCase()));
            if (!matchFound) return false;
            continue; 
          } else if (filterId === "color") {
