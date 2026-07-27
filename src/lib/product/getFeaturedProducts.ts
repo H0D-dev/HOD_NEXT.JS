@@ -7,7 +7,7 @@ export async function getFeaturedProducts(categorySlug?: string) {
     if (categorySlug) {
       // 1. Fetch the category ID by slug
       const catUrl = `${API_CONFIG.baseUrl}/wp-json/wc/v3/products/categories?slug=${categorySlug}&consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}`;
-      const catRes = await fetch(catUrl, { next: { revalidate: 0 } });
+      const catRes = await fetch(catUrl, { next: { revalidate: 3600 } });
       
       if (!catRes.ok) {
         throw new Error(`Failed to fetch categories: ${catRes.statusText}`);
@@ -27,7 +27,7 @@ export async function getFeaturedProducts(categorySlug?: string) {
     // 2. Fetch featured products (for the specific category if provided)
     const fields = "id,name,slug,price,price_html,images,categories";
     const prodUrl = `${API_CONFIG.baseUrl}/wp-json/wc/v3/products?featured=true&per_page=8${categoryQuery}&consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&_fields=${fields}`;
-    const prodRes = await fetch(prodUrl, { next: { revalidate: 0 } });
+    const prodRes = await fetch(prodUrl, { next: { revalidate: 3600 } });
     
     if (!prodRes.ok) {
         throw new Error(`Failed to fetch featured products: ${prodRes.statusText}`);

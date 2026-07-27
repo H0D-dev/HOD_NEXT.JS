@@ -8,7 +8,7 @@ import CraftsmanshipSection from "@/src/components/craftsmanship/CraftsmanshipSe
 import SocialFeedSection from "@/src/components/social/SocialFeedSection";
 import TextMarquee from "@/src/components/marquee/TextMarquee";
 
-export const dynamic = "force-dynamic";
+
 
 export default function Home() {
   return (
