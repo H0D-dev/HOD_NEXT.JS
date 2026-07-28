@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { API_CONFIG } from "@/src/lib/api/api";
 import { Product, ProductColor, ProductVariation } from "@/src/components/product-presentation/ProductPresentation";
 
@@ -240,9 +241,9 @@ function transformProduct(
 /**
  * Fetch a single product by slug, resolve color family, and fetch variations if variable.
  */
-export async function getProductBySlug(
+export const getProductBySlug = cache(async (
   slug: string
-): Promise<Product | null> {
+): Promise<Product | null> => {
   try {
     const fields =
       "id,name,slug,type,description,short_description,price,regular_price,sale_price,on_sale,sku,categories,images,attributes,variations,meta_data,permalink,dimensions,stock_status,weight,default_attributes,manual_prices,related_ids";
@@ -269,7 +270,8 @@ export async function getProductBySlug(
       const categoryId = mainCategory ? mainCategory.id : p.categories?.[0]?.id;
 
       if (categoryId) {
-        const siblingUrl = `${API_CONFIG.baseUrl}/wp-json/wc/v3/products?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&category=${categoryId}&per_page=100&_fields=${fields}`;
+        const siblingFields = "id,name,slug,sku,images,meta_data";
+        const siblingUrl = `${API_CONFIG.baseUrl}/wp-json/wc/v3/products?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&category=${categoryId}&per_page=100&_fields=${siblingFields}`;
         const siblingRes = await fetch(siblingUrl, { next: { revalidate: 300 } });
         const allProducts: WooProduct[] = await siblingRes.json();
 
@@ -308,9 +310,9 @@ export async function getProductBySlug(
     console.error("Failed to fetch product by slug:", error);
     return null;
   }
-}
+});
 
-export async function getRelatedProducts(ids: number[]): Promise<Product[]> {
+export const getRelatedProducts = cache(async (ids: number[]): Promise<Product[]> => {
   if (!ids || ids.length === 0) return [];
   try {
     const fields =
@@ -329,5 +331,5 @@ export async function getRelatedProducts(ids: number[]): Promise<Product[]> {
     console.error("Failed to fetch related products:", error);
     return [];
   }
-}
+});
 

@@ -37,7 +37,7 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
     return initFilters;
   });
   const [sortOption, setSortOption] = useState("default");
-  
+
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
@@ -195,7 +195,7 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
     // Price Range
     const getPriceBuckets = (curr: string) => {
       const steps = [2500, 5000, 10000, 20000, 30000];
-      
+
       return [
         { label: `Under ${formatPrice(steps[0], curr)}`, value: `under-${steps[0]}`, max: steps[0] },
         { label: `${formatPrice(steps[0], curr)} - ${formatPrice(steps[1], curr)}`, value: `${steps[0]}-${steps[1]}`, min: steps[0], max: steps[1] },
@@ -268,92 +268,92 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
     const baseFiltered = products.filter(p => {
       for (const [filterId, selectedValues] of Object.entries(selectedFilters)) {
         if (selectedValues.length === 0) continue;
-        
+
         let productValue = "";
         let matchFound = false;
-        
+
         if (filterId === "category") {
-           matchFound = p.categories?.some((c: any) => selectedValues.includes(c.slug) || selectedValues.includes(c.name.toLowerCase()));
-           if (!matchFound) return false;
-           continue; 
-         } else if (filterId === "color") {
-           const colorAttr = p.attributes?.find((a: any) => a.name.toLowerCase() === 'colour' || a.name.toLowerCase() === 'color');
-           let hasMatch = false;
-           if (colorAttr && colorAttr.options) {
-             hasMatch = colorAttr.options.some((opt: string) => selectedValues.includes(opt.toLowerCase().trim()));
-           } else if (p.acf?.productColor) {
-             hasMatch = selectedValues.includes(p.acf.productColor.toLowerCase().trim());
-           }
-           if (!hasMatch) return false;
-           continue;
-         } else if (filterId === "price-range") {
-           const currencyKey = currency.toLowerCase();
-           let price = 0;
-           if (p.manualPrices?.[currencyKey]) {
-             price = parseFloat(p.manualPrices[currencyKey]);
-           } else {
-             price = parseFloat(p.price) || parseFloat(p.regularPrice) || 0;
-           }
+          matchFound = p.categories?.some((c: any) => selectedValues.includes(c.slug) || selectedValues.includes(c.name.toLowerCase()));
+          if (!matchFound) return false;
+          continue;
+        } else if (filterId === "color") {
+          const colorAttr = p.attributes?.find((a: any) => a.name.toLowerCase() === 'colour' || a.name.toLowerCase() === 'color');
+          let hasMatch = false;
+          if (colorAttr && colorAttr.options) {
+            hasMatch = colorAttr.options.some((opt: string) => selectedValues.includes(opt.toLowerCase().trim()));
+          } else if (p.acf?.productColor) {
+            hasMatch = selectedValues.includes(p.acf.productColor.toLowerCase().trim());
+          }
+          if (!hasMatch) return false;
+          continue;
+        } else if (filterId === "price-range") {
+          const currencyKey = currency.toLowerCase();
+          let price = 0;
+          if (p.manualPrices?.[currencyKey]) {
+            price = parseFloat(p.manualPrices[currencyKey]);
+          } else {
+            price = parseFloat(p.price) || parseFloat(p.regularPrice) || 0;
+          }
 
-           const steps = [2500, 5000, 10000, 20000, 30000];
-                         
-           const buckets = [
-             { value: `under-${steps[0]}`, max: steps[0] },
-             { value: `${steps[0]}-${steps[1]}`, min: steps[0], max: steps[1] },
-             { value: `${steps[1]}-${steps[2]}`, min: steps[1], max: steps[2] },
-             { value: `${steps[2]}-${steps[3]}`, min: steps[2], max: steps[3] },
-             { value: `${steps[3]}-${steps[4]}`, min: steps[3], max: steps[4] },
-             { value: `${steps[4]}-plus`, min: steps[4] }
-           ];
+          const steps = [2500, 5000, 10000, 20000, 30000];
 
-           matchFound = selectedValues.some(val => {
-             const bucket = buckets.find(b => b.value === val);
-             if (!bucket) return false;
-             if (bucket.min !== undefined && price < bucket.min) return false;
-             if (bucket.max !== undefined && price >= bucket.max) return false;
-             return true;
-           });
-           if (!matchFound) return false;
-           continue;
-         } else if (filterId === "actual-size") {
-           const length = p.dimensions?.length || p.acf?.exactLengthCm;
-           const width = p.dimensions?.width || p.acf?.exactWidthCm;
-           const sizeStr = length && width ? `${length}x${width} cm`.toLowerCase() : "";
-           if (!selectedValues.includes(sizeStr)) return false;
-           continue;
-         } else if (filterId === "shape") {
-           const shapeAttr = p.attributes?.find((a: any) => a.name.toLowerCase() === 'shape');
-           const shapeStr = shapeAttr?.options?.[0]?.toLowerCase() || "";
-           if (!selectedValues.includes(shapeStr)) return false;
-           continue;
-         } else if (filterId === "collection") {
-           const attr = p.attributes?.find((a: any) => a.name.toLowerCase() === 'collection');
-           const val = attr?.options?.[0]?.toLowerCase().trim() || "";
-           const valSlug = val.replace(/\s+/g, '-');
-           if (!selectedValues.includes(val) && !selectedValues.includes(valSlug)) return false;
-           continue;
-         } else if (filterId === "construction") {
-           productValue = String(p.acf?.construction || "").toLowerCase().trim();
-         } else if (filterId === "weaving-technique") {
-           const attr = p.attributes?.find((a: any) => a.name.toLowerCase() === 'weaving technique');
-           const val = attr?.options?.[0]?.toLowerCase().trim() || "";
-           if (!selectedValues.includes(val)) return false;
-           continue;
-         } else if (filterId === "pattern") {
-           const attr = p.attributes?.find((a: any) => a.name.toLowerCase() === 'pattern');
-           const val = attr?.options?.[0]?.toLowerCase().trim() || "";
-           if (!selectedValues.includes(val)) return false;
-           continue;
-         } else if (filterId === "country") {
-           productValue = String(p.acf?.countryOfOrigin || "").toLowerCase().trim();
-         } else if (filterId === "material") {
-           const matAttr = p.attributes?.find((a: any) => a.name.toLowerCase() === 'material');
-           const matStr = String(matAttr?.options?.[0] || p.acf?.material || "").replace(/&amp;/g, '&').toLowerCase();
-           const matchFound = selectedValues.some(selected => matStr.includes(selected));
-           if (!matchFound) return false;
-           continue;
-         }
-        
+          const buckets = [
+            { value: `under-${steps[0]}`, max: steps[0] },
+            { value: `${steps[0]}-${steps[1]}`, min: steps[0], max: steps[1] },
+            { value: `${steps[1]}-${steps[2]}`, min: steps[1], max: steps[2] },
+            { value: `${steps[2]}-${steps[3]}`, min: steps[2], max: steps[3] },
+            { value: `${steps[3]}-${steps[4]}`, min: steps[3], max: steps[4] },
+            { value: `${steps[4]}-plus`, min: steps[4] }
+          ];
+
+          matchFound = selectedValues.some(val => {
+            const bucket = buckets.find(b => b.value === val);
+            if (!bucket) return false;
+            if (bucket.min !== undefined && price < bucket.min) return false;
+            if (bucket.max !== undefined && price >= bucket.max) return false;
+            return true;
+          });
+          if (!matchFound) return false;
+          continue;
+        } else if (filterId === "actual-size") {
+          const length = p.dimensions?.length || p.acf?.exactLengthCm;
+          const width = p.dimensions?.width || p.acf?.exactWidthCm;
+          const sizeStr = length && width ? `${length}x${width} cm`.toLowerCase() : "";
+          if (!selectedValues.includes(sizeStr)) return false;
+          continue;
+        } else if (filterId === "shape") {
+          const shapeAttr = p.attributes?.find((a: any) => a.name.toLowerCase() === 'shape');
+          const shapeStr = shapeAttr?.options?.[0]?.toLowerCase() || "";
+          if (!selectedValues.includes(shapeStr)) return false;
+          continue;
+        } else if (filterId === "collection") {
+          const attr = p.attributes?.find((a: any) => a.name.toLowerCase() === 'collection');
+          const val = attr?.options?.[0]?.toLowerCase().trim() || "";
+          const valSlug = val.replace(/\s+/g, '-');
+          if (!selectedValues.includes(val) && !selectedValues.includes(valSlug)) return false;
+          continue;
+        } else if (filterId === "construction") {
+          productValue = String(p.acf?.construction || "").toLowerCase().trim();
+        } else if (filterId === "weaving-technique") {
+          const attr = p.attributes?.find((a: any) => a.name.toLowerCase() === 'weaving technique');
+          const val = attr?.options?.[0]?.toLowerCase().trim() || "";
+          if (!selectedValues.includes(val)) return false;
+          continue;
+        } else if (filterId === "pattern") {
+          const attr = p.attributes?.find((a: any) => a.name.toLowerCase() === 'pattern');
+          const val = attr?.options?.[0]?.toLowerCase().trim() || "";
+          if (!selectedValues.includes(val)) return false;
+          continue;
+        } else if (filterId === "country") {
+          productValue = String(p.acf?.countryOfOrigin || "").toLowerCase().trim();
+        } else if (filterId === "material") {
+          const matAttr = p.attributes?.find((a: any) => a.name.toLowerCase() === 'material');
+          const matStr = String(matAttr?.options?.[0] || p.acf?.material || "").replace(/&amp;/g, '&').toLowerCase();
+          const matchFound = selectedValues.some(selected => matStr.includes(selected));
+          if (!matchFound) return false;
+          continue;
+        }
+
         if (filterId !== "category" && filterId !== "color" && filterId !== "price-range" && filterId !== "actual-size" && filterId !== "shape" && filterId !== "collection") {
           if (!selectedValues.includes(productValue)) return false;
         }
@@ -381,7 +381,7 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
   // 3. Map filtered products to ProductStub for the UI
   const displayProducts: ProductStub[] = filteredProducts.map(p => {
     const colorVal = p.acf?.productColor || "";
-    
+
     const sizeAttr = p.attributes?.find((a: any) => a.name.toLowerCase() === 'size');
     let sizeInfo = "";
     if (sizeAttr && sizeAttr.options?.length > 0) {
@@ -404,7 +404,7 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
       title: p.name,
       collectionName: String(p.acf?.countryOfOrigin || "").toUpperCase(),
       category: String(p.acf?.construction || p.categories?.[0]?.name || ""),
-      color: colorVal, 
+      color: colorVal,
       sizeInfo,
       image: p.mainImage?.src || (category === "rugs" ? "/hero_background.png" : "/projects_hero.png"),
       price: priceToUse > 0 ? formatPrice(priceToUse, isFallback ? "AED" : currency) : "",
@@ -447,7 +447,7 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
         )}
 
         {displayProducts.length > 0 && !loading && (
-          <Pagination 
+          <Pagination
             currentPage={currentPage}
             totalPages={Math.ceil(displayProducts.length / itemsPerPage)}
             onPageChange={setCurrentPage}

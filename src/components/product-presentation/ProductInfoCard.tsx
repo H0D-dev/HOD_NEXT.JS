@@ -257,7 +257,7 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
                   onColorChange(color);
                 }
               }}
-              className={`relative flex-shrink-0 w-12 aspect-[3/4] rounded-sm transition-all duration-300 ${activeColor.id === color.id ? 'ring-1 ring-offset-2 ring-[#E87461]' : 'hover:scale-105'}`}
+              className={`relative flex-shrink-0 w-12 aspect-[3/4] rounded-sm transition-all duration-300 cursor-pointer ${activeColor.id === color.id ? 'ring-1 ring-offset-2 ring-[#E87461]' : 'hover:scale-105'}`}
               aria-label={`Select color ${color.name}`}
             >
               <div className="w-full h-full rounded-sm overflow-hidden border border-[var(--border-secondary)]">
@@ -300,8 +300,8 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
                   className={`p-3 rounded-none font-sans flex flex-col items-center justify-center text-center transition-all duration-300 border ${isOutOfStock
                     ? "border-[var(--border-secondary)] bg-[var(--surface-secondary)] text-[var(--text-muted)] opacity-50 cursor-not-allowed line-through"
                     : isActive
-                      ? "border-[var(--border-primary)] bg-transparent shadow-[0_0_0_0.5px_var(--border-primary)]"
-                      : "border-[var(--border-secondary)] hover:border-[var(--border-primary)] bg-transparent"
+                      ? "border-[var(--border-primary)] bg-transparent shadow-[0_0_0_0.5px_var(--border-primary)] cursor-pointer"
+                      : "border-[var(--border-secondary)] hover:border-[var(--border-primary)] bg-transparent cursor-pointer"
                     }`}
                 >
                   <span className={`text-xs whitespace-normal break-words px-1 ${isActive ? 'text-[var(--text-primary)] font-medium' : 'text-[var(--text-secondary)]'}`}>
@@ -393,8 +393,8 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
                     if (key.toLowerCase() === 'dimensions' && !String(value).toLowerCase().includes('cm')) {
                       displayValue = `${value} cm`;
                     }
-                    if (key.toLowerCase() === 'pilethickness' && !String(value).toLowerCase().includes('cm')) {
-                      displayValue = `${value} cm`;
+                    if (key.toLowerCase() === 'pilethickness' && !String(value).toLowerCase().includes('mm')) {
+                      displayValue = `${value} mm`;
                     }
                     return (
                       <div key={key} className="flex justify-between items-start font-sans text-[13px] md:text-sm">

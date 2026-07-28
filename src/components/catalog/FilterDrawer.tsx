@@ -54,7 +54,7 @@ export default function FilterDrawer({ isOpen, onClose, filters, selectedFilters
               <h2 className="font-sans text-[11px] md:text-xs font-medium text-[var(--text-primary)] uppercase tracking-[0.2em]">
                 Filters
               </h2>
-              <button 
+              <button
                 onClick={onClose}
                 className="w-10 h-10 flex items-center justify-center border border-[var(--border-secondary)] hover:border-[var(--border-primary)] transition-colors rounded-none bg-transparent cursor-pointer"
               >
@@ -69,19 +69,19 @@ export default function FilterDrawer({ isOpen, onClose, filters, selectedFilters
             <div className="flex-1 overflow-y-auto px-6 lg:px-8 py-4 hide-scrollbar">
               {filters.map((filter) => (
                 <div key={filter.id} className="border-b border-[var(--border-secondary)] py-5">
-                  <button 
+                  <button
                     onClick={() => toggleSection(filter.id)}
                     className="w-full flex justify-between items-center font-sans text-[10px] md:text-[11px] uppercase tracking-[0.15em] text-[var(--text-primary)] bg-transparent cursor-pointer"
                   >
                     {filter.label}
-                    <svg 
-                      width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" 
+                    <svg
+                      width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"
                       className={`transition-transform duration-300 ${expandedSections[filter.id] ? "rotate-180" : ""}`}
                     >
                       <polyline points="6 9 12 15 18 9"></polyline>
                     </svg>
                   </button>
-                  
+
                   <AnimatePresence>
                     {expandedSections[filter.id] && (
                       <motion.div
@@ -95,21 +95,21 @@ export default function FilterDrawer({ isOpen, onClose, filters, selectedFilters
                           {filter.options.map(opt => {
                             const isSelected = (selectedFilters[filter.id] || []).includes(opt.value);
                             return (
-                              <div 
-                                key={opt.value} 
+                              <div
+                                key={opt.value}
                                 className={`flex items-center gap-3 cursor-pointer group`}
                                 onClick={() => toggleFilter(filter.id, opt.value)}
                               >
-                                  <>
-                                    <div className={`w-4 h-4 border flex items-center justify-center transition-colors ${isSelected ? "bg-[#d4b06a] border-[#d4b06a]" : "border-[var(--border-primary)] group-hover:bg-[var(--bg-secondary)]"}`}>
-                                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={isSelected ? "#111111" : "transparent"} strokeWidth="3" className={!isSelected ? "group-hover:stroke-[#8C8C8C]" : ""}>
-                                        <polyline points="20 6 9 17 4 12"></polyline>
-                                      </svg>
-                                    </div>
-                                    <span className={`font-sans text-[10px] uppercase tracking-[0.1em] transition-colors ${isSelected ? "text-[var(--text-primary)] font-medium" : "text-[#8C8C8C] group-hover:text-[var(--text-primary)]"}`}>
-                                      {opt.label}
-                                    </span>
-                                  </>
+                                <>
+                                  <div className={`w-4 h-4 border flex items-center justify-center transition-colors ${isSelected ? "bg-[#d4b06a] border-[#d4b06a]" : "border-[var(--border-primary)] group-hover:bg-[var(--bg-secondary)]"}`}>
+                                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={isSelected ? "#111111" : "transparent"} strokeWidth="3" className={!isSelected ? "group-hover:stroke-[#8C8C8C]" : ""}>
+                                      <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                  </div>
+                                  <span className={`font-sans text-[10px] uppercase tracking-[0.1em] transition-colors ${isSelected ? "text-[var(--text-primary)] font-medium" : "text-[#8C8C8C] group-hover:text-[var(--text-primary)]"}`}>
+                                    {opt.label}
+                                  </span>
+                                </>
                               </div>
                             );
                           })}
@@ -123,13 +123,13 @@ export default function FilterDrawer({ isOpen, onClose, filters, selectedFilters
 
             {/* Footer Actions */}
             <div className="p-6 lg:p-8 border-t border-[var(--border-secondary)] bg-[var(--bg-primary)] grid grid-cols-2 gap-4">
-              <button 
+              <button
                 className="border border-[var(--border-secondary)] py-4 font-sans text-[10px] uppercase tracking-[0.15em] text-[#8C8C8C] hover:text-[var(--text-primary)] hover:border-[var(--border-primary)] transition-colors bg-transparent cursor-pointer"
                 onClick={clearAll}
               >
                 Clear All
               </button>
-              <button 
+              <button
                 className="bg-[#d4b06a] border border-[#d4b06a] text-[#111111] py-4 font-sans text-[10px] font-medium uppercase tracking-[0.15em] hover:bg-[#e0bc75] transition-colors cursor-pointer"
                 onClick={onClose}
               >
