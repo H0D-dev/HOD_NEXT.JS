@@ -5,6 +5,8 @@ import Image from "next/image";
 
 import Link from "next/link";
 import { Product } from "./ProductPresentation";
+import { useCurrencyStore } from "@/src/lib/store/useCurrencyStore";
+import { formatPrice } from "@/src/lib/utils/price";
 
 interface ExploreMoreProps {
   relatedProducts?: Product[];
@@ -12,6 +14,7 @@ interface ExploreMoreProps {
 
 export default function ExploreMore({ relatedProducts }: ExploreMoreProps) {
   const gridRef = useRef<HTMLDivElement>(null);
+  const { currency } = useCurrencyStore();
 
   if (!relatedProducts || relatedProducts.length === 0) {
     return null;
@@ -28,7 +31,7 @@ export default function ExploreMore({ relatedProducts }: ExploreMoreProps) {
   return (
     <section className="w-full bg-[var(--bg-primary)] py-16 lg:py-24 border-t border-[var(--border-secondary)]">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-        
+
         {/* Section Heading */}
         <div className="flex flex-col items-center justify-center mb-10 lg:mb-16">
           <h2 className="font-sans text-xl lg:text-2xl text-[var(--text-primary)] font-light text-center">
@@ -37,12 +40,42 @@ export default function ExploreMore({ relatedProducts }: ExploreMoreProps) {
         </div>
 
         {/* Horizontal Rack */}
-        <div 
+        <div
           ref={gridRef}
           className="flex gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory hide-scrollbar pb-6 -mx-6 px-6 lg:mx-0 lg:px-0 scroll-smooth"
         >
           {relatedProducts.map((prod) => {
             const mainImage = prod.colors?.[0]?.textureUrl || prod.colors?.[0]?.lifestyleUrl || "https://images.unsplash.com/photo-1600166898405-da9535204843?q=80&w=600&auto=format&fit=crop";
+
+            let priceToUse = 0;
+            let isFallbackPrice = false;
+            const currencyPrice = prod.currencyPrices?.[currency];
+            if (currencyPrice && currencyPrice > 0) {
+              priceToUse = currencyPrice;
+            } else if (prod.currencyPrices?.AED && prod.currencyPrices.AED > 0) {
+              priceToUse = prod.currencyPrices.AED;
+              if (currency !== "AED") isFallbackPrice = true;
+            }
+
+            const formattedPrice = priceToUse > 0 ? formatPrice(priceToUse, isFallbackPrice ? "AED" : currency) : "";
+
+            let sizeInfo = "";
+            if (prod.productType === "variable" && prod.variations && prod.variations.length > 0) {
+              const dimensions = prod.variations
+                .map(v => v.dimensions || v.label)
+                .filter(Boolean)
+                .map(d => {
+                  const match = String(d).match(/(\d+)\s*x\s*(\d+)/i);
+                  if (match) return `${match[1]}x${match[2]}`;
+                  return String(d).replace(/cm/i, "").trim();
+                });
+              sizeInfo = Array.from(new Set(dimensions)).join(", ");
+            } else if (prod.details?.dimensions) {
+              const d = prod.details.dimensions;
+              const match = String(d).match(/(\d+)\s*x\s*(\d+)/i);
+              sizeInfo = match ? `${match[1]}x${match[2]}` : String(d).replace(/cm/i, "").trim();
+            }
+
             return (
               <Link
                 href={`/products/${prod.categorySlug || 'rugs'}/${prod.slug}`}
@@ -62,9 +95,27 @@ export default function ExploreMore({ relatedProducts }: ExploreMoreProps) {
                   <h3 className="font-sans text-[11px] md:text-xs uppercase tracking-widest text-[var(--text-primary)] transition-colors duration-300 group-hover:text-[#d4b06a] mb-1">
                     {prod.name}
                   </h3>
-                  <p className="font-sans text-[9px] md:text-[10px] text-[#8C8C8C] uppercase tracking-wider">
-                    {prod.collection}
+                  <p className="font-sans text-[11px] md:text-xs text-[var(--text-primary)] font-medium tracking-wide mt-1">
+                    {formattedPrice ? (
+                      <>
+                        {formattedPrice} &bull; {prod.category || 'Rug'}
+                      </>
+                    ) : (
+                      <>
+                        {prod.category || 'Rug'}
+                      </>
+                    )}
                   </p>
+                  {sizeInfo && (
+                    <p className="font-sans text-[10px] md:text-[11px] text-[var(--text-secondary)] mt-1">
+                      Sizes (cm): {sizeInfo}
+                    </p>
+                  )}
+                  {isFallbackPrice && (
+                    <p className="text-[9px] lg:text-[10px] text-orange-600 mt-1 leading-tight">
+                      * {currency} pricing not available. Showing in AED.
+                    </p>
+                  )}
                 </div>
               </Link>
             );
@@ -73,21 +124,21 @@ export default function ExploreMore({ relatedProducts }: ExploreMoreProps) {
 
         {/* Bottom Nav: Arrows */}
         <div className="mt-2 md:mt-4 flex justify-end">
-          
+
           <div className="flex justify-end gap-2">
-            <button 
+            <button
               onClick={scrollPrev}
               className="w-10 h-10 border border-[#2C251F]/20 flex items-center justify-center rounded-full text-[#2C251F] hover:bg-[#2C251F] hover:text-white transition-colors duration-300 cursor-pointer"
               aria-label="Previous"
             >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6" /></svg>
             </button>
-            <button 
+            <button
               onClick={scrollNext}
               className="w-10 h-10 border border-[#2C251F]/20 flex items-center justify-center rounded-full text-[#2C251F] hover:bg-[#2C251F] hover:text-white transition-colors duration-300 cursor-pointer"
               aria-label="Next"
             >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>
             </button>
           </div>
         </div>

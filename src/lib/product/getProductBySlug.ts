@@ -151,8 +151,8 @@ function transformProduct(
   if (isVariable && Array.isArray(p.default_attributes) && p.default_attributes.length > 0) {
     const defVar = variations.find((v) => {
       return p.default_attributes!.every((defAttr) => {
-        return v.attributes.some((vAttr) => 
-          vAttr.name.toLowerCase() === defAttr.name.toLowerCase() && 
+        return v.attributes.some((vAttr) =>
+          vAttr.name.toLowerCase() === defAttr.name.toLowerCase() &&
           vAttr.option.toLowerCase() === defAttr.option.toLowerCase()
         );
       });
@@ -215,14 +215,14 @@ function transformProduct(
         acf.pet_friendly === "1"
           ? "Yes"
           : acf.pet_friendly === "0"
-          ? "No"
-          : undefined,
+            ? "No"
+            : undefined,
       washable:
         acf.washable === "1"
           ? "Yes"
           : acf.washable === "0"
-          ? "No"
-          : undefined,
+            ? "No"
+            : undefined,
       itemNumber: acf.item_number || undefined,
       pileThickness: acf.pile_thickness || undefined,
       leadTime: acf.lead_time || undefined,
@@ -319,9 +319,9 @@ export async function getRelatedProducts(ids: number[]): Promise<Product[]> {
     const url = `${API_CONFIG.baseUrl}/wp-json/wc/v3/products?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&include=${idsString}&_fields=${fields}`;
     const res = await fetch(url, { next: { revalidate: 300 } });
     const data: WooProduct[] = await res.json();
-    
+
     if (!Array.isArray(data)) return [];
-    
+
     // We don't fetch all variations and family colors for related products to save time,
     // since we only need the basic info for the card.
     return data.map((p) => transformProduct(p, [buildColorEntry(p)], []));

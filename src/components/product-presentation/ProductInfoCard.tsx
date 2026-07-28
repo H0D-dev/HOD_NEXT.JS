@@ -285,11 +285,6 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
           <div className="font-sans text-xs font-medium text-[var(--text-primary)] uppercase tracking-wider">
             SIZE
           </div>
-          <div className="flex gap-2 font-sans text-[10px] text-[var(--text-secondary)] uppercase underline cursor-pointer hover:text-[var(--text-primary)] transition-colors">
-            <span>Size Chart</span>
-            <span className="no-underline">|</span>
-            <span>Size Guide</span>
-          </div>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">

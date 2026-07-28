@@ -25,7 +25,8 @@ const RESOURCE_LINKS = [
 
 const LEGAL_LINKS = [
   { label: 'Privacy Policy', href: '/privacy-policy' },
-  { label: 'Terms of Service', href: '/terms-conditions' },
+  { label: 'Terms & Conditions', href: '/terms-conditions' },
+  { label: 'Terms of Service', href: '/terms-of-service' },
   { label: 'Cookie Policy', href: '/cookie-policy' }
 ];
 

@@ -2,7 +2,13 @@
 
 import { motion } from "framer-motion";
 
-export default function TermsHero() {
+interface PolicyHeroProps {
+  title: string;
+  description: string;
+  lastUpdated: string;
+}
+
+export default function PolicyHero({ title, description, lastUpdated }: PolicyHeroProps) {
   return (
     <section className="relative w-full flex flex-col justify-center items-center pt-24 lg:pt-32 pb-16 lg:pb-24 px-6 md:px-16 lg:px-24 bg-[var(--bg-primary)]">
       <div className="max-w-[var(--container-md)] mx-auto text-center flex flex-col items-center">
@@ -16,15 +22,15 @@ export default function TermsHero() {
             Legal
           </span>
           <h1 className="font-sans text-[clamp(36px,6vw,72px)] font-light leading-none tracking-wide text-[var(--text-primary)] mb-8">
-            Terms & Conditions
+            {title}
           </h1>
           <div className="flex flex-col gap-8 text-center max-w-2xl mx-auto">
             <p className="font-sans text-[var(--text-secondary)] text-sm sm:text-base leading-relaxed font-light max-w-lg mx-auto">
-              Please review our policies carefully. These terms govern your use of our services and the purchase of goods from House of Decór.
+              {description}
             </p>
           </div>
           <p className="font-sans text-[var(--text-muted)] text-[10px] tracking-[0.2em] uppercase mt-8 font-medium">
-            Last Updated: August 2026
+            Last Updated: {lastUpdated}
           </p>
         </motion.div>
       </div>
