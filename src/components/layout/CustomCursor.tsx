@@ -58,27 +58,32 @@ export default function CustomCursor() {
 
     let lastX = 0;
     
+    let rafId: number | null = null;
     const onMouseMove = (e: MouseEvent) => {
       const { clientX, clientY } = e;
-      
-      if (cursorRef.current && cursorRef.current.style.opacity === "0" && !isHiddenRef.current) {
-        gsap.to(cursorRef.current, { opacity: 1, duration: 0.3 });
-        gsap.to(dotRef.current, { opacity: 1, duration: 0.3 });
-      }
 
-      xTo(clientX);
-      yTo(clientY);
-      dotXTo(clientX);
-      dotYTo(clientY);
-      
-      if (isDragging && cursorRef.current) {
-        const deltaX = clientX - lastX;
-        const rotation = Math.max(-15, Math.min(15, deltaX * 0.5));
-        gsap.to(cursorRef.current, { rotation, duration: 0.2 });
-      } else {
-        gsap.to(cursorRef.current, { rotation: 0, duration: 0.2 });
-      }
-      lastX = clientX;
+      if (rafId) cancelAnimationFrame(rafId);
+
+      rafId = requestAnimationFrame(() => {
+        if (cursorRef.current && cursorRef.current.style.opacity === "0" && !isHiddenRef.current) {
+          gsap.to(cursorRef.current, { opacity: 1, duration: 0.3 });
+          gsap.to(dotRef.current, { opacity: 1, duration: 0.3 });
+        }
+
+        xTo(clientX);
+        yTo(clientY);
+        dotXTo(clientX);
+        dotYTo(clientY);
+
+        if (isDragging && cursorRef.current) {
+          const deltaX = clientX - lastX;
+          const rotation = Math.max(-15, Math.min(15, deltaX * 0.5));
+          gsap.to(cursorRef.current, { rotation, duration: 0.2 });
+        } else if (cursorRef.current) {
+          gsap.to(cursorRef.current, { rotation: 0, duration: 0.2 });
+        }
+        lastX = clientX;
+      });
     };
 
     const onMouseDown = () => {
@@ -96,6 +101,7 @@ export default function CustomCursor() {
     window.addEventListener("mouseup", onMouseUp);
 
     return () => {
+      if (rafId) cancelAnimationFrame(rafId);
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("mousedown", onMouseDown);
       window.removeEventListener("mouseup", onMouseUp);

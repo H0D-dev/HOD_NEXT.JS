@@ -8,7 +8,7 @@ export async function getProducts(categoryId = null) {
             url += `?category=${categoryId}`;
         }
 
-        const res = await fetch(url, { cache: 'no-store' })
+        const res = await fetch(url, { next: { revalidate: 300 } })
         if (!res.ok) {
             throw new Error("Failed to fetch products");
         }
@@ -42,7 +42,7 @@ export async function getCategories(parentId = null) {
         if (parentId) {
             url += `?parent=${parentId}`;
         }
-        const res = await fetch(url, { cache: 'no-store' });
+        const res = await fetch(url, { next: { revalidate: 300 } });
         if (!res.ok) {
             throw new Error("Failed to fetch categories");
         }
@@ -55,7 +55,7 @@ export async function getCategories(parentId = null) {
 
 export async function getCategoryIdBySlug(slug) {
     try {
-        const res = await fetch(`/api/categories?slug=${slug}`, { cache: 'no-store' });
+        const res = await fetch(`/api/categories?slug=${slug}`, { next: { revalidate: 300 } });
         if (!res.ok) throw new Error("Failed to fetch category");
         const { categories } = await res.json();
         if (Array.isArray(categories) && categories.length > 0) {

@@ -36,6 +36,10 @@ export default function RootLayout({
       data-scroll-behavior="smooth"
       suppressHydrationWarning
     >
+      <head>
+        <link rel="preconnect" href="https://store.houseofdecor.ae" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://store.houseofdecor.ae" />
+      </head>
       <body suppressHydrationWarning>
         <ScrollToTop />
 

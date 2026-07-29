@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { API_CONFIG } from "@/src/lib/api/api"
 
+export const revalidate = 300;
+
 export async function GET(request) {
     try {
         const category = request.nextUrl.searchParams.get("category");

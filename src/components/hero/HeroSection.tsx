@@ -61,54 +61,29 @@ export default function HeroSection() {
   return (
     <section ref={sectionRef} className="relative w-full h-[70vh] lg:h-screen flex flex-col justify-end lg:justify-center overflow-hidden bg-black" id="hero-section">
       
-      {/* ── Background Image Desktop (Parallax) ── */}
-      <div className="absolute inset-0 w-full h-[120%] -top-[10%] z-0 hidden md:block" ref={bgRef}>
-        <AnimatePresence>
+      {/* ── Background Image (Parallax Desktop / Static Mobile) ── */}
+      <div className="absolute inset-0 w-full h-[120%] -top-[10%] z-0" ref={bgRef}>
+        <AnimatePresence mode="wait">
           <motion.div
             key={currentImageIndex}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 1.5, ease: "easeInOut" }}
+            transition={{ duration: 1.2, ease: "easeInOut" }}
             className="absolute inset-0 w-full h-full"
           >
             <Image
               src={images[currentImageIndex]}
               alt="Luxury architectural interior"
               fill
-              priority
-              className="object-cover"
-              sizes="(max-width: 768px) 0vw, 100vw"
+              priority={currentImageIndex === 0}
+              className="object-cover object-[center_30%] md:object-center"
+              sizes="100vw"
             />
           </motion.div>
         </AnimatePresence>
         {/* Subtle gradient overlay for text legibility */}
         <div className="absolute inset-0 bg-black/40 md:bg-gradient-to-r from-black/70 to-transparent z-10 pointer-events-none"></div>
-      </div>
-
-      {/* ── Background Image Mobile (Static to prevent jitter) ── */}
-      <div className="absolute inset-0 w-full h-full z-0 block md:hidden">
-        <AnimatePresence>
-          <motion.div
-            key={currentImageIndex}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1.5, ease: "easeInOut" }}
-            className="absolute inset-0 w-full h-full"
-          >
-            <Image
-              src={images[currentImageIndex]}
-              alt="Luxury architectural interior"
-              fill
-              priority
-              className="object-cover object-[center_30%]"
-              sizes="(max-width: 768px) 100vw, 0vw"
-            />
-          </motion.div>
-        </AnimatePresence>
-        {/* Subtle gradient overlay for text legibility */}
-        <div className="absolute inset-0 bg-black/50 z-10 pointer-events-none"></div>
       </div>
 
       {/* ── Content ── */}

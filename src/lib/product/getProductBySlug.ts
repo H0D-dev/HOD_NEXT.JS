@@ -271,7 +271,7 @@ export const getProductBySlug = cache(async (
 
       if (categoryId) {
         const siblingFields = "id,name,slug,sku,images,meta_data";
-        const siblingUrl = `${API_CONFIG.baseUrl}/wp-json/wc/v3/products?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&category=${categoryId}&per_page=100&_fields=${siblingFields}`;
+        const siblingUrl = `${API_CONFIG.baseUrl}/wp-json/wc/v3/products?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&category=${categoryId}&per_page=25&_fields=${siblingFields}`;
         const siblingRes = await fetch(siblingUrl, { next: { revalidate: 300 } });
         const allProducts: WooProduct[] = await siblingRes.json();
 
