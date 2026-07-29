@@ -120,6 +120,10 @@
         font-size: var(--text-md);
         line-height: 1.6;
         overflow-x: hidden;
+        
+        /* Fix for Android Chrome variable font rendering bug on specific glyphs */
+        font-synthesis: none;
+        -webkit-text-stroke: 0.1px transparent;
     }
 
     /* ── Selection ── */
