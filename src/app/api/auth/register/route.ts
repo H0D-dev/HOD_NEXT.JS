@@ -35,9 +35,16 @@ export async function POST(request: Request) {
     const data = await wooRes.json();
 
     if (!wooRes.ok) {
-      // WP usually sends error message in 'message' field
+      const rawMessage = data.message || "Registration failed";
+      const cleanMessage = rawMessage
+        .replace(/<[^>]*>?/gm, "")
+        .replace(/&nbsp;/g, " ")
+        .replace(/&#8217;/g, "'")
+        .replace(/&amp;/g, "&")
+        .trim();
+
       return NextResponse.json(
-        { success: false, error: data.message || "Registration failed" },
+        { success: false, error: cleanMessage },
         { status: wooRes.status }
       );
     }

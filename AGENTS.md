@@ -3,3 +3,9 @@
 
 This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
 <!-- END:nextjs-agent-rules -->
+
+dont commit anyting by yourself
+first ask me to run any github command
+and also do not run any commands by yourself 
+
+you can run nextjs build commadn by yourself and local server command (npm run dev).

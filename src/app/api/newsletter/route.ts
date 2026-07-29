@@ -48,13 +48,23 @@ export async function POST(request: Request) {
 
     if (!wpResponse.ok) {
       console.error("WP Newsletter Error:", wpResponse.status, data);
+      const rawMessage = data.message || data.error || 'Failed to subscribe to newsletter';
+      const cleanMessage = typeof rawMessage === 'string'
+        ? rawMessage.replace(/<[^>]*>?/gm, "").replace(/&nbsp;/g, " ").replace(/&#8217;/g, "'").replace(/&amp;/g, "&").trim()
+        : 'Failed to subscribe to newsletter';
+
       return NextResponse.json(
-        { success: false, message: data.message || data.error || 'Failed to subscribe to newsletter' },
+        { success: false, message: cleanMessage },
         { status: wpResponse.status }
       );
     }
 
-    return NextResponse.json({ success: true, message: data.message || 'Subscribed successfully' });
+    const rawSuccess = data.message || 'Subscribed successfully';
+    const cleanSuccess = typeof rawSuccess === 'string'
+      ? rawSuccess.replace(/<[^>]*>?/gm, "").replace(/&nbsp;/g, " ").replace(/&#8217;/g, "'").replace(/&amp;/g, "&").trim()
+      : 'Subscribed successfully';
+
+    return NextResponse.json({ success: true, message: cleanSuccess });
   } catch (error: any) {
     console.error("Newsletter API route exception:", error);
     return NextResponse.json(

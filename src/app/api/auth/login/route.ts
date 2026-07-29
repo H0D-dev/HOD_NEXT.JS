@@ -45,8 +45,16 @@ export async function POST(request: Request) {
 
     if (!wpRes.ok) {
       console.error("WP Login Error:", wpRes.status, textResponse);
+      const rawMessage = data.message || "Invalid credentials";
+      const cleanMessage = rawMessage
+        .replace(/<[^>]*>?/gm, "")
+        .replace(/&nbsp;/g, " ")
+        .replace(/&#8217;/g, "'")
+        .replace(/&amp;/g, "&")
+        .trim();
+
       return NextResponse.json(
-        { success: false, error: data.message || "Invalid credentials" },
+        { success: false, error: cleanMessage },
         { status: wpRes.ok ? 401 : wpRes.status }
       );
     }

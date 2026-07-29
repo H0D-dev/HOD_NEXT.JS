@@ -128,13 +128,23 @@ export async function POST(request: Request) {
     }
 
     if (!wpResponse.ok) {
+      const rawMessage = data.message || data.error || 'Failed to submit contact form';
+      const cleanMessage = typeof rawMessage === 'string'
+        ? rawMessage.replace(/<[^>]*>?/gm, "").replace(/&nbsp;/g, " ").replace(/&#8217;/g, "'").replace(/&amp;/g, "&").trim()
+        : 'Failed to submit contact form';
+
       return NextResponse.json(
-        { success: false, message: data.message || data.error || 'Failed to submit contact form' },
+        { success: false, message: cleanMessage },
         { status: wpResponse.status }
       );
     }
 
-    return NextResponse.json({ success: true, message: data.message || 'Submitted successfully' });
+    const rawSuccess = data.message || 'Submitted successfully';
+    const cleanSuccess = typeof rawSuccess === 'string'
+      ? rawSuccess.replace(/<[^>]*>?/gm, "").replace(/&nbsp;/g, " ").replace(/&#8217;/g, "'").replace(/&amp;/g, "&").trim()
+      : 'Submitted successfully';
+
+    return NextResponse.json({ success: true, message: cleanSuccess });
   } catch (error: any) {
     return NextResponse.json({ success: false, message: error.message || 'Failed to submit contact form' }, { status: 500 });
   }
