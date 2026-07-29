@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface ProductCardProps {
   product: {
@@ -18,14 +19,20 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product, onMouseEnter, onMouseLeave }: ProductCardProps) {
-  // Since all featured products are currently rugs
+  const router = useRouter();
   const routeCategory = 'rugs';
+  const targetHref = `/products/${routeCategory}/${product.slug}`;
+
+  const handleMouseEnter = () => {
+    onMouseEnter();
+    router.prefetch(targetHref);
+  };
 
   return (
     <Link 
-      href={`/products/${routeCategory}/${product.slug}`}
+      href={targetHref}
       className="group flex flex-col no-underline"
-      onMouseEnter={onMouseEnter}
+      onMouseEnter={handleMouseEnter}
       onMouseLeave={onMouseLeave}
       draggable={false}
     >

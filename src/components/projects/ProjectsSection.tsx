@@ -110,7 +110,7 @@ export default function ProjectsSection() {
                     <h3 className={`font-sans font-normal text-white uppercase tracking-widest whitespace-nowrap transition-all duration-1000 ease-out origin-left ${
                       isActive 
                         ? 'text-xs md:text-sm lg:text-base scale-100' 
-                        : 'text-[10px] md:text-xs -rotate-90 absolute bottom-8 origin-bottom-left translate-x-2 lg:translate-x-4'
+                        : 'text-[10px] md:text-xs -rotate-90 absolute bottom-16 md:bottom-20 origin-bottom-left translate-x-3 md:translate-x-4'
                     }`}>
                       {project.title}
                     </h3>

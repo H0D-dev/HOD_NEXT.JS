@@ -238,6 +238,45 @@ function transformProduct(
   };
 }
 
+async function fetchSiblingColors(p: WooProduct, designId?: string): Promise<ProductColor[]> {
+  if (!designId) return [buildColorEntry(p)];
+  const mainCategory = p.categories?.find(c =>
+    c.name.toLowerCase() === 'curtains' || c.name.toLowerCase() === 'rugs'
+  );
+  const categoryId = mainCategory ? mainCategory.id : p.categories?.[0]?.id;
+  if (!categoryId) return [buildColorEntry(p)];
+
+  try {
+    const siblingFields = "id,name,slug,sku,images,meta_data";
+    const siblingUrl = `${API_CONFIG.baseUrl}/wp-json/wc/v3/products?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&category=${categoryId}&per_page=100&_fields=${siblingFields}`;
+    const siblingRes = await fetch(siblingUrl, { next: { revalidate: 300 } });
+    const allProducts: WooProduct[] = await siblingRes.json();
+
+    if (Array.isArray(allProducts)) {
+      const designProducts = allProducts.filter((prod) => {
+        const prodAcf = extractAcf(prod.meta_data);
+        return prodAcf.design_id === designId;
+      });
+
+      const currentEntry = buildColorEntry(p);
+      const siblingEntries = designProducts
+        .filter((prod) => prod.id !== p.id)
+        .map(buildColorEntry);
+
+      const allEntries = [currentEntry, ...siblingEntries];
+      const colors = allEntries.filter(
+        (item, index, self) =>
+          index === self.findIndex((c) => c.id === item.id)
+      );
+      if (colors.length > 0) return colors;
+    }
+  } catch (error) {
+    console.error("Failed to fetch sibling colors:", error);
+  }
+
+  return [buildColorEntry(p)];
+}
+
 /**
  * Fetch a single product by slug, resolve color family, and fetch variations if variable.
  */
@@ -260,50 +299,13 @@ export const getProductBySlug = cache(async (
     const acf = extractAcf(p.meta_data);
     const designId: string | undefined = acf.design_id;
 
-    // --- Resolve color variants by design_id ---
-    let colors: ProductColor[] = [];
-
-    if (designId) {
-      const mainCategory = p.categories?.find(c =>
-        c.name.toLowerCase() === 'curtains' || c.name.toLowerCase() === 'rugs'
-      );
-      const categoryId = mainCategory ? mainCategory.id : p.categories?.[0]?.id;
-
-      if (categoryId) {
-        const siblingFields = "id,name,slug,sku,images,meta_data";
-        const siblingUrl = `${API_CONFIG.baseUrl}/wp-json/wc/v3/products?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&category=${categoryId}&per_page=100&_fields=${siblingFields}`;
-        const siblingRes = await fetch(siblingUrl, { next: { revalidate: 300 } });
-        const allProducts: WooProduct[] = await siblingRes.json();
-
-        if (Array.isArray(allProducts)) {
-          const designProducts = allProducts.filter((prod) => {
-            const prodAcf = extractAcf(prod.meta_data);
-            return prodAcf.design_id === designId;
-          });
-
-          const currentEntry = buildColorEntry(p);
-          const siblingEntries = designProducts
-            .filter((prod) => prod.id !== p.id)
-            .map(buildColorEntry);
-
-          const allEntries = [currentEntry, ...siblingEntries];
-          colors = allEntries.filter(
-            (item, index, self) =>
-              index === self.findIndex((c) => c.id === item.id)
-          );
-        }
-      }
-    }
-
-    if (colors.length === 0) {
-      colors = [buildColorEntry(p)];
-    }
-
-    // --- Fetch variations if variable product ---
-    let variations: ProductVariation[] = [];
-    if (p.type === "variable" && Array.isArray(p.variations) && p.variations.length > 0) {
-      variations = await fetchVariations(p.id);
-    }
+    // --- Fetch sibling colors and variations in parallel via Promise.all ---
+    const [colors, variations] = await Promise.all([
+      fetchSiblingColors(p, designId),
+      (p.type === "variable" && Array.isArray(p.variations) && p.variations.length > 0)
+        ? fetchVariations(p.id)
+        : Promise.resolve([])
+    ]);
 
     return transformProduct(p, colors, variations);
   } catch (error) {
