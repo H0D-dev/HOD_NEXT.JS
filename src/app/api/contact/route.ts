@@ -87,15 +87,11 @@ export async function POST(request: Request) {
     }
 
     const wpUrl = API_CONFIG.baseUrl || "https://store.houseofdecor.ae";
-    const targetUrl = `${wpUrl}/wp-json/hod/v1/contact?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}`;
-
-    // Create Basic Auth header to match standard Postman API authorization
-    const authHeader = `Basic ${Buffer.from(`${API_CONFIG.consumerKey || ""}:${API_CONFIG.consumerSecret || ""}`).toString('base64')}`;
+    const targetUrl = `${wpUrl}/wp-json/hod/v1/contact`;
 
     // Determine forwarding strategy (FormData if files present, otherwise JSON)
     let fetchBody: any;
     const fetchHeaders: Record<string, string> = {
-      'Authorization': authHeader,
       "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
       "Accept": "application/json"
     };

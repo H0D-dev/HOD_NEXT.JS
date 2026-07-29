@@ -19,17 +19,13 @@ export async function POST(request: Request) {
     };
 
     const wpUrl = API_CONFIG.baseUrl || "https://store.houseofdecor.ae";
-    const targetUrl = `${wpUrl}/wp-json/hod/v1/newsletter?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}`;
+    const targetUrl = `${wpUrl}/wp-json/hod/v1/newsletter`;
 
-    // Create Basic Auth header to match standard Postman API authorization
-    const authHeader = `Basic ${Buffer.from(`${API_CONFIG.consumerKey || ""}:${API_CONFIG.consumerSecret || ""}`).toString('base64')}`;
-
-    // Forward to custom WordPress newsletter endpoint with complete credentials
+    // Forward to custom WordPress newsletter endpoint
     const wpResponse = await fetch(targetUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': authHeader,
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
         "Accept": "application/json"
       },

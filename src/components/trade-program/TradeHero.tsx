@@ -43,7 +43,7 @@ export default function TradeHero() {
           className="w-full h-full min-h-[250px] md:min-h-[400px] relative overflow-hidden"
         >
           <Image
-            src="/curtains/set2-room.png"
+            src="/images/trade/trade_hero.png"
             alt="Luxury Interior Design Trade Program"
             fill
             className="object-cover transform hover:scale-105 transition-transform duration-[1.2s] ease-[cubic-bezier(0.22,1,0.36,1)]"

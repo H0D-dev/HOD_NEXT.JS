@@ -20,13 +20,13 @@ const services = [
     id: 3,
     title: "Dedicated Account Manager",
     description: "Your single point of contact for personalized service and seamless communication.",
-    image: "/curtains/set3-room.png",
+    image: "/images/trade/account_manager.png",
   },
   {
     id: 4,
     title: "After Sales Support",
     description: "Extensive guidance on installation, care, and long-term maintenance.",
-    image: "/rugs/set2-room.png",
+    image: "/images/trade/after_sales_support.png",
   },
 ];
 
