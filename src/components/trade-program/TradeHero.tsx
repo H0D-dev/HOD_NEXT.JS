@@ -24,9 +24,7 @@ export default function TradeHero() {
             Exclusive benefits for interior design professionals. Elevate your spaces with our premium handmade rugs and bespoke carpets.
           </p>
           <a 
-            href="https://wa.me/971521236888?text=I%20would%20like%20to%20apply%20for%20the%20Designer%20Trade%20Program."
-            target="_blank"
-            rel="noopener noreferrer"
+            href="#trade-application"
             className="px-8 py-4 bg-[var(--accent-primary)] text-[#111] border border-[var(--accent-primary)] font-sans font-medium text-xs md:text-sm hover:bg-[var(--accent-secondary)] hover:border-[var(--accent-secondary)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] w-full sm:w-auto inline-block text-center uppercase tracking-widest"
           >
             Apply Now
