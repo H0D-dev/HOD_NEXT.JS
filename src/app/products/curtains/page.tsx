@@ -1,9 +1,10 @@
 import { Suspense } from "react";
 import ProductCatalogLayout from "../../../components/catalog/ProductCatalogLayout";
+import CatalogLoadingSkeleton from "../../../components/catalog/CatalogLoadingSkeleton";
 
 export default function CurtainsPage() {
   return (
-    <Suspense fallback={<div className="w-full flex justify-center py-20"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-black"></div></div>}>
+    <Suspense fallback={<CatalogLoadingSkeleton title="BESPOKE CURTAINS" category="curtains" />}>
       <ProductCatalogLayout category="curtains" />
     </Suspense>
   );

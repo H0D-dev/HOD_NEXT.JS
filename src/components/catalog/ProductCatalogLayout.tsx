@@ -439,8 +439,14 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
         />
 
         {loading ? (
-          <div className="w-full flex justify-center py-20">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--text-primary)]"></div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8 animate-pulse">
+            {Array.from({ length: 8 }).map((_, index) => (
+              <div key={index} className="flex flex-col">
+                <div className="w-full aspect-[3/4] bg-neutral-300/30 rounded mb-3"></div>
+                <div className="h-4 w-3/4 bg-neutral-300/40 rounded mb-2"></div>
+                <div className="h-3 w-1/3 bg-neutral-300/30 rounded"></div>
+              </div>
+            ))}
           </div>
         ) : (
           <ProductGrid products={displayProducts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)} baseRoute={baseRoute} />
