@@ -9,9 +9,10 @@ import { useCurrencyStore } from "../../lib/store/useCurrencyStore";
 interface ProductCardProps {
   product: ProductStub;
   baseRoute: string; // e.g. "/products/rugs"
+  priority?: boolean;
 }
 
-export default function ProductCard({ product, baseRoute }: ProductCardProps) {
+export default function ProductCard({ product, baseRoute, priority = false }: ProductCardProps) {
   const { currency } = useCurrencyStore();
 
   return (
@@ -24,6 +25,7 @@ export default function ProductCard({ product, baseRoute }: ProductCardProps) {
           src={product.image}
           alt={product.title}
           fill
+          priority={priority}
           className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
         />

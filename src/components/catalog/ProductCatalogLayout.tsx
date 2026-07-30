@@ -14,13 +14,14 @@ import { formatPrice } from "../../lib/utils/price";
 
 interface ProductCatalogLayoutProps {
   category: "rugs" | "curtains";
+  initialProducts?: any[];
 }
 
-export default function ProductCatalogLayout({ category }: ProductCatalogLayoutProps) {
+export default function ProductCatalogLayout({ category, initialProducts }: ProductCatalogLayoutProps) {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const searchParams = useSearchParams();
-  const [products, setProducts] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState<any[]>(initialProducts || []);
+  const [loading, setLoading] = useState(!initialProducts || initialProducts.length === 0);
 
   // Filter state
   const { currency } = useCurrencyStore();
@@ -58,23 +59,30 @@ export default function ProductCatalogLayout({ category }: ProductCatalogLayoutP
   }, [currency]);
 
   useEffect(() => {
+    if (initialProducts && initialProducts.length > 0 && products.length > 0) {
+      return;
+    }
     const fetchProducts = async () => {
       setLoading(true);
-      const categoryId = await getCategoryIdBySlug(category);
-      if (categoryId) {
-        const data = await getProducts(categoryId);
-        if (Array.isArray(data)) {
-          setProducts(data);
-        } else {
-          setProducts([]);
+      try {
+        const res = await fetch(`/api/products?category=${category}`);
+        if (res.ok) {
+          const { products: data } = await res.json();
+          if (Array.isArray(data)) {
+            setProducts(data);
+          } else {
+            setProducts([]);
+          }
         }
-      } else {
+      } catch (err) {
+        console.error("Failed to fetch products:", err);
         setProducts([]);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
     fetchProducts();
-  }, [category]);
+  }, [category, initialProducts]);
 
   const config = category === "rugs" ? RUGS_CONFIG : CURTAINS_CONFIG;
   const baseRoute = `/products/${category}`;
