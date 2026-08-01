@@ -2,8 +2,9 @@ import BlogList from "../../components/blog/BlogList";
 import { getPosts } from "../../services/Posts";
 
 export const metadata = {
-  title: "Journal & Insights — House of Decór",
+  title: "Journal & Insights",
   description: "Read our latest articles on luxury interior design, sustainable materials, and the art of handcrafted rugs.",
+  alternates: { canonical: "/blog" },
 };
 
 export const dynamic = "force-dynamic";
