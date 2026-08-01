@@ -9,13 +9,22 @@ const nextConfig: NextConfig = {
         remotePatterns: [
             {
                 protocol: "https",
-                hostname: "**",
+                hostname: "store.houseofdecor.ae",
             },
             {
-                protocol: "http",
-                hostname: "**",
-            }
+                protocol: "https",
+                hostname: "images.unsplash.com",
+            },
         ],
+    },
+    async redirects() {
+        return [
+            {
+                source: '/terms-of-service',
+                destination: '/terms-conditions',
+                permanent: true,
+            },
+        ];
     },
     async headers() {
         return [
