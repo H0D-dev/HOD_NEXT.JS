@@ -5,6 +5,41 @@ import { fetchCatalogProducts } from "@/src/lib/product/getCatalogProducts";
 
 import { generateCollectionSchema, generateBreadcrumbSchema, BASE_URL } from "@/src/lib/seo/schema";
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Handmade Luxury Rugs Collection",
+  description: "Explore curated collections of luxury handwoven rugs crafted with timeless artisan tradition.",
+  alternates: {
+    canonical: "/products/rugs",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    title: "Handmade Luxury Rugs Collection | House of Decór",
+    description: "Explore curated collections of luxury handwoven rugs crafted with timeless artisan tradition.",
+    url: "https://houseofdecor.ae/products/rugs",
+    siteName: "House of Decór",
+    images: [
+      {
+        url: "https://houseofdecor.ae/about_hero_desktop.png",
+        width: 1200,
+        height: 630,
+        alt: "Handmade Luxury Rugs Collection",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Handmade Luxury Rugs Collection | House of Decór",
+    description: "Explore curated collections of luxury handwoven rugs crafted with timeless artisan tradition.",
+    images: ["https://houseofdecor.ae/about_hero_desktop.png"],
+  },
+};
+
 export const revalidate = 300;
 
 export default async function RugsPage() {

@@ -11,9 +11,40 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     return { title: "Product Not Found | House of Decór" };
   }
 
+  const ogImage = product.colors?.[0]?.lifestyleUrl || product.colors?.[0]?.textureUrl || (product as any).mainImage?.src || "https://houseofdecor.ae/about_hero_desktop.png";
+  const canonicalUrl = `/products/curtains/${slug}`;
+
   return {
     title: `${product.name} | House of Decór`,
-    description: product.description,
+    description: product.description ? product.description.slice(0, 160) : `${product.name} - Bespoke curtain by House of Decór.`,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+    openGraph: {
+      title: `${product.name} | House of Decór`,
+      description: product.description ? product.description.slice(0, 160) : `${product.name} - Bespoke curtain by House of Decór.`,
+      url: `https://houseofdecor.ae${canonicalUrl}`,
+      siteName: "House of Decór",
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: product.name,
+        },
+      ],
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${product.name} | House of Decór`,
+      description: product.description ? product.description.slice(0, 160) : `${product.name} - Bespoke curtain by House of Decór.`,
+      images: [ogImage],
+    },
   };
 }
 

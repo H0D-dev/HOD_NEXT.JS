@@ -5,6 +5,41 @@ import { fetchCatalogProducts } from "@/src/lib/product/getCatalogProducts";
 
 import { generateCollectionSchema, generateBreadcrumbSchema, BASE_URL } from "@/src/lib/seo/schema";
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Bespoke Luxury Curtains Collection",
+  description: "Discover bespoke custom curtains and drapery crafted for architectural luxury interiors.",
+  alternates: {
+    canonical: "/products/curtains",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    title: "Bespoke Luxury Curtains Collection | House of Decór",
+    description: "Discover bespoke custom curtains and drapery crafted for architectural luxury interiors.",
+    url: "https://houseofdecor.ae/products/curtains",
+    siteName: "House of Decór",
+    images: [
+      {
+        url: "https://houseofdecor.ae/about_hero_desktop.png",
+        width: 1200,
+        height: 630,
+        alt: "Bespoke Luxury Curtains Collection",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Bespoke Luxury Curtains Collection | House of Decór",
+    description: "Discover bespoke custom curtains and drapery crafted for architectural luxury interiors.",
+    images: ["https://houseofdecor.ae/about_hero_desktop.png"],
+  },
+};
+
 export const revalidate = 300;
 
 export default async function CurtainsPage() {

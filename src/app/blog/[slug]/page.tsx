@@ -1,19 +1,55 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import BlogContent from "../../../components/blog/BlogContent";
 import { getPosts, getPostBySlug } from "../../../services/Posts";
 
 export const dynamic = "force-dynamic";
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const blog = await getPostBySlug(slug);
   
   if (!blog) {
     return { title: "House of Decór" };
   }
+
+  const ogImage = blog.image || "https://houseofdecor.ae/about_hero_desktop.png";
+  const canonicalUrl = `/blog/${slug}`;
+
   return {
     title: `${blog.title} — House of Decór`,
-    description: blog.excerpt,
+    description: blog.excerpt ? blog.excerpt.slice(0, 160) : blog.title,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+    openGraph: {
+      title: `${blog.title} — House of Decór`,
+      description: blog.excerpt ? blog.excerpt.slice(0, 160) : blog.title,
+      url: `https://houseofdecor.ae${canonicalUrl}`,
+      siteName: "House of Decór",
+      type: "article",
+      publishedTime: blog.date,
+      modifiedTime: blog.modified || blog.date,
+      authors: ["House of Decór"],
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: blog.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${blog.title} — House of Decór`,
+      description: blog.excerpt ? blog.excerpt.slice(0, 160) : blog.title,
+      images: [ogImage],
+    },
   };
 }
 
