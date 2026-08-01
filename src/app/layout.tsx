@@ -12,9 +12,21 @@ const jost = Jost({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://houseofdecor.ae"),
   title: "House of Decór — Handwoven Luxury Rugs & Bespoke Interiors",
   description:
     "Tailoring luxury, one thread at a time. Discover premium handmade rugs, bespoke curtains, and curated interior solutions by House of Decór.",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 import Header from "../components/layout/Header";
@@ -24,11 +36,16 @@ import CartDrawer from "../components/cart/CartDrawer";
 import ScrollToTop from "../components/layout/ScrollToTop";
 import { Toaster } from "react-hot-toast";
 
+import { generateOrganizationSchema, generateWebSiteSchema } from "@/src/lib/seo/schema";
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const organizationSchema = generateOrganizationSchema();
+  const webSiteSchema = generateWebSiteSchema();
+
   return (
     <html
       lang="en"
@@ -39,6 +56,14 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://store.houseofdecor.ae" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://store.houseofdecor.ae" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteSchema) }}
+        />
       </head>
       <body suppressHydrationWarning>
         <ScrollToTop />
