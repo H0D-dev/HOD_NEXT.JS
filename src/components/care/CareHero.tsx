@@ -4,6 +4,8 @@ import React, { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 
+import Image from "next/image";
+
 export default function CareHero() {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -35,11 +37,14 @@ export default function CareHero() {
         </p>
 
         {/* Hero Image */}
-        <div className="care-hero-el w-full max-w-[1200px] aspect-[4/3] md:aspect-[16/9] lg:aspect-[21/9] overflow-hidden border border-[var(--border-secondary)]">
-          <img 
+        <div className="care-hero-el w-full max-w-[1200px] aspect-[4/3] md:aspect-[16/9] lg:aspect-[21/9] relative overflow-hidden border border-[var(--border-secondary)]">
+          <Image 
             src="/images/care/care_hero_1782566445248.png" 
             alt="Care and cleaning luxury rug" 
-            className="w-full h-full object-cover object-bottom"
+            fill
+            priority
+            sizes="(max-width: 1200px) 100vw, 1200px"
+            className="object-cover object-bottom"
           />
         </div>
       </div>

@@ -6,6 +6,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
 
+import Image from "next/image";
+
 gsap.registerPlugin(ScrollTrigger);
 
 export default function LivingRoomGuide() {
@@ -112,11 +114,13 @@ export default function LivingRoomGuide() {
         </div>
 
         {/* Large Hero Image */}
-        <div className="lr-hero-container w-full h-[50vh] md:h-[65vh] lg:h-[75vh] mb-8 md:mb-16 overflow-hidden border border-[var(--border-secondary)]">
-          <img
+        <div className="lr-hero-container w-full h-[50vh] md:h-[65vh] lg:h-[75vh] mb-8 md:mb-16 relative overflow-hidden border border-[var(--border-secondary)]">
+          <Image
             src="/images/size-guide/living_room_hero_wide_1784457308593.png"
             alt="Living Room rug placement hero"
-            className="w-full h-full object-cover object-[center_60%]"
+            fill
+            sizes="100vw"
+            className="object-cover object-[center_60%]"
           />
         </div>
 
@@ -135,11 +139,13 @@ export default function LivingRoomGuide() {
                 A large rug fully situated under the furniture creates a defined, room-within-a-room aesthetic. This is ideal for open-plan spaces, ensuring all pieces—sofa, chairs, and tables—are anchored on the same premium surface.
               </p>
               {/* Mobile Fallback Image */}
-              <div className="block lg:hidden w-full aspect-[4/3] mt-4 bg-[var(--bg-secondary)] border border-[var(--border-secondary)] overflow-hidden">
-                <img
+              <div className="block lg:hidden w-full aspect-[4/3] mt-4 relative bg-[var(--bg-secondary)] border border-[var(--border-secondary)] overflow-hidden">
+                <Image
                   src="/images/size-guide/living_room_full_1782565528143.png"
                   alt="Living room full coverage layout"
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="(max-width: 1024px) 85vw, 500px"
+                  className="object-cover"
                 />
               </div>
             </div>
@@ -153,11 +159,13 @@ export default function LivingRoomGuide() {
                 Placing just the front legs of your sofa and armchairs on the rug is a versatile approach that visually connects the seating arrangement while leaving the room feeling expansive and uncluttered.
               </p>
               {/* Mobile Fallback Image */}
-              <div className="block lg:hidden w-full aspect-[4/3] mt-4 bg-[var(--bg-secondary)] border border-[var(--border-secondary)] overflow-hidden">
-                <img
+              <div className="block lg:hidden w-full aspect-[4/3] mt-4 relative bg-[var(--bg-secondary)] border border-[var(--border-secondary)] overflow-hidden">
+                <Image
                   src="/images/size-guide/living_room_front_1782565538635.png"
                   alt="Living room front legs layout"
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="(max-width: 1024px) 85vw, 500px"
+                  className="object-cover"
                 />
               </div>
             </div>
@@ -171,11 +179,13 @@ export default function LivingRoomGuide() {
                 An L-shaped sofa faces in two directions, so ensure the rug sits comfortably beneath both sections and aligns evenly. This maintains symmetry and balance within the architectural flow.
               </p>
               {/* Mobile Fallback Image */}
-              <div className="block lg:hidden w-full aspect-[4/3] mt-4 bg-[var(--bg-secondary)] border border-[var(--border-secondary)] overflow-hidden">
-                <img
+              <div className="block lg:hidden w-full aspect-[4/3] mt-4 relative bg-[var(--bg-secondary)] border border-[var(--border-secondary)] overflow-hidden">
+                <Image
                   src="/images/size-guide/living_room_lshape_1782565549792.png"
                   alt="L-shaped sofa layout"
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="(max-width: 1024px) 85vw, 500px"
+                  className="object-cover"
                 />
               </div>
             </div>
@@ -203,19 +213,25 @@ export default function LivingRoomGuide() {
           {/* Right Column — Sticky Desktop Images */}
           <div className="hidden lg:block lg:col-span-7 sticky top-24 lg:top-28 h-[calc(100vh-8rem)] max-h-[800px]">
             <div className="w-full h-full relative bg-[var(--bg-secondary)] border border-[var(--border-secondary)] overflow-hidden">
-              <img
+              <Image
                 src="/images/size-guide/living_room_full_1782565528143.png"
                 alt="Living room full coverage layout"
+                fill
+                sizes="(max-width: 1280px) 50vw, 800px"
                 className="lr-image lr-image-0 absolute inset-0 w-full h-full object-cover"
               />
-              <img
+              <Image
                 src="/images/size-guide/living_room_front_1782565538635.png"
                 alt="Living room front legs layout"
+                fill
+                sizes="(max-width: 1280px) 50vw, 800px"
                 className="lr-image lr-image-1 absolute inset-0 w-full h-full object-cover"
               />
-              <img
+              <Image
                 src="/images/size-guide/living_room_lshape_1782565549792.png"
                 alt="L-shaped sofa layout"
+                fill
+                sizes="(max-width: 1280px) 50vw, 800px"
                 className="lr-image lr-image-2 absolute inset-0 w-full h-full object-cover"
               />
             </div>

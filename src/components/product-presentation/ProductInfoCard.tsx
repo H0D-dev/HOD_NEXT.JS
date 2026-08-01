@@ -9,6 +9,7 @@ import { useCartStore } from "@/src/lib/store/useCartStore";
 import { useCurrencyStore } from "@/src/lib/store/useCurrencyStore";
 import { formatPrice } from "@/src/lib/utils/price";
 import toast from "react-hot-toast";
+import Image from "next/image";
 
 interface ProductInfoCardProps {
   product: Product & { sizes?: string[] };
@@ -260,12 +261,14 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
               className={`relative flex-shrink-0 w-12 aspect-[3/4] rounded-sm transition-all duration-300 cursor-pointer ${activeColor.id === color.id ? 'ring-1 ring-offset-2 ring-[#E87461]' : 'hover:scale-105'}`}
               aria-label={`Select color ${color.name}`}
             >
-              <div className="w-full h-full rounded-sm overflow-hidden border border-[var(--border-secondary)]">
+              <div className="w-full h-full rounded-sm overflow-hidden border border-[var(--border-secondary)] relative">
                 {color.textureUrl || color.lifestyleUrl ? (
-                  <img
+                  <Image
                     src={color.textureUrl || color.lifestyleUrl}
                     alt={color.name}
-                    className="w-full h-full object-cover"
+                    fill
+                    sizes="48px"
+                    className="object-cover"
                   />
                 ) : (
                   <div

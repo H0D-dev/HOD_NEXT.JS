@@ -5,6 +5,8 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+import Image from "next/image";
+
 gsap.registerPlugin(ScrollTrigger);
 
 export default function DiningGuide() {
@@ -46,10 +48,12 @@ export default function DiningGuide() {
           {/* Left: Rectangular Dining */}
           <div className="dining-reveal group flex flex-col border border-[var(--border-secondary)] bg-[var(--bg-primary)] overflow-hidden transition-colors duration-500 hover:border-[var(--text-primary)]">
             <div className="w-full aspect-[4/3] lg:aspect-[5/4] bg-[var(--bg-secondary)] border-b border-[var(--border-secondary)] overflow-hidden relative">
-              <img 
+              <Image 
                 src="/images/size-guide/dining_room_rect_1782565935874.png" 
                 alt="Rectangular dining setup" 
-                className="w-full h-full object-contain p-4 md:p-8 mix-blend-multiply transition-transform duration-700 ease-out group-hover:scale-105"
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
+                className="object-contain p-4 md:p-8 mix-blend-multiply transition-transform duration-700 ease-out group-hover:scale-105"
               />
             </div>
             <div className="p-4 md:p-6 lg:p-8 flex-1 flex flex-col items-center text-center">
@@ -65,10 +69,12 @@ export default function DiningGuide() {
           {/* Right: Circular Dining */}
           <div className="dining-reveal group flex flex-col border border-[var(--border-secondary)] bg-[var(--bg-primary)] overflow-hidden transition-colors duration-500 hover:border-[var(--text-primary)]">
             <div className="w-full aspect-[4/3] lg:aspect-[5/4] bg-[var(--bg-secondary)] border-b border-[var(--border-secondary)] overflow-hidden relative">
-              <img 
+              <Image 
                 src="/images/size-guide/dining_room_round_1782565945704.png" 
                 alt="Circular dining setup" 
-                className="w-full h-full object-contain p-4 md:p-8 mix-blend-multiply transition-transform duration-700 ease-out group-hover:scale-105"
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
+                className="object-contain p-4 md:p-8 mix-blend-multiply transition-transform duration-700 ease-out group-hover:scale-105"
               />
             </div>
             <div className="p-6 md:p-8 flex-1 flex flex-col items-center text-center">

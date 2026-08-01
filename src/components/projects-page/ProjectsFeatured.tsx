@@ -142,11 +142,13 @@ export default function ProjectsFeatured() {
                   </p>
 
                   {/* Mobile Fallback Inline Image */}
-                  <div className="block lg:hidden w-full aspect-[4/3] max-h-[50vh] mt-4 bg-[var(--bg-secondary)] border border-[var(--border-secondary)] overflow-hidden">
-                    <img
+                  <div className="block lg:hidden w-full aspect-[4/3] max-h-[50vh] mt-4 relative bg-[var(--bg-secondary)] border border-[var(--border-secondary)] overflow-hidden">
+                    <Image
                       src={project.image}
                       alt={project.title}
-                      className="w-full h-full object-cover"
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 50vw"
+                      className="object-cover"
                     />
                   </div>
                 </div>
@@ -183,10 +185,12 @@ export default function ProjectsFeatured() {
                 onMouseLeave={() => setCursorMode("default")}
               >
                 {projects.map((project, idx) => (
-                  <img
+                  <Image
                     key={idx}
                     src={project.image}
                     alt={project.title}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
                     className={`project-image project-image-${idx} absolute inset-0 w-full h-full object-cover transition-transform duration-[10s] ease-linear group-hover:scale-110`}
                     style={{ opacity: idx === 0 ? 1 : 0 }}
                   />

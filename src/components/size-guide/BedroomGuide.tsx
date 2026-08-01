@@ -6,6 +6,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
 
+import Image from "next/image";
+
 gsap.registerPlugin(ScrollTrigger);
 
 export default function BedroomGuide() {
@@ -103,11 +105,13 @@ export default function BedroomGuide() {
         </div>
 
         {/* Large Hero Image */}
-        <div className="bed-hero-container w-full h-[50vh] md:h-[65vh] lg:h-[75vh] mb-8 md:mb-16 overflow-hidden border border-[var(--border-secondary)]">
-          <img
+        <div className="bed-hero-container w-full h-[50vh] md:h-[65vh] lg:h-[75vh] mb-8 md:mb-16 relative overflow-hidden border border-[var(--border-secondary)]">
+          <Image
             src="/images/size-guide/bedroom_hero_wide_1784457317554.png"
             alt="Bedroom rug placement hero"
-            className="w-full h-full object-cover object-[center_60%]"
+            fill
+            sizes="100vw"
+            className="object-cover object-[center_60%]"
           />
         </div>
 
@@ -117,10 +121,12 @@ export default function BedroomGuide() {
           {/* Card A */}
           <div className="bed-card min-w-[85vw] snap-center md:min-w-0 group flex flex-col border border-[var(--border-secondary)] bg-[var(--bg-primary)] overflow-hidden transition-colors duration-500 hover:border-[var(--text-primary)]">
             <div className="aspect-[4/3] md:aspect-square w-full overflow-hidden border-b border-[var(--border-secondary)] relative">
-              <img
+              <Image
                 src="/images/size-guide/bedroom_full_1782565454914.png"
                 alt="Large rug under bed"
-                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                fill
+                sizes="(max-width: 768px) 85vw, (max-width: 1200px) 33vw, 400px"
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
               />
             </div>
             <div className="p-4 md:p-6 lg:p-8 flex-1 flex flex-col">
@@ -142,10 +148,12 @@ export default function BedroomGuide() {
           {/* Card B */}
           <div className="bed-card min-w-[85vw] snap-center md:min-w-0 group flex flex-col border border-[var(--border-secondary)] bg-[var(--bg-primary)] overflow-hidden transition-colors duration-500 hover:border-[var(--text-primary)]">
             <div className="aspect-[4/3] md:aspect-square w-full overflow-hidden border-b border-[var(--border-secondary)] relative">
-              <img
+              <Image
                 src="/images/size-guide/bedroom_runners_1782565467316.png"
                 alt="Bedside runners"
-                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                fill
+                sizes="(max-width: 768px) 85vw, (max-width: 1200px) 33vw, 400px"
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
               />
             </div>
             <div className="p-4 md:p-6 lg:p-8 flex-1 flex flex-col">
@@ -167,10 +175,12 @@ export default function BedroomGuide() {
           {/* Card C */}
           <div className="bed-card min-w-[85vw] snap-center md:min-w-0 group flex flex-col border border-[var(--border-secondary)] bg-[var(--bg-primary)] overflow-hidden transition-colors duration-500 hover:border-[var(--text-primary)]">
             <div className="aspect-[4/3] md:aspect-square w-full overflow-hidden border-b border-[var(--border-secondary)] relative">
-              <img
+              <Image
                 src="/images/size-guide/bedroom_foot_1782565488826.png"
                 alt="Foot of bed rug"
-                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                fill
+                sizes="(max-width: 768px) 85vw, (max-width: 1200px) 33vw, 400px"
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
               />
             </div>
             <div className="p-4 md:p-6 lg:p-8 flex-1 flex flex-col">
