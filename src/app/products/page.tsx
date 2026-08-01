@@ -1,40 +1,42 @@
-"use client";
+import type { Metadata } from "next";
+import ProductsClient from "@/src/components/products/ProductsClient";
 
-import React, { useEffect } from "react";
-import Lenis from "lenis";
-import ProductsHero from "@/src/components/products/ProductsHero";
-import ProductsIntro from "@/src/components/products/ProductsIntro";
-import ProductsCollections from "@/src/components/products/ProductsCollections";
-import CollectionCategories from "@/src/components/collections/CollectionCategories";
+export const metadata: Metadata = {
+  title: "Luxury Rugs & Bespoke Curtains Collections",
+  description:
+    "Explore curated collections of luxury handwoven rugs and bespoke custom curtains designed for architectural interiors.",
+  alternates: {
+    canonical: "/products",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    title: "Luxury Rugs & Bespoke Curtains Collections | House of Decór",
+    description:
+      "Explore curated collections of luxury handwoven rugs and bespoke custom curtains designed for architectural interiors.",
+    url: "https://houseofdecor.ae/products",
+    siteName: "House of Decór",
+    images: [
+      {
+        url: "https://houseofdecor.ae/about_hero_desktop.png",
+        width: 1200,
+        height: 630,
+        alt: "House of Decór Collections",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Luxury Rugs & Bespoke Curtains Collections | House of Decór",
+    description:
+      "Explore curated collections of luxury handwoven rugs and bespoke custom curtains designed for architectural interiors.",
+    images: ["https://houseofdecor.ae/about_hero_desktop.png"],
+  },
+};
 
-export default function CollectionsPage() {
-  useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 2,
-    });
-
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-
-    requestAnimationFrame(raf);
-
-    return () => {
-      lenis.destroy();
-    };
-  }, []);
-
-  return (
-    <main className="w-full flex flex-col bg-[var(--bg-primary)]">
-      <ProductsHero />
-      <ProductsIntro />
-      <CollectionCategories title="Collections" disableParallax={true} />
-      <ProductsCollections />
-    </main>
-  );
+export default function ProductsPage() {
+  return <ProductsClient />;
 }

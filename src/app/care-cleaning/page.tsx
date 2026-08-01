@@ -1,42 +1,42 @@
-"use client";
+import type { Metadata } from "next";
+import CareClient from "@/src/components/care/CareClient";
 
-import React, { useEffect } from "react";
-import Lenis from "lenis";
-import CareHero from "../../components/care/CareHero";
-import GeneralCare from "../../components/care/GeneralCare";
-import MaterialCare from "../../components/care/MaterialCare";
-import SpecialTopics from "../../components/care/SpecialTopics";
-import CareCTA from "../../components/care/CareCTA";
+export const metadata: Metadata = {
+  title: "Rug Care, Cleaning & Maintenance Guide",
+  description:
+    "Expert guide on preserving handmade silk and wool rugs. Learn professional care, stain removal, and long-term maintenance techniques.",
+  alternates: {
+    canonical: "/care-cleaning",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    title: "Rug Care, Cleaning & Maintenance Guide | House of Decór",
+    description:
+      "Expert guide on preserving handmade silk and wool rugs. Learn professional care, stain removal, and long-term maintenance techniques.",
+    url: "https://houseofdecor.ae/care-cleaning",
+    siteName: "House of Decór",
+    images: [
+      {
+        url: "https://houseofdecor.ae/about_hero_desktop.png",
+        width: 1200,
+        height: 630,
+        alt: "Rug Care & Cleaning Guide",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Rug Care, Cleaning & Maintenance Guide | House of Decór",
+    description:
+      "Expert guide on preserving handmade silk and wool rugs. Learn professional care, stain removal, and long-term maintenance techniques.",
+    images: ["https://houseofdecor.ae/about_hero_desktop.png"],
+  },
+};
 
 export default function CareCleaningPage() {
-  useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 2,
-    });
-
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-
-    requestAnimationFrame(raf);
-
-    return () => {
-      lenis.destroy();
-    };
-  }, []);
-
-  return (
-    <main className="w-full flex flex-col bg-[var(--bg-primary)] selection:bg-[var(--text-primary)] selection:text-[var(--bg-primary)]">
-      <CareHero />
-      <GeneralCare />
-      <MaterialCare />
-      <SpecialTopics />
-      <CareCTA />
-    </main>
-  );
+  return <CareClient />;
 }

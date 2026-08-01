@@ -1,47 +1,42 @@
-"use client";
+import type { Metadata } from "next";
+import BespokeClient from "@/src/components/bespoke/BespokeClient";
 
-import React, { useEffect } from "react";
-import Lenis from "lenis";
-
-import BespokeHero from "../../components/bespoke/BespokeHero";
-import PhilosophySection from "../../components/bespoke/PhilosophySection";
-import BespokeProcess from "../../components/bespoke/BespokeProcess";
-import MaterialsSection from "../../components/bespoke/MaterialsSection";
-
-import ConsultationCTA from "../../components/bespoke/ConsultationCTA";
-import TestimonialsSection from "../../components/bespoke/TestimonialsSection";
+export const metadata: Metadata = {
+  title: "Bespoke Custom Rugs & Tailored Drapery",
+  description:
+    "Commission custom handmade rugs and bespoke curtains tailored to your exact architectural dimensions, materials, and color specifications.",
+  alternates: {
+    canonical: "/bespoke",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    title: "Bespoke Custom Rugs & Tailored Drapery | House of Decór",
+    description:
+      "Commission custom handmade rugs and bespoke curtains tailored to your exact architectural dimensions, materials, and color specifications.",
+    url: "https://houseofdecor.ae/bespoke",
+    siteName: "House of Decór",
+    images: [
+      {
+        url: "https://houseofdecor.ae/about_hero_desktop.png",
+        width: 1200,
+        height: 630,
+        alt: "Bespoke Custom Rugs & Drapery",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Bespoke Custom Rugs & Tailored Drapery | House of Decór",
+    description:
+      "Commission custom handmade rugs and bespoke curtains tailored to your exact architectural dimensions, materials, and color specifications.",
+    images: ["https://houseofdecor.ae/about_hero_desktop.png"],
+  },
+};
 
 export default function BespokePage() {
-  useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 2,
-    });
-
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-
-    requestAnimationFrame(raf);
-
-    return () => {
-      lenis.destroy();
-    };
-  }, []);
-
-  return (
-    <main className="w-full flex flex-col bg-[var(--bg-primary)]">
-      <BespokeHero />
-      <PhilosophySection />
-      <BespokeProcess />
-      <MaterialsSection />
-
-      <ConsultationCTA />
-      <TestimonialsSection />
-    </main>
-  );
+  return <BespokeClient />;
 }

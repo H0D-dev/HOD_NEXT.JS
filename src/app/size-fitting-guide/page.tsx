@@ -1,50 +1,42 @@
-"use client";
+import type { Metadata } from "next";
+import SizeGuideClient from "@/src/components/size-guide/SizeGuideClient";
 
-import React, { useEffect } from "react";
-import Lenis from "lenis";
-import SizeGuideHero from "../../components/size-guide/SizeGuideHero";
-
-import GuideOverview from "../../components/size-guide/GuideOverview";
-
-import LivingRoomGuide from "../../components/size-guide/LivingRoomGuide";
-import BedroomGuide from "../../components/size-guide/BedroomGuide";
-import DiningGuide from "../../components/size-guide/DiningGuide";
-import FinalCTA from "../../components/size-guide/FinalCTA";
+export const metadata: Metadata = {
+  title: "Rug Size & Placement Guide for Living Rooms",
+  description:
+    "Interactive size and placement guide for living rooms, dining spaces, and bedrooms. Find the perfect rug dimensions for your floorplan.",
+  alternates: {
+    canonical: "/size-fitting-guide",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    title: "Rug Size & Placement Guide for Living Rooms & Bedrooms | House of Decór",
+    description:
+      "Interactive size and placement guide for living rooms, dining spaces, and bedrooms. Find the perfect rug dimensions for your floorplan.",
+    url: "https://houseofdecor.ae/size-fitting-guide",
+    siteName: "House of Decór",
+    images: [
+      {
+        url: "https://houseofdecor.ae/about_hero_desktop.png",
+        width: 1200,
+        height: 630,
+        alt: "Rug Size & Fitting Guide",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Rug Size & Placement Guide for Living Rooms & Bedrooms | House of Decór",
+    description:
+      "Interactive size and placement guide for living rooms, dining spaces, and bedrooms. Find the perfect rug dimensions for your floorplan.",
+    images: ["https://houseofdecor.ae/about_hero_desktop.png"],
+  },
+};
 
 export default function SizeFittingGuidePage() {
-  useEffect(() => {
-    // Initialize Lenis for smooth scrolling
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // standard easing
-      smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 2,
-    });
-
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-
-    requestAnimationFrame(raf);
-
-    // Clean up
-    return () => {
-      lenis.destroy();
-    };
-  }, []);
-
-  return (
-    <main className="w-full flex flex-col bg-[var(--bg-primary)] selection:bg-[var(--text-primary)] selection:text-[var(--bg-primary)]">
-      <SizeGuideHero />
-
-      <GuideOverview />
-
-      <LivingRoomGuide />
-      <BedroomGuide />
-      <DiningGuide />
-      <FinalCTA />
-    </main>
-  );
+  return <SizeGuideClient />;
 }
