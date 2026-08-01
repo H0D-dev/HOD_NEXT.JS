@@ -17,6 +17,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
+import { generateBlogPostingSchema, generateBreadcrumbSchema, BASE_URL } from "@/src/lib/seo/schema";
+
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const posts = await getPosts();
@@ -35,8 +37,25 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   // Determine next blog (loop back to first if at the end)
   const nextBlog = posts.length > 1 ? posts[(currentIndex + 1) % posts.length] : null;
 
+  const blogSchema = generateBlogPostingSchema(blog);
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: `${BASE_URL}/` },
+    { name: "Journal & Insights", url: `${BASE_URL}/blog` },
+    { name: blog.title, url: `${BASE_URL}/blog/${blog.slug}` },
+  ]);
+
   return (
     <main className="w-full flex flex-col bg-[var(--bg-primary)]">
+      {blogSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }}
+        />
+      )}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <BlogContent blog={blog} nextBlog={nextBlog} />
     </main>
   );

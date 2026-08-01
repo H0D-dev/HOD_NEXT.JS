@@ -17,6 +17,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
+import { generateProductSchema, generateBreadcrumbSchema, BASE_URL } from "@/src/lib/seo/schema";
+
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const product = await getProductBySlug(slug);
@@ -33,8 +35,26 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
     relatedProducts = await getRelatedProducts(product.relatedIds);
   }
 
+  const productSchema = generateProductSchema(product, "rugs");
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: `${BASE_URL}/` },
+    { name: "Products", url: `${BASE_URL}/products` },
+    { name: "Handmade Rugs", url: `${BASE_URL}/products/rugs` },
+    { name: product.name, url: `${BASE_URL}/products/rugs/${product.slug}` },
+  ]);
+
   return (
     <main className="w-full">
+      {productSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+        />
+      )}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <ProductPresentation product={product} relatedProducts={relatedProducts} />
     </main>
   );
