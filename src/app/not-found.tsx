@@ -38,11 +38,11 @@ export default function NotFound() {
         <span className="text-[var(--accent-primary)] text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium mb-3 block">
           404 — Page Not Found
         </span>
-        <h1 className="font-sans text-3xl md:text-5xl font-light text-[var(--text-primary)] mb-4 leading-tight">
+        <h1 className="font-sans text-xl md:text-2xl lg:text-3xl font-light text-[var(--text-primary)] mb-4 leading-snug">
           The page you are looking for has moved or does not exist.
         </h1>
         <p className="text-xs md:text-sm text-[var(--text-secondary)] font-light max-w-lg mb-8 leading-relaxed">
-          Allow us to guide you back to our curated collections of luxury handwoven rugs, custom architectural curtains, and interior design insights.
+          Allow us to guide you back to our curated collections of luxury handwoven rugs, bespoke commissions, and interior design insights.
         </p>
 
         {/* 2. Primary Focus: Interactive Search Bar */}
@@ -104,13 +104,13 @@ export default function NotFound() {
             </Link>
 
             <Link
-              href="/products/curtains"
+              href="/bespoke"
               className="group p-6 border border-[var(--border-secondary)] bg-[var(--bg-secondary)] hover:border-[var(--accent-primary)] transition-all text-left flex items-center justify-between"
             >
               <div>
-                <span className="text-[10px] uppercase tracking-widest text-[var(--accent-primary)] block mb-1">Bespoke</span>
+                <span className="text-[10px] uppercase tracking-widest text-[var(--accent-primary)] block mb-1">Tailored</span>
                 <h3 className="text-base font-light text-[var(--text-primary)] group-hover:text-[var(--accent-primary)] transition-colors">
-                  Custom Drapery & Curtains
+                  Bespoke Custom Rugs
                 </h3>
               </div>
               <ArrowRight className="w-5 h-5 text-[var(--text-muted)] group-hover:text-[var(--accent-primary)] transition-colors" />

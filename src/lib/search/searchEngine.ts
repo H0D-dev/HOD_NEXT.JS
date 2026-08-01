@@ -28,12 +28,11 @@ const STATIC_COLLECTIONS: SearchResultItem[] = [
     image: '/banners/rugs_banner.jpg',
   },
   {
-    id: 'col-curtains',
-    title: 'Bespoke Luxury Curtains',
-    subtitle: 'Custom architectural drapery and window treatments',
-    url: '/products/curtains',
+    id: 'col-bespoke',
+    title: 'Bespoke Custom Rugs',
+    subtitle: 'Commission custom sizes, fibers, colors, and patterns',
+    url: '/bespoke',
     type: 'collection',
-    image: '/banners/curtains_banner.jpg',
   },
   {
     id: 'col-trade',
