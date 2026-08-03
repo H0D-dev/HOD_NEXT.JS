@@ -1,42 +1,45 @@
+import { cache } from "react";
+
 /**
  * @param {number|string|null} [categoryId=null]
  */
-export async function getProducts(categoryId = null) {
+export const getProducts = cache(async (categoryId = null) => {
     try {
         let url = '/api/products';
         if (categoryId) {
             url += `?category=${categoryId}`;
         }
 
-        const res = await fetch(url, { next: { revalidate: 300 } })
+        const res = await fetch(url, { next: { revalidate: 300 } });
         if (!res.ok) {
             throw new Error("Failed to fetch products");
         }
-        const { products } = await res.json()
-        return products
+        const { products } = await res.json();
+        return products;
     } catch (error) {
-        return { error: "Failed to fetch products" }
+        console.error("Failed to fetch products:", error);
+        return { error: "Failed to fetch products" };
     }
-}
+});
 
-export async function getProduct(id) {
+export const getProduct = cache(async (id) => {
     try {
-        const res = await fetch(`/api/products/${id}`)
+        const res = await fetch(`/api/products/${id}`, { next: { revalidate: 300 } });
         if (!res.ok) {
             throw new Error(`Failed to fetch product ${id}`);
         }
-        const { product } = await res.json()
-        console.log(products)
-        return product
+        const { product } = await res.json();
+        return product;
     } catch (error) {
-        return { error: `Failed to fetch product ${id}` }
+        console.error(`Failed to fetch product ${id}:`, error);
+        return { error: `Failed to fetch product ${id}` };
     }
-}
+});
 
 /**
  * @param {number|string|null} [parentId=null]
  */
-export async function getCategories(parentId = null) {
+export const getCategories = cache(async (parentId = null) => {
     try {
         let url = '/api/categories';
         if (parentId) {
@@ -49,11 +52,12 @@ export async function getCategories(parentId = null) {
         const { categories } = await res.json();
         return categories;
     } catch (error) {
+        console.error("Failed to fetch categories:", error);
         return [];
     }
-}
+});
 
-export async function getCategoryIdBySlug(slug) {
+export const getCategoryIdBySlug = cache(async (slug) => {
     try {
         const res = await fetch(`/api/categories?slug=${slug}`, { next: { revalidate: 300 } });
         if (!res.ok) throw new Error("Failed to fetch category");
@@ -63,6 +67,8 @@ export async function getCategoryIdBySlug(slug) {
         }
         return null;
     } catch (error) {
+        console.error("Failed to fetch category by slug:", error);
         return null;
     }
-}
+});
+
