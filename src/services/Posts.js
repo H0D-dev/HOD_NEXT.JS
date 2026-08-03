@@ -1,4 +1,5 @@
-import { API_CONFIG } from "@/src/lib/api/api"
+import { cache } from "react";
+import { API_CONFIG } from "@/src/lib/api/api";
 
 function getPostImageUrl(post) {
     // 1. Check embedded WP Featured Media
@@ -27,7 +28,7 @@ function getPostImageUrl(post) {
     }
 
     // 4. Default fallback placeholder image
-    return '/products_hero.png';
+    return '/products_hero.webp';
 }
 
 function decodeHtmlEntities(text) {
@@ -56,12 +57,13 @@ function decodeHtmlEntities(text) {
     });
 }
 
-export async function getPosts() {
+export const getPosts = cache(async () => {
     try {
-        const URL = `${API_CONFIG.baseUrl}/wp-json/wp/v2/posts?_embed`;
+        const URL = `${API_CONFIG.baseUrl}/wp-json/wp/v2/posts?_embed&per_page=20`;
         
         const res = await fetch(URL, {
-            next: { revalidate: 60 },
+            next: { revalidate: 3600 },
+            signal: AbortSignal.timeout(5000)
         });
         
         const rawPosts = await res.json();
@@ -85,6 +87,7 @@ export async function getPosts() {
                 title: title,
                 excerpt: cleanExcerpt,
                 date: new Date(post.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+                modified: post.modified,
                 image: imageUrl,
                 content: cleanedContent,
                 sections: []
@@ -93,17 +96,51 @@ export async function getPosts() {
 
         return posts;
     } catch (error) {
-        console.log(error)
-        return { error: "Failed to fetch posts" }
+        if (error?.name === 'TimeoutError' || error?.name === 'AbortError') {
+            console.warn("[WordPress API] Connection timed out for /wp/v2/posts (store.houseofdecor.ae unreachable). Using fallback.");
+        } else {
+            console.warn("[WordPress API] Fetch failed for /wp/v2/posts:", error?.message || error);
+        }
+        return { error: "Failed to fetch posts" };
     }
-} 
+}); 
 
-export async function getPostBySlug(slug) {
+export const getPostBySlug = cache(async (slug) => {
     try {
-        const posts = await getPosts();
-        if (posts.error || !Array.isArray(posts)) return null;
-        return posts.find(post => post.slug.toLowerCase() === slug?.toLowerCase());
+        if (!slug) return null;
+        const URL = `${API_CONFIG.baseUrl}/wp-json/wp/v2/posts?slug=${encodeURIComponent(slug)}&_embed`;
+        const res = await fetch(URL, {
+            next: { revalidate: 3600 },
+            signal: AbortSignal.timeout(5000)
+        });
+        const rawPosts = await res.json();
+        if (!Array.isArray(rawPosts) || rawPosts.length === 0) return null;
+
+        const post = rawPosts[0];
+        const imageUrl = getPostImageUrl(post);
+        const rawContent = post.content?.rendered || '';
+        const rawExcerpt = post.excerpt?.rendered || '';
+        let cleanExcerpt = decodeHtmlEntities(rawExcerpt.replace(/<[^>]+>/g, '').trim());
+        cleanExcerpt = cleanExcerpt.replace(/\[…\]/g, '...');
+        const title = decodeHtmlEntities(post.title?.rendered || '');
+
+        return {
+            id: post.id,
+            slug: post.slug,
+            title: title,
+            excerpt: cleanExcerpt,
+            date: new Date(post.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+            modified: post.modified,
+            image: imageUrl,
+            content: rawContent,
+            sections: []
+        };
     } catch (error) {
+        if (error?.name === 'TimeoutError' || error?.name === 'AbortError') {
+            console.warn(`[WordPress API] Connection timed out for slug: ${slug}`);
+        } else {
+            console.warn(`[WordPress API] Fetch failed for slug ${slug}:`, error?.message || error);
+        }
         return null;
     }
-}
+});
