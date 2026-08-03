@@ -167,8 +167,6 @@ export default function Header() {
                 width={300}
                 height={60}
                 priority
-                loading="eager"
-                fetchPriority="high"
                 className="header__logo-img hidden lg:block"
               />
               {/* Tablet Logo (hidden on mobile and lg-up, visible on md) */}
@@ -177,9 +175,6 @@ export default function Header() {
                 alt="House of Decór"
                 width={250}
                 height={50}
-                priority
-                loading="eager"
-                fetchPriority="high"
                 className="header__logo-img hidden md:block lg:hidden"
               />
               {/* Mobile Logo (visible on mobile, hidden on md-up) */}
@@ -188,9 +183,6 @@ export default function Header() {
                 alt="House of Decór"
                 width={200}
                 height={40}
-                priority
-                loading="eager"
-                fetchPriority="high"
                 className="header__logo-img block md:hidden"
               />
             </Link>
