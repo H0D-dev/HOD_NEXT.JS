@@ -42,7 +42,7 @@ export default function AboutConclusion() {
           className="relative w-full lg:w-[55%] aspect-[16/9] overflow-hidden"
         >
           <Image
-            src="/contact_hero_desktop.png"
+            src="/contact_hero_desktop.webp"
             alt="Luxury interior setting"
             fill
             className="object-cover object-[center_75%] transition-transform duration-1000 hover:scale-105"

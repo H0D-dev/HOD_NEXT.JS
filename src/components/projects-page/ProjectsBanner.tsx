@@ -22,7 +22,7 @@ export default function ProjectsBanner() {
       {/* Parallax Background */}
       <motion.div className="absolute inset-0 w-full h-[130%]" style={{ y }}>
         <Image 
-          src="/projects_hero.png" // Reusing hero image but darkened
+          src="/projects_hero.webp" // Reusing hero image but darkened
           alt="The Lana Dubai Dorchester Collection"
           fill
           className="object-cover object-[center_bottom]"

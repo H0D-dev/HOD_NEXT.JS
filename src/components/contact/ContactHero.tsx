@@ -49,7 +49,7 @@ export default function ContactHero() {
       {/* ── Background Image Desktop ── */}
       <div className="absolute inset-0 w-full h-[120%] -top-[10%] z-0 hidden md:block" ref={bgRefDesktop}>
         <Image
-          src="/contact_hero_desktop.png"
+          src="/contact_hero_desktop.webp"
           alt="Luxury architectural interior"
           fill
           priority

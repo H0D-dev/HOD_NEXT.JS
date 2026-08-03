@@ -50,7 +50,7 @@ export default function AboutHero() {
       {/* ── Background Image Desktop ── */}
       <div className="absolute inset-0 w-full h-[120%] -top-[10%] z-0 hidden md:block" ref={bgRefDesktop}>
         <Image
-          src="/about_hero_desktop.png"
+          src="/about_hero_desktop.webp"
           alt="House of Decór - Luxury Living Room"
           fill
           priority
