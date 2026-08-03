@@ -1,16 +1,19 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, Suspense } from "react";
+import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
 import CatalogHeader from "./CatalogHeader";
 import CatalogControls from "./CatalogControls";
 import ProductGrid from "./ProductGrid";
-import FilterDrawer from "./FilterDrawer";
 import Pagination from "./Pagination";
 import { RUGS_CONFIG, CURTAINS_CONFIG, FilterCategory, ProductStub } from "../../lib/catalogConfig";
 import { getProducts, getCategoryIdBySlug } from "../../services/Product";
 import { useCurrencyStore } from "../../lib/store/useCurrencyStore";
 import { formatPrice } from "../../lib/utils/price";
+
+const FilterDrawer = dynamic(() => import("./FilterDrawer"), { ssr: false });
+
 
 interface ProductCatalogLayoutProps {
   category: "rugs" | "curtains";
