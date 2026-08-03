@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { memo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ProductStub } from "../../lib/catalogConfig";
@@ -12,7 +12,7 @@ interface ProductCardProps {
   priority?: boolean;
 }
 
-export default function ProductCard({ product, baseRoute, priority = false }: ProductCardProps) {
+function ProductCardComponent({ product, baseRoute, priority = false }: ProductCardProps) {
   const { currency } = useCurrencyStore();
 
   return (
@@ -29,8 +29,6 @@ export default function ProductCard({ product, baseRoute, priority = false }: Pr
           className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
         />
-
-
       </div>
 
       <div className="flex flex-col items-start px-2 mt-2">
@@ -62,3 +60,16 @@ export default function ProductCard({ product, baseRoute, priority = false }: Pr
     </Link>
   );
 }
+
+const ProductCard = memo(ProductCardComponent, (prevProps, nextProps) => {
+  return (
+    prevProps.product.id === nextProps.product.id &&
+    prevProps.product.price === nextProps.product.price &&
+    prevProps.product.image === nextProps.product.image &&
+    prevProps.baseRoute === nextProps.baseRoute &&
+    prevProps.priority === nextProps.priority
+  );
+});
+
+export default ProductCard;
+
