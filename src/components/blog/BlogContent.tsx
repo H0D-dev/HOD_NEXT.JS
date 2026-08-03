@@ -33,6 +33,55 @@ export default function BlogContent({ blog, nextBlog }: { blog: Blog, nextBlog?:
     return () => observer.disconnect();
   }, [blog]);
 
+  // Gallery Formatting & Image Grouping Effect
+  useEffect(() => {
+    const contentEl = document.querySelector(".blog-content");
+    if (!contentEl) return;
+
+    // 1. Tag explicit WordPress galleries with grid-gallery-row
+    const galleries = contentEl.querySelectorAll(".wp-block-gallery, .blocks-gallery-grid, .gallery, [class*='wp-block-gallery']");
+    galleries.forEach((gallery) => {
+      gallery.classList.add("grid-gallery-row");
+      const items = gallery.querySelectorAll("figure, .wp-block-image");
+      if (items.length === 2) {
+        gallery.classList.add("grid-cols-2");
+      } else if (items.length === 4) {
+        gallery.classList.add("grid-cols-4");
+      } else {
+        gallery.classList.add("grid-cols-3");
+      }
+    });
+
+    // 2. Automatically group consecutive standalone figure.wp-block-image elements
+    const figures = Array.from(contentEl.querySelectorAll("figure.wp-block-image"));
+    let currentGroup: Element[] = [];
+
+    figures.forEach((fig, idx) => {
+      if (fig.parentElement?.classList.contains("grid-gallery-row") || fig.parentElement?.classList.contains("wp-block-gallery")) {
+        return;
+      }
+      const prev = fig.previousElementSibling;
+      if (prev && prev.tagName === "FIGURE" && prev.classList.contains("wp-block-image") && !prev.parentElement?.classList.contains("grid-gallery-row")) {
+        currentGroup.push(fig);
+      } else {
+        if (currentGroup.length > 1) {
+          wrapGroupInGallery(currentGroup);
+        }
+        currentGroup = [fig];
+      }
+      if (idx === figures.length - 1 && currentGroup.length > 1) {
+        wrapGroupInGallery(currentGroup);
+      }
+    });
+
+    function wrapGroupInGallery(group: Element[]) {
+      const wrapper = document.createElement("div");
+      wrapper.className = `wp-block-gallery grid-gallery-row grid-cols-${Math.min(group.length, 4)}`;
+      group[0].parentNode?.insertBefore(wrapper, group[0]);
+      group.forEach((fig) => wrapper.appendChild(fig));
+    }
+  }, [blog]);
+
   const handleAccordionClick = (id: string) => {
     setOpenAccordion(openAccordion === id ? null : id);
   };
