@@ -19,16 +19,50 @@ export default function HeroSection() {
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const images = [
-    "/images/home/Home-Hero-Image-1.png",
-    "/images/home/Home-Hero-Image-2.png",
-    "/images/home/Home-Hero-Image-3.png"
+    "/images/home/Home-Hero-Image-1.webp",
+    "/images/home/Home-Hero-Image-2.webp",
+    "/images/home/Home-Hero-Image-3.webp"
   ];
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % images.length);
-    }, 5000);
-    return () => clearInterval(interval);
+    let interval: NodeJS.Timeout | null = null;
+
+    const startTimer = () => {
+      if (!interval) {
+        interval = setInterval(() => {
+          setCurrentImageIndex((prev) => (prev + 1) % images.length);
+        }, 5000);
+      }
+    };
+
+    const stopTimer = () => {
+      if (interval) {
+        clearInterval(interval);
+        interval = null;
+      }
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          startTimer();
+        } else {
+          stopTimer();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    startTimer();
+
+    return () => {
+      stopTimer();
+      observer.disconnect();
+    };
   }, [images.length]);
 
   useGSAP(() => {
