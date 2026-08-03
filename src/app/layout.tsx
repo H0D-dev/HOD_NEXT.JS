@@ -35,12 +35,14 @@ export const metadata: Metadata = {
   },
 };
 
+import dynamic from "next/dynamic";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
-import CartDrawer from "../components/cart/CartDrawer";
-
 import ScrollToTop from "../components/layout/ScrollToTop";
-import { Toaster } from "react-hot-toast";
+import SmoothScrollProvider from "../components/layout/SmoothScrollProvider";
+
+const CartDrawer = dynamic(() => import("../components/cart/CartDrawer"));
+const Toaster = dynamic(() => import("react-hot-toast").then((mod) => mod.Toaster));
 
 import { generateOrganizationSchema, generateWebSiteSchema } from "@/src/lib/seo/schema";
 
@@ -72,24 +74,26 @@ export default function RootLayout({
         />
       </head>
       <body suppressHydrationWarning>
-        <ScrollToTop />
+        <SmoothScrollProvider>
+          <ScrollToTop />
 
-        <Header />
-        <CartDrawer />
-        <Toaster 
-          position="top-center" 
-          toastOptions={{
-            style: {
-              background: 'var(--bg-secondary)',
-              color: 'var(--text-primary)',
-              fontFamily: 'var(--font-inter)',
-              border: '1px solid var(--border-color)',
-            },
-          }} 
-        />
-        {children}
-        <Footer />
-        <Analytics />
+          <Header />
+          <CartDrawer />
+          <Toaster 
+            position="top-center" 
+            toastOptions={{
+              style: {
+                background: 'var(--bg-secondary)',
+                color: 'var(--text-primary)',
+                fontFamily: 'var(--font-inter)',
+                border: '1px solid var(--border-color)',
+              },
+            }} 
+          />
+          {children}
+          <Footer />
+          <Analytics />
+        </SmoothScrollProvider>
       </body>
     </html>
   );
