@@ -7,7 +7,10 @@ export async function getFeaturedProducts(categorySlug?: string) {
     if (categorySlug) {
       // 1. Fetch the category ID by slug
       const catUrl = `${API_CONFIG.baseUrl}/wp-json/wc/v3/products/categories?slug=${categorySlug}&consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}`;
-      const catRes = await fetch(catUrl, { next: { revalidate: 3600 } });
+      const catRes = await fetch(catUrl, {
+        next: { revalidate: 3600 },
+        signal: AbortSignal.timeout(5000)
+      });
       
       if (!catRes.ok) {
         throw new Error(`Failed to fetch categories: ${catRes.statusText}`);
@@ -27,7 +30,10 @@ export async function getFeaturedProducts(categorySlug?: string) {
     // 2. Fetch featured products (for the specific category if provided)
     const fields = "id,name,slug,price,price_html,images,categories";
     const prodUrl = `${API_CONFIG.baseUrl}/wp-json/wc/v3/products?featured=true&per_page=8${categoryQuery}&consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&_fields=${fields}`;
-    const prodRes = await fetch(prodUrl, { next: { revalidate: 3600 } });
+    const prodRes = await fetch(prodUrl, {
+      next: { revalidate: 3600 },
+      signal: AbortSignal.timeout(5000)
+    });
     
     if (!prodRes.ok) {
         throw new Error(`Failed to fetch featured products: ${prodRes.statusText}`);
@@ -58,8 +64,12 @@ export async function getFeaturedProducts(categorySlug?: string) {
         slug: p.slug
       };
     });
-  } catch (error) {
-    console.error(`Failed to fetch featured products${categorySlug ? ` for ${categorySlug}` : ''}:`, error);
+  } catch (error: any) {
+    if (error?.name === "TimeoutError" || error?.name === "AbortError" || error?.cause?.code === "UND_ERR_CONNECT_TIMEOUT") {
+      console.warn(`[WooCommerce API] Featured products request timed out${categorySlug ? ` for category '${categorySlug}'` : ""}. Using fallback.`);
+    } else {
+      console.warn(`[WooCommerce API] Failed to fetch featured products${categorySlug ? ` for ${categorySlug}` : ""}:`, error?.message || error);
+    }
     return [];
   }
 }

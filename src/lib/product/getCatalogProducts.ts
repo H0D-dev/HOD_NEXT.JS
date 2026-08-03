@@ -9,7 +9,10 @@ async function getCategoryIdBySlugServer(slug: string): Promise<number | null> {
   }
   try {
     const url = `${API_CONFIG.baseUrl}/wp-json/wc/v3/products/categories?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&slug=${slug}`;
-    const res = await fetch(url, { next: { revalidate: 300 } });
+    const res = await fetch(url, {
+      next: { revalidate: 300 },
+      signal: AbortSignal.timeout(5000)
+    });
     if (!res.ok) return null;
     const categories = await res.json();
     if (Array.isArray(categories) && categories.length > 0) {
@@ -17,8 +20,12 @@ async function getCategoryIdBySlugServer(slug: string): Promise<number | null> {
       categoryIdCache.set(slug, id);
       return id;
     }
-  } catch (error) {
-    console.error(`Failed to resolve category slug ${slug}:`, error);
+  } catch (error: any) {
+    if (error?.name === "TimeoutError" || error?.name === "AbortError" || error?.cause?.code === "UND_ERR_CONNECT_TIMEOUT") {
+      console.warn(`[WooCommerce API] Connection timed out resolving category slug '${slug}'.`);
+    } else {
+      console.warn(`[WooCommerce API] Failed to resolve category slug ${slug}:`, error?.message || error);
+    }
   }
   return null;
 }
@@ -42,7 +49,10 @@ export async function fetchCatalogProducts(categoryParam?: string | number | nul
       url += `&category=${categoryId}`;
     }
 
-    const res = await fetch(url, { next: { revalidate: 300 } });
+    const res = await fetch(url, {
+      next: { revalidate: 300 },
+      signal: AbortSignal.timeout(5000)
+    });
     if (!res.ok) return [];
 
     const rawProducts = await res.json();
@@ -86,7 +96,7 @@ export async function fetchCatalogProducts(categoryParam?: string | number | nul
                   if (meta && meta.value) {
                     try {
                       manualPrices = typeof meta.value === "string" ? JSON.parse(meta.value) : meta.value;
-                    } catch (e) {}
+                    } catch (e) { }
                   }
                 }
                 variationCache.set(v.id, {
@@ -105,11 +115,11 @@ export async function fetchCatalogProducts(categoryParam?: string | number | nul
     return rawProducts.map((product) => {
       const rawAcf = product.meta_data
         ? product.meta_data.reduce((acc: any, meta: any) => {
-            if (!meta.key.startsWith("_")) {
-              acc[meta.key] = meta.value;
-            }
-            return acc;
-          }, {})
+          if (!meta.key.startsWith("_")) {
+            acc[meta.key] = meta.value;
+          }
+          return acc;
+        }, {})
         : {};
 
       const acf = {
@@ -140,7 +150,7 @@ export async function fetchCatalogProducts(categoryParam?: string | number | nul
         if (meta && meta.value) {
           try {
             finalManualPrices = typeof meta.value === "string" ? JSON.parse(meta.value) : meta.value;
-          } catch (e) {}
+          } catch (e) { }
         }
       }
 
@@ -188,8 +198,12 @@ export async function fetchCatalogProducts(categoryParam?: string | number | nul
         acf,
       };
     });
-  } catch (error) {
-    console.error("Failed to fetch catalog products:", error);
+  } catch (error: any) {
+    if (error?.name === "TimeoutError" || error?.name === "AbortError" || error?.cause?.code === "UND_ERR_CONNECT_TIMEOUT") {
+      console.warn("[WooCommerce API] Catalog products request timed out. Using fallback.");
+    } else {
+      console.warn("[WooCommerce API] Failed to fetch catalog products:", error?.message || error);
+    }
     return [];
   }
 }
