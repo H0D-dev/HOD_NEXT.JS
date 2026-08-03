@@ -46,28 +46,29 @@ export default function FeaturedProductsClientSection({ rugsProducts }: Featured
         <div className="featured__slider-wrapper w-full overflow-hidden">
           <ProductSlider ref={sliderRef} products={rugsProducts} title="Rugs" />
         </div>
-        
+
         {/* Navigation Arrows */}
-        <div 
+        <div
+
           className="flex justify-end gap-2 px-6 sm:px-12 md:px-16 lg:px-24 mt-2"
           onMouseEnter={(e) => {
             e.stopPropagation();
             setCursorMode("default");
           }}
         >
-          <button 
+          <button
             onClick={() => sliderRef.current?.scrollPrev()}
             className="cursor-pointer w-10 h-10 md:w-12 md:h-12 border border-[#2C251F]/20 flex items-center justify-center rounded-full text-[#2C251F] hover:bg-[#2C251F] hover:text-white transition-colors duration-300"
             aria-label="Previous"
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6" /></svg>
           </button>
-          <button 
+          <button
             onClick={() => sliderRef.current?.scrollNext()}
             className="cursor-pointer w-10 h-10 md:w-12 md:h-12 border border-[#2C251F]/20 flex items-center justify-center rounded-full text-[#2C251F] hover:bg-[#2C251F] hover:text-white transition-colors duration-300"
             aria-label="Next"
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>
           </button>
         </div>
       </div>
