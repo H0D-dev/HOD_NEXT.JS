@@ -13,10 +13,10 @@ if (typeof window !== "undefined") {
 }
 
 const collections = [
-  { title: "THE CAPSULE", slug: "the-capsule", image: "/collections/capsule.png" },
-  { title: "TERRA", slug: "terra", image: "/collections/terra.png" },
-  { title: "THE CHROMA EDIT", slug: "the-chroma-edit", image: "/collections/chroma.png" },
-  { title: "BAUHAUS BLEND", slug: "bauhaus-blend", image: "/collections/bauhaus.png" },
+  { title: "THE CAPSULE", slug: "the-capsule", image: "/collections/capsule.webp" },
+  { title: "TERRA", slug: "terra", image: "/collections/terra.webp" },
+  { title: "THE CHROMA EDIT", slug: "the-chroma-edit", image: "/collections/chroma.webp" },
+  { title: "BAUHAUS BLEND", slug: "bauhaus-blend", image: "/collections/bauhaus.webp" },
 ];
 
 export default function CollectionCategories({ 
