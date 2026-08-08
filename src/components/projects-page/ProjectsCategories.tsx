@@ -16,22 +16,22 @@ const categories = [
   {
     title: "RESIDENTIAL",
     desc: "Luxury villas, apartments, penthouses and private residences where handcrafted rugs become timeless centerpieces.",
-    image: "/images/projects/Project-Residential.png",
+    image: "/images/projects/Project-Residential.webp",
   },
   {
     title: "HOSPITALITY",
     desc: "Hotels, resorts, lounges and branded residences designed for exceptional guest experiences.",
-    image: "/images/projects/Project-Hospitality.png",
+    image: "/images/projects/Project-Hospitality.webp",
   },
   {
     title: "COMMERCIAL",
     desc: "Corporate headquarters, executive offices, retail environments and public spaces balancing aesthetics with durability.",
-    image: "/images/projects/Project-Commercial.png",
+    image: "/images/projects/Project-Commercial.webp",
   },
   {
     title: "CULTURAL SPACES",
     desc: "Museums, galleries, cultural centers and institutions where craftsmanship and design come together.",
-    image: "/images/projects/Porject-Cultural-Spaces.png",
+    image: "/images/projects/Porject-Cultural-Spaces.webp",
   },
 ];
 
