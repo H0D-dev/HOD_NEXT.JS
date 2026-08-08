@@ -14,28 +14,28 @@ if (typeof window !== "undefined") {
 
 const projects = [
   {
-    title: "VILLA LV01",
-    meta: "Dubai, UAE • Luxury Villas • 2024",
-    desc: "A bespoke hand-knotted rug designed for the grand living space, crafted in New Zealand wool and bamboo silk. The design seamlessly integrates with the villa's modern architectural lines, bringing warmth to the expansive marble floors. Our artisans spent over four months meticulously weaving the subtle gradient patterns.",
-    image: "/images/home/featured-projects/FP-Villa-LV.png",
+    title: "VILLA LV",
+    meta: "Dubai, UAE • Luxury Villas • 2023",
+    desc: "A bespoke collection of hand-knotted rugs created for the villa’s living spaces and bedrooms, crafted in New Zealand wool and bamboo silk. The designs seamlessly complement the villa’s modern architectural lines, bringing warmth, softness, and understated luxury to expansive marble interiors. Each rug features subtle gradient patterns, meticulously woven by our artisans over four months to create a refined and cohesive interior throughout the residence.",
+    image: "/images/home/featured-projects/FP-Villa-LV.webp",
   },
   {
     title: "LUXURY PENTHOUSE",
-    meta: "Dubai, UAE • Residential • 2023",
-    desc: "Custom rugs for luxury living areas and private suites, designed for comfort, durability and elegance. Featuring a blend of pure silk and hand-spun wool, the collection elevates the panoramic skyline views. Each piece was tailored to perfectly frame the custom Italian furniture arrangements.",
-    image: "/images/home/featured-projects/FP-Penthouse.png",
+    meta: "Palm Jumeirah, Dubai, UAE • Residential • 2026",
+    desc: "A bespoke collection of rugs created for the luxury living areas and private suites of a prestigious Palm Jumeirah penthouse. Crafted from a refined blend of pure silk and hand-spun wool, each piece balances comfort, durability, and understated elegance. Tailored to complement the custom Italian furniture, the rugs bring warmth and texture to the sophisticated interiors while framing the panoramic views of Dubai’s skyline.",
+    image: "/images/home/featured-projects/FP-Penthouse.webp",
   },
   {
     title: "GHARAFA PALACE",
-    meta: "Qatar • Royal Palaces • 2022",
-    desc: "Handcrafted palace-size rugs made using the finest materials and traditional weaving techniques to complement monumental architecture. The intricate floral motifs were inspired by the region's heritage, utilizing a rich palette of deep gold and sapphire. Installed across the main majlis and reception halls.",
-    image: "/images/home/featured-projects/FP-Gharafa-Palace-Qatar.png",
+    meta: "Doha, Qatar • Royal Palaces • 2024",
+    desc: "Bespoke palace-size rugs handcrafted from the finest materials, combining traditional weaving techniques with refined contemporary craftsmanship. Inspired by the region’s rich heritage, the intricate floral motifs feature a sophisticated palette of deep gold and ruby, creating a sense of warmth and grandeur. The rugs were designed and installed across the main majlis and reception halls, complementing the palace’s monumental architecture.",
+    image: "/images/home/featured-projects/FP-Gharafa-Palace-Qatar.webp",
   },
   {
-    title: "DUBAI MALL",
-    meta: "Dubai, UAE • Commercial • 2023",
-    desc: "Contemporary rugs for executive offices and meeting spaces, balancing aesthetics with high-traffic performance. The geometric designs introduce a subtle modern edge while maintaining the hotel's luxurious ambiance. Constructed with high-density commercial-grade wool for lasting durability.",
-    image: "/images/home/featured-projects/FP-Dubai-Mall.png",
+    title: "GALERIES LAFAYETTE DUBAI MALL",
+    meta: "Dubai, UAE • Commercial • 2025",
+    desc: "A bespoke contemporary rug and carpet installation created for Galeries Lafayette at Dubai Mall, combining refined design with exceptional craftsmanship. Developed to complement the store’s sophisticated retail environment, the rugs add warmth, texture, and a distinctive sense of luxury while meeting the demands of a high-traffic commercial space.",
+    image: "/images/home/featured-projects/FP-Dubai-Mall.webp",
   },
 ];
 
@@ -109,7 +109,7 @@ export default function ProjectsFeatured() {
   return (
     <section ref={containerRef} className="w-full pt-8 pb-4 md:pt-12 md:pb-8 bg-[var(--bg-primary)] transition-colors duration-1000">
       <div className="max-w-[var(--container-lg)] mx-auto px-5 md:px-10 lg:px-16">
-        
+
         {/* Section Header */}
         <div className="flex flex-col items-center text-center mb-8 md:mb-12">
           <span className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] text-[var(--text-secondary)] mb-4 font-medium">
@@ -120,15 +120,15 @@ export default function ProjectsFeatured() {
 
         {/* Sticky Scroll Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start relative sticky-container-trigger">
-          
+
           {/* Left Column Wrapper */}
           <div className="lg:col-span-5 flex flex-col w-full">
             {/* Scrolling Text Blocks */}
             <div className="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar gap-4 lg:flex-col lg:pb-[15vh] w-full" ref={mobileCarouselRef}>
-              
+
               {projects.map((project, idx) => (
-                <div 
-                  key={idx} 
+                <div
+                  key={idx}
                   className={`project-text-reveal min-w-[85vw] snap-center lg:min-w-0 flex flex-col justify-center p-4 pb-4 lg:p-6 lg:min-h-[60vh] lg:py-16 ${idx !== projects.length - 1 ? 'lg:border-b lg:border-[var(--border-secondary)]' : ''} border border-[var(--border-secondary)] bg-[var(--bg-primary)] lg:bg-transparent lg:border-t-0 lg:border-l-0 lg:border-r-0 lg:px-0`}
                 >
                   <h3 className="text-xl md:text-2xl lg:text-3xl font-light text-[var(--text-primary)] mb-1 mt-2 lg:mt-0">
@@ -158,19 +158,19 @@ export default function ProjectsFeatured() {
 
             {/* Mobile Arrows */}
             <div className="flex justify-end gap-1 lg:hidden w-full mt-2">
-              <button 
+              <button
                 onClick={scrollPrev}
                 className="p-2 text-[var(--text-primary)] hover:text-[var(--accent-primary)] transition-colors duration-300 flex items-center justify-center"
                 aria-label="Previous project"
               >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6" /></svg>
               </button>
-              <button 
+              <button
                 onClick={scrollNext}
                 className="p-2 text-[var(--text-primary)] hover:text-[var(--accent-primary)] transition-colors duration-300 flex items-center justify-center"
                 aria-label="Next project"
               >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>
               </button>
             </div>
           </div>
@@ -179,7 +179,7 @@ export default function ProjectsFeatured() {
           <div className="hidden lg:block lg:col-span-7 h-full">
             {/* Starts exactly below a typical 80px header, spans the rest of the screen */}
             <div className="sticky top-20 h-[calc(100vh-5rem)] flex flex-col justify-center pb-10">
-              <div 
+              <div
                 className="w-full h-[75vh] max-h-[750px] relative bg-[var(--bg-secondary)] border border-[var(--border-secondary)] overflow-hidden group"
                 onMouseEnter={() => setCursorMode("view")}
                 onMouseLeave={() => setCursorMode("default")}
