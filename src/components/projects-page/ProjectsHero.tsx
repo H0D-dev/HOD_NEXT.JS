@@ -15,14 +15,14 @@ export default function ProjectsHero() {
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
 
   return (
-    <section 
-      ref={containerRef} 
+    <section
+      ref={containerRef}
       className="relative w-full h-[100svh] overflow-hidden bg-[var(--bg-primary)]"
     >
       {/* Desktop Parallax Background */}
       <motion.div className="absolute inset-0 w-full h-full hidden md:block" style={{ y }}>
         <Image
-          src="/images/projects/Project-hero.png"
+          src="/images/projects/Project-hero.webp"
           alt="House of Decór Luxury Projects"
           fill
           priority
@@ -36,7 +36,7 @@ export default function ProjectsHero() {
       {/* Mobile Parallax Background */}
       <motion.div className="absolute inset-0 w-full h-full md:hidden" style={{ y }}>
         <Image
-          src="/images/projects/Project-hero.png"
+          src="/images/projects/Project-hero.webp"
           alt="House of Decór Luxury Projects"
           fill
           priority
@@ -50,7 +50,7 @@ export default function ProjectsHero() {
       {/* Content Container - Positioned at bottom left */}
       <div className="w-full h-full px-6 sm:px-12 md:px-16 lg:px-24 xl:px-32 relative z-20 flex flex-col justify-end pb-24 md:pb-32 lg:pb-24">
         <div className="flex flex-col items-start gap-0 text-left text-white mt-auto w-full max-w-2xl">
-          
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -60,7 +60,7 @@ export default function ProjectsHero() {
             <h1 className="font-light text-[2.75rem] md:text-[4rem] lg:text-[4.75rem] leading-[1.1] tracking-wide mb-4 max-w-4xl text-left">
               Projects
             </h1>
-            
+
             <p className="max-w-xl text-neutral-300 text-[10px] md:text-xs uppercase tracking-[0.2em] mt-2 md:mt-6 leading-relaxed mb-8 md:mb-6 text-left">
               From private villas to luxury hotels, we collaborate with architects and designers to create bespoke rugs that become part of the architecture itself.
             </p>
@@ -72,7 +72,7 @@ export default function ProjectsHero() {
               </Link>
             </div>
           </motion.div>
-          
+
         </div>
       </div>
     </section>
