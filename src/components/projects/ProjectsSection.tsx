@@ -15,20 +15,20 @@ if (typeof window !== "undefined") {
 
 const projects = [
   {
-    title: "VILLA LV01 - DUBAI",
-    image: "/images/home/featured-projects/FP-Villa-LV.png",
+    title: "VILLA LV - DUBAI",
+    image: "/images/home/featured-projects/FP-Villa-LV.webp",
   },
   {
     title: "LUXURY PENTHOUSE",
-    image: "/images/home/featured-projects/FP-Penthouse.png",
+    image: "/images/home/featured-projects/FP-Penthouse.webp",
   },
   {
     title: "GHARAFA PALACE - QATAR",
-    image: "/images/home/featured-projects/FP-Gharafa-Palace-Qatar.png",
+    image: "/images/home/featured-projects/FP-Gharafa-Palace-Qatar.webp",
   },
   {
-    title: "DUBAI MALL",
-    image: "/images/home/featured-projects/FP-Dubai-Mall.png",
+    title: "GALERIES LAFAYETTE DUBAI MALL",
+    image: "/images/home/featured-projects/FP-Dubai-Mall.webp",
   },
 ];
 
@@ -36,7 +36,7 @@ export default function ProjectsSection() {
   const setCursorMode = useCursorStore((state) => state.setMode);
   const sectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
-  
+
   const [activeIndex, setActiveIndex] = useState<number>(0);
 
   useGSAP(() => {
@@ -65,16 +65,15 @@ export default function ProjectsSection() {
       <div className="max-w-[1600px] mx-auto px-4 md:px-8 lg:px-12">
         {/* Accordion Container */}
         <div className="relative flex flex-row w-full h-[350px] md:h-[520px] gap-2 md:gap-4">
-          
+
           {projects.map((project, index) => {
             const isActive = activeIndex === index;
-            
+
             return (
               <div
                 key={index}
-                className={`relative group overflow-hidden cursor-pointer transition-all duration-1000 ease-out flex ${
-                  isActive ? "flex-[8] md:flex-[5]" : "flex-1"
-                }`}
+                className={`relative group overflow-hidden cursor-pointer transition-all duration-1000 ease-out flex ${isActive ? "flex-[8] md:flex-[5]" : "flex-1"
+                  }`}
                 onMouseEnter={() => {
                   setActiveIndex(index);
                   setCursorMode("view");
@@ -101,20 +100,19 @@ export default function ProjectsSection() {
 
                 {/* Text Content */}
                 <div className="absolute bottom-0 left-0 w-full p-2 sm:p-4 md:p-6 lg:p-8 z-20 flex flex-col justify-end h-full pointer-events-none">
-                  
+
                   <div className={`flex flex-col transition-transform duration-1000 ease-out ${isActive ? 'translate-y-0' : 'translate-y-2'}`}>
                     <span className="font-sans font-light text-white/70 text-xs md:text-sm mb-1 md:mb-2 transition-opacity duration-1000 ease-out">
                       0{index + 1}
                     </span>
-                    
-                    <h3 className={`font-sans font-normal text-white uppercase tracking-widest whitespace-nowrap transition-all duration-1000 ease-out origin-left ${
-                      isActive 
-                        ? 'text-xs md:text-sm lg:text-base scale-100' 
+
+                    <h3 className={`font-sans font-normal text-white uppercase tracking-widest whitespace-nowrap transition-all duration-1000 ease-out origin-left ${isActive
+                        ? 'text-xs md:text-sm lg:text-base scale-100'
                         : 'text-[10px] md:text-xs -rotate-90 absolute bottom-16 md:bottom-20 origin-bottom-left translate-x-3 md:translate-x-4'
-                    }`}>
+                      }`}>
                       {project.title}
                     </h3>
-                    
+
                     {/* View Project Link (Only visible when active) */}
                     <div className={`mt-4 md:mt-6 overflow-hidden transition-all duration-1000 ease-out ${isActive ? 'max-h-20 opacity-100' : 'max-h-0 opacity-0'}`}>
                       <Link href="/projects" className="inline-block text-xs uppercase tracking-wider text-white border-b border-white/40 pb-1 group-hover:border-white transition-colors pointer-events-auto">
@@ -127,7 +125,7 @@ export default function ProjectsSection() {
               </div>
             );
           })}
-          
+
           {/* Mobile Navigation Arrows */}
           <div className="absolute inset-0 flex items-center justify-between px-2 md:hidden pointer-events-none z-30">
             <button
@@ -151,7 +149,7 @@ export default function ProjectsSection() {
               <ChevronRight size={20} />
             </button>
           </div>
-          
+
         </div>
       </div>
     </section>
