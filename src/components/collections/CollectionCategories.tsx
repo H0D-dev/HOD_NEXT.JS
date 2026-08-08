@@ -63,9 +63,9 @@ export default function CollectionCategories({
         const wrapper = img.closest('.collection-card');
         if (wrapper) {
           gsap.fromTo(img,
-            { yPercent: -10 },
+            { yPercent: 2 },
             {
-              yPercent: 10,
+              yPercent: -6,
               ease: "none",
               scrollTrigger: {
                 trigger: wrapper,
@@ -98,7 +98,7 @@ export default function CollectionCategories({
                 <div key={index} className="snap-start flex-none w-[75vw] md:w-auto">
                   <Link href={`/products/rugs?collection=${collection.slug}`} className="collection-card flex flex-col group cursor-pointer w-full h-full" onMouseEnter={() => setCursorMode("view")} onMouseLeave={() => setCursorMode("default")}>
                     <div className="relative w-full aspect-[4/5] overflow-hidden bg-[var(--bg-secondary)] border border-[var(--border-secondary)]">
-                      <Image src={collection.image} alt={collection.title} fill className="object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105" sizes="(max-width: 768px) 100vw, 50vw" />
+                      <Image src={collection.image} alt={collection.title} fill className="object-cover object-bottom transition-transform duration-[1.2s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105" sizes="(max-width: 768px) 100vw, 50vw" />
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-700" />
                     </div>
                     <div className="mt-5 flex flex-col items-center">
@@ -154,7 +154,7 @@ export default function CollectionCategories({
                   src={collection.image}
                   alt={collection.title}
                   fill
-                  className="object-cover scale-125 parallax-img"
+                  className="object-cover object-bottom scale-110 parallax-img"
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
                 />
               </div>
