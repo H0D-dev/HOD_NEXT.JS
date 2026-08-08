@@ -13,6 +13,24 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
+const CATEGORY_IMAGE_MAP: Record<string, string> = {
+  geometric: "/images/products/category-geometric.webp",
+  luxury: "/images/products/category-luxury.webp",
+  modern: "/images/products/category-modern.webp",
+  "the-form-collection": "/images/products/category-form.webp",
+  form: "/images/products/category-form.webp",
+};
+
+const DEFAULT_CATEGORY_FALLBACK = "/images/products/category-fallback.webp";
+
+function getCategoryImage(slug: string, apiSrc?: string): string {
+  if (apiSrc && apiSrc.trim() !== "" && !apiSrc.includes("products_hero.png")) {
+    return apiSrc;
+  }
+  const normalizedSlug = slug ? slug.toLowerCase().trim() : "";
+  return CATEGORY_IMAGE_MAP[normalizedSlug] || DEFAULT_CATEGORY_FALLBACK;
+}
+
 type RugCollection = {
   title: string;
   slug: string;
@@ -39,7 +57,7 @@ export default function ProductsCollections() {
             setCollections(rugs.map(r => ({
               title: r.name,
               slug: r.slug,
-              image: r.image?.src || "/products_hero.png"
+              image: getCategoryImage(r.slug, r.image?.src)
             })));
           }
         }
@@ -128,6 +146,11 @@ export default function ProductsCollections() {
                         fill
                         className="object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
                         sizes="(max-width: 768px) 100vw, 50vw"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.srcset = DEFAULT_CATEGORY_FALLBACK;
+                          target.src = DEFAULT_CATEGORY_FALLBACK;
+                        }}
                       />
                       {/* Dark overlay on hover */}
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-700" />
