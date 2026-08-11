@@ -54,6 +54,7 @@ export default function CartDrawer() {
             role="dialog"
             aria-modal="true"
             aria-label="Shopping Cart"
+            data-lenis-prevent
           >
             <div className="cart-drawer__header">
               <h2 className="cart-drawer__title">Your Cart ({totalItems})</h2>
@@ -68,7 +69,7 @@ export default function CartDrawer() {
               </button>
             </div>
 
-            <div className="cart-drawer__body">
+            <div className="cart-drawer__body" data-lenis-prevent>
               {items.length === 0 ? (
                 <div className="cart-drawer__empty">
                   <p>Your cart is empty.</p>

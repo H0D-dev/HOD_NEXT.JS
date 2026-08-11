@@ -53,6 +53,8 @@
 .cart-drawer__body {
   flex-grow: 1;
   overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
   padding: 0 var(--space-4);
 }
 
