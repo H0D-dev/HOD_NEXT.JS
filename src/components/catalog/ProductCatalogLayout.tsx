@@ -15,6 +15,39 @@ import { formatPrice } from "../../lib/utils/price";
 const FilterDrawer = dynamic(() => import("./FilterDrawer"), { ssr: false });
 
 
+const COLOR_SPLIT_REGEX = /\||\/|,|&|\b(?:and|l|i)\b/i;
+
+function parseColorValues(raw: any): string[] {
+  if (!raw) return [];
+  const str = String(raw).replace(/&amp;/g, '&').trim();
+  if (!str) return [];
+
+  const results: string[] = [];
+  str.split(COLOR_SPLIT_REGEX).forEach(part => {
+    const cleaned = part.trim();
+    if (cleaned) {
+      const formatted = cleaned.split(/\s+/).map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+      results.push(formatted);
+    }
+  });
+  return results;
+}
+
+function getWCColorAttribute(p: any): string | null {
+  if (!p || !Array.isArray(p.attributes)) return null;
+
+  const colorAttr = p.attributes.find((a: any) => {
+    const name = String(a.name || "").toLowerCase().trim();
+    const slug = String(a.slug || "").toLowerCase().trim();
+    return name === "color" || name === "colour" || slug === "pa_color" || slug === "pa_colour";
+  });
+
+  if (colorAttr && Array.isArray(colorAttr.options) && colorAttr.options.length > 0) {
+    return colorAttr.options.join(",");
+  }
+  return null;
+}
+
 interface ProductCatalogLayoutProps {
   category: "rugs" | "curtains";
   initialProducts?: any[];
@@ -138,16 +171,6 @@ export default function ProductCatalogLayout({ category, initialProducts }: Prod
       });
     }
 
-    // Construction (from ACF) - legacy fallback
-    const constructions = getUniqueValues(p => p.acf?.construction);
-    // if (constructions.length > 0) {
-    //   filters.push({
-    //     id: "construction",
-    //     label: "Construction",
-    //     options: constructions
-    //   });
-    // }
-
     // Weaving Technique (Fixed Values from Attributes)
     filters.push({
       id: "weaving-technique",
@@ -187,19 +210,23 @@ export default function ProductCatalogLayout({ category, initialProducts }: Prod
       });
     }
 
-    // Color (dynamically built from Attributes)
-    const colorOptions = getUniqueValues(p => {
-      const colorAttr = p.attributes?.find((a: any) => a.name.toLowerCase() === 'colour' || a.name.toLowerCase() === 'color');
-      if (colorAttr && colorAttr.options && colorAttr.options.length > 0) {
-        return colorAttr.options.join(',');
-      }
-      return p.acf?.productColor;
-    }, /,/);
-    if (colorOptions.length > 0) {
+    // Color (dynamically built from WooCommerce default attributes)
+    const colorUniqueMap = new Map<string, string>();
+    products.forEach(p => {
+      const rawColors = getWCColorAttribute(p) || p.acf?.productColor;
+
+      parseColorValues(rawColors).forEach(c => {
+        const lower = c.toLowerCase();
+        if (!colorUniqueMap.has(lower)) {
+          colorUniqueMap.set(lower, c);
+        }
+      });
+    });
+    if (colorUniqueMap.size > 0) {
       filters.push({
         id: "color",
         label: "Color",
-        options: colorOptions
+        options: Array.from(colorUniqueMap.entries()).map(([value, label]) => ({ label, value }))
       });
     }
 
@@ -288,13 +315,10 @@ export default function ProductCatalogLayout({ category, initialProducts }: Prod
           if (!matchFound) return false;
           continue;
         } else if (filterId === "color") {
-          const colorAttr = p.attributes?.find((a: any) => a.name.toLowerCase() === 'colour' || a.name.toLowerCase() === 'color');
-          let hasMatch = false;
-          if (colorAttr && colorAttr.options) {
-            hasMatch = colorAttr.options.some((opt: string) => selectedValues.includes(opt.toLowerCase().trim()));
-          } else if (p.acf?.productColor) {
-            hasMatch = selectedValues.includes(p.acf.productColor.toLowerCase().trim());
-          }
+          const rawColors = getWCColorAttribute(p) || p.acf?.productColor;
+
+          const productColors = parseColorValues(rawColors).map(c => c.toLowerCase());
+          const hasMatch = selectedValues.some(selected => productColors.includes(selected));
           if (!hasMatch) return false;
           continue;
         } else if (filterId === "price-range") {
@@ -391,7 +415,8 @@ export default function ProductCatalogLayout({ category, initialProducts }: Prod
 
   // 3. Map filtered products to ProductStub for the UI
   const displayProducts: ProductStub[] = filteredProducts.map(p => {
-    const colorVal = p.acf?.productColor || "";
+    const rawColor = getWCColorAttribute(p) || p.acf?.productColor || "";
+    const colorVal = parseColorValues(rawColor).join(", ");
 
     const sizeAttr = p.attributes?.find((a: any) => a.name.toLowerCase() === 'size');
     let sizeInfo = "";
