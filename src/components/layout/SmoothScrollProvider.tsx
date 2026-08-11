@@ -16,6 +16,7 @@ export default function SmoothScrollProvider({ children }: { children: React.Rea
         smoothWheel: true,
         wheelMultiplier: 1,
         touchMultiplier: 2,
+        prevent: (node: HTMLElement) => !!node.closest?.("[data-lenis-prevent]"),
       });
 
       function raf(time: number) {
