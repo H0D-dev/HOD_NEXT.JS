@@ -18,6 +18,17 @@ export default function FilterDrawer({ isOpen, onClose, filters, selectedFilters
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
     setExpandedSections(
       filters.reduce((acc, f, index) => ({ ...acc, [f.id]: index === 0 }), {})
     );
@@ -48,6 +59,7 @@ export default function FilterDrawer({ isOpen, onClose, filters, selectedFilters
             exit={{ x: "-100%" }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] as any }}
             className="fixed top-0 left-0 h-full w-full max-w-[420px] bg-[var(--bg-primary)] z-[1060] flex flex-col border-r border-[var(--border-secondary)] shadow-2xl"
+            data-lenis-prevent
           >
             {/* Drawer Header */}
             <div className="flex justify-between items-center p-6 lg:p-8 border-b border-[var(--border-secondary)]">
@@ -66,7 +78,7 @@ export default function FilterDrawer({ isOpen, onClose, filters, selectedFilters
             </div>
 
             {/* Scrollable Filters Area */}
-            <div className="flex-1 overflow-y-auto px-6 lg:px-8 py-4 hide-scrollbar">
+            <div className="flex-1 overflow-y-auto px-6 lg:px-8 py-4 hide-scrollbar overscroll-contain" data-lenis-prevent style={{ overscrollBehavior: "contain" }}>
               {filters.map((filter) => (
                 <div key={filter.id} className="border-b border-[var(--border-secondary)] py-5">
                   <button
