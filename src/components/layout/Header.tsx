@@ -122,7 +122,7 @@ export default function Header() {
               </svg>
             </button>
             {/* ── Navigation Links ── */}
-            <nav className={`header__nav ${isMobileMenuOpen ? "header__nav--open" : ""}`} aria-label="Main Navigation">
+            <nav className={`header__nav ${isMobileMenuOpen ? "header__nav--open" : ""}`} aria-label="Main Navigation" data-lenis-prevent>
               <div className="header__nav-header">
                 <button
                   className="header__close-btn"

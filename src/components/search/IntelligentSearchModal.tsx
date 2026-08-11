@@ -43,6 +43,17 @@ export default function IntelligentSearchModal({ isOpen, onClose, initialQuery =
     return () => clearTimeout(timer);
   }, [query]);
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   const totalResultsCount =
@@ -54,7 +65,7 @@ export default function IntelligentSearchModal({ isOpen, onClose, initialQuery =
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-24 px-4 bg-black/60 backdrop-blur-md transition-opacity duration-300">
-      <div className="w-full max-w-3xl bg-[var(--bg-primary)] border border-[var(--border-secondary)] shadow-2xl rounded-sm overflow-hidden flex flex-col max-h-[80vh]">
+      <div className="w-full max-w-3xl bg-[var(--bg-primary)] border border-[var(--border-secondary)] shadow-2xl rounded-sm overflow-hidden flex flex-col max-h-[80vh]" data-lenis-prevent>
         {/* Search Header Input */}
         <div className="relative flex items-center px-6 py-4 border-b border-[var(--border-secondary)] bg-[var(--bg-secondary)]">
           <Search className="w-5 h-5 text-[var(--accent-primary)] mr-3 flex-shrink-0" />
@@ -77,7 +88,7 @@ export default function IntelligentSearchModal({ isOpen, onClose, initialQuery =
         </div>
 
         {/* Search Results Body */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-6 hide-scrollbar">
+        <div className="flex-1 overflow-y-auto p-6 space-y-6 hide-scrollbar overscroll-contain" data-lenis-prevent style={{ overscrollBehavior: "contain" }}>
           {loading && (
             <div className="py-8 text-center text-xs uppercase tracking-widest text-[var(--text-secondary)]">
               Searching House of Decór catalog...
