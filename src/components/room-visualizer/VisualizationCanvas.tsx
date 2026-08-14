@@ -254,9 +254,18 @@ export default function VisualizationCanvas({
     const currentRoom = sampleRooms.find((r) => r.image === roomImage);
     const w = containerSize.width;
     const h = containerSize.height;
+    const isMobile = typeof window !== 'undefined' && (window.innerWidth < 1024 || w < 600);
 
     let defaultCorners: QuadCorners;
-    if (currentRoom) {
+    if (isMobile) {
+      // On mobile viewports, default to a centered, padded floor quad so all 4 corners are immediately visible & accessible
+      defaultCorners = {
+        topLeft: { x: w * 0.25, y: h * 0.56 },
+        topRight: { x: w * 0.75, y: h * 0.56 },
+        bottomRight: { x: w * 0.85, y: h * 0.88 },
+        bottomLeft: { x: w * 0.15, y: h * 0.88 },
+      };
+    } else if (currentRoom) {
       const q = currentRoom.defaultQuad;
       defaultCorners = {
         topLeft: { x: q.topLeft.u * w, y: q.topLeft.v * h },
@@ -1119,36 +1128,15 @@ export default function VisualizationCanvas({
   };
 
   return (
-    <div className="flex flex-col lg:flex-row h-full min-h-[600px] w-full bg-[var(--bg-primary)] text-[var(--text-primary)]">
-      {/* Sidebar Inspector Panel */}
-      <aside
-        data-lenis-prevent
-        className="w-full lg:w-80 h-full max-h-full shrink-0 border-r border-[var(--border-secondary)] bg-[var(--bg-primary)] p-4 overflow-y-auto overscroll-contain pb-12"
-      >
-        <RoomSelector />
-        <VisualizerToolbar
-          product={product}
-          activeColor={activeColor}
-          onColorChange={onColorChange}
-          selectedVariation={selectedVariation}
-          onVariationChange={onVariationChange}
-          onExport={handleExport}
-          onClearMask={handleClearMask}
-          onUndo={handleUndo}
-          onRedo={handleRedo}
-          canUndo={undoStackRef.current.length > 0}
-          canRedo={redoStackRef.current.length > 0}
-        />
-      </aside>
-
-      {/* Interactive CAD Canvas Viewport */}
+    <div className="flex flex-col lg:flex-row h-full w-full bg-[var(--bg-primary)] text-[var(--text-primary)] overflow-hidden">
+      {/* Interactive CAD Canvas Viewport (Renders on Top on Mobile, Right on Desktop) */}
       <div
         id="visualizer-container"
         ref={containerRef}
-        className="relative flex-1 bg-[#1A1A1A] overflow-hidden min-h-[500px] flex items-center justify-center select-none"
+        className="relative w-full h-[52vh] min-h-[260px] lg:h-full lg:min-h-0 lg:flex-1 bg-[#1A1A1A] overflow-hidden flex items-center justify-center select-none shrink-0 lg:shrink order-1 lg:order-2"
       >
         {/* Floating Top Floating Bar */}
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1 p-1 rounded-xl bg-[#2B2B2B]/90 backdrop-blur-md border border-white/10 shadow-2xl text-white">
+        <div className="absolute top-2.5 sm:top-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1 p-1 rounded-xl bg-[#2B2B2B]/90 backdrop-blur-md border border-white/10 shadow-2xl text-white max-w-[95vw] overflow-x-auto hide-scrollbar">
           <button
             type="button"
             onClick={() => dispatch({ type: 'SET_ACTIVE_TOOL', payload: { tool: 'corners' } })}
@@ -1400,6 +1388,27 @@ export default function VisualizationCanvas({
           </div>
         )}
       </div>
+
+      {/* Sidebar Inspector Panel (Bottom on Mobile, Left on Desktop) */}
+      <aside
+        data-lenis-prevent
+        className="w-full lg:w-80 h-[48vh] lg:h-full shrink-0 border-t lg:border-t-0 lg:border-r border-[var(--border-secondary)] bg-[var(--bg-primary)] p-3 lg:p-4 overflow-y-auto overscroll-contain pb-12 order-2 lg:order-1"
+      >
+        <RoomSelector />
+        <VisualizerToolbar
+          product={product}
+          activeColor={activeColor}
+          onColorChange={onColorChange}
+          selectedVariation={selectedVariation}
+          onVariationChange={onVariationChange}
+          onExport={handleExport}
+          onClearMask={handleClearMask}
+          onUndo={handleUndo}
+          onRedo={handleRedo}
+          canUndo={undoStackRef.current.length > 0}
+          canRedo={redoStackRef.current.length > 0}
+        />
+      </aside>
     </div>
   );
 }
