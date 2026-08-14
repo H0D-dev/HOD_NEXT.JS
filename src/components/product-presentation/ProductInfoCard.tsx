@@ -327,19 +327,7 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
         </div>
       </div>
 
-      {/* 6. View in Your Room CTA */}
-      {onOpenVisualizer && (
-        <button
-          type="button"
-          onClick={onOpenVisualizer}
-          className="w-full py-3.5 px-4 bg-transparent border border-[#A38A61] text-[#A38A61] hover:bg-[#A38A61] hover:text-white font-sans text-xs sm:text-sm tracking-widest uppercase font-medium transition-all duration-300 rounded-none cursor-pointer flex items-center justify-center gap-2 mt-1"
-        >
-          <Eye size={18} strokeWidth={1.5} />
-          <span>VIEW IN YOUR ROOM</span>
-        </button>
-      )}
-
-      {/* 7. Quantity & Add to Cart */}
+      {/* 6. Quantity, Lead Time & Actions */}
       <div className="flex flex-col gap-4 mt-2">
         <div className="flex flex-col gap-2">
           <div className="font-sans text-xs font-medium text-[var(--text-primary)] uppercase tracking-wider">
@@ -371,6 +359,19 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
             </span>
           </div>
         )}
+
+        {/* View in Your Room CTA */}
+        {onOpenVisualizer && (
+          <button
+            type="button"
+            onClick={onOpenVisualizer}
+            className="w-full py-3.5 px-4 bg-transparent border border-[#A38A61] text-[#A38A61] hover:bg-[#A38A61] hover:text-white font-sans text-xs sm:text-sm tracking-widest uppercase font-medium transition-all duration-300 rounded-none cursor-pointer flex items-center justify-center gap-2"
+          >
+            <Eye size={18} strokeWidth={1.5} />
+            <span>VIEW IN YOUR ROOM</span>
+          </button>
+        )}
+
         <button
           onClick={handleAddToCart}
           className="w-full py-4 bg-[#A38A61] hover:bg-[#8F7752] text-white font-sans text-sm tracking-widest uppercase font-medium transition-colors duration-300 rounded-none cursor-pointer"
