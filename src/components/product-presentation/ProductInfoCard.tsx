@@ -3,7 +3,7 @@
 import React, { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { Share2, Globe, ShieldCheck, Clock, Truck, Plus, Minus, ChevronDown, Wind, RefreshCw, Sparkles, Sun } from "lucide-react";
+import { Share2, Globe, ShieldCheck, Clock, Truck, Plus, Minus, ChevronDown, Wind, RefreshCw, Sparkles, Sun, Eye } from "lucide-react";
 import { ProductColor, Product, ProductVariation } from "./ProductPresentation";
 import { useCartStore } from "@/src/lib/store/useCartStore";
 import { useCurrencyStore } from "@/src/lib/store/useCurrencyStore";
@@ -17,9 +17,10 @@ interface ProductInfoCardProps {
   onColorChange: (color: ProductColor) => void;
   selectedVariation: ProductVariation | null;
   onVariationChange: (variation: ProductVariation | null) => void;
+  onOpenVisualizer?: () => void;
 }
 
-export default function ProductInfoCard({ product, activeColor, onColorChange, selectedVariation, onVariationChange }: ProductInfoCardProps) {
+export default function ProductInfoCard({ product, activeColor, onColorChange, selectedVariation, onVariationChange, onOpenVisualizer }: ProductInfoCardProps) {
   const router = useRouter();
   const { addItem, openDrawer } = useCartStore();
   const { currency, setCurrency } = useCurrencyStore();
@@ -325,6 +326,18 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
           )}
         </div>
       </div>
+
+      {/* 6. View in Your Room CTA */}
+      {onOpenVisualizer && (
+        <button
+          type="button"
+          onClick={onOpenVisualizer}
+          className="w-full py-3.5 px-4 bg-transparent border border-[#A38A61] text-[#A38A61] hover:bg-[#A38A61] hover:text-white font-sans text-xs sm:text-sm tracking-widest uppercase font-medium transition-all duration-300 rounded-none cursor-pointer flex items-center justify-center gap-2 mt-1"
+        >
+          <Eye size={18} strokeWidth={1.5} />
+          <span>VIEW IN YOUR ROOM</span>
+        </button>
+      )}
 
       {/* 7. Quantity & Add to Cart */}
       <div className="flex flex-col gap-4 mt-2">

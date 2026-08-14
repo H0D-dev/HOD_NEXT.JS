@@ -1,8 +1,13 @@
 "use client";
 import React, { useState } from "react";
+import dynamic from "next/dynamic";
 import ProductGallery from "./ProductGallery";
 import ProductInfoCard from "./ProductInfoCard";
 import ExploreMore from "./ExploreMore";
+
+const RoomVisualizer = dynamic(() => import("../room-visualizer/RoomVisualizer"), {
+  ssr: false,
+});
 
 export type Currency = "AED" | "INR" | "USD" | "EUR";
 
@@ -88,6 +93,8 @@ export default function ProductPresentation({ product, relatedProducts }: Produc
     product?.colors?.[0] || null
   );
 
+  const [isVisualizerOpen, setIsVisualizerOpen] = useState(false);
+
   // Initialize selected variation to the default from WooCommerce, or the first valid variation
   const [selectedVariation, setSelectedVariation] = useState<ProductVariation | null>(() => {
     if (product?.productType === "variable" && product.variations && product.variations.length > 0) {
@@ -131,13 +138,26 @@ export default function ProductPresentation({ product, relatedProducts }: Produc
               onColorChange={setActiveColor}
               selectedVariation={selectedVariation}
               onVariationChange={setSelectedVariation}
+              onOpenVisualizer={() => setIsVisualizerOpen(true)}
             />
           </div>
 
         </div>
       </section>
 
+      {isVisualizerOpen && (
+        <RoomVisualizer
+          product={product}
+          activeColor={activeColor}
+          onColorChange={setActiveColor}
+          selectedVariation={selectedVariation}
+          onVariationChange={setSelectedVariation}
+          onClose={() => setIsVisualizerOpen(false)}
+        />
+      )}
+
       <ExploreMore relatedProducts={relatedProducts} />
     </>
   );
 }
+
