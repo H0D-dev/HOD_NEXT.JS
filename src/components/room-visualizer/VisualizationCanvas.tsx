@@ -10,6 +10,7 @@ import { getEdgeMap, getEdgeStrength, clearEdgeMapCache } from '@/src/lib/utils/
 import { Product, ProductColor, ProductVariation } from '@/src/components/product-presentation/ProductPresentation';
 import VisualizerToolbar from './VisualizerToolbar';
 import RoomSelector from './RoomSelector';
+import VisualizerTutorial, { resetTutorialFlag } from './VisualizerTutorial';
 import {
   Move,
   Layers,
@@ -28,6 +29,7 @@ import {
   X,
   Keyboard,
   Info,
+  BookOpen,
 } from 'lucide-react';
 
 interface VisualizationCanvasProps {
@@ -134,6 +136,9 @@ export default function VisualizationCanvas({
   const [historyVersion, setHistoryVersion] = useState(0);
 
   const prevRoomImageRef = useRef<string | null>(null);
+
+  // Tutorial replay state
+  const [showTutorial, setShowTutorial] = useState(false);
 
   // Save current mask state to undo stack
   const saveMaskSnapshot = useCallback(() => {
@@ -1139,6 +1144,7 @@ export default function VisualizationCanvas({
         <div className="absolute top-2.5 sm:top-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1 p-1 rounded-xl bg-[#2B2B2B]/90 backdrop-blur-md border border-white/10 shadow-2xl text-white max-w-[95vw] overflow-x-auto hide-scrollbar">
           <button
             type="button"
+            data-tour="toolbar-corners"
             onClick={() => dispatch({ type: 'SET_ACTIVE_TOOL', payload: { tool: 'corners' } })}
             className={`p-2 rounded-lg text-xs font-medium transition-all cursor-pointer ${
               activeTool === 'corners' ? 'bg-[#A38A61] text-white shadow' : 'text-gray-300 hover:text-white hover:bg-white/10'
@@ -1157,6 +1163,7 @@ export default function VisualizationCanvas({
           >
             <Layers className="w-4 h-4" />
           </button>
+          <span data-tour="toolbar-masking" className="contents">
           <button
             type="button"
             onClick={() => dispatch({ type: 'SET_ACTIVE_TOOL', payload: { tool: 'box' } })}
@@ -1197,6 +1204,7 @@ export default function VisualizationCanvas({
           >
             <Eraser className="w-4 h-4" />
           </button>
+          </span>
 
           <div className="h-4 w-px bg-white/20 mx-1"></div>
 
@@ -1252,6 +1260,7 @@ export default function VisualizationCanvas({
 
           <div className="h-4 w-px bg-white/20 mx-1"></div>
 
+          <span data-tour="toolbar-actions" className="contents">
           <button
             type="button"
             onClick={() => dispatch({ type: 'TOGGLE_BEFORE_AFTER' })}
@@ -1270,6 +1279,7 @@ export default function VisualizationCanvas({
           >
             <Download className="w-4 h-4" />
           </button>
+          </span>
           <button
             type="button"
             onClick={() => dispatch({ type: 'SET_SHOW_SHORTCUT_MODAL', payload: { open: true } })}
@@ -1376,17 +1386,34 @@ export default function VisualizationCanvas({
                 </div>
               </div>
 
-              <div className="pt-2 text-center">
+              <div className="pt-2 space-y-2">
                 <button
                   onClick={() => dispatch({ type: 'SET_SHOW_SHORTCUT_MODAL', payload: { open: false } })}
                   className="w-full py-2 bg-[#A38A61] hover:bg-[#8F7752] text-white rounded-lg text-xs font-semibold transition-colors cursor-pointer"
                 >
                   Got It
                 </button>
+                <button
+                  onClick={() => {
+                    dispatch({ type: 'SET_SHOW_SHORTCUT_MODAL', payload: { open: false } });
+                    resetTutorialFlag();
+                    setShowTutorial(true);
+                  }}
+                  className="w-full py-2 bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white rounded-lg text-xs font-medium transition-colors cursor-pointer flex items-center justify-center gap-1.5 border border-white/10"
+                >
+                  <BookOpen className="w-3.5 h-3.5" />
+                  Replay Tutorial
+                </button>
               </div>
             </div>
           </div>
         )}
+
+        {/* Onboarding Tutorial Overlay */}
+        <VisualizerTutorial
+          forceOpen={showTutorial}
+          onForceClose={() => setShowTutorial(false)}
+        />
       </div>
 
       {/* Sidebar Inspector Panel (Bottom on Mobile, Left on Desktop) */}
