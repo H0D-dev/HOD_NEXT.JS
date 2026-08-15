@@ -536,7 +536,7 @@ export default function VisualizerToolbar({
       </div>
 
       {/* 4. Floor Lighting & Depth */}
-      <div>
+      <div data-tour="lighting-controls">
         <label className="text-xs font-semibold text-[var(--text-primary)] uppercase tracking-wider block mb-1.5">
           4. Lighting & Shadows
         </label>
