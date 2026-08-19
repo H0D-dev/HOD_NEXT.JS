@@ -51,13 +51,16 @@ export async function POST(request: Request) {
 
     if (!wpRes.ok) {
       const errorText = await wpRes.text();
-      console.warn(`[Analytics Proxy] WP Ingestion returned status ${wpRes.status}:`, errorText);
+      console.warn(
+        `[Analytics Proxy] WP Ingestion FAILED — target: ${targetUrl} | status: ${wpRes.status} | events: ${payload.events.length} | types: [${payload.events.map((e) => e.event_name).join(", ")}]`,
+        errorText.slice(0, 500)
+      );
     }
 
     // Return immediate non-blocking 200 acknowledgement to browser
     return NextResponse.json({ success: true, count: payload.events.length });
   } catch (error) {
-    console.error("[Analytics Proxy] Ingestion error:", error);
+    console.error("[Analytics Proxy] Ingestion error:", error instanceof Error ? error.message : error);
     // Never return a fatal 500 error that breaks client storefront execution
     return NextResponse.json({ success: false, error: "Ingestion failed silently" }, { status: 200 });
   }
