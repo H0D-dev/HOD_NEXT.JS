@@ -202,8 +202,18 @@ export const wooCommerceService = {
     try {
       const baseUrl = getBaseUrl();
       const searchParams = new URLSearchParams();
-      if (params.after) searchParams.set("after", new Date(params.after).toISOString());
-      if (params.before) searchParams.set("before", new Date(params.before).toISOString());
+      if (params.after) {
+        const afterIso = params.after.includes("T")
+          ? new Date(params.after).toISOString()
+          : new Date(params.after + "T00:00:00.000Z").toISOString();
+        searchParams.set("after", afterIso);
+      }
+      if (params.before) {
+        const beforeIso = params.before.includes("T")
+          ? new Date(params.before).toISOString()
+          : new Date(params.before + "T23:59:59.999Z").toISOString();
+        searchParams.set("before", beforeIso);
+      }
       if (params.status) searchParams.set("status", params.status);
       searchParams.set("per_page", String(params.per_page || 100));
       searchParams.set("page", String(params.page || 1));
