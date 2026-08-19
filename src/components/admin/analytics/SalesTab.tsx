@@ -65,8 +65,8 @@ export default function SalesTab({ dateRange }: SalesTabProps) {
 
   return (
     <div className="space-y-8">
-      {/* 1. Sales Financial KPI Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+      {/* 1. Sales Financial KPI Cards (2 rows of 3 spacious cards) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
         <MetricCard
           label="Gross Sales"
           value={`AED ${(kpis.grossSales || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}

@@ -87,6 +87,7 @@ export default function OverviewTab({ dateRange, onNavigateTab }: OverviewTabPro
           label="Net Revenue"
           value={`AED ${(summary.netRevenue || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
           change={summary.revenueChange}
+          subValue={summary.grossRevenue ? `AED ${(summary.grossRevenue || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} gross` : undefined}
           icon={<DollarSign size={16} />}
         />
         <MetricCard
