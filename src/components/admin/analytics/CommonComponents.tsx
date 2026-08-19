@@ -43,13 +43,21 @@ export function MetricCard({
   const isPositive = typeof change === "number" && change > 0;
   const isNegative = typeof change === "number" && change < 0;
 
+  // Extract currency prefix if embedded in value string
+  let displayPrefix = prefix;
+  let displayValue = value;
+  if (typeof value === "string" && value.startsWith("AED ")) {
+    displayPrefix = "AED";
+    displayValue = value.substring(4);
+  }
+
   return (
-    <div className="group relative p-5 border border-[var(--border-secondary,#262626)] bg-[var(--bg-secondary,#141414)] rounded-[2px] transition-all duration-300 hover:border-[var(--accent-primary,#A38A61)]/60 overflow-hidden">
+    <div className="group relative p-4 sm:p-5 border border-[var(--border-secondary,#262626)] bg-[var(--bg-secondary,#141414)] rounded-[2px] transition-all duration-300 hover:border-[var(--accent-primary,#A38A61)]/60 overflow-hidden">
       {/* Top progress line hover accent */}
       <div className="absolute top-0 left-0 h-[2px] bg-[var(--accent-primary,#A38A61)] w-0 group-hover:w-full transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]" />
 
-      <div className="flex items-center justify-between gap-2 mb-2">
-        <span className="font-sans text-[10px] md:text-[11px] uppercase tracking-[0.18em] text-[var(--text-secondary,#888)] font-medium truncate">
+      <div className="flex items-center justify-between gap-2 mb-1.5">
+        <span className="font-sans text-[10px] md:text-[11px] uppercase tracking-[0.16em] text-[var(--text-secondary,#888)] font-medium truncate">
           {label}
         </span>
         {badge && (
@@ -57,15 +65,19 @@ export function MetricCard({
             {badge}
           </span>
         )}
-        {icon && <div className="text-[var(--text-secondary,#888)]">{icon}</div>}
+        {icon && <div className="text-[var(--text-secondary,#888)] shrink-0">{icon}</div>}
       </div>
 
-      <div className="flex items-baseline gap-1 my-1">
-        {prefix && <span className="text-sm font-light text-[var(--text-secondary,#888)]">{prefix}</span>}
-        <span className="font-sans text-2xl lg:text-3xl font-light text-[var(--text-primary,#FAF9F5)] tracking-tight">
-          {value}
+      <div className="flex items-baseline gap-1.5 my-1 overflow-hidden">
+        {displayPrefix && (
+          <span className="text-xs font-normal text-[var(--text-secondary,#888)] tracking-wider uppercase shrink-0">
+            {displayPrefix}
+          </span>
+        )}
+        <span className="font-sans text-lg sm:text-xl lg:text-2xl font-light text-[var(--text-primary,#FAF9F5)] tracking-tight truncate">
+          {displayValue}
         </span>
-        {suffix && <span className="text-xs font-light text-[var(--text-secondary,#888)]">{suffix}</span>}
+        {suffix && <span className="text-xs font-light text-[var(--text-secondary,#888)] shrink-0">{suffix}</span>}
       </div>
 
       <div className="flex items-center justify-between gap-2 mt-2 pt-2 border-t border-[var(--border-secondary,#222)]/60 text-[11px]">
