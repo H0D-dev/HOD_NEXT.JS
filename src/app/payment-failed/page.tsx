@@ -1,19 +1,30 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useState, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { useAnalytics } from "@/src/lib/analytics/useAnalytics";
 import "./PaymentFailed.css";
 
 function PaymentFailedContent() {
   const searchParams = useSearchParams();
   const orderId = searchParams.get("id");
   const orderKey = searchParams.get("key");
+  const { trackPaymentFailure } = useAnalytics();
+  const hasTrackedRef = useRef(false);
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
-  }, []);
+    if (!hasTrackedRef.current) {
+      hasTrackedRef.current = true;
+      trackPaymentFailure({
+        orderId: orderId ? parseInt(orderId, 10) : undefined,
+        paymentMethod: "gateway",
+        errorMessage: "Payment failed at checkout gateway",
+      });
+    }
+  }, [orderId, trackPaymentFailure]);
 
   const retryPaymentUrl = orderId && orderKey
     ? `${process.env.NEXT_PUBLIC_WC_BASE_URL || ""}/checkout/order-pay/${orderId}/?pay_for_order=true&key=${orderKey}`
