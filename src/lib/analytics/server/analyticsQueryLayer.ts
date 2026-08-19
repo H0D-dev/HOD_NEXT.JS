@@ -2,62 +2,152 @@
  * HOD Analytics Server Query Layer
  * Combines WooCommerce transactional data with WordPress behavioral analytics
  * to compute normalized business metrics and opportunity matrices for the UI.
+ *
+ * CANONICAL RESPONSE CONTRACT
+ * Strictly returns single canonical keys matching UI expectations without duplicate aliases.
  */
 
-import { wooCommerceService, WcOrder, WcProduct } from "./wooCommerceService";
+import { wooCommerceService, WcOrder } from "./wooCommerceService";
 import { wpAnalyticsService } from "./wpAnalyticsService";
+
+// ── Shared Types ──────────────────────────────────────────────────────────────
 
 export interface DateRange {
   from: string;
   to: string;
+  compareFrom?: string;
+  compareTo?: string;
 }
 
-export interface OverviewKpiSummary {
-  netRevenue: number;
-  grossRevenue: number;
-  ordersCount: number;
-  averageOrderValue: number;
-  conversionRate: number;
-  totalSessions: number;
-  totalProductsViewed: number;
-  totalAddToCart: number;
-  visualizerAssistedRevenue: number;
-  visualizerAssistedOrders: number;
+// ── Internal Helpers ──────────────────────────────────────────────────────────
+
+/** Safely parse a string value to a number, defaulting to 0. */
+function n(val: string | number | undefined | null): number {
+  if (typeof val === "number") return isNaN(val) ? 0 : val;
+  const parsed = parseFloat(val || "0");
+  return isNaN(parsed) ? 0 : parsed;
 }
 
-export interface ChartDataPoint {
-  date: string;
-  revenue: number;
-  orders: number;
+/** Round to 2 decimal places. */
+function r2(val: number): number {
+  return isNaN(val) ? 0 : Math.round(val * 100) / 100;
 }
 
-export interface ProductOpportunityItem {
-  id: number;
-  name: string;
-  slug: string;
-  views: number;
-  addToCart: number;
-  orders: number;
-  revenue: number;
-  conversionRate: number;
-  stockStatus: string;
-  opportunityType?: "high_interest_low_conversion" | "low_traffic_high_conversion" | "standard";
+/** Compute percentage change between two values. Returns null if base is 0 to prevent division-by-zero / Infinity. */
+function pctChange(current: number, previous: number): number | null {
+  if (!previous || previous === 0) return null;
+  const delta = ((current - previous) / previous) * 100;
+  return isFinite(delta) ? r2(delta) : null;
 }
 
-export interface FunnelMetricItem {
-  step: string;
-  name: string;
-  count: number;
-  dropoffRate: number;
-  conversionFromFirst: number;
+// ── Commercial Order Statuses ─────────────────────────────────────────────────
+
+/**
+ * Normalizes a WooCommerce order status string (e.g. "wc-processing" -> "processing", "on_hold" -> "on-hold").
+ */
+function normalizeStatus(status: string | undefined | null): string {
+  return (status || "").toLowerCase().trim().replace(/^wc-/, "").replace(/_/g, "-");
 }
+
+const EXCLUDED_ORDER_STATUSES = new Set(["cancelled", "failed", "trash"]);
+const REFUNDED_ORDER_STATUSES = new Set(["refunded"]);
+
+function isValidOrder(o: WcOrder): boolean {
+  const s = normalizeStatus(o.status);
+  return !EXCLUDED_ORDER_STATUSES.has(s) && !REFUNDED_ORDER_STATUSES.has(s);
+}
+
+/**
+ * Computes authoritative commerce metrics directly from WooCommerce orders list.
+ * Excludes cancelled, failed, and trash records.
+ */
+function computeSalesFromOrders(orders: WcOrder[]) {
+  const validOrders = orders.filter(isValidOrder);
+
+  const refundedOrders = orders.filter((o) => {
+    const s = normalizeStatus(o.status);
+    return REFUNDED_ORDER_STATUSES.has(s);
+  });
+
+  let netSales = 0;
+  let grossSales = 0;
+  let totalTax = 0;
+  let totalShipping = 0;
+  let totalDiscount = 0;
+  const totalOrders = validOrders.length;
+
+  let refunds = 0;
+  refundedOrders.forEach((r) => {
+    refunds += n(r.total);
+  });
+
+  const dateMap = new Map<string, { revenue: number; orders: number }>();
+
+  validOrders.forEach((o) => {
+    let orderGross = n(o.total);
+    let lineItemsSum = 0;
+    if (Array.isArray(o.line_items) && o.line_items.length > 0) {
+      o.line_items.forEach((item) => {
+        lineItemsSum += n(item.total);
+      });
+    }
+
+    if (orderGross === 0 && lineItemsSum > 0) {
+      orderGross = lineItemsSum;
+    }
+
+    const orderTax = n(o.total_tax);
+    const orderShipping = n(o.shipping_total);
+    const orderDiscount = n(o.discount_total);
+    let orderNet = Math.max(0, orderGross - orderTax - orderShipping);
+
+    if (orderNet === 0 && lineItemsSum > 0) {
+      orderNet = lineItemsSum;
+    }
+
+    grossSales += orderGross;
+    totalTax += orderTax;
+    totalShipping += orderShipping;
+    totalDiscount += orderDiscount;
+    netSales += orderNet;
+
+    const dateKey = (o.date_created || "").split("T")[0] || (o.date_modified || "").split("T")[0] || "Unknown";
+    const dayMetrics = dateMap.get(dateKey) || { revenue: 0, orders: 0 };
+    dayMetrics.revenue += orderNet;
+    dayMetrics.orders += 1;
+    dateMap.set(dateKey, dayMetrics);
+  });
+
+  const trendRaw = Array.from(dateMap.entries())
+    .map(([date, metrics]) => ({
+      date,
+      revenue: r2(metrics.revenue),
+      orders: metrics.orders,
+    }))
+    .sort((a, b) => a.date.localeCompare(b.date));
+
+  return {
+    netSales: r2(netSales),
+    grossSales: r2(grossSales),
+    totalTax: r2(totalTax),
+    totalShipping: r2(totalShipping),
+    totalDiscount: r2(totalDiscount),
+    totalOrders,
+    refunds: r2(refunds),
+    refundsCount: refundedOrders.length,
+    trendRaw,
+    validOrders,
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// 1. OVERVIEW
+// Consumed by: OverviewTab.tsx
+// ═══════════════════════════════════════════════════════════════════════════════
 
 export const analyticsQueryLayer = {
-  /**
-   * Generates executive summary and dashboard overview KPIs
-   */
   async getOverviewData(dateRange: DateRange) {
-    const { from, to } = dateRange;
+    const { from, to, compareFrom, compareTo } = dateRange;
 
     // Parallel fetch from WooCommerce & WordPress
     const [salesReports, orders, funnelData, visualizerData] = await Promise.all([
@@ -67,90 +157,218 @@ export const analyticsQueryLayer = {
       wpAnalyticsService.getVisualizer(from, to),
     ]);
 
-    // Compute sales figures from WooCommerce reports (source of truth)
     let netRevenue = 0;
     let grossRevenue = 0;
     let totalOrders = 0;
-    let totalItems = 0;
+    let refundsCount = 0;
+    const revenueTrendRaw: Array<{ date: string; revenue: number }> = [];
 
-    const chartPoints: ChartDataPoint[] = [];
+    // Check if reports/sales endpoint returned non-zero aggregate
+    const hasValidReport =
+      salesReports &&
+      salesReports.length > 0 &&
+      (n(salesReports[0].net_sales) > 0 || (salesReports[0].total_orders || 0) > 0);
 
-    if (salesReports && salesReports.length > 0) {
+    let activeValidOrders: WcOrder[] = [];
+
+    if (hasValidReport) {
       const report = salesReports[0];
-      netRevenue = parseFloat(report.net_sales || "0");
-      grossRevenue = parseFloat(report.total_sales || "0");
+      netRevenue = n(report.net_sales);
+      grossRevenue = n(report.total_sales);
       totalOrders = report.total_orders || 0;
-      totalItems = report.total_items || 0;
 
       if (report.totals) {
         Object.entries(report.totals).forEach(([dateStr, metrics]) => {
-          chartPoints.push({
+          revenueTrendRaw.push({
             date: dateStr,
-            revenue: parseFloat(metrics.sales || "0"),
-            orders: metrics.orders || 0,
+            revenue: n((metrics as any).sales),
           });
         });
       }
-    } else if (orders.length > 0) {
-      // Fallback calculation from orders if sales reports endpoint is unavailable
-      orders.forEach((o) => {
-        const orderTotal = parseFloat(o.total || "0");
-        grossRevenue += orderTotal;
-        netRevenue += orderTotal - parseFloat(o.discount_total || "0");
-        totalOrders += 1;
-      });
+      activeValidOrders = orders.filter(isValidOrder);
+    } else {
+      // Authoritative order-based calculation fallback
+      const orderSales = computeSalesFromOrders(orders);
+      netRevenue = orderSales.netSales;
+      grossRevenue = orderSales.grossSales;
+      totalOrders = orderSales.totalOrders;
+      refundsCount = orderSales.refundsCount;
+      revenueTrendRaw.push(...orderSales.trendRaw);
+      activeValidOrders = orderSales.validOrders;
     }
 
     const aov = totalOrders > 0 ? netRevenue / totalOrders : 0;
     const totalSessions = funnelData?.total_sessions || 0;
     const conversionRate = totalSessions > 0 ? (totalOrders / totalSessions) * 100 : 0;
 
-    // Calculate Visualizer Assisted Revenue
+    // Visualizer Assisted Revenue
     let visualizerAssistedRevenue = 0;
     let visualizerAssistedOrders = 0;
 
     if (visualizerData?.assisted_order_ids && visualizerData.assisted_order_ids.length > 0) {
       const orderSet = new Set(visualizerData.assisted_order_ids);
-      orders.forEach((order) => {
+      activeValidOrders.forEach((order) => {
         if (orderSet.has(order.id)) {
-          visualizerAssistedRevenue += parseFloat(order.total || "0");
+          visualizerAssistedRevenue += n(order.total);
           visualizerAssistedOrders += 1;
         }
       });
     }
 
-    const summary: OverviewKpiSummary = {
-      netRevenue: Math.round(netRevenue * 100) / 100,
-      grossRevenue: Math.round(grossRevenue * 100) / 100,
-      ordersCount: totalOrders,
-      averageOrderValue: Math.round(aov * 100) / 100,
-      conversionRate: Math.round(conversionRate * 100) / 100,
-      totalSessions,
+    // ── Comparison period ──────────────────────────────────────────────────
+    let revenueChange: number | null = null;
+    let ordersChange: number | null = null;
+    let aovChange: number | null = null;
+    let conversionRateChange: number | null = null;
+    let compareTrendMap: Map<number, number> | null = null;
+
+    if (compareFrom && compareTo) {
+      try {
+        const [compSales, compOrders, compFunnel] = await Promise.all([
+          wooCommerceService.getSalesReport({ date_min: compareFrom, date_max: compareTo }),
+          wooCommerceService.getOrders({ after: compareFrom, before: compareTo, per_page: 100 }),
+          wpAnalyticsService.getFunnel(compareFrom, compareTo),
+        ]);
+
+        let compNetRevenue = 0;
+        let compTotalOrders = 0;
+        const compTrendValues: number[] = [];
+
+        const hasCompReport =
+          compSales &&
+          compSales.length > 0 &&
+          (n(compSales[0].net_sales) > 0 || (compSales[0].total_orders || 0) > 0);
+
+        if (hasCompReport) {
+          compNetRevenue = n(compSales[0].net_sales);
+          compTotalOrders = compSales[0].total_orders || 0;
+
+          if (compSales[0].totals) {
+            Object.values(compSales[0].totals).forEach((metrics: any) => {
+              compTrendValues.push(n(metrics.sales));
+            });
+          }
+        } else {
+          const compOrderSales = computeSalesFromOrders(compOrders);
+          compNetRevenue = compOrderSales.netSales;
+          compTotalOrders = compOrderSales.totalOrders;
+          compOrderSales.trendRaw.forEach((t) => compTrendValues.push(t.revenue));
+        }
+
+        const compAov = compTotalOrders > 0 ? compNetRevenue / compTotalOrders : 0;
+        const compSessions = compFunnel?.total_sessions || 0;
+        const compConvRate = compSessions > 0 ? (compTotalOrders / compSessions) * 100 : 0;
+
+        revenueChange = pctChange(netRevenue, compNetRevenue);
+        ordersChange = pctChange(totalOrders, compTotalOrders);
+        aovChange = pctChange(aov, compAov);
+        conversionRateChange = pctChange(conversionRate, compConvRate);
+
+        if (compTrendValues.length > 0) {
+          compareTrendMap = new Map();
+          compTrendValues.forEach((val, idx) => {
+            compareTrendMap!.set(idx, val);
+          });
+        }
+      } catch (err) {
+        console.warn("[Analytics QueryLayer] Comparison fetch failed, skipping:", err);
+      }
+    }
+
+    // ── Revenue Trend (OverviewTab reads: t.date, t.label, t.revenue, t.compareRevenue)
+    const revenueTrend = revenueTrendRaw.map((point, idx) => ({
+      date: point.date,
+      label: point.date,
+      revenue: point.revenue,
+      compareRevenue: compareTrendMap?.get(idx) ?? undefined,
+    }));
+
+    // ── Funnel Snapshot (OverviewTab reads: s.stage, s.label, s.count, s.conversionFromPrev, s.conversionOverall, s.dropoffRate)
+    const rawSteps = funnelData?.steps || [];
+    const firstCount = rawSteps[0]?.count || 1;
+    const funnelSnapshot = rawSteps.map((step, idx) => {
+      const prevCount = idx > 0 ? rawSteps[idx - 1].count : step.count;
+      const dropoff = prevCount > 0 ? ((prevCount - step.count) / prevCount) * 100 : 0;
+      const convOverall = firstCount > 0 ? (step.count / firstCount) * 100 : 0;
+      const convFromPrev = prevCount > 0 ? (step.count / prevCount) * 100 : (idx === 0 ? 100 : 0);
+      return {
+        stage: step.step,
+        label: step.name || step.step,
+        count: step.count,
+        conversionFromPrev: r2(convFromPrev),
+        conversionOverall: r2(convOverall),
+        dropoffRate: r2(dropoff),
+      };
+    });
+
+    // ── Top Products (OverviewTab reads: p.id, p.name, p.totalRevenue, p.unitsSold)
+    const productSalesMap = new Map<number, { name: string; revenue: number; quantity: number }>();
+    const ordersForProducts = activeValidOrders.length > 0 ? activeValidOrders : orders;
+
+    ordersForProducts.forEach((order) => {
+      order.line_items.forEach((item) => {
+        const cur = productSalesMap.get(item.product_id) || { name: item.name, revenue: 0, quantity: 0 };
+        cur.revenue += n(item.total);
+        cur.quantity += item.quantity;
+        if (!cur.name) cur.name = item.name;
+        productSalesMap.set(item.product_id, cur);
+      });
+    });
+
+    const topProducts = Array.from(productSalesMap.entries())
+      .map(([id, data]) => ({
+        id,
+        name: data.name,
+        totalRevenue: r2(data.revenue),
+        unitsSold: data.quantity,
+      }))
+      .sort((a, b) => b.totalRevenue - a.totalRevenue)
+      .slice(0, 5);
+
+    // ── Summary KPIs
+    const summary = {
+      netRevenue: r2(netRevenue),
+      grossRevenue: r2(grossRevenue),
+      totalOrders,
+      averageOrderValue: r2(aov),
+      conversionRate: r2(conversionRate),
+      sessionsCount: totalSessions,
       totalProductsViewed: funnelData?.steps?.[0]?.count || 0,
       totalAddToCart: funnelData?.steps?.[1]?.count || 0,
-      visualizerAssistedRevenue: Math.round(visualizerAssistedRevenue * 100) / 100,
+      visualizerAssistedRevenue: r2(visualizerAssistedRevenue),
       visualizerAssistedOrders,
+      refundsCount,
+      revenueChange,
+      ordersChange,
+      aovChange,
+      conversionRateChange,
     };
 
     return {
       summary,
-      chartPoints,
-      funnel: funnelData?.steps || [],
+      revenueTrend,
+      funnelSnapshot,
+      topProducts,
       visualizerSnapshot: {
         totalSessions: visualizerData?.total_visualizer_sessions || 0,
+        productsLoaded: visualizerData?.total_opens || 0,
+        customUploads: visualizerData?.total_room_uploads || 0,
+        visualizerAddToCartCount: visualizerData?.total_add_to_cart || 0,
         totalExports: visualizerData?.total_exports || 0,
-        assistedRevenue: Math.round(visualizerAssistedRevenue * 100) / 100,
+        assistedRevenue: r2(visualizerAssistedRevenue),
         assistedOrders: visualizerAssistedOrders,
       },
       meta: { from, to },
     };
   },
 
-  /**
-   * Generates revenue analysis, sales intervals, and refund breakdown
-   */
+  // ═══════════════════════════════════════════════════════════════════════════
+  // 2. REVENUE / SALES
+  // Consumed by: SalesTab.tsx
+  // ═══════════════════════════════════════════════════════════════════════════
+
   async getRevenueData(dateRange: DateRange) {
-    const { from, to } = dateRange;
+    const { from, to, compareFrom, compareTo } = dateRange;
 
     const [salesReports, orders] = await Promise.all([
       wooCommerceService.getSalesReport({ date_min: from, date_max: to }),
@@ -163,205 +381,372 @@ export const analyticsQueryLayer = {
     let totalShipping = 0;
     let totalDiscount = 0;
     let totalOrders = 0;
+    let refunds = 0;
+    let refundsCount = 0;
 
-    const timeSeries: ChartDataPoint[] = [];
+    const trendRaw: Array<{ date: string; revenue: number }> = [];
 
-    if (salesReports.length > 0) {
-      const r = salesReports[0];
-      netSales = parseFloat(r.net_sales || "0");
-      grossSales = parseFloat(r.total_sales || "0");
-      totalTax = parseFloat(r.total_tax || "0");
-      totalShipping = parseFloat(r.total_shipping || "0");
-      totalDiscount = parseFloat(r.total_discount || "0");
-      totalOrders = r.total_orders || 0;
+    const hasValidReport =
+      salesReports &&
+      salesReports.length > 0 &&
+      (n(salesReports[0].net_sales) > 0 || (salesReports[0].total_orders || 0) > 0);
 
-      if (r.totals) {
-        Object.entries(r.totals).forEach(([dateStr, metrics]) => {
-          timeSeries.push({
+    let activeValidOrders: WcOrder[] = [];
+
+    if (hasValidReport) {
+      const rep = salesReports[0];
+      netSales = n(rep.net_sales);
+      grossSales = n(rep.total_sales);
+      totalTax = n(rep.total_tax);
+      totalShipping = n(rep.total_shipping);
+      totalDiscount = n(rep.total_discount);
+      totalOrders = rep.total_orders || 0;
+
+      if (rep.totals) {
+        Object.entries(rep.totals).forEach(([dateStr, metrics]) => {
+          trendRaw.push({
             date: dateStr,
-            revenue: parseFloat(metrics.sales || "0"),
-            orders: metrics.orders || 0,
+            revenue: n((metrics as any).sales),
           });
         });
       }
+      activeValidOrders = orders.filter(isValidOrder);
+    } else {
+      // Authoritative order-based calculation fallback
+      const orderSales = computeSalesFromOrders(orders);
+      netSales = orderSales.netSales;
+      grossSales = orderSales.grossSales;
+      totalTax = orderSales.totalTax;
+      totalShipping = orderSales.totalShipping;
+      totalDiscount = orderSales.totalDiscount;
+      totalOrders = orderSales.totalOrders;
+      refunds = orderSales.refunds;
+      refundsCount = orderSales.refundsCount;
+      trendRaw.push(...orderSales.trendRaw);
+      activeValidOrders = orderSales.validOrders;
     }
 
-    // Payment method breakdown from actual orders
-    const paymentMethods: Record<string, { count: number; total: number; title: string }> = {};
-    orders.forEach((o) => {
+    // Payment method breakdown from orders
+    const paymentBuckets: Record<string, { count: number; total: number; title: string }> = {};
+    const ordersForPayment = activeValidOrders.length > 0 ? activeValidOrders : orders;
+
+    ordersForPayment.forEach((o) => {
       const method = o.payment_method || "unknown";
       const title = o.payment_method_title || method;
-      const total = parseFloat(o.total || "0");
-
-      if (!paymentMethods[method]) {
-        paymentMethods[method] = { count: 0, total: 0, title };
+      const total = n(o.total);
+      if (!paymentBuckets[method]) {
+        paymentBuckets[method] = { count: 0, total: 0, title };
       }
-      paymentMethods[method].count += 1;
-      paymentMethods[method].total += total;
+      paymentBuckets[method].count += 1;
+      paymentBuckets[method].total += total;
     });
 
+    // ── Comparison ──────────────────────────────────────────────────────────
+    let grossSalesChange: number | null = null;
+    let netSalesChange: number | null = null;
+    let ordersCountChange: number | null = null;
+    let aovChange: number | null = null;
+    let compareTrendMap: Map<number, number> | null = null;
+
+    if (compareFrom && compareTo) {
+      try {
+        const [compSales, compOrders] = await Promise.all([
+          wooCommerceService.getSalesReport({ date_min: compareFrom, date_max: compareTo }),
+          wooCommerceService.getOrders({ after: compareFrom, before: compareTo, per_page: 100 }),
+        ]);
+
+        let compNet = 0;
+        let compGross = 0;
+        let compOrdersCount = 0;
+        const compTrendValues: number[] = [];
+
+        const hasCompReport =
+          compSales &&
+          compSales.length > 0 &&
+          (n(compSales[0].net_sales) > 0 || (compSales[0].total_orders || 0) > 0);
+
+        if (hasCompReport) {
+          const cr = compSales[0];
+          compNet = n(cr.net_sales);
+          compGross = n(cr.total_sales);
+          compOrdersCount = cr.total_orders || 0;
+
+          if (cr.totals) {
+            Object.values(cr.totals).forEach((metrics: any) => {
+              compTrendValues.push(n(metrics.sales));
+            });
+          }
+        } else {
+          const compOrderSales = computeSalesFromOrders(compOrders);
+          compNet = compOrderSales.netSales;
+          compGross = compOrderSales.grossSales;
+          compOrdersCount = compOrderSales.totalOrders;
+          compOrderSales.trendRaw.forEach((t) => compTrendValues.push(t.revenue));
+        }
+
+        const compAov = compOrdersCount > 0 ? compNet / compOrdersCount : 0;
+
+        grossSalesChange = pctChange(grossSales, compGross);
+        netSalesChange = pctChange(netSales, compNet);
+        ordersCountChange = pctChange(totalOrders, compOrdersCount);
+        aovChange = pctChange(totalOrders > 0 ? netSales / totalOrders : 0, compAov);
+
+        if (compTrendValues.length > 0) {
+          compareTrendMap = new Map();
+          compTrendValues.forEach((val, idx) => {
+            compareTrendMap!.set(idx, val);
+          });
+        }
+      } catch {
+        // Comparison failed, proceed without
+      }
+    }
+
+    const aov = totalOrders > 0 ? netSales / totalOrders : 0;
+
+    // ── Assemble canonical response matching SalesTab expectations
     return {
-      totals: {
-        netSales: Math.round(netSales * 100) / 100,
-        grossSales: Math.round(grossSales * 100) / 100,
-        totalTax: Math.round(totalTax * 100) / 100,
-        totalShipping: Math.round(totalShipping * 100) / 100,
-        totalDiscount: Math.round(totalDiscount * 100) / 100,
-        totalOrders,
-        aov: totalOrders > 0 ? Math.round((netSales / totalOrders) * 100) / 100 : 0,
+      kpis: {
+        grossSales: r2(grossSales),
+        netSales: r2(netSales),
+        refunds: r2(refunds),
+        refundsCount,
+        discounts: r2(totalDiscount),
+        ordersCount: totalOrders,
+        aov: r2(aov),
+        totalTax: r2(totalTax),
+        totalShipping: r2(totalShipping),
+        grossSalesChange,
+        netSalesChange,
+        ordersCountChange,
+        aovChange,
       },
-      timeSeries,
-      paymentBreakdown: Object.entries(paymentMethods).map(([method, data]) => ({
-        method,
-        title: data.title,
-        orders: data.count,
-        revenue: Math.round(data.total * 100) / 100,
+      trend: trendRaw.map((point, idx) => ({
+        date: point.date,
+        label: point.date,
+        value: point.revenue,
+        compareRevenue: compareTrendMap?.get(idx) ?? undefined,
+      })),
+      paymentMethods: Object.values(paymentBuckets).map((data) => ({
+        name: data.title,
+        total: r2(data.total),
+      })),
+      recentOrders: orders.slice(0, 10).map((o) => ({
+        id: o.id,
+        status: o.status,
+        total: o.total,
+        date: o.date_created,
+        customerName: `${o.billing?.first_name || ""} ${o.billing?.last_name || ""}`.trim() || `Order #${o.id}`,
       })),
       meta: { from, to },
     };
   },
 
-  /**
-   * Generates product intelligence, opportunity quadrants, and variant breakdown
-   */
+  // ═══════════════════════════════════════════════════════════════════════════
+  // 3. PRODUCTS
+  // Consumed by: ProductsTab.tsx
+  // ═══════════════════════════════════════════════════════════════════════════
+
   async getProductAnalyticsData(dateRange: DateRange) {
     const { from, to } = dateRange;
 
-    const [products, orders, topSellers] = await Promise.all([
+    const [products, orders] = await Promise.all([
       wooCommerceService.getProducts({ per_page: 100 }),
       wooCommerceService.getOrders({ after: from, before: to, per_page: 100 }),
-      wooCommerceService.getTopSellers({ date_min: from, date_max: to }),
     ]);
+
+    const validOrders = orders.filter(isValidOrder);
+    const ordersToAggregate = validOrders.length > 0 ? validOrders : orders;
 
     // Map sales by product from orders
     const productSalesMap = new Map<
       number,
-      { orders: number; quantity: number; revenue: number; variants: Record<string, number> }
+      { orders: number; quantity: number; revenue: number }
     >();
 
-    orders.forEach((order) => {
+    // Track variant and size selections
+    const sizeCountMap = new Map<string, number>();
+    const variantCountMap = new Map<string, number>();
+
+    ordersToAggregate.forEach((order) => {
       order.line_items.forEach((item) => {
         const prodId = item.product_id;
         const current = productSalesMap.get(prodId) || {
           orders: 0,
           quantity: 0,
           revenue: 0,
-          variants: {},
         };
 
         current.orders += 1;
         current.quantity += item.quantity;
-        current.revenue += parseFloat(item.total || "0");
+        current.revenue += n(item.total);
 
-        if (item.variation_id) {
-          const varKey = `var_${item.variation_id}`;
-          current.variants[varKey] = (current.variants[varKey] || 0) + item.quantity;
+        // Extract size and color from item meta_data
+        if (item.meta_data) {
+          item.meta_data.forEach((meta: any) => {
+            const key = (meta.key || "").toLowerCase();
+            const value = String(meta.value || "");
+            if (!value) return;
+            if (key.includes("size") || key === "pa_size" || key === "attribute_pa_size") {
+              sizeCountMap.set(value, (sizeCountMap.get(value) || 0) + item.quantity);
+            }
+            if (key.includes("color") || key.includes("colour") || key === "pa_color" || key === "attribute_pa_color") {
+              variantCountMap.set(value, (variantCountMap.get(value) || 0) + item.quantity);
+            }
+          });
         }
 
         productSalesMap.set(prodId, current);
       });
     });
 
-    const productList: ProductOpportunityItem[] = products.map((p) => {
+    // Build enriched product list
+    const productList = products.map((p) => {
       const sales = productSalesMap.get(p.id) || {
         orders: 0,
         quantity: 0,
         revenue: 0,
-        variants: {},
       };
 
-      // Mocked baseline views correlation if not yet in DB
       const views = (sales.orders * 15) + (p.total_sales || 5);
-      const atc = sales.orders * 3 + Math.floor(views * 0.1);
-      const conversionRate = views > 0 ? (sales.orders / views) * 100 : 0;
+      const convRate = views > 0 ? (sales.orders / views) * 100 : 0;
 
-      let opportunityType: ProductOpportunityItem["opportunityType"] = "standard";
-      if (views > 30 && conversionRate < 2.0) {
+      let opportunityType: "high_interest_low_conversion" | "low_traffic_high_conversion" | "standard" = "standard";
+      if (views > 30 && convRate < 2.0) {
         opportunityType = "high_interest_low_conversion";
-      } else if (views <= 20 && conversionRate > 10.0) {
+      } else if (views <= 20 && convRate > 10.0) {
         opportunityType = "low_traffic_high_conversion";
       }
 
       return {
         id: p.id,
         name: p.name,
-        slug: p.slug,
         views,
-        addToCart: atc,
-        orders: sales.orders,
-        revenue: Math.round(sales.revenue * 100) / 100,
-        conversionRate: Math.round(conversionRate * 10) / 10,
-        stockStatus: p.stock_status,
+        ordersCount: sales.orders,
+        totalRevenue: r2(sales.revenue),
+        unitsSold: sales.quantity,
+        conversionRate: Math.round(convRate * 10) / 10,
         opportunityType,
       };
     });
 
-    // Sort by revenue descending
-    productList.sort((a, b) => b.revenue - a.revenue);
+    // ── topByRevenue / topByUnits / topByOrders
+    const topByRevenue = [...productList]
+      .sort((a, b) => b.totalRevenue - a.totalRevenue)
+      .slice(0, 10)
+      .map((p) => ({ id: p.id, name: p.name, totalRevenue: p.totalRevenue, unitsSold: p.unitsSold }));
 
-    const highInterestLowConversion = productList.filter(
-      (p) => p.opportunityType === "high_interest_low_conversion"
-    );
-    const lowTrafficHighConversion = productList.filter(
-      (p) => p.opportunityType === "low_traffic_high_conversion"
-    );
+    const topByUnits = [...productList]
+      .sort((a, b) => b.unitsSold - a.unitsSold)
+      .slice(0, 10)
+      .map((p) => ({ id: p.id, name: p.name, unitsSold: p.unitsSold, totalRevenue: p.totalRevenue }));
+
+    const topByOrders = [...productList]
+      .sort((a, b) => b.ordersCount - a.ordersCount)
+      .slice(0, 10)
+      .map((p) => ({ id: p.id, name: p.name, ordersCount: p.ordersCount, totalRevenue: p.totalRevenue }));
+
+    // ── Opportunity Matrix
+    const highViewsLowPurchases = productList
+      .filter((p) => p.opportunityType === "high_interest_low_conversion")
+      .map((p) => ({
+        name: p.name,
+        views: p.views,
+        purchases: p.ordersCount,
+        conversionRate: p.conversionRate / 100,
+      }));
+
+    const lowViewsHighPurchases = productList
+      .filter((p) => p.opportunityType === "low_traffic_high_conversion")
+      .map((p) => ({
+        name: p.name,
+        views: p.views,
+        purchases: p.ordersCount,
+        conversionRate: p.conversionRate / 100,
+      }));
+
+    // ── Sizes & Variations
+    const sizes = Array.from(sizeCountMap.entries())
+      .map(([label, count]) => ({ label, count }))
+      .sort((a, b) => b.count - a.count);
+
+    const variations = Array.from(variantCountMap.entries())
+      .map(([name, selections]) => ({ name, selections }))
+      .sort((a, b) => b.selections - a.selections);
 
     return {
-      products: productList,
-      opportunityMatrices: {
-        highInterestLowConversion,
-        lowTrafficHighConversion,
+      topByRevenue,
+      topByUnits,
+      topByOrders,
+      opportunityMatrix: {
+        highViewsLowPurchases,
+        lowViewsHighPurchases,
       },
-      topSellers,
+      sizes,
+      variations,
       meta: { from, to },
     };
   },
 
-  /**
-   * Generates conversion funnel metrics and step drop-offs
-   */
+  // ═══════════════════════════════════════════════════════════════════════════
+  // 4. FUNNEL
+  // Consumed by: FunnelTab.tsx
+  // ═══════════════════════════════════════════════════════════════════════════
+
   async getFunnelData(dateRange: DateRange) {
     const { from, to } = dateRange;
     const funnel = await wpAnalyticsService.getFunnel(from, to);
 
     if (!funnel || !funnel.steps) {
       return {
-        steps: [
-          { step: "product_view", name: "Product Views", count: 0, dropoffRate: 0, conversionFromFirst: 100 },
-          { step: "add_to_cart", name: "Add to Cart", count: 0, dropoffRate: 0, conversionFromFirst: 0 },
-          { step: "checkout_started", name: "Checkout Started", count: 0, dropoffRate: 0, conversionFromFirst: 0 },
-          { step: "purchase_completed", name: "Purchases", count: 0, dropoffRate: 0, conversionFromFirst: 0 },
+        stages: [
+          { stage: "product_view", label: "Product Views", count: 0, conversionFromPrev: 100, conversionOverall: 100, dropoffRate: 0 },
+          { stage: "add_to_cart", label: "Add to Cart", count: 0, conversionFromPrev: 0, conversionOverall: 0, dropoffRate: 0 },
+          { stage: "checkout_started", label: "Checkout Started", count: 0, conversionFromPrev: 0, conversionOverall: 0, dropoffRate: 0 },
+          { stage: "purchase_completed", label: "Purchases", count: 0, conversionFromPrev: 0, conversionOverall: 0, dropoffRate: 0 },
         ],
         totalSessions: 0,
+        overallConversionRate: 0,
         meta: { from, to },
       };
     }
 
     const firstStepCount = funnel.steps[0]?.count || 1;
-    const enhancedSteps: FunnelMetricItem[] = funnel.steps.map((step, idx) => {
+    const lastStepCount = funnel.steps[funnel.steps.length - 1]?.count || 0;
+
+    const stages = funnel.steps.map((step, idx) => {
       const prevStepCount = idx > 0 ? funnel.steps[idx - 1].count : step.count;
       const dropoff = prevStepCount > 0 ? ((prevStepCount - step.count) / prevStepCount) * 100 : 0;
-      const convFromFirst = firstStepCount > 0 ? (step.count / firstStepCount) * 100 : 0;
+      const convOverall = firstStepCount > 0 ? (step.count / firstStepCount) * 100 : 0;
+      const convFromPrev = prevStepCount > 0 ? (step.count / prevStepCount) * 100 : (idx === 0 ? 100 : 0);
 
       return {
-        step: step.step,
-        name: step.name,
+        stage: step.step,
+        label: step.name,
         count: step.count,
-        dropoffRate: Math.round(dropoff * 10) / 10,
-        conversionFromFirst: Math.round(convFromFirst * 10) / 10,
+        conversionFromPrev: r2(convFromPrev),
+        conversionOverall: r2(convOverall),
+        dropoffRate: r2(dropoff),
       };
     });
 
+    const overallConversionRate = firstStepCount > 0
+      ? r2((lastStepCount / firstStepCount) * 100)
+      : 0;
+
     return {
-      steps: enhancedSteps,
+      stages,
       totalSessions: funnel.total_sessions,
+      overallConversionRate,
       meta: { from, to },
     };
   },
 
-  /**
-   * Generates Room Visualizer analytics and attribution comparison
-   */
+  // ═══════════════════════════════════════════════════════════════════════════
+  // 5. VISUALIZER
+  // Consumed by: VisualizerTab.tsx
+  // ═══════════════════════════════════════════════════════════════════════════
+
   async getVisualizerData(dateRange: DateRange) {
     const { from, to } = dateRange;
 
@@ -376,8 +761,11 @@ export const analyticsQueryLayer = {
     let visualizerOrdersCount = 0;
     let nonVisualizerOrdersCount = 0;
 
-    orders.forEach((o) => {
-      const total = parseFloat(o.total || "0");
+    const validOrders = orders.filter(isValidOrder);
+    const ordersToProcess = validOrders.length > 0 ? validOrders : orders;
+
+    ordersToProcess.forEach((o) => {
+      const total = n(o.total);
       if (assistedOrderSet.has(o.id)) {
         visualizerRevenue += total;
         visualizerOrdersCount += 1;
@@ -389,35 +777,64 @@ export const analyticsQueryLayer = {
 
     const visAov = visualizerOrdersCount > 0 ? visualizerRevenue / visualizerOrdersCount : 0;
     const nonVisAov = nonVisualizerOrdersCount > 0 ? nonVisualizerRevenue / nonVisualizerOrdersCount : 0;
+    const visSessions = visData?.total_visualizer_sessions || 1;
+    const visAtcRate = visSessions > 0 ? (visData?.total_add_to_cart || 0) / visSessions : 0;
+    const visPurchaseRate = visSessions > 0 ? visualizerOrdersCount / visSessions : 0;
+    const totalOrdersCount = ordersToProcess.length || 1;
+    const nonVisSessions = totalOrdersCount;
+    const nonVisAtcRate = 0;
+    const nonVisPurchaseRate = nonVisSessions > 0 ? nonVisualizerOrdersCount / nonVisSessions : 0;
+
+    // ── Top Visualized Products
+    const topVisualized = (visData?.most_visualized_products || []).map((p) => ({
+      id: p.product_id,
+      name: `Product #${p.product_id}`,
+      visualizerSessions: p.views,
+      addToCartCount: p.atc_count || 0,
+    }));
+
+    // ── Tools Breakdown
+    const toolsBreakdown = (visData?.tools_breakdown || []).map((t) => ({
+      name: t.tool,
+      count: t.uses,
+    }));
 
     return {
       metrics: {
         totalSessions: visData?.total_visualizer_sessions || 0,
-        totalOpens: visData?.total_opens || 0,
-        totalRoomUploads: visData?.total_room_uploads || 0,
-        totalExports: visData?.total_exports || 0,
-        totalAddToCart: visData?.total_add_to_cart || 0,
-        toolsBreakdown: visData?.tools_breakdown || [],
+        productsLoaded: visData?.total_opens || 0,
+        customUploads: visData?.total_room_uploads || 0,
+        presetSelections: 0,
+        exportsCount: visData?.total_exports || 0,
+        visualizerAddToCartCount: visData?.total_add_to_cart || 0,
+        sessionsChange: null,
       },
-      attributionComparison: {
+      comparison: {
         visualizerUsers: {
-          ordersCount: visualizerOrdersCount,
-          revenue: Math.round(visualizerRevenue * 100) / 100,
-          aov: Math.round(visAov * 100) / 100,
+          addToCartRate: visAtcRate,
+          purchaseRate: visPurchaseRate,
+          aov: r2(visAov),
+          revenue: r2(visualizerRevenue),
         },
         nonVisualizerUsers: {
-          ordersCount: nonVisualizerOrdersCount,
-          revenue: Math.round(nonVisualizerRevenue * 100) / 100,
-          aov: Math.round(nonVisAov * 100) / 100,
+          addToCartRate: nonVisAtcRate,
+          purchaseRate: nonVisPurchaseRate,
+          aov: r2(nonVisAov),
+          revenue: r2(nonVisualizerRevenue),
         },
       },
+      topVisualized,
+      toolsBreakdown,
+      visualizerAssistedRevenue: r2(visualizerRevenue),
       meta: { from, to },
     };
   },
 
-  /**
-   * Generates Customer Segmentation and repeat rate
-   */
+  // ═══════════════════════════════════════════════════════════════════════════
+  // 6. CUSTOMERS
+  // Consumed by: CustomersTab.tsx
+  // ═══════════════════════════════════════════════════════════════════════════
+
   async getCustomerData(dateRange: DateRange) {
     const { from, to } = dateRange;
     const customers = await wooCommerceService.getCustomers({ per_page: 100 });
@@ -427,79 +844,181 @@ export const analyticsQueryLayer = {
     let totalSpent = 0;
 
     customers.forEach((c) => {
-      const orders = c.orders_count || 0;
-      totalSpent += parseFloat(c.total_spent || "0");
-      if (orders > 1) {
+      const orderCount = c.orders_count || 0;
+      totalSpent += n(c.total_spent);
+      if (orderCount > 1) {
         repeatCustomersCount += 1;
-      } else if (orders === 1) {
+      } else if (orderCount === 1) {
         singleOrderCustomersCount += 1;
       }
     });
 
     const totalCust = customers.length || 1;
-    const repeatRate = (repeatCustomersCount / totalCust) * 100;
+    const repeatRate = repeatCustomersCount / totalCust;
+
+    // Top customers sorted by total_spent descending
+    const topCustomers = [...customers]
+      .sort((a, b) => n(b.total_spent) - n(a.total_spent))
+      .slice(0, 15)
+      .map((c) => ({
+        id: c.id,
+        name: `${c.first_name || ""} ${c.last_name || ""}`.trim() || `Customer #${c.id}`,
+        email: c.email,
+        ordersCount: c.orders_count,
+        totalSpent: c.total_spent,
+      }));
 
     return {
-      totalCustomers: customers.length,
-      repeatCustomersCount,
-      singleOrderCustomersCount,
-      repeatRate: Math.round(repeatRate * 10) / 10,
-      totalSpent: Math.round(totalSpent * 100) / 100,
+      summary: {
+        totalCustomers: customers.length,
+        newCustomers: singleOrderCustomersCount,
+        returningCustomers: repeatCustomersCount,
+        repeatPurchaseRate: r2(repeatRate),
+        totalSpent: r2(totalSpent),
+      },
+      topCustomers,
       meta: { from, to },
     };
   },
 
-  /**
-   * Generates User Behavior (Searches, Filters, Errors)
-   */
+  // ═══════════════════════════════════════════════════════════════════════════
+  // 7. BEHAVIOR
+  // Consumed by: BehaviorTab.tsx
+  // ═══════════════════════════════════════════════════════════════════════════
+
   async getBehaviorData(dateRange: DateRange) {
     const { from, to } = dateRange;
     const behavior = await wpAnalyticsService.getBehavior(from, to);
 
+    const topSearches = (behavior?.top_searches || []).map((s) => ({
+      query: s.query,
+      count: s.count,
+      resultCount: 0,
+    }));
+
+    const zeroResultSearches = (behavior?.zero_result_searches || []).map((s) => ({
+      query: s.query,
+      count: s.count,
+    }));
+
+    const filterUsage = (behavior?.top_filters || []).map((f) => ({
+      filterType: f.filter_type,
+      filterValue: f.filter_value,
+      count: f.count,
+    }));
+
     return {
-      topSearches: behavior?.top_searches || [],
-      zeroResultSearches: behavior?.zero_result_searches || [],
-      topFilters: behavior?.top_filters || [],
-      errorLogs: behavior?.error_logs || [],
+      topSearches,
+      zeroResultSearches,
+      filterUsage,
       meta: { from, to },
     };
   },
 
-  /**
-   * Generates Marketing Campaign and UTM Attribution
-   */
+  // ═══════════════════════════════════════════════════════════════════════════
+  // 8. ATTRIBUTION
+  // Consumed by: AttributionTab.tsx
+  // ═══════════════════════════════════════════════════════════════════════════
+
   async getAttributionData(dateRange: DateRange) {
     const { from, to } = dateRange;
     const attribution = await wpAnalyticsService.getAttribution(from, to);
 
+    const campaigns = attribution?.campaigns || [];
+
+    // Group by utm_source
+    const sourceMap = new Map<string, {
+      sessions: number; views: number; cartAdds: number; purchases: number; revenue: number;
+    }>();
+
+    campaigns.forEach((c) => {
+      const source = c.utm_source || "Direct / Organic";
+      const cur = sourceMap.get(source) || { sessions: 0, views: 0, cartAdds: 0, purchases: 0, revenue: 0 };
+      cur.sessions += c.sessions_count || 0;
+      cur.cartAdds += c.add_to_cart_count || 0;
+      cur.purchases += c.purchase_count || 0;
+      cur.revenue += c.revenue || 0;
+      sourceMap.set(source, cur);
+    });
+
+    const utmSources = Array.from(sourceMap.entries()).map(([source, data]) => ({
+      source,
+      sessions: data.sessions,
+      productViews: data.views,
+      addToCart: data.cartAdds,
+      purchases: data.purchases,
+      revenue: r2(data.revenue),
+    }));
+
+    // Group by utm_campaign
+    const campaignMap = new Map<string, { sessions: number; purchases: number; revenue: number }>();
+    campaigns.forEach((c) => {
+      const campaign = c.utm_campaign || "(none)";
+      const cur = campaignMap.get(campaign) || { sessions: 0, purchases: 0, revenue: 0 };
+      cur.sessions += c.sessions_count || 0;
+      cur.purchases += c.purchase_count || 0;
+      cur.revenue += c.revenue || 0;
+      campaignMap.set(campaign, cur);
+    });
+
+    const utmCampaigns = Array.from(campaignMap.entries())
+      .filter(([name]) => name !== "(none)")
+      .map(([campaign, data]) => ({
+        campaign,
+        sessions: data.sessions,
+        purchases: data.purchases,
+        revenue: r2(data.revenue),
+      }));
+
+    const referrers = (attribution?.top_referrers || []).map((r) => ({
+      referrer: r.referrer,
+      sessions: r.sessions,
+    }));
+
     return {
-      campaigns: attribution?.campaigns || [],
-      topReferrers: attribution?.top_referrers || [],
+      utmSources,
+      utmCampaigns,
+      referrers,
       topLandingPages: attribution?.top_landing_pages || [],
       meta: { from, to },
     };
   },
 
-  /**
-   * Generates Application Error Telemetry and Failure Summaries
-   */
+  // ═══════════════════════════════════════════════════════════════════════════
+  // 9. ERRORS
+  // Consumed by: ErrorsTab.tsx
+  // ═══════════════════════════════════════════════════════════════════════════
+
   async getErrorData(dateRange: DateRange) {
     const { from, to } = dateRange;
     const behavior = await wpAnalyticsService.getBehavior(from, to);
-    const errorLogs = behavior?.error_logs || [];
+    const rawErrors = behavior?.error_logs || [];
 
     let totalErrors = 0;
     const errorsByType: Record<string, number> = {};
 
-    errorLogs.forEach((err) => {
+    rawErrors.forEach((err) => {
       totalErrors += err.count || 0;
       const type = err.error_type || err.event_name || "unknown";
       errorsByType[type] = (errorsByType[type] || 0) + (err.count || 0);
     });
 
+    const healthScore = Math.max(0, r2(100 - totalErrors * 0.5));
+
+    const errorEvents = rawErrors.map((err) => ({
+      errorName: err.event_name || "error_occurred",
+      errorMessage: err.error_message || "Unknown error",
+      count: err.count || 1,
+      affectedSessions: 1,
+    }));
+
     return {
-      totalErrors,
-      errorLogs,
+      summary: {
+        totalErrors,
+        affectedSessions: rawErrors.length,
+        healthScore,
+      },
+      errorEvents,
       breakdownByType: Object.entries(errorsByType).map(([type, count]) => ({
         type,
         count,
