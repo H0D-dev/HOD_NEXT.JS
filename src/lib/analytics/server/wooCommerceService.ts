@@ -103,6 +103,8 @@ export interface WcCustomer {
   orders_count: number;
   total_spent: string;
   avatar_url: string;
+  username?: string;
+  date_last_active?: string;
 }
 
 function getAuthHeaders(): HeadersInit {
