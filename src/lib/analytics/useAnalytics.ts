@@ -77,11 +77,20 @@ export function useAnalytics() {
 
   const trackVariantSelect = useCallback(
     (properties: ProductVariantSelectedProperties) => {
+      const variantType = properties.variantType || (properties as any).variant_type || "variant";
+      const variantValue = properties.variantValue || (properties as any).variant_value || "";
       trackEvent("product_variant_selected", {
         userId,
         productId: properties.productId,
         variationId: properties.variationId,
-        properties,
+        properties: {
+          ...properties,
+          variantType,
+          variantValue,
+          variant_type: variantType,
+          variant_value: variantValue,
+        },
+        immediate: true,
       });
     },
     [userId]
@@ -93,7 +102,11 @@ export function useAnalytics() {
         userId,
         productId: properties.productId,
         variationId: properties.variationId,
-        properties,
+        properties: {
+          ...properties,
+          size: properties.size,
+        },
+        immediate: true,
       });
     },
     [userId]
@@ -219,9 +232,18 @@ export function useAnalytics() {
 
   const trackSearch = useCallback(
     (properties: SearchPerformedProperties) => {
+      const query = properties.query || (properties as any).search_query || (properties as any).term || "";
+      const resultCount = properties.resultCount ?? (properties as any).result_count ?? 0;
       trackEvent("search_performed", {
         userId,
-        properties,
+        properties: {
+          ...properties,
+          query,
+          search_query: query,
+          resultCount,
+          result_count: resultCount,
+        },
+        immediate: true,
       });
     },
     [userId]
@@ -240,9 +262,15 @@ export function useAnalytics() {
 
   const trackSearchNoResults = useCallback(
     (properties: SearchNoResultsProperties) => {
+      const query = properties.query || (properties as any).search_query || (properties as any).term || "";
       trackEvent("search_no_results", {
         userId,
-        properties,
+        properties: {
+          ...properties,
+          query,
+          search_query: query,
+        },
+        immediate: true,
       });
     },
     [userId]
@@ -250,9 +278,17 @@ export function useAnalytics() {
 
   const trackCategorySelect = useCallback(
     (properties: CategorySelectedProperties) => {
+      const categorySlug = properties.categorySlug || (properties as any).category_slug || "";
+      const categoryName = properties.categoryName || (properties as any).category_name || "";
       trackEvent("category_selected", {
         userId,
-        properties,
+        properties: {
+          ...properties,
+          categorySlug,
+          categoryName,
+          category_slug: categorySlug,
+          category_name: categoryName,
+        },
       });
     },
     [userId]
@@ -260,9 +296,18 @@ export function useAnalytics() {
 
   const trackFilterApply = useCallback(
     (properties: FilterAppliedProperties) => {
+      const filterType = properties.filterType || (properties as any).filter_type;
+      const filterValue = properties.filterValue || (properties as any).filter_value;
       trackEvent("filter_applied", {
         userId,
-        properties,
+        properties: {
+          ...properties,
+          filterType,
+          filterValue,
+          filter_type: filterType,
+          filter_value: String(filterValue),
+        },
+        immediate: true,
       });
     },
     [userId]
@@ -270,9 +315,14 @@ export function useAnalytics() {
 
   const trackSortChange = useCallback(
     (properties: SortChangedProperties) => {
+      const sortOption = properties.sortOption || (properties as any).sort_option || "";
       trackEvent("sort_changed", {
         userId,
-        properties,
+        properties: {
+          ...properties,
+          sortOption,
+          sort_option: sortOption,
+        },
       });
     },
     [userId]
@@ -331,6 +381,7 @@ export function useAnalytics() {
         userId,
         productId: properties.productId,
         properties,
+        immediate: true,
       });
     },
     [userId]
@@ -352,6 +403,7 @@ export function useAnalytics() {
       trackEvent("visualizer_room_selected", {
         userId,
         properties,
+        immediate: true,
       });
     },
     [userId]
@@ -362,6 +414,7 @@ export function useAnalytics() {
       trackEvent("visualizer_room_uploaded", {
         userId,
         properties: properties || {},
+        immediate: true,
       });
     },
     [userId]
@@ -394,6 +447,7 @@ export function useAnalytics() {
         userId,
         productId: properties.productId,
         properties,
+        immediate: true,
       });
     },
     [userId]
@@ -406,6 +460,7 @@ export function useAnalytics() {
         productId: properties.productId,
         variationId: properties.variationId,
         properties,
+        immediate: true,
       });
     },
     [userId]
@@ -416,6 +471,7 @@ export function useAnalytics() {
       trackEvent("visualizer_closed", {
         userId,
         properties,
+        immediate: true,
       });
     },
     [userId]
