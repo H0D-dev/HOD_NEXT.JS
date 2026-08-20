@@ -3,6 +3,7 @@
 import React from 'react';
 import { useVisualizerStore } from '@/src/lib/store/useVisualizerStore';
 import { Product, ProductColor, ProductVariation } from '@/src/components/product-presentation/ProductPresentation';
+import { useAnalytics } from '@/src/lib/analytics/useAnalytics';
 import {
   Move,
   Layers,
@@ -67,11 +68,21 @@ export default function VisualizerToolbar({
     wandContiguous,
   } = useVisualizerStore();
 
+  const { trackVisualizerToolUse, trackVisualizerPerspectiveAdjust, trackVisualizerExport } = useAnalytics();
+  const numericProductId = parseInt(product.id, 10) || 0;
+
+  const handleToolSelect = (tool: any) => {
+    trackVisualizerToolUse({ tool });
+    dispatch({ type: 'SET_ACTIVE_TOOL', payload: { tool } });
+  };
+
   const handleResetQuad = () => {
+    trackVisualizerPerspectiveAdjust({ productId: numericProductId, tool: "corners" });
     dispatch({ type: 'RESET_TRANSFORM' });
   };
 
   const handleApplyPreset = (preset: 'center' | 'wide' | 'deep' | 'runner') => {
+    trackVisualizerPerspectiveAdjust({ productId: numericProductId, tool: "corners" });
     const container = document.getElementById('visualizer-container');
     const w = container ? container.offsetWidth : 800;
     const h = container ? container.offsetHeight : 600;
@@ -111,7 +122,16 @@ export default function VisualizerToolbar({
   };
 
   const handleToggleBeforeAfter = () => {
+    trackVisualizerToolUse({ tool: "beforeAfter" });
     dispatch({ type: 'TOGGLE_BEFORE_AFTER' });
+  };
+
+  const handleExportClick = () => {
+    trackVisualizerExport({
+      productId: numericProductId,
+      exportFormat: "image/png",
+    });
+    onExport();
   };
 
   return (
@@ -125,7 +145,7 @@ export default function VisualizerToolbar({
         <div className="grid grid-cols-3 gap-1.5 p-1 bg-[var(--bg-tertiary)] rounded-lg border border-[var(--border-secondary)] mb-1.5">
           <button
             type="button"
-            onClick={() => dispatch({ type: 'SET_ACTIVE_TOOL', payload: { tool: 'corners' } })}
+            onClick={() => handleToolSelect('corners')}
             className={`flex flex-col items-center py-2 px-1 rounded text-[11px] font-medium transition-all cursor-pointer ${
               activeTool === 'corners'
                 ? 'bg-[#2B2B2B] text-white shadow-sm'
@@ -138,7 +158,7 @@ export default function VisualizerToolbar({
 
           <button
             type="button"
-            onClick={() => dispatch({ type: 'SET_ACTIVE_TOOL', payload: { tool: 'floorTexture' } })}
+            onClick={() => handleToolSelect('floorTexture')}
             className={`flex flex-col items-center py-2 px-1 rounded text-[11px] font-medium transition-all cursor-pointer ${
               activeTool === 'floorTexture'
                 ? 'bg-[#2B2B2B] text-white shadow-sm'
@@ -151,7 +171,7 @@ export default function VisualizerToolbar({
 
           <button
             type="button"
-            onClick={() => dispatch({ type: 'SET_ACTIVE_TOOL', payload: { tool: 'box' } })}
+            onClick={() => handleToolSelect('box')}
             className={`flex flex-col items-center py-2 px-1 rounded text-[11px] font-medium transition-all cursor-pointer ${
               activeTool === 'box'
                 ? 'bg-[#2B2B2B] text-white shadow-sm'
@@ -166,7 +186,7 @@ export default function VisualizerToolbar({
         <div className="grid grid-cols-3 gap-1.5 p-1 bg-[var(--bg-tertiary)] rounded-lg border border-[var(--border-secondary)]">
           <button
             type="button"
-            onClick={() => dispatch({ type: 'SET_ACTIVE_TOOL', payload: { tool: 'brush' } })}
+            onClick={() => handleToolSelect('brush')}
             className={`flex flex-col items-center py-1.5 px-1 rounded text-[11px] font-medium transition-all cursor-pointer ${
               activeTool === 'brush'
                 ? 'bg-[#2B2B2B] text-white shadow-sm'
@@ -179,7 +199,7 @@ export default function VisualizerToolbar({
 
           <button
             type="button"
-            onClick={() => dispatch({ type: 'SET_ACTIVE_TOOL', payload: { tool: 'wand' } })}
+            onClick={() => handleToolSelect('wand')}
             className={`flex flex-col items-center py-1.5 px-1 rounded text-[11px] font-medium transition-all cursor-pointer ${
               activeTool === 'wand'
                 ? 'bg-[#2B2B2B] text-white shadow-sm'
@@ -192,7 +212,7 @@ export default function VisualizerToolbar({
 
           <button
             type="button"
-            onClick={() => dispatch({ type: 'SET_ACTIVE_TOOL', payload: { tool: 'eraser' } })}
+            onClick={() => handleToolSelect('eraser')}
             className={`flex flex-col items-center py-1.5 px-1 rounded text-[11px] font-medium transition-all cursor-pointer ${
               activeTool === 'eraser'
                 ? 'bg-[#2B2B2B] text-white shadow-sm'
@@ -590,7 +610,7 @@ export default function VisualizerToolbar({
         </button>
 
         <button
-          onClick={onExport}
+          onClick={handleExportClick}
           type="button"
           className="flex w-full items-center justify-center space-x-2 rounded-md bg-[#A38A61] hover:bg-[#8F7752] px-3 py-2.5 text-xs font-semibold text-white shadow transition-colors cursor-pointer"
         >
