@@ -10,6 +10,7 @@ import { useCurrencyStore } from "@/src/lib/store/useCurrencyStore";
 import { formatPrice } from "@/src/lib/utils/price";
 import toast from "react-hot-toast";
 import Image from "next/image";
+import { useAnalytics } from "@/src/lib/analytics/useAnalytics";
 
 interface ProductInfoCardProps {
   product: Product & { sizes?: string[] };
@@ -24,6 +25,7 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
   const router = useRouter();
   const { addItem, openDrawer } = useCartStore();
   const { currency, setCurrency } = useCurrencyStore();
+  const { trackVariantSelect, trackSizeSelect, trackAddToCart, trackError } = useAnalytics();
   const [quantity, setQuantity] = useState(1);
   const [openAccordion, setOpenAccordion] = useState<string | null>(null);
 
@@ -117,6 +119,13 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
 
   // --- Handlers ---
   const handleSizeClick = (variation: ProductVariation) => {
+    const numericId = typeof product.id === "string" ? parseInt(product.id, 10) : Number(product.id);
+    trackSizeSelect({
+      productId: numericId || 0,
+      variationId: variation.id,
+      size: variation.label,
+      price: variation.price,
+    });
     onVariationChange(variation);
   };
 
@@ -176,8 +185,25 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
 
     if (!result.success) {
       toast.error(result.error || "Failed to add item to cart.");
+      trackError("add_to_cart_failed", {
+        errorMessage: result.error || "Failed to add item to cart.",
+        productId: numericId,
+      });
       return;
     }
+
+    // Emit add_to_cart telemetry
+    trackAddToCart({
+      productId: numericId || 0,
+      variationId: selectedVariation?.id,
+      name: product.name,
+      price: displayPrice,
+      currency: isFallbackPrice ? "AED" : currency,
+      quantity,
+      color: activeColor.name,
+      size: isVariable && selectedVariation ? selectedVariation.label : (product.details?.dimensions || activeSize),
+      source: "pdp",
+    });
 
     if (result.lockedCurrency && result.lockedCurrency !== currency) {
       setCurrency(result.lockedCurrency as any);
@@ -253,6 +279,12 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
             <button
               key={color.id}
               onClick={() => {
+                const numericId = typeof product.id === "string" ? parseInt(product.id, 10) : Number(product.id);
+                trackVariantSelect({
+                  productId: numericId || 0,
+                  variantType: "color",
+                  variantValue: color.name,
+                });
                 if (color.slug && color.slug !== product.slug && product.categorySlug) {
                   router.push(`/products/${product.categorySlug}/${color.slug}`);
                 } else {
