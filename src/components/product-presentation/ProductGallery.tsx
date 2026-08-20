@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { ZoomIn, ZoomOut, ChevronLeft, ChevronRight, ChevronUp, ChevronDown } from "lucide-react";
 import { ProductColor, Product } from "./ProductPresentation";
+import { useAnalytics } from "@/src/lib/analytics/useAnalytics";
 
 interface ProductGalleryProps {
   product: Product;
@@ -12,6 +13,9 @@ interface ProductGalleryProps {
 }
 
 export default function ProductGallery({ product, activeColor }: ProductGalleryProps) {
+  const { trackImageInteraction } = useAnalytics();
+  const numericProductId = parseInt(product.id, 10) || 0;
+
   // Collect available images for the active color
   const [images, setImages] = useState<string[]>([]);
   const [mainImage, setMainImage] = useState<string>("");
@@ -69,7 +73,14 @@ export default function ProductGallery({ product, activeColor }: ProductGalleryP
   };
 
   const handleMouseEnter = () => {
-    if (isDesktop) setIsHoverZoomed(true);
+    if (isDesktop) {
+      setIsHoverZoomed(true);
+      trackImageInteraction({
+        productId: numericProductId,
+        interactionType: "zoom",
+        imageUrl: mainImage,
+      });
+    }
   };
 
   const handleMouseLeave = () => {
@@ -86,6 +97,12 @@ export default function ProductGallery({ product, activeColor }: ProductGalleryP
     const prevIndex = (currentIndex - 1 + images.length) % images.length;
     setMainImage(images[prevIndex]);
     setMobileScale(1);
+    trackImageInteraction({
+      productId: numericProductId,
+      interactionType: "gallery_arrow",
+      imageUrl: images[prevIndex],
+      imageIndex: prevIndex,
+    });
   };
 
   const handleNextImage = (e: React.MouseEvent) => {
@@ -95,6 +112,12 @@ export default function ProductGallery({ product, activeColor }: ProductGalleryP
     const nextIndex = (currentIndex + 1) % images.length;
     setMainImage(images[nextIndex]);
     setMobileScale(1);
+    trackImageInteraction({
+      productId: numericProductId,
+      interactionType: "gallery_arrow",
+      imageUrl: images[nextIndex],
+      imageIndex: nextIndex,
+    });
   };
 
   return (
@@ -122,6 +145,12 @@ export default function ProductGallery({ product, activeColor }: ProductGalleryP
                 onClick={() => {
                   setMainImage(img);
                   setMobileScale(1); // Reset mobile scale on image change
+                  trackImageInteraction({
+                    productId: numericProductId,
+                    interactionType: "thumbnail_click",
+                    imageUrl: img,
+                    imageIndex: idx,
+                  });
                 }}
                 className={`relative w-14 lg:w-full aspect-[3/4] shrink-0 snap-center transition-all duration-300 bg-white border ${mainImage === img
                   ? "border-[#E87461] shadow-sm"

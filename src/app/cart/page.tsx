@@ -1,19 +1,36 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { useCartStore } from "@/src/lib/store/useCartStore";
 import CartItem from "@/src/components/cart/CartItem";
 import OrderSummary from "@/src/components/cart/OrderSummary";
 import { ShoppingBag } from "lucide-react";
+import { useAnalytics } from "@/src/lib/analytics/useAnalytics";
 
 export default function CartPage() {
-  const { items } = useCartStore();
+  const { items, subtotal, totalItems, cartCurrency } = useCartStore();
+  const { trackCartView } = useAnalytics();
+  const hasTrackedRef = useRef(false);
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
-  }, []);
+    if (!hasTrackedRef.current && items.length > 0) {
+      hasTrackedRef.current = true;
+      trackCartView({
+        itemCount: totalItems,
+        subtotal,
+        currency: cartCurrency || "AED",
+        items: items.map((i) => ({
+          productId: i.productId,
+          variationId: i.variationId,
+          quantity: i.quantity,
+          price: i.price,
+        })),
+      });
+    }
+  }, [items, subtotal, totalItems, cartCurrency, trackCartView]);
 
   if (!isClient) return null; // Hydration mismatch prevention
 

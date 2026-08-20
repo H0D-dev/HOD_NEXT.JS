@@ -1,18 +1,36 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useState, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { useAnalytics } from "@/src/lib/analytics/useAnalytics";
 import "./OrderSuccess.css";
 
 function OrderSuccessContent() {
   const searchParams = useSearchParams();
   const orderId = searchParams.get("id");
+  const { trackPurchase } = useAnalytics();
+  const hasTrackedOrderRef = useRef(false);
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
-  }, []);
+    if (orderId && !hasTrackedOrderRef.current) {
+      hasTrackedOrderRef.current = true;
+      const numericOrderId = parseInt(orderId, 10);
+      if (!isNaN(numericOrderId) && numericOrderId > 0) {
+        trackPurchase({
+          orderId: numericOrderId,
+          subtotal: 0,
+          total: 0,
+          currency: "AED",
+          paymentMethod: "confirmed",
+          itemCount: 1,
+          items: [],
+        });
+      }
+    }
+  }, [orderId, trackPurchase]);
 
   if (!isClient) return null;
 
