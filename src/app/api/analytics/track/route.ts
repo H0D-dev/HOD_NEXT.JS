@@ -34,6 +34,12 @@ export async function POST(request: Request) {
       "Accept": "application/json",
     };
 
+    // Attach Basic Auth credentials from API_CONFIG so WordPress REST API allows the ingestion
+    if (API_CONFIG.consumerKey && API_CONFIG.consumerSecret) {
+      const token = Buffer.from(`${API_CONFIG.consumerKey}:${API_CONFIG.consumerSecret}`).toString("base64");
+      headers["Authorization"] = `Basic ${token}`;
+    }
+
     if (cookieHeader) {
       headers["Cookie"] = cookieHeader;
     }
