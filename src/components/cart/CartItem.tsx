@@ -2,6 +2,7 @@ import Image from "next/image";
 import { useCartStore, type CartItem as CartItemType } from "@/src/lib/store/useCartStore";
 import { formatPrice } from "@/src/lib/utils/price";
 import { X, Plus, Minus } from "lucide-react";
+import { useAnalytics } from "@/src/lib/analytics/useAnalytics";
 
 interface CartItemProps {
   item: CartItemType;
@@ -10,9 +11,44 @@ interface CartItemProps {
 
 export default function CartItem({ item, context = "drawer" }: CartItemProps) {
   const { updateQuantity, removeItem } = useCartStore();
+  const { trackCartItemRemove, trackCartQuantityChange } = useAnalytics();
 
-  const handleDecrease = () => updateQuantity(item.id, item.quantity - 1);
-  const handleIncrease = () => updateQuantity(item.id, item.quantity + 1);
+  const handleDecrease = () => {
+    if (item.quantity > 1) {
+      trackCartQuantityChange({
+        productId: item.productId,
+        variationId: item.variationId,
+        oldQuantity: item.quantity,
+        newQuantity: item.quantity - 1,
+        price: item.price,
+        currency: item.currency || "AED",
+      });
+      updateQuantity(item.id, item.quantity - 1);
+    }
+  };
+
+  const handleIncrease = () => {
+    trackCartQuantityChange({
+      productId: item.productId,
+      variationId: item.variationId,
+      oldQuantity: item.quantity,
+      newQuantity: item.quantity + 1,
+      price: item.price,
+      currency: item.currency || "AED",
+    });
+    updateQuantity(item.id, item.quantity + 1);
+  };
+
+  const handleRemove = () => {
+    trackCartItemRemove({
+      productId: item.productId,
+      variationId: item.variationId,
+      quantity: item.quantity,
+      price: item.price,
+      currency: item.currency || "AED",
+    });
+    removeItem(item.id);
+  };
 
   const isPage = context === "page";
 
@@ -43,7 +79,7 @@ export default function CartItem({ item, context = "drawer" }: CartItemProps) {
           <div className="flex flex-col items-end gap-2 shrink-0">
             <button 
               className={`text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors p-1 -mr-1 mb-1 md:hidden`}
-              onClick={() => removeItem(item.id)}
+              onClick={handleRemove}
               aria-label="Remove item"
             >
               <X size={16} strokeWidth={1} />
@@ -116,7 +152,7 @@ export default function CartItem({ item, context = "drawer" }: CartItemProps) {
               {isPage && (
                 <button 
                   className="hidden md:block font-sans text-[10px] md:text-xs text-[var(--text-secondary)] uppercase tracking-[0.05em] hover:text-[var(--text-primary)] transition-colors border-b border-transparent hover:border-[var(--text-primary)]"
-                  onClick={() => removeItem(item.id)}
+                  onClick={handleRemove}
                 >
                   Remove
                 </button>

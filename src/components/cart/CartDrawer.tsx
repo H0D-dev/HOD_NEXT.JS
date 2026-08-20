@@ -1,28 +1,46 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useCartStore } from "@/src/lib/store/useCartStore";
 import { formatPrice } from "@/src/lib/utils/price";
 import CartItem from "./CartItem";
+import { useAnalytics } from "@/src/lib/analytics/useAnalytics";
 import "./CartDrawer.css";
 
 const easing = [0.22, 1, 0.36, 1] as const;
 
 export default function CartDrawer() {
   const { isDrawerOpen, closeDrawer, items, subtotal, totalItems, cartCurrency } = useCartStore();
+  const { trackCartView } = useAnalytics();
+  const hasTrackedViewRef = useRef(false);
 
   useEffect(() => {
     if (isDrawerOpen) {
       document.body.style.overflow = "hidden";
+      if (!hasTrackedViewRef.current && items.length > 0) {
+        hasTrackedViewRef.current = true;
+        trackCartView({
+          itemCount: totalItems,
+          subtotal,
+          currency: cartCurrency || "AED",
+          items: items.map((i) => ({
+            productId: i.productId,
+            variationId: i.variationId,
+            quantity: i.quantity,
+            price: i.price,
+          })),
+        });
+      }
     } else {
       document.body.style.overflow = "";
+      hasTrackedViewRef.current = false;
     }
     return () => {
       document.body.style.overflow = "";
     };
-  }, [isDrawerOpen]);
+  }, [isDrawerOpen, items, subtotal, totalItems, cartCurrency, trackCartView]);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
