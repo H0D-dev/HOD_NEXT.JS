@@ -568,6 +568,10 @@ export const analyticsQueryLayer = {
     const sizeCountMap = new Map<string, number>();
     const variantCountMap = new Map<string, number>();
 
+    // Index products for catalog attribute resolution
+    const productMap = new Map<number, (typeof products)[0]>();
+    products.forEach((p) => productMap.set(p.id, p));
+
     ordersToAggregate.forEach((order) => {
       order.line_items.forEach((item) => {
         const prodId = item.product_id;
@@ -581,19 +585,60 @@ export const analyticsQueryLayer = {
         current.quantity += item.quantity;
         current.revenue += n(item.total);
 
+        let foundVariant = false;
+
         // Extract size and color from item meta_data
-        if (item.meta_data) {
+        if (item.meta_data && Array.isArray(item.meta_data)) {
           item.meta_data.forEach((meta: any) => {
-            const key = (meta.key || "").toLowerCase();
-            const value = String(meta.value || "");
+            const key = String(meta.key || meta.display_key || "").toLowerCase();
+            const value = String(meta.value || meta.display_value || "").trim();
             if (!value) return;
-            if (key.includes("size") || key === "pa_size" || key === "attribute_pa_size") {
+            if (
+              key.includes("size") ||
+              key === "pa_size" ||
+              key === "attribute_pa_size" ||
+              key.includes("dimension")
+            ) {
               sizeCountMap.set(value, (sizeCountMap.get(value) || 0) + item.quantity);
             }
-            if (key.includes("color") || key.includes("colour") || key === "pa_color" || key === "attribute_pa_color") {
+            if (
+              key.includes("color") ||
+              key.includes("colour") ||
+              key === "pa_color" ||
+              key === "pa_colour" ||
+              key === "attribute_pa_color" ||
+              key === "attribute_pa_colour" ||
+              key.includes("finish") ||
+              key.includes("material") ||
+              key.includes("texture")
+            ) {
               variantCountMap.set(value, (variantCountMap.get(value) || 0) + item.quantity);
+              foundVariant = true;
             }
           });
+        }
+
+        // Fallback: If order line item metadata only specified size,
+        // resolve the colorway/material from the catalog product's attributes
+        if (!foundVariant) {
+          const catalogProd = productMap.get(prodId);
+          if (catalogProd?.attributes) {
+            catalogProd.attributes.forEach((attr) => {
+              const attrName = (attr.name || "").toLowerCase();
+              if (
+                attrName.includes("colo") ||
+                attrName.includes("colour") ||
+                attrName.includes("material")
+              ) {
+                attr.options.forEach((opt) => {
+                  const cleaned = String(opt || "").trim();
+                  if (cleaned) {
+                    variantCountMap.set(cleaned, (variantCountMap.get(cleaned) || 0) + item.quantity);
+                  }
+                });
+              }
+            });
+          }
         }
 
         productSalesMap.set(prodId, current);
@@ -743,7 +788,7 @@ export const analyticsQueryLayer = {
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // 5. VISUALIZER
+  // 5. ROOM VISUALIZER
   // Consumed by: VisualizerTab.tsx
   // ═══════════════════════════════════════════════════════════════════════════
 
@@ -804,7 +849,7 @@ export const analyticsQueryLayer = {
         totalSessions: visData?.total_visualizer_sessions || 0,
         productsLoaded: visData?.total_opens || 0,
         customUploads: visData?.total_room_uploads || 0,
-        presetSelections: 0,
+        presetSelections: visData?.total_preset_selections || visData?.total_room_selects || 0,
         exportsCount: visData?.total_exports || 0,
         visualizerAddToCartCount: visData?.total_add_to_cart || 0,
         sessionsChange: null,
@@ -838,45 +883,70 @@ export const analyticsQueryLayer = {
   async getCustomerData(dateRange: DateRange) {
     const { from, to } = dateRange;
     const customers = await wooCommerceService.getCustomers({ per_page: 100 });
+    const orders = await wooCommerceService.getOrders({ after: from, before: to, per_page: 100 });
 
-    let repeatCustomersCount = 0;
-    let singleOrderCustomersCount = 0;
-    let totalSpent = 0;
+    const customerSpendMap = new Map<
+      number,
+      { orders: number; totalSpent: number; lastOrder: string }
+    >();
 
-    customers.forEach((c) => {
-      const orderCount = c.orders_count || 0;
-      totalSpent += n(c.total_spent);
-      if (orderCount > 1) {
-        repeatCustomersCount += 1;
-      } else if (orderCount === 1) {
-        singleOrderCustomersCount += 1;
+    orders.forEach((o) => {
+      const cId = o.customer_id;
+      if (cId > 0) {
+        const cur = customerSpendMap.get(cId) || { orders: 0, totalSpent: 0, lastOrder: o.date_created };
+        cur.orders += 1;
+        cur.totalSpent += n(o.total);
+        if (new Date(o.date_created) > new Date(cur.lastOrder)) {
+          cur.lastOrder = o.date_created;
+        }
+        customerSpendMap.set(cId, cur);
       }
     });
 
-    const totalCust = customers.length || 1;
-    const repeatRate = repeatCustomersCount / totalCust;
+    const enrichedCustomers = customers.map((c) => {
+      const stats = customerSpendMap.get(c.id) || {
+        orders: c.orders_count || 0,
+        totalSpent: n(c.total_spent),
+        lastOrder: c.date_last_active || c.date_created,
+      };
 
-    // Top customers sorted by total_spent descending
-    const topCustomers = [...customers]
-      .sort((a, b) => n(b.total_spent) - n(a.total_spent))
-      .slice(0, 15)
-      .map((c) => ({
+      const aov = stats.orders > 0 ? stats.totalSpent / stats.orders : 0;
+
+      let segment = "New";
+      if (stats.orders >= 3 || stats.totalSpent >= 10000) {
+        segment = "VIP";
+      } else if (stats.orders >= 2) {
+        segment = "Returning";
+      }
+
+      return {
         id: c.id,
-        name: `${c.first_name || ""} ${c.last_name || ""}`.trim() || `Customer #${c.id}`,
+        name: `${c.first_name || ""} ${c.last_name || ""}`.trim() || c.username || `Customer #${c.id}`,
         email: c.email,
-        ordersCount: c.orders_count,
-        totalSpent: c.total_spent,
-      }));
+        ordersCount: stats.orders,
+        totalSpent: r2(stats.totalSpent),
+        averageOrderValue: r2(aov),
+        lastOrderDate: stats.lastOrder,
+        segment,
+      };
+    });
+
+    // Sort by total spent descending
+    const topCustomers = [...enrichedCustomers]
+      .sort((a, b) => b.totalSpent - a.totalSpent)
+      .slice(0, 10);
+
+    // Segment summary counts
+    const segments = {
+      vip: enrichedCustomers.filter((c) => c.segment === "VIP").length,
+      returning: enrichedCustomers.filter((c) => c.segment === "Returning").length,
+      new: enrichedCustomers.filter((c) => c.segment === "New").length,
+    };
 
     return {
-      summary: {
-        totalCustomers: customers.length,
-        newCustomers: singleOrderCustomersCount,
-        returningCustomers: repeatCustomersCount,
-        repeatPurchaseRate: r2(repeatRate),
-        totalSpent: r2(totalSpent),
-      },
       topCustomers,
+      segments,
+      totalCustomers: customers.length,
       meta: { from, to },
     };
   },
@@ -890,18 +960,18 @@ export const analyticsQueryLayer = {
     const { from, to } = dateRange;
     const behavior = await wpAnalyticsService.getBehavior(from, to);
 
-    const topSearches = (behavior?.top_searches || []).map((s) => ({
+    const topSearches = (behavior?.top_searches || []).map((s: any) => ({
       query: s.query,
       count: s.count,
-      resultCount: 0,
+      resultCount: s.resultCount || 0,
     }));
 
-    const zeroResultSearches = (behavior?.zero_result_searches || []).map((s) => ({
+    const zeroResultSearches = (behavior?.zero_result_searches || []).map((s: any) => ({
       query: s.query,
       count: s.count,
     }));
 
-    const filterUsage = (behavior?.top_filters || []).map((f) => ({
+    const filterUsage = (behavior?.top_filters || []).map((f: any) => ({
       filterType: f.filter_type,
       filterValue: f.filter_value,
       count: f.count,
@@ -922,7 +992,15 @@ export const analyticsQueryLayer = {
 
   async getAttributionData(dateRange: DateRange) {
     const { from, to } = dateRange;
-    const attribution = await wpAnalyticsService.getAttribution(from, to);
+    const [attribution, orders] = await Promise.all([
+      wpAnalyticsService.getAttribution(from, to),
+      wooCommerceService.getOrders({ after: from, before: to, per_page: 100 }),
+    ]);
+
+    const orderPriceMap = new Map<number, number>();
+    orders.forEach((o) => {
+      orderPriceMap.set(o.id, n(o.total));
+    });
 
     const campaigns = attribution?.campaigns || [];
 
@@ -932,12 +1010,20 @@ export const analyticsQueryLayer = {
     }>();
 
     campaigns.forEach((c) => {
-      const source = c.utm_source || "Direct / Organic";
+      const source = c.utm_source ? c.utm_source.trim() : "Direct / Organic";
       const cur = sourceMap.get(source) || { sessions: 0, views: 0, cartAdds: 0, purchases: 0, revenue: 0 };
-      cur.sessions += c.sessions_count || 0;
-      cur.cartAdds += c.add_to_cart_count || 0;
-      cur.purchases += c.purchase_count || 0;
-      cur.revenue += c.revenue || 0;
+      cur.sessions += c.sessions || c.sessions_count || 0;
+      cur.views += c.product_views || 0;
+      cur.cartAdds += c.add_to_cart || c.add_to_cart_count || 0;
+      cur.purchases += c.purchases || c.purchase_count || 0;
+
+      let campaignRev = c.revenue || 0;
+      if (Array.isArray(c.order_ids) && c.order_ids.length > 0) {
+        c.order_ids.forEach((id) => {
+          campaignRev += orderPriceMap.get(id) || 0;
+        });
+      }
+      cur.revenue += campaignRev;
       sourceMap.set(source, cur);
     });
 
@@ -953,16 +1039,23 @@ export const analyticsQueryLayer = {
     // Group by utm_campaign
     const campaignMap = new Map<string, { sessions: number; purchases: number; revenue: number }>();
     campaigns.forEach((c) => {
-      const campaign = c.utm_campaign || "(none)";
+      const campaign = (c.utm_campaign || "").trim();
+      if (!campaign || campaign === "(none)") return;
       const cur = campaignMap.get(campaign) || { sessions: 0, purchases: 0, revenue: 0 };
-      cur.sessions += c.sessions_count || 0;
-      cur.purchases += c.purchase_count || 0;
-      cur.revenue += c.revenue || 0;
+      cur.sessions += c.sessions || c.sessions_count || 0;
+      cur.purchases += c.purchases || c.purchase_count || 0;
+
+      let campaignRev = c.revenue || 0;
+      if (Array.isArray(c.order_ids) && c.order_ids.length > 0) {
+        c.order_ids.forEach((id) => {
+          campaignRev += orderPriceMap.get(id) || 0;
+        });
+      }
+      cur.revenue += campaignRev;
       campaignMap.set(campaign, cur);
     });
 
     const utmCampaigns = Array.from(campaignMap.entries())
-      .filter(([name]) => name !== "(none)")
       .map(([campaign, data]) => ({
         campaign,
         sessions: data.sessions,
