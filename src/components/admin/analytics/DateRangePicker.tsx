@@ -53,7 +53,11 @@ export default function DateRangePicker({
 
   const handleSelectPreset = (key: DatePeriodKey) => {
     if (key === "custom") {
-      // Don't close immediately for custom range
+      onChange({
+        ...value,
+        period: "custom",
+        label: customStart && customEnd ? `${customStart} → ${customEnd}` : "Custom Range",
+      });
       return;
     }
     const opt = PRESET_OPTIONS.find((p) => p.key === key);
@@ -67,12 +71,21 @@ export default function DateRangePicker({
 
   const handleApplyCustom = () => {
     if (!customStart || !customEnd) return;
+    let start = customStart;
+    let end = customEnd;
+    if (start > end) {
+      const tmp = start;
+      start = end;
+      end = tmp;
+      setCustomStart(start);
+      setCustomEnd(end);
+    }
     onChange({
       period: "custom",
-      startDate: customStart,
-      endDate: customEnd,
+      startDate: start,
+      endDate: end,
       compare: value.compare,
-      label: `${customStart} → ${customEnd}`,
+      label: `${start} → ${end}`,
     });
     setIsOpen(false);
   };
@@ -83,6 +96,8 @@ export default function DateRangePicker({
       compare: !value.compare,
     });
   };
+
+  const todayStr = new Date().toISOString().split("T")[0];
 
   return (
     <div className="relative inline-flex items-center gap-2" ref={popoverRef}>
@@ -164,6 +179,7 @@ export default function DateRangePicker({
                   <input
                     type="date"
                     value={customStart}
+                    max={todayStr}
                     onChange={(e) => setCustomStart(e.target.value)}
                     className="w-full bg-[var(--bg-secondary,#1a1a1a)] border border-[var(--border-secondary,#333)] px-2 py-1 text-xs text-white focus:outline-none focus:border-[#A38A61]"
                   />
@@ -173,6 +189,7 @@ export default function DateRangePicker({
                   <input
                     type="date"
                     value={customEnd}
+                    max={todayStr}
                     onChange={(e) => setCustomEnd(e.target.value)}
                     className="w-full bg-[var(--bg-secondary,#1a1a1a)] border border-[var(--border-secondary,#333)] px-2 py-1 text-xs text-white focus:outline-none focus:border-[#A38A61]"
                   />
