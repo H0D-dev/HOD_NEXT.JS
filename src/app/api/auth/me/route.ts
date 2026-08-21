@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { API_CONFIG } from "@/src/lib/api/api";
+import { getWooCommerceCustomerRole } from "@/src/lib/auth/requireAnalyticsAccess";
 
 export async function GET(request: Request) {
   try {
@@ -31,6 +32,30 @@ export async function GET(request: Request) {
       data = await wpRes.json();
     } catch (e) {
       data = { error: "Failed to parse JSON from WP" };
+    }
+
+    if (data.authenticated && data.user) {
+      let role = data.user.role || (Array.isArray(data.user.roles) ? data.user.roles[0] : null);
+      
+      // If role is missing or generic "customer", check WooCommerce customer role directly
+      if (!role || role.toLowerCase() !== "administrator") {
+        try {
+          const wcRole = await getWooCommerceCustomerRole(data.user.id);
+          if (wcRole) {
+            role = wcRole;
+          }
+        } catch (e) {
+          // Keep existing role if lookup fails
+        }
+      }
+
+      const roles: string[] = Array.isArray(data.user.roles) ? [...data.user.roles] : (role ? [role] : []);
+      if (role && !roles.includes(role)) {
+        roles.push(role);
+      }
+
+      data.user.role = role || "customer";
+      data.user.roles = roles;
     }
 
     // Forward the exact response and status code from WP directly to the frontend

@@ -23,7 +23,7 @@ interface CachedRole {
 const roleCache = new Map<number, CachedRole>();
 const CACHE_TTL_MS = 60 * 1000; // 60 seconds
 
-async function getWooCommerceCustomerRole(userId: number): Promise<string | null> {
+export async function getWooCommerceCustomerRole(userId: number): Promise<string | null> {
   const now = Date.now();
   const cached = roleCache.get(userId);
 

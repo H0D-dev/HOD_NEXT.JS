@@ -61,11 +61,16 @@ export async function POST(request: Request) {
 
     // Map user data structure
     const wpUser = data.user || data; // Fallback to data just in case
+    const roles: string[] = wpUser.roles || (wpUser.role ? [wpUser.role] : []);
+    const role: string = wpUser.role || (roles.includes("administrator") ? "administrator" : roles[0] || "customer");
+
     const user = {
       id: wpUser.id,
       email: wpUser.email || wpUser.user_email || username,
       first_name: wpUser.first_name || wpUser.user_display_name || username.split('@')[0],
       last_name: wpUser.last_name || "",
+      role,
+      roles,
     };
 
     // Create response
