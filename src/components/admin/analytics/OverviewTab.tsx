@@ -7,7 +7,7 @@ import SvgFunnelChart from "./charts/SvgFunnelChart";
 import SvgBarChart from "./charts/SvgBarChart";
 import ExternalLinksCard from "./ExternalLinksCard";
 import { DateRangeSelection } from "./DateRangePicker";
-import { Sparkles, Eye, TrendingUp, ShoppingBag, DollarSign } from "lucide-react";
+import { Sparkles, Eye, TrendingUp, ShoppingBag, DollarSign, Globe, Share2 } from "lucide-react";
 
 interface OverviewTabProps {
   dateRange: DateRangeSelection;
@@ -230,7 +230,109 @@ export default function OverviewTab({ dateRange, onNavigateTab }: OverviewTabPro
         </div>
       </SectionCard>
 
-      {/* 5. External Infrastructure Telemetry Links */}
+      {/* 5. Geography & Traffic Inbound Snapshot */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* Top Markets */}
+        <div className="lg:col-span-6">
+          <SectionCard
+            title="Top Regional Markets"
+            subtitle="Customer origin & revenue distribution"
+            badge="Geography"
+            action={
+              onNavigateTab && (
+                <button
+                  onClick={() => onNavigateTab("attribution")}
+                  className="text-[10px] uppercase tracking-[0.14em] text-[var(--accent-primary,#D4AF37)] hover:underline font-medium"
+                >
+                  Full Geo Breakdown →
+                </button>
+              )
+            }
+          >
+            <div className="space-y-3">
+              {(data.topCountriesSnapshot || []).length === 0 ? (
+                <div className="flex items-center justify-center h-28 border border-dashed border-[var(--border-secondary,#262626)] text-xs text-[var(--text-muted,#777)] uppercase tracking-wider font-light">
+                  No regional orders recorded for this timeframe.
+                </div>
+              ) : (
+                (data.topCountriesSnapshot || []).slice(0, 4).map((c: any, idx: number) => (
+                  <div
+                    key={idx}
+                    className="flex items-center justify-between p-2.5 bg-[var(--bg-tertiary,#171717)] border border-[var(--border-secondary,#262626)] rounded-[1px]"
+                  >
+                    <div className="flex items-center gap-2.5 truncate">
+                      <span className="text-base leading-none select-none">{c.flag || "🌐"}</span>
+                      <span className="text-xs font-sans font-medium text-[var(--text-primary,#FAF9F5)] truncate">
+                        {c.country}
+                      </span>
+                      <span className="text-[9px] font-mono px-1 bg-[var(--bg-secondary,#222)] text-[var(--text-muted,#888)] rounded-[1px]">
+                        {c.code}
+                      </span>
+                    </div>
+                    <div className="text-right font-mono shrink-0">
+                      <span className="text-xs text-[#D4AF37] font-medium block">
+                        AED {Number(c.revenue || 0).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                      </span>
+                      <span className="text-[9px] text-[var(--text-muted,#777)]">
+                        {c.orders || 0} {c.orders === 1 ? "order" : "orders"}
+                      </span>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </SectionCard>
+        </div>
+
+        {/* Traffic Channels */}
+        <div className="lg:col-span-6">
+          <SectionCard
+            title="Inbound Traffic Channels"
+            subtitle="Referral and search acquisition mix"
+            badge="Channels"
+            action={
+              onNavigateTab && (
+                <button
+                  onClick={() => onNavigateTab("attribution")}
+                  className="text-[10px] uppercase tracking-[0.14em] text-[var(--accent-primary,#D4AF37)] hover:underline font-medium"
+                >
+                  Attribution Hub →
+                </button>
+              )
+            }
+          >
+            <div className="space-y-3">
+              {(data.topSourcesSnapshot || []).length === 0 ? (
+                <div className="flex items-center justify-center h-28 border border-dashed border-[var(--border-secondary,#262626)] text-xs text-[var(--text-muted,#777)] uppercase tracking-wider font-light">
+                  No traffic channel telemetry recorded for this timeframe.
+                </div>
+              ) : (
+                (data.topSourcesSnapshot || []).slice(0, 4).map((s: any, idx: number) => (
+                  <div
+                    key={idx}
+                    className="flex items-center justify-between p-2.5 bg-[var(--bg-tertiary,#171717)] border border-[var(--border-secondary,#262626)] rounded-[1px]"
+                  >
+                    <div className="flex items-center gap-2 truncate">
+                      <Share2 size={13} className="text-[var(--accent-primary,#D4AF37)] shrink-0" />
+                      <span className="text-xs font-sans font-medium text-[var(--text-primary,#FAF9F5)] truncate">
+                        {s.source}
+                      </span>
+                      <span className="text-[9px] font-mono px-1.5 py-0.2 bg-[var(--bg-secondary,#222)] text-sky-400 border border-sky-500/20 rounded-[1px]">
+                        {s.channel}
+                      </span>
+                    </div>
+                    <span className="text-xs font-mono font-semibold text-[var(--text-primary,#FAF9F5)] shrink-0">
+                      {s.share}% share
+                    </span>
+                  </div>
+                ))
+              )}
+            </div>
+          </SectionCard>
+        </div>
+      </div>
+
+      {/* 6. External Infrastructure Telemetry Links */}
       <ExternalLinksCard />
     </div>
   );
