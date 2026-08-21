@@ -84,6 +84,8 @@ export interface WpAttributionResponse {
   campaigns: WpAttributionCampaign[];
   top_referrers: Array<{ referrer: string; sessions: number }>;
   top_landing_pages: Array<{ landing_page: string; sessions: number }>;
+  countries?: Array<{ country_code: string; country?: string; sessions: number }>;
+  cities?: Array<{ city: string; country_code?: string; sessions: number }>;
 }
 
 function getAuthHeaders(): HeadersInit {
@@ -330,6 +332,8 @@ export const wpAnalyticsService = {
 
       const topReferrers = envelope?.top_referrers || envelope?.referrers || [];
       const topLandingPages = envelope?.top_landing_pages || envelope?.landing_pages || [];
+      const rawCountries = envelope?.countries || envelope?.top_countries || [];
+      const rawCities = envelope?.cities || envelope?.top_cities || [];
 
       return {
         from: envelope?.from || from,
@@ -342,6 +346,16 @@ export const wpAnalyticsService = {
         top_landing_pages: topLandingPages.map((lp: any) => ({
           landing_page: lp.landing_page || lp.page || "/",
           sessions: lp.sessions ?? lp.count ?? 0,
+        })),
+        countries: rawCountries.map((c: any) => ({
+          country_code: c.country_code || c.code || "AE",
+          country: c.country || c.name || "United Arab Emirates",
+          sessions: c.sessions ?? c.count ?? 0,
+        })),
+        cities: rawCities.map((ct: any) => ({
+          city: ct.city || ct.name || "Dubai",
+          country_code: ct.country_code || ct.code || "AE",
+          sessions: ct.sessions ?? ct.count ?? 0,
         })),
       };
     } catch (error) {
