@@ -42,7 +42,7 @@ const TABS: Array<{ key: DashboardTabKey; label: string; icon: React.ReactNode }
   { key: "funnel", label: "Funnel", icon: <Filter size={14} /> },
   { key: "visualizer", label: "Room Visualizer", icon: <Compass size={14} /> },
   { key: "customers", label: "Customers", icon: <Users size={14} /> },
-  { key: "attribution", label: "Attribution", icon: <Share2 size={14} /> },
+  { key: "attribution", label: "Acquisition & Geo", icon: <Share2 size={14} /> },
   { key: "behavior", label: "Behavior", icon: <MousePointer size={14} /> },
   { key: "errors", label: "Errors & Stability", icon: <AlertTriangle size={14} /> },
 ];
