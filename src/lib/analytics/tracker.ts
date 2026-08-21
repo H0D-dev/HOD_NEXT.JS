@@ -11,6 +11,7 @@ import {
   RawAnalyticsEvent,
   TrackEventOptions,
 } from "./types";
+import { classifyTrafficSource, extractReferrerDomain } from "./geo";
 
 const SESSION_STORAGE_KEY = "hod_analytics_session";
 const DEDUP_CACHE_KEY = "hod_analytics_dedup_cache";
@@ -96,6 +97,15 @@ export function getOrCreateSession(userId?: number | null): AnalyticsSession {
 
   // First-touch attribution capture
   const queryParams = parseUrlParams();
+  const rawReferrer = document.referrer || null;
+  const referrerDomain = extractReferrerDomain(rawReferrer);
+  const trafficClass = classifyTrafficSource({
+    referrer: rawReferrer,
+    utm_source: queryParams.utm_source,
+    utm_medium: queryParams.utm_medium,
+    utm_campaign: queryParams.utm_campaign,
+  });
+
   const newSession: AnalyticsSession = {
     session_id: generateRandomId("hod_sess"),
     user_id: userId || null,
@@ -106,7 +116,9 @@ export function getOrCreateSession(userId?: number | null): AnalyticsSession {
     utm_campaign: queryParams.utm_campaign || null,
     utm_content: queryParams.utm_content || null,
     utm_term: queryParams.utm_term || null,
-    referrer: document.referrer || null,
+    referrer: rawReferrer,
+    referrer_domain: referrerDomain,
+    channel: trafficClass.channel,
     landing_page: window.location.pathname + window.location.search,
   };
 

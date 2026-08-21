@@ -80,7 +80,13 @@ export interface AnalyticsSession {
   utm_content?: string | null;
   utm_term?: string | null;
   referrer?: string | null;
+  referrer_domain?: string | null;
+  channel?: string | null;
   landing_page?: string | null;
+  country_code?: string | null;
+  country_name?: string | null;
+  city?: string | null;
+  region?: string | null;
 }
 
 export interface RawAnalyticsEvent {
@@ -399,3 +405,84 @@ export interface TrackEventOptions {
    */
   immediate?: boolean;
 }
+
+// ── Geography & Attribution Analytics Data Contracts ─────────────────────────
+
+export interface CountryMetric {
+  code: string;
+  country: string;
+  flag: string;
+  sessions: number;
+  orders: number;
+  revenue: number;
+  conversionRate: number;
+  sharePercentage: number;
+}
+
+export interface CityMetric {
+  city: string;
+  countryCode: string;
+  country: string;
+  flag: string;
+  sessions: number;
+  orders: number;
+  revenue: number;
+  sharePercentage: number;
+}
+
+export interface TrafficChannelMetric {
+  channel: string;
+  sessions: number;
+  productViews: number;
+  addToCart: number;
+  purchases: number;
+  revenue: number;
+  conversionRate: number;
+  sharePercentage: number;
+}
+
+export interface ReferrerMetric {
+  referrer: string;
+  domain: string;
+  channel: string;
+  sessions: number;
+  purchases: number;
+  revenue: number;
+  sharePercentage: number;
+}
+
+export interface UtmSourceMetric {
+  source: string;
+  sessions: number;
+  productViews: number;
+  addToCart: number;
+  purchases: number;
+  revenue: number;
+}
+
+export interface UtmCampaignMetric {
+  campaign: string;
+  sessions: number;
+  purchases: number;
+  revenue: number;
+}
+
+export interface AttributionAnalyticsData {
+  countries: CountryMetric[];
+  cities: CityMetric[];
+  channels: TrafficChannelMetric[];
+  referrers: ReferrerMetric[];
+  utmSources: UtmSourceMetric[];
+  utmCampaigns: UtmCampaignMetric[];
+  topLandingPages: Array<{ landing_page: string; sessions: number }>;
+  summary: {
+    topCountry: string;
+    topCountryFlag: string;
+    topChannel: string;
+    inboundTrafficRatio: number;
+    totalTrackedSessions: number;
+    totalAttributedRevenue: number;
+  };
+  meta?: { from: string; to: string };
+}
+

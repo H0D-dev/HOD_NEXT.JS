@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
 import { API_CONFIG } from "@/src/lib/api/api";
 import { AnalyticsBatchPayload } from "@/src/lib/analytics/types";
+import { resolveCountry } from "@/src/lib/analytics/geo";
 
 /**
  * Public Storefront Telemetry Ingestion Proxy
  * Receives batched analytics events from the browser and forwards them to WordPress MySQL.
- * Forwards authentication cookies/nonces so WordPress can resolve the user session.
+ * Extracts Vercel/Cloudflare Edge Geolocation headers and enriches session metadata.
  * Does NOT require admin RBAC (storefront guests and customers must be able to emit telemetry).
  */
 export async function POST(request: Request) {
@@ -17,6 +18,43 @@ export async function POST(request: Request) {
         { success: false, error: "Invalid analytics batch payload" },
         { status: 400 }
       );
+    }
+
+    // ── Edge Geolocation Extraction (Vercel / Cloudflare Headers) ──
+    const detectedCountryCode =
+      request.headers.get("x-vercel-ip-country") ||
+      request.headers.get("cf-ipcountry") ||
+      request.headers.get("x-country") ||
+      payload.session.country_code ||
+      null;
+
+    const detectedCity =
+      request.headers.get("x-vercel-ip-city") ||
+      request.headers.get("cf-ipcity") ||
+      request.headers.get("x-city") ||
+      payload.session.city ||
+      null;
+
+    const detectedRegion =
+      request.headers.get("x-vercel-ip-country-region") ||
+      request.headers.get("cf-region") ||
+      payload.session.region ||
+      null;
+
+    if (detectedCountryCode) {
+      const countryInfo = resolveCountry(detectedCountryCode);
+      payload.session.country_code = countryInfo.code;
+      payload.session.country_name = countryInfo.name;
+    }
+    if (detectedCity) {
+      try {
+        payload.session.city = decodeURIComponent(detectedCity);
+      } catch {
+        payload.session.city = detectedCity;
+      }
+    }
+    if (detectedRegion) {
+      payload.session.region = detectedRegion;
     }
 
     // Extract incoming cookies & headers to forward to WordPress
