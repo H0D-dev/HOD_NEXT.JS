@@ -7,9 +7,9 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import "./Account.css";
 
-type TabType = 'dashboard' | 'orders' | 'addresses' | 'details';
+type TabType = 'dashboard' | 'orders' | 'addresses' | 'details' | 'analytics';
 
-const TABS: { id: TabType; label: string }[] = [
+const BASE_TABS: { id: TabType; label: string }[] = [
   { id: 'dashboard', label: 'Dashboard' },
   { id: 'orders', label: 'Orders' },
   { id: 'addresses', label: 'Addresses' },
@@ -20,6 +20,16 @@ export default function AccountPage() {
   const router = useRouter();
   const { user, isAuthenticated, logout, setUser } = useAuthStore();
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const isAdmin = Boolean(
+    user?.role?.toLowerCase() === 'administrator' || 
+    user?.role?.toLowerCase() === 'admin' || 
+    (Array.isArray(user?.roles) && user.roles.some((r: string) => ['administrator', 'admin'].includes(r.toLowerCase())))
+  );
+
+  const tabs: { id: TabType; label: string; badge?: string }[] = isAdmin
+    ? [...BASE_TABS, { id: 'analytics' as TabType, label: 'Analytics', badge: 'Admin' }]
+    : BASE_TABS;
   
   const [activeTab, setActiveTab] = useState<TabType>('dashboard');
   const [orders, setOrders] = useState<any[]>([]);
@@ -29,7 +39,7 @@ export default function AccountPage() {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
       const tab = params.get("tab") as TabType;
-      if (tab && ["dashboard", "orders", "addresses", "details"].includes(tab)) {
+      if (tab && ["dashboard", "orders", "addresses", "details", "analytics"].includes(tab)) {
         setActiveTab(tab);
       }
     }
@@ -171,21 +181,41 @@ export default function AccountPage() {
       case 'dashboard':
         return (
           <div className="account-dashboard animate-element">
-            <h2 className="font-sans text-xl lg:text-2xl font-light tracking-tight mb-[var(--space-4)]">
-              Welcome back, {user?.first_name || user?.email?.split('@')[0]}
-            </h2>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-[var(--space-4)]">
+              <h2 className="font-sans text-xl lg:text-2xl font-light tracking-tight">
+                Welcome back, {user?.first_name || user?.email?.split('@')[0]}
+              </h2>
+              {isAdmin && (
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] uppercase font-mono tracking-widest font-semibold bg-[#A38A61]/15 text-[#D4AF37] border border-[#A38A61]/30 rounded-[1px] w-fit">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] animate-pulse" />
+                  Role: Admin
+                </span>
+              )}
+            </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-[var(--space-4)] mt-[var(--space-6)]">
               <div className="p-[var(--space-4)] border border-[var(--border-primary)]">
-                <h3 className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-semibold text-[var(--text-secondary)] mb-[var(--space-3)]">
-                  Profile Snapshot
-                </h3>
+                <div className="flex items-center justify-between mb-[var(--space-3)]">
+                  <h3 className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] font-semibold text-[var(--text-secondary)]">
+                    Profile Snapshot
+                  </h3>
+                  {isAdmin && (
+                    <span className="text-[9px] font-mono uppercase px-1.5 py-0.5 bg-[var(--bg-secondary)] text-[#D4AF37] border border-[#A38A61]/30 rounded-[1px]">
+                      Admin
+                    </span>
+                  )}
+                </div>
                 <p className="font-sans text-sm font-light mb-2">
                   <strong className="font-medium">Name:</strong> {user?.first_name} {user?.last_name}
                 </p>
-                <p className="font-sans text-sm font-light mb-4">
+                <p className="font-sans text-sm font-light mb-2">
                   <strong className="font-medium">Email:</strong> {user?.email}
                 </p>
+                {isAdmin && (
+                  <p className="font-sans text-sm font-light mb-4">
+                    <strong className="font-medium">Role:</strong> <span className="font-mono text-xs text-[#D4AF37] font-semibold">Admin</span>
+                  </p>
+                )}
                 <button onClick={() => setActiveTab('details')} className="account-inline-link text-sm">
                   Edit Details
                 </button>
@@ -202,6 +232,72 @@ export default function AccountPage() {
                 </div>
                 <button onClick={() => router.push('/products')} className="account-btn w-full text-center">
                   Browse Collections
+                </button>
+              </div>
+
+              {isAdmin && (
+                <div className="p-[var(--space-4)] border border-[#A38A61]/40 bg-[#A38A61]/5 flex flex-col justify-between md:col-span-2">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-[10px] uppercase tracking-[0.2em] font-semibold text-[#D4AF37]">
+                        Executive Administration
+                      </span>
+                      <span className="px-2 py-0.5 text-[9px] uppercase font-mono bg-[#A38A61]/20 text-[#D4AF37] border border-[#A38A61]/40 rounded-[1px]">
+                        Role: Admin
+                      </span>
+                    </div>
+                    <h3 className="font-sans text-base font-normal text-[var(--text-primary)] mb-1">
+                      Store Analytics & Telemetry Hub
+                    </h3>
+                    <p className="font-sans text-xs font-light text-[var(--text-secondary)] mb-4">
+                      Real-time revenue settlement, conversion funnels, edge geo-location telemetry, and visualizer interactions.
+                    </p>
+                  </div>
+                  <div>
+                    <button 
+                      onClick={() => router.push('/admin/analytics')} 
+                      className="account-btn inline-flex items-center gap-2"
+                      style={{ borderColor: 'var(--accent-primary, #A38A61)', color: 'var(--accent-primary, #D4AF37)' }}
+                    >
+                      Open Executive Analytics →
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+
+      case 'analytics':
+        if (!isAdmin) return null;
+        return (
+          <div className="account-analytics animate-element">
+            <div className="flex items-center justify-between mb-[var(--space-4)]">
+              <div>
+                <span className="text-[10px] uppercase tracking-[0.2em] font-semibold text-[#D4AF37] block">
+                  Executive Suite
+                </span>
+                <h2 className="font-sans text-xl lg:text-2xl font-light tracking-tight mt-0.5">
+                  Store Analytics & Performance Hub
+                </h2>
+              </div>
+              <span className="px-2.5 py-1 text-[10px] uppercase font-mono bg-[#A38A61]/15 text-[#D4AF37] border border-[#A38A61]/30 rounded-[1px]">
+                Role: Admin
+              </span>
+            </div>
+
+            <div className="p-6 border border-[#A38A61]/30 bg-[var(--bg-tertiary,#141414)] rounded-[2px] space-y-4">
+              <p className="font-sans text-sm font-light text-[var(--text-secondary,#aaa)] leading-relaxed">
+                As an authenticated <strong className="text-[#D4AF37] font-medium">Admin</strong>, you have full access to the House of Decór Executive Analytics Platform. Monitor verified WooCommerce revenue settlement, Vercel edge geographic distribution, conversion funnels, and room visualizer telemetry in real time.
+              </p>
+
+              <div className="pt-2 flex flex-wrap items-center gap-3">
+                <button
+                  onClick={() => router.push('/admin/analytics')}
+                  className="account-btn inline-flex items-center gap-2"
+                  style={{ backgroundColor: 'var(--accent-primary, #A38A61)', color: '#FFFFFF', borderColor: 'var(--accent-primary, #A38A61)' }}
+                >
+                  Launch Full Analytics Dashboard →
                 </button>
               </div>
             </div>
@@ -428,10 +524,10 @@ export default function AccountPage() {
           {/* Sidebar Navigation */}
           <nav className="account-nav animate-element">
             <ul className="account-nav-list">
-              {TABS.map(tab => (
+              {tabs.map(tab => (
                 <li key={tab.id} className="account-nav-item">
                   <button 
-                    className={`account-nav-link ${activeTab === tab.id ? 'active' : ''}`}
+                    className={`account-nav-link flex items-center justify-between ${activeTab === tab.id ? 'active' : ''} ${tab.id === 'analytics' ? 'text-[#D4AF37]' : ''}`}
                     onClick={() => {
                       setActiveTab(tab.id);
                       setSelectedOrder(null);
@@ -439,7 +535,12 @@ export default function AccountPage() {
                       setFormMessage({ type: '', text: '' });
                     }}
                   >
-                    {tab.label}
+                    <span>{tab.label}</span>
+                    {tab.badge && (
+                      <span className="text-[9px] uppercase font-mono px-1.5 py-0.2 bg-[#A38A61]/20 text-[#D4AF37] border border-[#A38A61]/40 rounded-[1px]">
+                        {tab.badge}
+                      </span>
+                    )}
                   </button>
                 </li>
               ))}
