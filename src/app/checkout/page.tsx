@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,6 +8,7 @@ import { useCartStore } from "@/src/lib/store/useCartStore";
 import { useAuthStore } from "@/src/lib/store/useAuthStore";
 import { formatPrice } from "@/src/lib/utils/price";
 import { ShoppingBag } from "lucide-react";
+import { useAnalytics } from "@/src/lib/analytics/useAnalytics";
 
 interface FormData {
   first_name: string;
@@ -135,6 +136,9 @@ export default function CheckoutPage() {
   const router = useRouter();
   const { items, subtotal, clearCart, cartCurrency } = useCartStore();
   const { user } = useAuthStore();
+  const { trackCheckoutStart, trackPaymentMethodSelect, trackPaymentStart, trackPaymentFailure } = useAnalytics();
+  const hasTrackedCheckoutStartRef = useRef(false);
+
   const [isClient, setIsClient] = useState(false);
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [formErrors, setFormErrors] = useState<FormErrors>({});
@@ -146,6 +150,16 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     setIsClient(true);
+    // Track checkout_started once per checkout mount
+    if (!hasTrackedCheckoutStartRef.current && items.length > 0) {
+      hasTrackedCheckoutStartRef.current = true;
+      trackCheckoutStart({
+        itemCount: items.reduce((acc, i) => acc + i.quantity, 0),
+        subtotal,
+        currency: cartCurrency || "AED",
+      });
+    }
+
     // Prepopulate user data if authenticated
     if (user) {
       setFormData((prev) => ({
@@ -162,11 +176,20 @@ export default function CheckoutPage() {
         postcode: prev.postcode || user.billing?.postcode || user.shipping?.postcode || "",
       }));
     }
-  }, [user]);
+  }, [user, items, subtotal, cartCurrency, trackCheckoutStart]);
 
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+
+    if (name === "payment_method") {
+      trackPaymentMethodSelect({
+        paymentMethod: value,
+        currency: cartCurrency || "AED",
+        amount: subtotal,
+      });
+    }
+
     // Clear error on change
     if (formErrors[name]) {
       setFormErrors((prev) => {
@@ -175,7 +198,7 @@ export default function CheckoutPage() {
         return next;
       });
     }
-  }, [formErrors]);
+  }, [formErrors, cartCurrency, subtotal, trackPaymentMethodSelect]);
 
   const validateForm = useCallback((): boolean => {
     const errors: FormErrors = {};
@@ -233,6 +256,12 @@ export default function CheckoutPage() {
 
     // Step 2: Place order
     setIsPlacingOrder(true);
+    trackPaymentStart({
+      paymentMethod: formData.payment_method,
+      currency: cartCurrency || "AED",
+      amount: subtotal,
+    });
+
     try {
       const orderRes = await fetch("/api/create-order", {
         method: "POST",
@@ -270,6 +299,12 @@ export default function CheckoutPage() {
       if (!orderData.success) {
         setOrderError(orderData.error || "Failed to create order");
         setIsPlacingOrder(false);
+        trackPaymentFailure({
+          paymentMethod: formData.payment_method,
+          errorMessage: orderData.error || "Failed to create order",
+          amount: subtotal,
+          currency: cartCurrency || "AED",
+        });
         return;
       }
 
@@ -284,11 +319,17 @@ export default function CheckoutPage() {
         // Bank transfer → success page
         router.push(`/order-success?id=${orderData.orderId}`);
       }
-    } catch {
+    } catch (err) {
       setOrderError("Failed to place order. Please try again.");
       setIsPlacingOrder(false);
+      trackPaymentFailure({
+        paymentMethod: formData.payment_method,
+        errorMessage: "Network or server exception during order placement",
+        amount: subtotal,
+        currency: cartCurrency || "AED",
+      });
     }
-  }, [validateForm, items, formData, checkoutSessionId, clearCart, router]);
+  }, [validateForm, items, formData, checkoutSessionId, clearCart, router, subtotal, cartCurrency, trackPaymentStart, trackPaymentFailure]);
 
   if (!isClient) return null;
 

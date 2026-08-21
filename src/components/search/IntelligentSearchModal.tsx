@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Search, X, ArrowRight, Package, BookOpen, Layers, Compass } from "lucide-react";
 import { performMultiDomainSearch, GroupedSearchResults, SearchResultItem } from "@/src/lib/search/searchEngine";
+import { useAnalytics } from "@/src/lib/analytics/useAnalytics";
 
 interface IntelligentSearchModalProps {
   isOpen: boolean;
@@ -13,6 +14,7 @@ interface IntelligentSearchModalProps {
 }
 
 export default function IntelligentSearchModal({ isOpen, onClose, initialQuery = "" }: IntelligentSearchModalProps) {
+  const { trackSearch, trackSearchResultClick, trackSearchNoResults } = useAnalytics();
   const [query, setQuery] = useState(initialQuery);
   const [results, setResults] = useState<GroupedSearchResults>({
     products: [],
@@ -38,10 +40,23 @@ export default function IntelligentSearchModal({ isOpen, onClose, initialQuery =
       const res = await performMultiDomainSearch(query);
       setResults(res);
       setLoading(false);
-    }, 250);
+
+      const totalCount =
+        res.products.length +
+        res.collections.length +
+        res.guides.length +
+        res.blog.length +
+        res.projects.length;
+
+      if (totalCount === 0) {
+        trackSearchNoResults({ query });
+      } else {
+        trackSearch({ query, resultCount: totalCount });
+      }
+    }, 350);
 
     return () => clearTimeout(timer);
-  }, [query]);
+  }, [query, trackSearch, trackSearchNoResults]);
 
   useEffect(() => {
     if (isOpen) {
@@ -111,11 +126,19 @@ export default function IntelligentSearchModal({ isOpen, onClose, initialQuery =
                 <Package className="w-4 h-4" /> Products ({results.products.length})
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {results.products.map((item) => (
+                {results.products.map((item, idx) => (
                   <Link
                     key={item.id}
                     href={item.url}
-                    onClick={onClose}
+                    onClick={() => {
+                      trackSearchResultClick({
+                        query,
+                        productId: typeof item.id === 'number' ? item.id : parseInt(String(item.id), 10) || 0,
+                        position: idx + 1,
+                        resultCount: results.products.length,
+                      });
+                      onClose();
+                    }}
                     className="flex items-center gap-3 p-3 border border-[var(--border-secondary)] bg-[var(--bg-primary)] hover:border-[var(--accent-primary)] transition-colors group rounded-sm"
                   >
                     {item.image && (

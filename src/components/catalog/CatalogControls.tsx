@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useAnalytics } from "@/src/lib/analytics/useAnalytics";
 
 interface CatalogControlsProps {
   onFilterClick: () => void;
@@ -8,6 +9,7 @@ interface CatalogControlsProps {
 }
 
 export default function CatalogControls({ onFilterClick, resultCount, sortOption, onSortChange }: CatalogControlsProps) {
+  const { trackSortChange } = useAnalytics();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -74,6 +76,7 @@ export default function CatalogControls({ onFilterClick, resultCount, sortOption
               <button
                 key={opt.value}
                 onClick={() => {
+                  trackSortChange({ sortOption: opt.value });
                   onSortChange(opt.value);
                   setIsDropdownOpen(false);
                 }}

@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ProductStub } from "../../lib/catalogConfig";
 import { useCurrencyStore } from "../../lib/store/useCurrencyStore";
+import { useAnalytics } from "../../lib/analytics/useAnalytics";
 
 interface ProductCardProps {
   product: ProductStub;
@@ -14,10 +15,19 @@ interface ProductCardProps {
 
 function ProductCardComponent({ product, baseRoute, priority = false }: ProductCardProps) {
   const { currency } = useCurrencyStore();
+  const { trackProductCardClick } = useAnalytics();
 
   return (
     <Link
       href={`${baseRoute}/${product.slug}`}
+      onClick={() => {
+        trackProductCardClick({
+          productId: parseInt(product.id, 10) || 0,
+          slug: product.slug,
+          category: product.category,
+          source: "catalog_grid",
+        });
+      }}
       className="group block relative w-full transition-all duration-500 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] bg-[var(--bg-primary)] pb-4"
     >
       <div className="relative w-full aspect-square overflow-hidden mb-4 bg-[var(--bg-secondary)]">

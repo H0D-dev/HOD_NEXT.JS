@@ -5,13 +5,19 @@ import Image from 'next/image';
 import { sampleRooms } from '@/src/lib/data/rooms';
 import { useVisualizerStore } from '@/src/lib/store/useVisualizerStore';
 import { UploadCloud, RotateCcw, Check } from 'lucide-react';
+import { useAnalytics } from '@/src/lib/analytics/useAnalytics';
 
 export default function RoomSelector() {
   const { roomImage, isCustomRoom, dispatch } = useVisualizerStore();
+  const { trackVisualizerRoomSelect, trackVisualizerRoomUpload } = useAnalytics();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
 
   const handleSelectRoom = (image: string) => {
+    trackVisualizerRoomSelect({
+      roomType: "sample",
+      roomName: image,
+    });
     dispatch({ type: 'SET_ROOM_SAMPLE', payload: { image } });
   };
 
@@ -27,6 +33,10 @@ export default function RoomSelector() {
       alert('Please select a valid image file (JPEG, PNG, WebP).');
       return;
     }
+    trackVisualizerRoomUpload({
+      fileSize: file.size,
+      fileType: file.type,
+    });
     const reader = new FileReader();
     reader.onload = (event) => {
       const dataUrl = event.target?.result as string;

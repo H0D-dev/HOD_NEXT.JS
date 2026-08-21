@@ -1,8 +1,39 @@
 import { API_CONFIG } from "@/src/lib/api/api";
 
-export async function getCurrentWpUser(request: Request) {
+export interface WpUser {
+  id: number;
+  email?: string;
+  user_email?: string;
+  first_name?: string;
+  last_name?: string;
+  user_display_name?: string;
+  roles?: string[];
+  [key: string]: any;
+}
+
+export async function getCurrentWpUser(
+  requestOrHeaders?: Request | Headers | string | null
+): Promise<WpUser | null> {
   try {
-    const cookieHeader = request.headers.get("cookie") || "";
+    let cookieHeader = "";
+    let userAgent = "Next.js";
+
+    if (typeof requestOrHeaders === "string") {
+      cookieHeader = requestOrHeaders;
+    } else if (requestOrHeaders && "headers" in requestOrHeaders && typeof (requestOrHeaders as any).headers?.get === "function") {
+      // Request object
+      cookieHeader = (requestOrHeaders as Request).headers.get("cookie") || "";
+      userAgent = (requestOrHeaders as Request).headers.get("user-agent") || "Next.js";
+    } else if (requestOrHeaders && typeof (requestOrHeaders as Headers).get === "function") {
+      // Headers object
+      cookieHeader = (requestOrHeaders as Headers).get("cookie") || "";
+      userAgent = (requestOrHeaders as Headers).get("user-agent") || "Next.js";
+    }
+
+    if (!cookieHeader) {
+      return null;
+    }
+
     const wpUrl = API_CONFIG.baseUrl || "https://store.houseofdecor.ae";
     const meUrl = `${wpUrl}/wp-json/hod/v1/me`;
 
@@ -11,7 +42,7 @@ export async function getCurrentWpUser(request: Request) {
 
     const headers: Record<string, string> = {
       "Cookie": cookieHeader,
-      "User-Agent": request.headers.get("user-agent") || "Next.js",
+      "User-Agent": userAgent,
       "Accept": "application/json"
     };
 
@@ -33,10 +64,11 @@ export async function getCurrentWpUser(request: Request) {
     if (data.authenticated && data.user) {
       return data.user;
     }
-    
+
     return null;
   } catch (error) {
     console.error("Auth helper error:", error);
     return null;
   }
 }
+

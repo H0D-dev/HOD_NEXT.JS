@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { Product, ProductColor, ProductVariation } from '@/src/components/product-presentation/ProductPresentation';
 import { useCartStore } from '@/src/lib/store/useCartStore';
@@ -8,6 +8,7 @@ import { useCurrencyStore } from '@/src/lib/store/useCurrencyStore';
 import { formatPrice } from '@/src/lib/utils/price';
 import toast from 'react-hot-toast';
 import { ArrowLeft, ShieldCheck, X, ShoppingBag, Check } from 'lucide-react';
+import { useAnalytics } from '@/src/lib/analytics/useAnalytics';
 
 const VisualizationCanvas = dynamic(
   () => import('./VisualizationCanvas'),
@@ -44,14 +45,40 @@ export default function RoomVisualizer({
 }: RoomVisualizerProps) {
   const [mounted, setMounted] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
+  const { trackVisualizerOpen, trackVisualizerProductLoad, trackVisualizerAddToCart, trackVisualizerClose } = useAnalytics();
+  const startTimeRef = useRef(Date.now());
+  const hasTrackedOpenRef = useRef(false);
+  const numericProductId = parseInt(product.id, 10) || 0;
 
   useEffect(() => {
     setMounted(true);
     document.body.style.overflow = 'hidden';
+
+    if (!hasTrackedOpenRef.current) {
+      hasTrackedOpenRef.current = true;
+      // Track visualizer open and product load
+      trackVisualizerOpen({
+        productId: numericProductId,
+        source: "pdp_button",
+      });
+
+      trackVisualizerProductLoad({
+        productId: numericProductId,
+        productName: product.name,
+        size: selectedVariation?.label || product.details?.dimensions,
+      });
+    }
+
     return () => {
       document.body.style.overflow = '';
+      const durationSeconds = Math.round((Date.now() - startTimeRef.current) / 1000);
+      trackVisualizerClose({
+        durationSeconds,
+        productsViewedCount: 1,
+        toolsUsedCount: 1,
+      });
     };
-  }, []);
+  }, [numericProductId, product.name, selectedVariation?.label, product.details?.dimensions, trackVisualizerOpen, trackVisualizerProductLoad, trackVisualizerClose]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -139,6 +166,15 @@ export default function RoomVisualizer({
       toast.error(result.error || "Failed to add item to cart.");
       return;
     }
+
+    // Emit visualizer_add_to_cart telemetry
+    trackVisualizerAddToCart({
+      productId: numericId || 0,
+      variationId: selectedVariation?.id,
+      size: selectedVariation?.label || product.details?.dimensions,
+      price: displayPrice,
+      currency: isFallbackPrice ? "AED" : currency,
+    });
 
     // Success feedback
     setIsAdded(true);

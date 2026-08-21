@@ -11,6 +11,7 @@ import { RUGS_CONFIG, CURTAINS_CONFIG, FilterCategory, ProductStub } from "../..
 import { getProducts, getCategoryIdBySlug } from "../../services/Product";
 import { useCurrencyStore } from "../../lib/store/useCurrencyStore";
 import { formatPrice } from "../../lib/utils/price";
+import { useAnalytics } from "../../lib/analytics/useAnalytics";
 
 const FilterDrawer = dynamic(() => import("./FilterDrawer"), { ssr: false });
 
@@ -58,6 +59,14 @@ export default function ProductCatalogLayout({ category, initialProducts }: Prod
   const searchParams = useSearchParams();
   const [products, setProducts] = useState<any[]>(initialProducts || []);
   const [loading, setLoading] = useState(!initialProducts || initialProducts.length === 0);
+  const { trackCategorySelect, trackError } = useAnalytics();
+
+  useEffect(() => {
+    trackCategorySelect({
+      categorySlug: category,
+      categoryName: category === "rugs" ? "Rugs" : "Curtains",
+    });
+  }, [category, trackCategorySelect]);
 
   // Filter state
   const { currency } = useCurrencyStore();
@@ -112,13 +121,16 @@ export default function ProductCatalogLayout({ category, initialProducts }: Prod
         }
       } catch (err) {
         console.error("Failed to fetch products:", err);
+        trackError("product_load_failed", {
+          errorMessage: "Failed to fetch products: " + String(err),
+        });
         setProducts([]);
       } finally {
         setLoading(false);
       }
     };
     fetchProducts();
-  }, [category, initialProducts]);
+  }, [category, initialProducts, trackError]);
 
   const config = category === "rugs" ? RUGS_CONFIG : CURTAINS_CONFIG;
   const baseRoute = `/products/${category}`;

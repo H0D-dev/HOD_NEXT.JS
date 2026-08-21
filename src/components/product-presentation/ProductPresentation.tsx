@@ -1,9 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
 import ProductGallery from "./ProductGallery";
 import ProductInfoCard from "./ProductInfoCard";
 import ExploreMore from "./ExploreMore";
+import { useAnalytics } from "@/src/lib/analytics/useAnalytics";
 
 const RoomVisualizer = dynamic(() => import("../room-visualizer/RoomVisualizer"), {
   ssr: false,
@@ -95,6 +96,9 @@ export default function ProductPresentation({ product, relatedProducts }: Produc
 
   const [isVisualizerOpen, setIsVisualizerOpen] = useState(false);
 
+  const { trackProductView } = useAnalytics();
+  const trackedProductRef = useRef<string | null>(null);
+
   // Initialize selected variation to the default from WooCommerce, or the first valid variation
   const [selectedVariation, setSelectedVariation] = useState<ProductVariation | null>(() => {
     if (product?.productType === "variable" && product.variations && product.variations.length > 0) {
@@ -106,6 +110,24 @@ export default function ProductPresentation({ product, relatedProducts }: Produc
     }
     return null;
   });
+
+  // Track product_viewed once per product ID (immune to Strict Mode / rerenders)
+  useEffect(() => {
+    if (product && product.id && trackedProductRef.current !== product.id) {
+      trackedProductRef.current = product.id;
+      const numericId = parseInt(product.id, 10) || 0;
+      trackProductView({
+        productId: numericId,
+        slug: product.slug,
+        name: product.name,
+        category: product.category || product.categorySlug,
+        price: product.price,
+        currency: "AED",
+        color: activeColor?.name,
+        material: product.details?.material,
+      });
+    }
+  }, [product, activeColor?.name, trackProductView]);
 
   // Fallback UI for missing data
   if (!product || !activeColor) {

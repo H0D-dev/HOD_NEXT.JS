@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FilterCategory } from "../../lib/catalogConfig";
+import { useAnalytics } from "../../lib/analytics/useAnalytics";
 
 interface FilterDrawerProps {
   isOpen: boolean;
@@ -14,6 +15,7 @@ interface FilterDrawerProps {
 }
 
 export default function FilterDrawer({ isOpen, onClose, filters, selectedFilters, toggleFilter, clearAll }: FilterDrawerProps) {
+  const { trackFilterApply } = useAnalytics();
   // Simple state to manage expanded accordion sections
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
 
@@ -110,7 +112,13 @@ export default function FilterDrawer({ isOpen, onClose, filters, selectedFilters
                               <div
                                 key={opt.value}
                                 className={`flex items-center gap-3 cursor-pointer group`}
-                                onClick={() => toggleFilter(filter.id, opt.value)}
+                                onClick={() => {
+                                  trackFilterApply({
+                                    filterType: filter.id,
+                                    filterValue: opt.value,
+                                  });
+                                  toggleFilter(filter.id, opt.value);
+                                }}
                               >
                                 <>
                                   <div className={`w-4 h-4 border flex items-center justify-center transition-colors ${isSelected ? "bg-[#d4b06a] border-[#d4b06a]" : "border-[var(--border-primary)] group-hover:bg-[var(--bg-secondary)]"}`}>
