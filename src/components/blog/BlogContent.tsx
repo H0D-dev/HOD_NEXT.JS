@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { ArrowLeft, ChevronDown, ArrowRight } from "lucide-react";
+import toast from "react-hot-toast";
 import { Blog } from "../../lib/data/blogs";
 
 export default function BlogContent({ blog, nextBlog }: { blog: Blog, nextBlog?: Blog | null }) {
@@ -80,11 +81,40 @@ export default function BlogContent({ blog, nextBlog }: { blog: Blog, nextBlog?:
       group[0].parentNode?.insertBefore(wrapper, group[0]);
       group.forEach((fig) => wrapper.appendChild(fig));
     }
+
+    // 3. Outbound Link Sanitization: Enforce rel="noopener noreferrer" on external URLs
+    const anchorElements = contentEl.querySelectorAll("a");
+    anchorElements.forEach((anchor) => {
+      const href = anchor.getAttribute("href") || "";
+      if (href.startsWith("http://") || href.startsWith("https://")) {
+        try {
+          const url = new URL(href);
+          if (url.hostname !== window.location.hostname && !url.hostname.includes("houseofdecor.ae")) {
+            anchor.setAttribute("target", "_blank");
+            anchor.setAttribute("rel", "noopener noreferrer");
+          }
+        } catch {
+          // Ignore malformed URLs
+        }
+      }
+    });
   }, [blog]);
 
   const handleAccordionClick = (id: string) => {
     setOpenAccordion(openAccordion === id ? null : id);
   };
+
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      toast.success("Article link copied to clipboard!");
+    } catch {
+      toast.error("Failed to copy link");
+    }
+  };
+
+  const articleUrl = typeof window !== "undefined" ? window.location.href : `https://houseofdecor.ae/blog/${blog.slug}`;
+  const articleTitle = blog.title;
 
   return (
     <article className="w-full bg-[var(--bg-primary)]">
@@ -108,6 +138,54 @@ export default function BlogContent({ blog, nextBlog }: { blog: Blog, nextBlog?:
             <h1 className="font-sans font-light text-xl md:text-2xl lg:text-3xl leading-tight tracking-wide text-[var(--text-primary)] max-w-3xl">
               {blog.title}
             </h1>
+
+            {/* Social Share Bar */}
+            <div className="flex items-center gap-3 mt-4 pt-4 border-t border-[var(--border-secondary)]">
+              <span className="text-[10px] uppercase tracking-widest text-[var(--text-muted)] font-medium">Share:</span>
+              <a
+                href={`https://api.whatsapp.com/send?text=${encodeURIComponent(articleTitle + " " + articleUrl)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Share on WhatsApp"
+                className="w-8 h-8 rounded-full border border-[var(--border-secondary)] hover:border-[var(--accent-primary)] flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--accent-primary)] transition-colors text-xs"
+              >
+                WA
+              </a>
+              <a
+                href={`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(articleUrl)}&description=${encodeURIComponent(articleTitle)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Share on Pinterest"
+                className="w-8 h-8 rounded-full border border-[var(--border-secondary)] hover:border-[var(--accent-primary)] flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--accent-primary)] transition-colors text-xs"
+              >
+                PIN
+              </a>
+              <a
+                href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(articleUrl)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Share on LinkedIn"
+                className="w-8 h-8 rounded-full border border-[var(--border-secondary)] hover:border-[var(--accent-primary)] flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--accent-primary)] transition-colors text-xs"
+              >
+                IN
+              </a>
+              <a
+                href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(articleUrl)}&text=${encodeURIComponent(articleTitle)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Share on X"
+                className="w-8 h-8 rounded-full border border-[var(--border-secondary)] hover:border-[var(--accent-primary)] flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--accent-primary)] transition-colors text-xs"
+              >
+                X
+              </a>
+              <button
+                onClick={handleCopyLink}
+                aria-label="Copy Article Link"
+                className="px-2.5 py-1 rounded-full border border-[var(--border-secondary)] hover:border-[var(--accent-primary)] text-[10px] uppercase tracking-wider text-[var(--text-muted)] hover:text-[var(--accent-primary)] transition-colors"
+              >
+                Copy Link
+              </button>
+            </div>
             <p className="font-sans text-sm md:text-base font-light leading-relaxed text-[var(--text-secondary)] max-w-2xl mt-2">
               {blog.excerpt}
             </p>
