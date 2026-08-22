@@ -22,6 +22,33 @@ export const metadata: Metadata = {
   authors: [{ name: "House of Decór", url: "https://houseofdecor.ae" }],
   creator: "House of Decór",
   publisher: "House of Decór",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_AE",
+    url: "https://houseofdecor.ae",
+    siteName: "House of Decór",
+    title: "House of Decór — Handwoven Luxury Rugs & Bespoke Interiors",
+    description:
+      "Tailoring luxury, one thread at a time. Discover premium handmade rugs, bespoke curtains, and curated interior solutions by House of Decór.",
+    images: [
+      {
+        url: "https://houseofdecor.ae/about_hero_desktop.png",
+        width: 1200,
+        height: 630,
+        alt: "House of Decór — Handwoven Luxury Rugs & Bespoke Interiors",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "House of Decór — Handwoven Luxury Rugs & Bespoke Interiors",
+    description:
+      "Tailoring luxury, one thread at a time. Discover premium handmade rugs, bespoke curtains, and curated interior solutions by House of Decór.",
+    images: ["https://houseofdecor.ae/about_hero_desktop.png"],
+  },
   robots: {
     index: true,
     follow: true,

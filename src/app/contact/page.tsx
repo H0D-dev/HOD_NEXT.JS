@@ -6,10 +6,36 @@ import ContactFAQ from "../../components/contact/ContactFAQ";
 
 import { Suspense } from "react";
 
-export const metadata = {
-  title: "Contact Us",
-  description: "Get in touch with House of Decór for bespoke interior solutions, luxury handmade rugs, and premium curtains.",
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Contact Us — Dubai Studio & Bespoke Consultation",
+  description:
+    "Connect with House of Decór for bespoke rug commissions, luxury curtains, trade consultations, and commercial interior installations in Dubai and worldwide.",
   alternates: { canonical: "/contact" },
+  openGraph: {
+    title: "Contact House of Decór — Dubai Studio & Bespoke Consultation",
+    description:
+      "Connect with House of Decór for bespoke rug commissions, luxury curtains, trade consultations, and commercial interior installations in Dubai and worldwide.",
+    url: "https://houseofdecor.ae/contact",
+    siteName: "House of Decór",
+    images: [
+      {
+        url: "https://houseofdecor.ae/about_hero_desktop.png",
+        width: 1200,
+        height: 630,
+        alt: "Contact House of Decór Dubai Studio",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Contact House of Decór — Dubai Studio & Bespoke Consultation",
+    description:
+      "Connect with House of Decór for bespoke rug commissions, luxury curtains, trade consultations, and commercial interior installations in Dubai and worldwide.",
+    images: ["https://houseofdecor.ae/about_hero_desktop.png"],
+  },
 };
 
 import { generateFaqSchema } from "@/src/lib/seo/schema";
