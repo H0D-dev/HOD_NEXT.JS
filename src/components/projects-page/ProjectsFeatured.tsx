@@ -15,26 +15,30 @@ if (typeof window !== "undefined") {
 const projects = [
   {
     title: "VILLA LV",
+    slug: "villa-lv",
     meta: "Dubai, UAE • Luxury Villas • 2023",
-    desc: "A bespoke collection of hand-knotted rugs created for the villa’s living spaces and bedrooms, crafted in New Zealand wool and bamboo silk. The designs seamlessly complement the villa’s modern architectural lines, bringing warmth, softness, and understated luxury to expansive marble interiors. Each rug features subtle gradient patterns, meticulously woven by our artisans over four months to create a refined and cohesive interior throughout the residence.",
+    desc: "A bespoke collection of hand-knotted rugs created for the villa’s living spaces and bedrooms, crafted in New Zealand wool and bamboo silk. The designs seamlessly complement the villa’s modern architectural lines, bringing warmth, softness, and understated luxury to expansive marble interiors.",
     image: "/images/home/featured-projects/FP-Villa-LV.webp",
   },
   {
     title: "LUXURY PENTHOUSE",
+    slug: "luxury-penthouse",
     meta: "Palm Jumeirah, Dubai, UAE • Residential • 2026",
-    desc: "A bespoke collection of rugs created for the luxury living areas and private suites of a prestigious Palm Jumeirah penthouse. Crafted from a refined blend of pure silk and hand-spun wool, each piece balances comfort, durability, and understated elegance. Tailored to complement the custom Italian furniture, the rugs bring warmth and texture to the sophisticated interiors while framing the panoramic views of Dubai’s skyline.",
+    desc: "A bespoke collection of rugs created for the luxury living areas and private suites of a prestigious Palm Jumeirah penthouse. Crafted from a refined blend of pure silk and hand-spun wool, each piece balances comfort, durability, and understated elegance.",
     image: "/images/home/featured-projects/FP-Penthouse.webp",
   },
   {
     title: "GHARAFA PALACE",
+    slug: "gharafa-palace",
     meta: "Doha, Qatar • Royal Palaces • 2024",
-    desc: "Bespoke palace-size rugs handcrafted from the finest materials, combining traditional weaving techniques with refined contemporary craftsmanship. Inspired by the region’s rich heritage, the intricate floral motifs feature a sophisticated palette of deep gold and ruby, creating a sense of warmth and grandeur. The rugs were designed and installed across the main majlis and reception halls, complementing the palace’s monumental architecture.",
+    desc: "Bespoke palace-size rugs handcrafted from the finest materials, combining traditional weaving techniques with refined contemporary craftsmanship. Inspired by the region’s rich heritage, the intricate floral motifs feature a sophisticated palette of deep gold and ruby.",
     image: "/images/home/featured-projects/FP-Gharafa-Palace-Qatar.webp",
   },
   {
     title: "GALERIES LAFAYETTE DUBAI MALL",
+    slug: "galeries-lafayette-dubai-mall",
     meta: "Dubai, UAE • Commercial • 2025",
-    desc: "A bespoke contemporary rug and carpet installation created for Galeries Lafayette at Dubai Mall, combining refined design with exceptional craftsmanship. Developed to complement the store’s sophisticated retail environment, the rugs add warmth, texture, and a distinctive sense of luxury while meeting the demands of a high-traffic commercial space.",
+    desc: "A bespoke contemporary rug and carpet installation created for Galeries Lafayette at Dubai Mall, combining refined design with exceptional craftsmanship. Developed to complement the store’s sophisticated retail environment while meeting commercial demands.",
     image: "/images/home/featured-projects/FP-Dubai-Mall.webp",
   },
 ];
@@ -140,6 +144,14 @@ export default function ProjectsFeatured() {
                   <p className="text-sm lg:text-base font-light text-[var(--text-secondary)] leading-relaxed mb-3 lg:mb-6 max-w-md">
                     {project.desc}
                   </p>
+
+                  <Link
+                    href={`/projects/${project.slug}`}
+                    className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.15em] font-medium text-[var(--accent-primary)] hover:text-[var(--text-primary)] transition-colors pb-1 w-max mb-4 lg:mb-0 group"
+                  >
+                    <span>Explore Case Study</span>
+                    <span className="group-hover:translate-x-1 transition-transform">→</span>
+                  </Link>
 
                   {/* Mobile Fallback Inline Image */}
                   <div className="block lg:hidden w-full aspect-[4/3] max-h-[50vh] mt-4 relative bg-[var(--bg-secondary)] border border-[var(--border-secondary)] overflow-hidden">
