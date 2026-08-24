@@ -10,6 +10,7 @@ export interface CartItem {
   category: "rug" | "curtain";
   image: string;
   price: number;
+  basePrice?: number; // Optional client-side reference for base AED price
   currency: string;
   quantity: number;
   variant?: {

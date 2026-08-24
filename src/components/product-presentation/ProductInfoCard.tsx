@@ -157,6 +157,10 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
     const numericId = typeof product.id === "string" ? parseInt(product.id, 10) : Number(product.id);
     const isRug = product.category?.toLowerCase().includes("rug") ?? true;
 
+    const aedBasePrice = isVariable && selectedVariation
+      ? (selectedVariation.currencyPrices?.AED || selectedVariation.price || 0)
+      : (product.currencyPrices?.AED || product.price || 0);
+
     const cartItem: any = {
       id: isVariable && selectedVariation
         ? `${product.id}-${selectedVariation.id}-${activeColor.id}`
@@ -167,6 +171,7 @@ export default function ProductInfoCard({ product, activeColor, onColorChange, s
       category: isRug ? "rug" : "curtain",
       image: activeColor.textureUrl || product.image || "/products_hero.png",
       price: displayPrice,
+      basePrice: aedBasePrice,
       currency: isFallbackPrice ? "AED" : currency,
       quantity: quantity,
       variant: {

@@ -265,6 +265,7 @@ function StandaloneVisualizerInner({ initialProducts = SAMPLE_STANDALONE_PRODUCT
 
   const handleAddToCart = () => {
     const numericId = parseInt(activeProduct.id, 10) || 101;
+    const aedBasePrice = activeProduct.currencyPrices?.AED || activeProduct.price || 6450;
     const cartItem: any = {
       id: `${activeProduct.id}-${activeColor.id}-${activeProduct.details?.dimensions || "Standard"}`,
       productId: numericId,
@@ -272,6 +273,7 @@ function StandaloneVisualizerInner({ initialProducts = SAMPLE_STANDALONE_PRODUCT
       slug: activeProduct.slug,
       category: "rug",
       price: activeProduct.currencyPrices?.[currency] || activeProduct.price || 6450,
+      basePrice: aedBasePrice,
       currency: currency || "AED",
       image: activeColor.textureUrl || "/about_hero_desktop.png",
       quantity: 1,
