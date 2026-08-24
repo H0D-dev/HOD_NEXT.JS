@@ -69,6 +69,7 @@ export interface WcOrder {
     country: string;
     email: string;
   };
+  meta_data?: Array<{ id?: number; key: string; value: any }>;
 }
 
 export interface WcProduct {
@@ -142,7 +143,7 @@ export const wooCommerceService = {
       const res = await fetch(url, {
         method: "GET",
         headers: getAuthHeaders(),
-        next: { revalidate: 60 },
+        cache: "no-store",
       });
 
       if (!res.ok) {
@@ -176,7 +177,7 @@ export const wooCommerceService = {
       const res = await fetch(url, {
         method: "GET",
         headers: getAuthHeaders(),
-        next: { revalidate: 60 },
+        cache: "no-store",
       });
 
       if (!res.ok) {
@@ -224,7 +225,7 @@ export const wooCommerceService = {
       const res = await fetch(url, {
         method: "GET",
         headers: getAuthHeaders(),
-        next: { revalidate: 60 },
+        cache: "no-store",
       });
 
       if (!res.ok) {
@@ -258,7 +259,7 @@ export const wooCommerceService = {
       const res = await fetch(url, {
         method: "GET",
         headers: getAuthHeaders(),
-        next: { revalidate: 300 },
+        cache: "no-store",
       });
 
       if (!res.ok) {
@@ -292,7 +293,7 @@ export const wooCommerceService = {
       const res = await fetch(url, {
         method: "GET",
         headers: getAuthHeaders(),
-        next: { revalidate: 300 },
+        cache: "no-store",
       });
 
       if (!res.ok) {
@@ -317,13 +318,34 @@ export const wooCommerceService = {
       const res = await fetch(url, {
         method: "GET",
         headers: getAuthHeaders(),
-        next: { revalidate: 60 },
+        cache: "no-store",
       });
 
       if (!res.ok) return null;
       return await res.json();
     } catch (error) {
       console.error(`[WooCommerce Service] Error fetching order ${orderId}:`, error);
+      return null;
+    }
+  },
+
+  /**
+   * Fetches single product variation by product ID and variation ID
+   */
+  async getVariation(productId: number, variationId: number): Promise<any | null> {
+    try {
+      const baseUrl = getBaseUrl();
+      const url = `${baseUrl}/wp-json/wc/v3/products/${productId}/variations/${variationId}`;
+      const res = await fetch(url, {
+        method: "GET",
+        headers: getAuthHeaders(),
+        cache: "no-store",
+      });
+
+      if (!res.ok) return null;
+      return await res.json();
+    } catch (error) {
+      console.error(`[WooCommerce Service] Error fetching variation ${variationId}:`, error);
       return null;
     }
   },

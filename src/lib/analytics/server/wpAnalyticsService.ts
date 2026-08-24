@@ -118,7 +118,7 @@ export const wpAnalyticsService = {
       const res = await fetch(url, {
         method: "GET",
         headers: getAuthHeaders(),
-        next: { revalidate: 60 },
+        cache: "no-store",
       });
 
       if (!res.ok) {
@@ -172,7 +172,7 @@ export const wpAnalyticsService = {
       const res = await fetch(url, {
         method: "GET",
         headers: getAuthHeaders(),
-        next: { revalidate: 60 },
+        cache: "no-store",
       });
 
       if (!res.ok) {
@@ -233,7 +233,7 @@ export const wpAnalyticsService = {
       const res = await fetch(url, {
         method: "GET",
         headers: getAuthHeaders(),
-        next: { revalidate: 60 },
+        cache: "no-store",
       });
 
       if (!res.ok) {
@@ -301,7 +301,7 @@ export const wpAnalyticsService = {
       const res = await fetch(url, {
         method: "GET",
         headers: getAuthHeaders(),
-        next: { revalidate: 60 },
+        cache: "no-store",
       });
 
       if (!res.ok) {
