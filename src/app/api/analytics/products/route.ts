@@ -3,6 +3,9 @@ import { requireAnalyticsAccess } from "@/src/lib/auth/requireAnalyticsAccess";
 import { analyticsQueryLayer } from "@/src/lib/analytics/server/analyticsQueryLayer";
 import { parseDateRange } from "@/src/lib/analytics/server/parseDateRange";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export async function GET(request: Request) {
   // 1. Server-Side RBAC Enforcement
   const auth = await requireAnalyticsAccess(request);
