@@ -75,9 +75,12 @@ export async function POST(request: Request) {
       );
     }
 
-    // --- Re-validate stock server-side before creating order ---
+    // --- Re-validate stock server-side and calculate trusted AED base snapshot before creating order ---
+    const verifiedAedPrices: number[] = [];
+    let orderBaseTotal = 0;
+
     for (const item of body.cart) {
-      const fields = "id,stock_status,stock_quantity,manage_stock,status,price,meta_data,manual_prices";
+      const fields = "id,stock_status,stock_quantity,manage_stock,status,price,regular_price,meta_data,manual_prices";
       const productUrl = item.variation_id
         ? `${API_CONFIG.baseUrl}/wp-json/wc/v3/products/${item.product_id}/variations/${item.variation_id}?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&_fields=${fields}`
         : `${API_CONFIG.baseUrl}/wp-json/wc/v3/products/${item.product_id}?consumer_key=${API_CONFIG.consumerKey}&consumer_secret=${API_CONFIG.consumerSecret}&_fields=${fields}`;
@@ -98,7 +101,12 @@ export async function POST(request: Request) {
 
       const product = await productRes.json();
 
-      // --- Verify price against backend ---
+      // --- 1. Extract trusted backend AED base price directly from the verified product/variation ---
+      const backendAedPrice = parseFloat(product.price || product.regular_price || "0");
+      verifiedAedPrices.push(backendAedPrice);
+      orderBaseTotal += backendAedPrice * item.quantity;
+
+      // --- 2. Verify selected-currency price against backend ---
       let backendPrice = parseFloat(product.price || "0");
       const targetCurrency = body.currency?.toLowerCase();
 
@@ -173,7 +181,7 @@ export async function POST(request: Request) {
       console.warn("Failed to extract customer ID from WP", err);
     }
     
-    // --- Build Woo order payload ---
+    // --- Build Woo order payload with trusted HOD AED snapshots ---
     const orderPayload = {
       customer_id: customerId,
       payment_method: body.payment_method,
@@ -202,13 +210,27 @@ export async function POST(request: Request) {
         country: body.shipping.country,
         postcode: body.shipping.postcode || "",
       },
-      line_items: body.cart.map((item) => ({
-        product_id: item.product_id,
-        ...(item.variation_id && { variation_id: item.variation_id }),
-        quantity: item.quantity,
-        subtotal: (item.price * item.quantity).toString(),
-        total: (item.price * item.quantity).toString(),
-      })),
+      line_items: body.cart.map((item, idx) => {
+        const aedUnitPrice = verifiedAedPrices[idx] ?? 0;
+        const aedLineTotal = aedUnitPrice * item.quantity;
+        return {
+          product_id: item.product_id,
+          ...(item.variation_id && { variation_id: item.variation_id }),
+          quantity: item.quantity,
+          subtotal: (item.price * item.quantity).toString(),
+          total: (item.price * item.quantity).toString(),
+          meta_data: [
+            { key: "_hod_base_currency", value: "AED" },
+            { key: "_hod_base_unit_price", value: aedUnitPrice.toFixed(2) },
+            { key: "_hod_base_total", value: aedLineTotal.toFixed(2) },
+          ],
+        };
+      }),
+      meta_data: [
+        { key: "_hod_base_currency", value: "AED" },
+        { key: "_hod_base_total", value: orderBaseTotal.toFixed(2) },
+        { key: "_hod_revenue_schema_version", value: "1" },
+      ],
       customer_note: body.order_notes || "",
     };
 
