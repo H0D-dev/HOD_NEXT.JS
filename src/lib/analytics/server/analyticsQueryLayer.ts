@@ -7,7 +7,7 @@
  * Strictly returns single canonical keys matching UI expectations without duplicate aliases.
  */
 
-import { wooCommerceService, WcOrder } from "./wooCommerceService";
+import { wooCommerceService, WcOrder, WcOrderLineItem } from "./wooCommerceService";
 import { wpAnalyticsService } from "./wpAnalyticsService";
 import {
   resolveCountry,
@@ -55,6 +55,148 @@ function pctChange(current: number, previous: number): number | null {
   return isFinite(delta) ? r2(delta) : null;
 }
 
+// ── In-Memory Catalog Price Caches for Dynamic Base Price Resolution ─────────
+const variationPriceCache = new Map<number, number>();
+const productPriceCache = new Map<number, number>();
+
+/**
+ * Pre-fetches catalog prices for any order line items lacking an explicit metadata snapshot.
+ * Runs in parallel to guarantee zero-latency dynamic resolution during query execution.
+ */
+export async function ensureCatalogPricesForOrders(orders: WcOrder[]): Promise<void> {
+  const variationFetchPromises: Promise<any>[] = [];
+
+  // Populate product cache if empty
+  if (productPriceCache.size === 0) {
+    variationFetchPromises.push(
+      wooCommerceService.getProducts({ per_page: 100 }).then((prods) => {
+        prods.forEach((p) => {
+          const pr = parseFloat(p.price || p.regular_price || "0");
+          if (pr > 0) productPriceCache.set(p.id, pr);
+        });
+      }).catch(() => {})
+    );
+  }
+
+  for (const order of orders) {
+    const hasOrderMeta = order.meta_data?.some(
+      (m) => (m.key === "_hod_base_total" || m.key === "hod_base_total") && parseFloat(String(m.value)) > 0
+    );
+    if (!hasOrderMeta && (order.currency || "").trim().toUpperCase() !== "AED") {
+      for (const item of order.line_items || []) {
+        const hasItemMeta = item.meta_data?.some(
+          (m) => (m.key === "_hod_base_total" || m.key === "hod_base_total") && parseFloat(String(m.value)) > 0
+        );
+        if (!hasItemMeta) {
+          if (item.variation_id && item.variation_id > 0 && !variationPriceCache.has(item.variation_id)) {
+            variationFetchPromises.push(
+              wooCommerceService.getVariation(item.product_id, item.variation_id).then((v) => {
+                if (v) {
+                  const p = parseFloat(v.price || v.regular_price || "0");
+                  if (p > 0) variationPriceCache.set(item.variation_id!, p);
+                }
+              }).catch(() => {})
+            );
+          }
+        }
+      }
+    }
+  }
+  if (variationFetchPromises.length > 0) {
+    await Promise.all(variationFetchPromises);
+  }
+}
+
+// ── HOD Normalized Revenue Helpers ──────────────────────────────────────────
+
+/**
+ * Resolves the authoritative normalized HOD base revenue (in AED) for an order.
+ * 1. Reads `_hod_base_total` or `hod_base_total` metadata if present.
+ * 2. Reads line-item `_hod_base_total` or `hod_base_total` snapshots if present.
+ * 3. If order.currency is AED, uses `order.total`.
+ * 4. Dynamic fallback: Resolves AED base catalog prices for all line items.
+ */
+export function getHodBaseRevenue(order: WcOrder): number {
+  if (Array.isArray(order.meta_data)) {
+    const meta = order.meta_data.find((m) => m.key === "_hod_base_total" || m.key === "hod_base_total");
+    if (meta && meta.value !== undefined && meta.value !== null && meta.value !== "") {
+      const parsed = parseFloat(String(meta.value));
+      if (!isNaN(parsed) && parsed > 0) return parsed;
+    }
+  }
+
+  // Fallback 1: check if line items contain _hod_base_total or hod_base_total snapshots
+  if (Array.isArray(order.line_items) && order.line_items.length > 0) {
+    let lineItemsBaseSum = 0;
+    let hasLineItemSnapshot = false;
+    for (const item of order.line_items) {
+      if (Array.isArray(item.meta_data)) {
+        const itemMeta = item.meta_data.find((m) => m.key === "_hod_base_total" || m.key === "hod_base_total");
+        if (itemMeta && itemMeta.value !== undefined && itemMeta.value !== null && itemMeta.value !== "") {
+          const parsed = parseFloat(String(itemMeta.value));
+          if (!isNaN(parsed) && parsed > 0) {
+            lineItemsBaseSum += parsed;
+            hasLineItemSnapshot = true;
+          }
+        }
+      }
+    }
+    if (hasLineItemSnapshot && lineItemsBaseSum > 0) {
+      return lineItemsBaseSum;
+    }
+  }
+
+  if ((order.currency || "").toUpperCase() === "AED") {
+    const parsed = parseFloat(String(order.total || "0"));
+    return isNaN(parsed) ? 0 : parsed;
+  }
+
+  // Fallback 2: Dynamic Catalog AED Price resolution (for orders created directly in WP)
+  if (Array.isArray(order.line_items) && order.line_items.length > 0) {
+    let calculatedTotal = 0;
+    for (const item of order.line_items) {
+      const aedLinePrice = getHodBaseLineItemRevenue(item, order.currency);
+      calculatedTotal += aedLinePrice;
+    }
+    if (calculatedTotal > 0) {
+      return calculatedTotal;
+    }
+  }
+
+  return 0;
+}
+
+/**
+ * Resolves the normalized HOD base revenue (in AED) for a single line item.
+ * 1. Reads `_hod_base_total` or `hod_base_total` metadata on the line item if present.
+ * 2. If order.currency is AED, uses `item.total`.
+ * 3. Dynamic fallback: Resolves variation/product catalog price in AED * quantity.
+ */
+export function getHodBaseLineItemRevenue(item: WcOrderLineItem, orderCurrency?: string): number {
+  if (Array.isArray(item.meta_data)) {
+    const meta = item.meta_data.find((m) => m.key === "_hod_base_total" || m.key === "hod_base_total");
+    if (meta && meta.value !== undefined && meta.value !== null && meta.value !== "") {
+      const parsed = parseFloat(String(meta.value));
+      if (!isNaN(parsed) && parsed > 0) return parsed;
+    }
+  }
+
+  if ((orderCurrency || "").toUpperCase() === "AED") {
+    const parsed = parseFloat(String(item.total || "0"));
+    return isNaN(parsed) ? 0 : parsed;
+  }
+
+  // Dynamic variation / product price resolution fallback
+  if (item.variation_id && variationPriceCache.has(item.variation_id)) {
+    return (variationPriceCache.get(item.variation_id) || 0) * (item.quantity || 1);
+  }
+  if (item.product_id && productPriceCache.has(item.product_id)) {
+    return (productPriceCache.get(item.product_id) || 0) * (item.quantity || 1);
+  }
+
+  return 0;
+}
+
 // ── Commercial Order Statuses ─────────────────────────────────────────────────
 
 /**
@@ -75,6 +217,7 @@ function isValidOrder(o: WcOrder): boolean {
 /**
  * Computes authoritative commerce metrics directly from WooCommerce orders list.
  * Excludes cancelled, failed, and trash records.
+ * Uses normalized HOD base revenue (_hod_base_total in AED).
  */
 function computeSalesFromOrders(orders: WcOrder[]) {
   const validOrders = orders.filter(isValidOrder);
@@ -93,32 +236,20 @@ function computeSalesFromOrders(orders: WcOrder[]) {
 
   let refunds = 0;
   refundedOrders.forEach((r) => {
-    refunds += n(r.total);
+    refunds += getHodBaseRevenue(r);
   });
 
   const dateMap = new Map<string, { revenue: number; orders: number }>();
 
   validOrders.forEach((o) => {
-    let orderGross = n(o.total);
-    let lineItemsSum = 0;
-    if (Array.isArray(o.line_items) && o.line_items.length > 0) {
-      o.line_items.forEach((item) => {
-        lineItemsSum += n(item.total);
-      });
-    }
-
-    if (orderGross === 0 && lineItemsSum > 0) {
-      orderGross = lineItemsSum;
-    }
+    const orderGross = getHodBaseRevenue(o);
+    // HOD catalog prices are all-inclusive of shipping and tax.
+    // Gross normalized revenue equals net normalized revenue.
+    const orderNet = orderGross;
 
     const orderTax = n(o.total_tax);
     const orderShipping = n(o.shipping_total);
     const orderDiscount = n(o.discount_total);
-    let orderNet = Math.max(0, orderGross - orderTax - orderShipping);
-
-    if (orderNet === 0 && lineItemsSum > 0) {
-      orderNet = lineItemsSum;
-    }
 
     grossSales += orderGross;
     totalTax += orderTax;
@@ -165,59 +296,29 @@ export const analyticsQueryLayer = {
     const { from, to, compareFrom, compareTo } = dateRange;
 
     // Parallel fetch from WooCommerce & WordPress
-    const [salesReports, orders, funnelData, visualizerData, attributionData] = await Promise.all([
-      wooCommerceService.getSalesReport({ date_min: from, date_max: to }),
+    const [orders, funnelData, visualizerData, attributionData] = await Promise.all([
       wooCommerceService.getOrders({ after: from, before: to, per_page: 100 }),
       wpAnalyticsService.getFunnel(from, to),
       wpAnalyticsService.getVisualizer(from, to),
       wpAnalyticsService.getAttribution(from, to),
     ]);
 
-    let netRevenue = 0;
-    let grossRevenue = 0;
-    let totalOrders = 0;
-    let refundsCount = 0;
-    const revenueTrendRaw: Array<{ date: string; revenue: number }> = [];
+    await ensureCatalogPricesForOrders(orders);
 
-    // Check if reports/sales endpoint returned non-zero aggregate
-    const hasValidReport =
-      salesReports &&
-      salesReports.length > 0 &&
-      (n(salesReports[0].net_sales) > 0 || (salesReports[0].total_orders || 0) > 0);
-
-    let activeValidOrders: WcOrder[] = [];
-
-    if (hasValidReport) {
-      const report = salesReports[0];
-      netRevenue = n(report.net_sales);
-      grossRevenue = n(report.total_sales);
-      totalOrders = report.total_orders || 0;
-
-      if (report.totals) {
-        Object.entries(report.totals).forEach(([dateStr, metrics]) => {
-          revenueTrendRaw.push({
-            date: dateStr,
-            revenue: n((metrics as any).sales),
-          });
-        });
-      }
-      activeValidOrders = orders.filter(isValidOrder);
-    } else {
-      // Authoritative order-based calculation fallback
-      const orderSales = computeSalesFromOrders(orders);
-      netRevenue = orderSales.netSales;
-      grossRevenue = orderSales.grossSales;
-      totalOrders = orderSales.totalOrders;
-      refundsCount = orderSales.refundsCount;
-      revenueTrendRaw.push(...orderSales.trendRaw);
-      activeValidOrders = orderSales.validOrders;
-    }
+    // Authoritative order-based normalized calculation (AED Base Currency)
+    const orderSales = computeSalesFromOrders(orders);
+    const netRevenue = orderSales.netSales;
+    const grossRevenue = orderSales.grossSales;
+    const totalOrders = orderSales.totalOrders;
+    const refundsCount = orderSales.refundsCount;
+    const revenueTrendRaw: Array<{ date: string; revenue: number }> = [...orderSales.trendRaw];
+    const activeValidOrders: WcOrder[] = orderSales.validOrders;
 
     const aov = totalOrders > 0 ? netRevenue / totalOrders : 0;
     const totalSessions = funnelData?.total_sessions || 0;
     const conversionRate = totalSessions > 0 ? (totalOrders / totalSessions) * 100 : 0;
 
-    // Visualizer Assisted Revenue
+    // Visualizer Assisted Revenue (normalized HOD AED)
     let visualizerAssistedRevenue = 0;
     let visualizerAssistedOrders = 0;
 
@@ -225,7 +326,7 @@ export const analyticsQueryLayer = {
       const orderSet = new Set(visualizerData.assisted_order_ids);
       activeValidOrders.forEach((order) => {
         if (orderSet.has(order.id)) {
-          visualizerAssistedRevenue += n(order.total);
+          visualizerAssistedRevenue += getHodBaseRevenue(order);
           visualizerAssistedOrders += 1;
         }
       });
@@ -240,36 +341,18 @@ export const analyticsQueryLayer = {
 
     if (compareFrom && compareTo) {
       try {
-        const [compSales, compOrders, compFunnel] = await Promise.all([
-          wooCommerceService.getSalesReport({ date_min: compareFrom, date_max: compareTo }),
+        const [compOrders, compFunnel] = await Promise.all([
           wooCommerceService.getOrders({ after: compareFrom, before: compareTo, per_page: 100 }),
           wpAnalyticsService.getFunnel(compareFrom, compareTo),
         ]);
 
-        let compNetRevenue = 0;
-        let compTotalOrders = 0;
+        await ensureCatalogPricesForOrders(compOrders);
+
+        const compOrderSales = computeSalesFromOrders(compOrders);
+        const compNetRevenue = compOrderSales.netSales;
+        const compTotalOrders = compOrderSales.totalOrders;
         const compTrendValues: number[] = [];
-
-        const hasCompReport =
-          compSales &&
-          compSales.length > 0 &&
-          (n(compSales[0].net_sales) > 0 || (compSales[0].total_orders || 0) > 0);
-
-        if (hasCompReport) {
-          compNetRevenue = n(compSales[0].net_sales);
-          compTotalOrders = compSales[0].total_orders || 0;
-
-          if (compSales[0].totals) {
-            Object.values(compSales[0].totals).forEach((metrics: any) => {
-              compTrendValues.push(n(metrics.sales));
-            });
-          }
-        } else {
-          const compOrderSales = computeSalesFromOrders(compOrders);
-          compNetRevenue = compOrderSales.netSales;
-          compTotalOrders = compOrderSales.totalOrders;
-          compOrderSales.trendRaw.forEach((t) => compTrendValues.push(t.revenue));
-        }
+        compOrderSales.trendRaw.forEach((t) => compTrendValues.push(t.revenue));
 
         const compAov = compTotalOrders > 0 ? compNetRevenue / compTotalOrders : 0;
         const compSessions = compFunnel?.total_sessions || 0;
@@ -319,12 +402,12 @@ export const analyticsQueryLayer = {
 
     // ── Top Products (OverviewTab reads: p.id, p.name, p.totalRevenue, p.unitsSold)
     const productSalesMap = new Map<number, { name: string; revenue: number; quantity: number }>();
-    const ordersForProducts = activeValidOrders.length > 0 ? activeValidOrders : orders;
+    const ordersForProducts = activeValidOrders.length > 0 ? activeValidOrders : orders.filter(isValidOrder);
 
     ordersForProducts.forEach((order) => {
       order.line_items.forEach((item) => {
         const cur = productSalesMap.get(item.product_id) || { name: item.name, revenue: 0, quantity: 0 };
-        cur.revenue += n(item.total);
+        cur.revenue += getHodBaseLineItemRevenue(item, order.currency);
         cur.quantity += item.quantity;
         if (!cur.name) cur.name = item.name;
         productSalesMap.set(item.product_id, cur);
@@ -367,7 +450,7 @@ export const analyticsQueryLayer = {
       if (c) {
         const cur = countryOrderMap.get(c) || { orders: 0, revenue: 0 };
         cur.orders += 1;
-        cur.revenue += n(o.total);
+        cur.revenue += getHodBaseRevenue(o);
         countryOrderMap.set(c, cur);
       }
     });
@@ -455,70 +538,30 @@ export const analyticsQueryLayer = {
   async getRevenueData(dateRange: DateRange) {
     const { from, to, compareFrom, compareTo } = dateRange;
 
-    const [salesReports, orders] = await Promise.all([
-      wooCommerceService.getSalesReport({ date_min: from, date_max: to }),
-      wooCommerceService.getOrders({ after: from, before: to, per_page: 100 }),
-    ]);
+    const orders = await wooCommerceService.getOrders({ after: from, before: to, per_page: 100 });
+    await ensureCatalogPricesForOrders(orders);
 
-    let netSales = 0;
-    let grossSales = 0;
-    let totalTax = 0;
-    let totalShipping = 0;
-    let totalDiscount = 0;
-    let totalOrders = 0;
-    let refunds = 0;
-    let refundsCount = 0;
+    // Authoritative order-based normalized calculation (AED Base Currency)
+    const orderSales = computeSalesFromOrders(orders);
+    const netSales = orderSales.netSales;
+    const grossSales = orderSales.grossSales;
+    const totalTax = orderSales.totalTax;
+    const totalShipping = orderSales.totalShipping;
+    const totalDiscount = orderSales.totalDiscount;
+    const totalOrders = orderSales.totalOrders;
+    const refunds = orderSales.refunds;
+    const refundsCount = orderSales.refundsCount;
+    const trendRaw: Array<{ date: string; revenue: number }> = [...orderSales.trendRaw];
+    const activeValidOrders: WcOrder[] = orderSales.validOrders;
 
-    const trendRaw: Array<{ date: string; revenue: number }> = [];
-
-    const hasValidReport =
-      salesReports &&
-      salesReports.length > 0 &&
-      (n(salesReports[0].net_sales) > 0 || (salesReports[0].total_orders || 0) > 0);
-
-    let activeValidOrders: WcOrder[] = [];
-
-    if (hasValidReport) {
-      const rep = salesReports[0];
-      netSales = n(rep.net_sales);
-      grossSales = n(rep.total_sales);
-      totalTax = n(rep.total_tax);
-      totalShipping = n(rep.total_shipping);
-      totalDiscount = n(rep.total_discount);
-      totalOrders = rep.total_orders || 0;
-
-      if (rep.totals) {
-        Object.entries(rep.totals).forEach(([dateStr, metrics]) => {
-          trendRaw.push({
-            date: dateStr,
-            revenue: n((metrics as any).sales),
-          });
-        });
-      }
-      activeValidOrders = orders.filter(isValidOrder);
-    } else {
-      // Authoritative order-based calculation fallback
-      const orderSales = computeSalesFromOrders(orders);
-      netSales = orderSales.netSales;
-      grossSales = orderSales.grossSales;
-      totalTax = orderSales.totalTax;
-      totalShipping = orderSales.totalShipping;
-      totalDiscount = orderSales.totalDiscount;
-      totalOrders = orderSales.totalOrders;
-      refunds = orderSales.refunds;
-      refundsCount = orderSales.refundsCount;
-      trendRaw.push(...orderSales.trendRaw);
-      activeValidOrders = orderSales.validOrders;
-    }
-
-    // Payment method breakdown from orders
+    // Payment method breakdown from orders (normalized HOD AED)
     const paymentBuckets: Record<string, { count: number; total: number; title: string }> = {};
-    const ordersForPayment = activeValidOrders.length > 0 ? activeValidOrders : orders;
+    const ordersForPayment = activeValidOrders.length > 0 ? activeValidOrders : orders.filter(isValidOrder);
 
     ordersForPayment.forEach((o) => {
       const method = o.payment_method || "unknown";
       const title = o.payment_method_title || method;
-      const total = n(o.total);
+      const total = getHodBaseRevenue(o);
       if (!paymentBuckets[method]) {
         paymentBuckets[method] = { count: 0, total: 0, title };
       }
@@ -535,39 +578,15 @@ export const analyticsQueryLayer = {
 
     if (compareFrom && compareTo) {
       try {
-        const [compSales, compOrders] = await Promise.all([
-          wooCommerceService.getSalesReport({ date_min: compareFrom, date_max: compareTo }),
-          wooCommerceService.getOrders({ after: compareFrom, before: compareTo, per_page: 100 }),
-        ]);
+        const compOrders = await wooCommerceService.getOrders({ after: compareFrom, before: compareTo, per_page: 100 });
+        await ensureCatalogPricesForOrders(compOrders);
 
-        let compNet = 0;
-        let compGross = 0;
-        let compOrdersCount = 0;
+        const compOrderSales = computeSalesFromOrders(compOrders);
+        const compNet = compOrderSales.netSales;
+        const compGross = compOrderSales.grossSales;
+        const compOrdersCount = compOrderSales.totalOrders;
         const compTrendValues: number[] = [];
-
-        const hasCompReport =
-          compSales &&
-          compSales.length > 0 &&
-          (n(compSales[0].net_sales) > 0 || (compSales[0].total_orders || 0) > 0);
-
-        if (hasCompReport) {
-          const cr = compSales[0];
-          compNet = n(cr.net_sales);
-          compGross = n(cr.total_sales);
-          compOrdersCount = cr.total_orders || 0;
-
-          if (cr.totals) {
-            Object.values(cr.totals).forEach((metrics: any) => {
-              compTrendValues.push(n(metrics.sales));
-            });
-          }
-        } else {
-          const compOrderSales = computeSalesFromOrders(compOrders);
-          compNet = compOrderSales.netSales;
-          compGross = compOrderSales.grossSales;
-          compOrdersCount = compOrderSales.totalOrders;
-          compOrderSales.trendRaw.forEach((t) => compTrendValues.push(t.revenue));
-        }
+        compOrderSales.trendRaw.forEach((t) => compTrendValues.push(t.revenue));
 
         const compAov = compOrdersCount > 0 ? compNet / compOrdersCount : 0;
 
@@ -641,6 +660,12 @@ export const analyticsQueryLayer = {
       wpAnalyticsService.getVisualizer(from, to),
     ]);
 
+    products.forEach((p) => {
+      const price = parseFloat(p.price || p.regular_price || "0");
+      if (price > 0) productPriceCache.set(p.id, price);
+    });
+    await ensureCatalogPricesForOrders(orders);
+
     const validOrders = orders.filter(isValidOrder);
     const ordersToAggregate = validOrders.length > 0 ? validOrders : orders;
 
@@ -675,7 +700,7 @@ export const analyticsQueryLayer = {
 
         current.orders += 1;
         current.quantity += item.quantity;
-        current.revenue += n(item.total);
+        current.revenue += getHodBaseLineItemRevenue(item, order.currency);
 
         let foundVariant = false;
 
@@ -891,6 +916,7 @@ export const analyticsQueryLayer = {
       wpAnalyticsService.getVisualizer(from, to),
       wooCommerceService.getOrders({ after: from, before: to, per_page: 100 }),
     ]);
+    await ensureCatalogPricesForOrders(orders);
 
     const assistedOrderSet = new Set(visData?.assisted_order_ids || []);
     let visualizerRevenue = 0;
@@ -899,10 +925,10 @@ export const analyticsQueryLayer = {
     let nonVisualizerOrdersCount = 0;
 
     const validOrders = orders.filter(isValidOrder);
-    const ordersToProcess = validOrders.length > 0 ? validOrders : orders;
+    const ordersToProcess = validOrders.length > 0 ? validOrders : orders.filter(isValidOrder);
 
     ordersToProcess.forEach((o) => {
-      const total = n(o.total);
+      const total = getHodBaseRevenue(o);
       if (assistedOrderSet.has(o.id)) {
         visualizerRevenue += total;
         visualizerOrdersCount += 1;
@@ -976,18 +1002,21 @@ export const analyticsQueryLayer = {
     const { from, to } = dateRange;
     const customers = await wooCommerceService.getCustomers({ per_page: 100 });
     const orders = await wooCommerceService.getOrders({ after: from, before: to, per_page: 100 });
+    await ensureCatalogPricesForOrders(orders);
+
+    const validOrders = orders.filter(isValidOrder);
 
     const customerSpendMap = new Map<
       number,
       { orders: number; totalSpent: number; lastOrder: string }
     >();
 
-    orders.forEach((o) => {
+    validOrders.forEach((o) => {
       const cId = o.customer_id;
       if (cId > 0) {
         const cur = customerSpendMap.get(cId) || { orders: 0, totalSpent: 0, lastOrder: o.date_created };
         cur.orders += 1;
-        cur.totalSpent += n(o.total);
+        cur.totalSpent += getHodBaseRevenue(o);
         if (new Date(o.date_created) > new Date(cur.lastOrder)) {
           cur.lastOrder = o.date_created;
         }
@@ -1088,11 +1117,12 @@ export const analyticsQueryLayer = {
       wpAnalyticsService.getAttribution(from, to),
       wooCommerceService.getOrders({ after: from, before: to, per_page: 100 }),
     ]);
+    await ensureCatalogPricesForOrders(orders);
 
     const validOrders = orders.filter(isValidOrder);
     const orderPriceMap = new Map<number, number>();
     validOrders.forEach((o) => {
-      orderPriceMap.set(o.id, n(o.total));
+      orderPriceMap.set(o.id, getHodBaseRevenue(o));
     });
 
     const campaigns = attribution?.campaigns || [];
@@ -1105,7 +1135,7 @@ export const analyticsQueryLayer = {
     let totalCommerceRevenue = 0;
 
     validOrders.forEach((order) => {
-      const orderTotal = n(order.total);
+      const orderTotal = getHodBaseRevenue(order);
       totalCommerceRevenue += orderTotal;
 
       const rawCountry = (order.billing?.country || "").toUpperCase().trim();
