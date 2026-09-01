@@ -9,6 +9,7 @@ import { useAuthStore } from "@/src/lib/store/useAuthStore";
 import { useCurrencyStore } from "@/src/lib/store/useCurrencyStore";
 import { Currency } from "@/src/components/product-presentation/ProductPresentation";
 import { useCurrencySwitcher } from "@/src/lib/hooks/useCurrencySwitcher";
+import { useWcCartSync } from "@/src/lib/hooks/useWcCartSync";
 import toast from "react-hot-toast";
 import "./Header.css";
 
@@ -20,6 +21,8 @@ const NAV_LINKS = [
 ];
 
 export default function Header() {
+  // Mirror Zustand cart → WooCommerce session for MailPoet abandoned-cart tracking
+  useWcCartSync();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
