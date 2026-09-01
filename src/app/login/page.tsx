@@ -4,6 +4,7 @@ import { useState, useRef, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuthStore } from "@/src/lib/store/useAuthStore";
+import { useCartStore } from "@/src/lib/store/useCartStore";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import "../auth.css";
@@ -41,6 +42,24 @@ export default function LoginPage() {
 
       if (data.success) {
         setUser(data.user);
+
+        // Immediately sync any existing cart items to WooCommerce so
+        // MailPoet can track this user's cart for abandoned-cart emails.
+        const cartItems = useCartStore.getState().items;
+        if (cartItems.length > 0) {
+          fetch("/api/cart/sync", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              items: cartItems.map((i) => ({
+                product_id: i.productId,
+                variation_id: i.variationId,
+                quantity: i.quantity,
+              })),
+            }),
+          }).catch(() => {}); // Fire-and-forget — don't block navigation
+        }
+
         const urlParams = new URLSearchParams(window.location.search);
         const redirectUrl = urlParams.get("redirect") || "/account";
         router.push(redirectUrl);

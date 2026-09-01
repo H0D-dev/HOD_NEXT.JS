@@ -311,6 +311,14 @@ export default function CheckoutPage() {
       // Clear cart after successful order
       clearCart();
 
+      // Also clear the WooCommerce cart session so MailPoet doesn't
+      // send an abandoned-cart email for a completed purchase.
+      fetch("/api/cart/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items: [] }),
+      }).catch(() => {}); // Fire-and-forget
+
       // Route based on payment method
       if (orderData.paymentUrl) {
         // Redirect to WooCommerce payment gateway (online payment)
