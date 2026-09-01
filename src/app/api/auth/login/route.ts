@@ -115,7 +115,7 @@ export async function POST(request: Request) {
         if (key === 'expires') cookieOptions.expires = new Date(v);
         if (key === 'max-age') cookieOptions.maxAge = parseInt(v, 10);
         if (key === 'httponly') cookieOptions.httpOnly = true;
-        if (key === 'domain') cookieOptions.domain = v;
+        if (key === 'domain' && process.env.NODE_ENV !== 'development') cookieOptions.domain = v;
         // In production, preserve secure flag
         if (key === 'secure' && process.env.NODE_ENV !== 'development') cookieOptions.secure = true;
         if (key === 'samesite') cookieOptions.sameSite = process.env.NODE_ENV === 'development' ? 'lax' : v.toLowerCase();
