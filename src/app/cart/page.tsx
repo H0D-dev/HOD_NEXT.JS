@@ -40,20 +40,14 @@ export default function CartPage() {
         <ShoppingBag size={48} strokeWidth={1} className="text-[var(--text-secondary)] mb-6" />
         <h2 className="font-sans text-3xl md:text-4xl text-[var(--text-primary)] font-light mb-3 tracking-wide leading-normal">Your cart is empty</h2>
         <p className="font-sans text-sm md:text-base font-light text-[var(--text-secondary)] mb-10 max-w-[400px] leading-relaxed">
-          Discover our curated collections of premium rugs and curtains.
+          Discover our curated collections of luxury handwoven rugs.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
           <Link 
-            href="/products" 
+            href="/products/rugs" 
             className="py-[12px] px-[32px] border-[0.5px] border-[var(--border-primary)] text-[var(--text-primary)] font-sans text-[10px] md:text-xs font-semibold uppercase tracking-[0.2em] transition-colors hover:bg-[var(--bg-secondary)] whitespace-nowrap text-center"
           >
             Explore Rugs
-          </Link>
-          <Link 
-            href="/products/curtains" 
-            className="py-[12px] px-[32px] border-[0.5px] border-[var(--border-primary)] text-[var(--text-primary)] font-sans text-[10px] md:text-xs font-semibold uppercase tracking-[0.2em] transition-colors hover:bg-[var(--bg-secondary)] whitespace-nowrap text-center"
-          >
-            Explore Curtains
           </Link>
         </div>
       </div>

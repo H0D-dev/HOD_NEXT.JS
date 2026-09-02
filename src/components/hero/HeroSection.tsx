@@ -130,7 +130,7 @@ export default function HeroSection() {
             </h1>
             
             <p className="max-w-xl text-neutral-300 text-[10px] md:text-xs uppercase tracking-[0.2em] mt-6 leading-relaxed mb-4 text-left">
-              Premium handwoven rugs and bespoke curtains crafted for architectural interiors. Where heritage techniques meet modern luxury.
+              Premium handwoven rugs crafted for architectural interiors. Where heritage techniques meet modern luxury.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 items-start justify-start mt-4 w-full sm:w-auto">

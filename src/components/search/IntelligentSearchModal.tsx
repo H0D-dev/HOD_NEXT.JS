@@ -88,7 +88,7 @@ export default function IntelligentSearchModal({ isOpen, onClose, initialQuery =
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search luxury rugs, curtains, size guides, care, blog insights..."
+            placeholder="Search luxury rugs, size guides, care, blog insights..."
             className="w-full bg-transparent text-[var(--text-primary)] font-sans text-sm md:text-base focus:outline-none placeholder-[var(--text-muted)]"
             autoFocus
           />
@@ -115,7 +115,7 @@ export default function IntelligentSearchModal({ isOpen, onClose, initialQuery =
               <Compass className="w-8 h-8 text-[var(--text-muted)] mb-3" />
               <p className="text-sm font-sans text-[var(--text-primary)] mb-2">No direct matches found for "{query}"</p>
               <p className="text-xs text-[var(--text-secondary)] max-w-md">
-                Try searching for <span className="underline">Persian</span>, <span className="underline">Curtains</span>, <span className="underline">Size Guide</span>, or <span className="underline">Silk Care</span>.
+                Try searching for <span className="underline">Persian</span>, <span className="underline">Oushak</span>, <span className="underline">Size Guide</span>, or <span className="underline">Silk Care</span>.
               </p>
             </div>
           )}

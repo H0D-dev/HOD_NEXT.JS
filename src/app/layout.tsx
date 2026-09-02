@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     template: "%s | House of Decór",
   },
   description:
-    "Tailoring luxury, one thread at a time. Discover premium handmade rugs, bespoke curtains, and curated interior solutions by House of Decór.",
+    "Tailoring luxury, one thread at a time. Discover premium handmade rugs and curated interior solutions by House of Decór.",
   authors: [{ name: "House of Decór", url: "https://houseofdecor.ae" }],
   creator: "House of Decór",
   publisher: "House of Decór",
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     siteName: "House of Decór",
     title: "House of Decór — Handwoven Luxury Rugs & Bespoke Interiors",
     description:
-      "Tailoring luxury, one thread at a time. Discover premium handmade rugs, bespoke curtains, and curated interior solutions by House of Decór.",
+      "Tailoring luxury, one thread at a time. Discover premium handmade rugs and curated interior solutions by House of Decór.",
     images: [
       {
         url: "https://houseofdecor.ae/about_hero_desktop.png",
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "House of Decór — Handwoven Luxury Rugs & Bespoke Interiors",
     description:
-      "Tailoring luxury, one thread at a time. Discover premium handmade rugs, bespoke curtains, and curated interior solutions by House of Decór.",
+      "Tailoring luxury, one thread at a time. Discover premium handmade rugs and curated interior solutions by House of Decór.",
     images: ["https://houseofdecor.ae/about_hero_desktop.png"],
   },
   robots: {

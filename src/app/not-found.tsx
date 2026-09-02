@@ -53,7 +53,7 @@ export default function NotFound() {
               type="text"
               value={initialSearchQuery}
               onChange={(e) => setInitialSearchQuery(e.target.value)}
-              placeholder="Search rugs, curtains, size guides, care, blog insights..."
+              placeholder="Search rugs, size guides, care, blog insights..."
               className="w-full bg-transparent text-xs md:text-sm text-[var(--text-primary)] focus:outline-none placeholder-[var(--text-muted)]"
             />
             <button
@@ -165,7 +165,7 @@ export default function NotFound() {
           <PhoneCall className="w-6 h-6 text-[var(--accent-primary)] mb-3" />
           <h2 className="text-lg font-light text-[var(--text-primary)] mb-2">Need Custom Assistance?</h2>
           <p className="text-xs text-[var(--text-secondary)] max-w-md mb-6">
-            Our interior design consultants are ready to assist you with bespoke rug dimensions, curtain fittings, or trade inquiries.
+            Our interior design consultants are ready to assist you with bespoke rug dimensions, tailored finishes, or trade inquiries.
           </p>
           <Link
             href="/contact"

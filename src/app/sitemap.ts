@@ -27,7 +27,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/cookie-policy',
     '/products',
     '/products/rugs',
-    '/products/curtains',
     '/blog',
   ];
 

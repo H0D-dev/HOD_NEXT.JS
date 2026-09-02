@@ -4,7 +4,7 @@ import ProjectsClient from "@/src/components/projects-page/ProjectsClient";
 export const metadata: Metadata = {
   title: "Interior Design Portfolio & Projects",
   description:
-    "Explore our portfolio of luxury residential, commercial, and yacht interior design projects featuring custom rugs and bespoke curtains.",
+    "Explore our portfolio of luxury residential, commercial, and yacht interior design projects featuring bespoke handwoven rugs.",
   alternates: {
     canonical: "/projects",
   },
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Interior Design Portfolio & Projects | House of Decór",
     description:
-      "Explore our portfolio of luxury residential, commercial, and yacht interior design projects featuring custom rugs and bespoke curtains.",
+      "Explore our portfolio of luxury residential, commercial, and yacht interior design projects featuring bespoke handwoven rugs.",
     url: "https://houseofdecor.ae/projects",
     siteName: "House of Decór",
     images: [
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Interior Design Portfolio & Projects | House of Decór",
     description:
-      "Explore our portfolio of luxury residential, commercial, and yacht interior design projects featuring custom rugs and bespoke curtains.",
+      "Explore our portfolio of luxury residential, commercial, and yacht interior design projects featuring bespoke handwoven rugs.",
     images: ["https://houseofdecor.ae/about_hero_desktop.png"],
   },
 };

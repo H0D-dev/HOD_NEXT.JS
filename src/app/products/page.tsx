@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import ProductsClient from "@/src/components/products/ProductsClient";
 
 export const metadata: Metadata = {
-  title: "Luxury Rugs & Bespoke Curtains Collections",
+  title: "Luxury Handwoven Rugs Collection",
   description:
-    "Explore curated collections of luxury handwoven rugs and bespoke custom curtains designed for architectural interiors.",
+    "Explore curated collections of luxury handwoven rugs designed for architectural interiors.",
   alternates: {
     canonical: "/products",
   },
@@ -13,9 +13,9 @@ export const metadata: Metadata = {
     follow: true,
   },
   openGraph: {
-    title: "Luxury Rugs & Bespoke Curtains Collections | House of Decór",
+    title: "Luxury Handwoven Rugs Collection | House of Decór",
     description:
-      "Explore curated collections of luxury handwoven rugs and bespoke custom curtains designed for architectural interiors.",
+      "Explore curated collections of luxury handwoven rugs designed for architectural interiors.",
     url: "https://houseofdecor.ae/products",
     siteName: "House of Decór",
     images: [
@@ -30,9 +30,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Luxury Rugs & Bespoke Curtains Collections | House of Decór",
+    title: "Luxury Handwoven Rugs Collection | House of Decór",
     description:
-      "Explore curated collections of luxury handwoven rugs and bespoke custom curtains designed for architectural interiors.",
+      "Explore curated collections of luxury handwoven rugs designed for architectural interiors.",
     images: ["https://houseofdecor.ae/about_hero_desktop.png"],
   },
 };

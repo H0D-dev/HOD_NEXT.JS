@@ -72,7 +72,7 @@ export default function CartItem({ item, context = "drawer" }: CartItemProps) {
               {item.name}
             </h4>
             <p className="font-sans text-[10px] lg:text-xs text-[var(--text-muted)] uppercase tracking-widest mt-1">
-              {item.category === "rug" ? "Rug" : "Curtain"}
+              Handwoven Rug
             </p>
           </div>
           
