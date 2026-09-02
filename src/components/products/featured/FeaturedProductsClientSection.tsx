@@ -49,8 +49,7 @@ export default function FeaturedProductsClientSection({ rugsProducts }: Featured
 
         {/* Navigation Arrows */}
         <div
-
-          className="flex justify-end gap-2 px-6 sm:px-12 md:px-16 lg:px-24 mt-2"
+          className="w-full mx-auto max-w-[1600px] px-4 md:px-8 lg:px-12 flex justify-end gap-2 mt-2"
           onMouseEnter={(e) => {
             e.stopPropagation();
             setCursorMode("default");

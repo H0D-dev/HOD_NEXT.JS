@@ -88,10 +88,10 @@ const ProductSlider = forwardRef<ProductSliderHandle, ProductSliderProps>(
       // Mobile: Native snap scrolling container
       return (
         <div className="flex flex-col w-full">
-          <div className="w-full pl-[var(--space-4)]" ref={containerRef}>
+          <div className="w-full pl-4 md:pl-8" ref={containerRef}>
             <div 
               ref={scrollContainerRef}
-              className="flex gap-1 overflow-x-auto snap-x snap-mandatory pr-[var(--space-4)] hide-scrollbar"
+              className="flex gap-1 overflow-x-auto snap-x snap-mandatory pr-4 md:pr-8 hide-scrollbar"
             >
               {products.map((product) => (
                 <div key={product.id} className="snap-start flex-none w-[65vw] md:w-[45vw]">
@@ -110,7 +110,10 @@ const ProductSlider = forwardRef<ProductSliderHandle, ProductSliderProps>(
 
     // Desktop: Framer Motion draggable gallery
     return (
-      <div className="w-full overflow-hidden px-[var(--space-4)] min-[1440px]:pl-[max(var(--space-4),calc((100vw-var(--container-lg))/2+var(--space-4)))] min-[1440px]:pr-[max(var(--space-4),calc((100vw-var(--container-lg))/2+var(--space-4)))]" ref={containerRef}>
+      <div 
+        className="w-full overflow-hidden px-4 md:px-8 lg:px-12 min-[1600px]:pl-[max(3rem,calc((100%-1600px)/2+3rem))] min-[1600px]:pr-[max(3rem,calc((100%-1600px)/2+3rem))]" 
+        ref={containerRef}
+      >
         <motion.div
           ref={trackRef}
           className="flex gap-1 md:gap-2 will-change-transform"
