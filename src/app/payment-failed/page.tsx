@@ -63,6 +63,9 @@ function PaymentFailedContent() {
               Retry Payment
             </a>
           )}
+          <Link href="/checkout" className="payment-failed__btn payment-failed__btn--secondary">
+            Return to Checkout
+          </Link>
           <Link href="/contact" className="payment-failed__btn payment-failed__btn--secondary">
             Contact Support
           </Link>

@@ -4,6 +4,7 @@ import { Suspense, useEffect, useState, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useAnalytics } from "@/src/lib/analytics/useAnalytics";
+import { useCartStore } from "@/src/lib/store/useCartStore";
 import "./OrderSuccess.css";
 
 function OrderSuccessContent() {
@@ -11,10 +12,29 @@ function OrderSuccessContent() {
   const orderId = searchParams.get("id");
   const { trackPurchase } = useAnalytics();
   const hasTrackedOrderRef = useRef(false);
+  const hasClearedCartRef = useRef(false);
   const [isClient, setIsClient] = useState(false);
+  const clearCart = useCartStore((s) => s.clearCart);
 
   useEffect(() => {
     setIsClient(true);
+
+    // Clear the frontend cart — this page is reached after a confirmed
+    // bank-transfer order so the cart lifecycle is complete.
+    if (!hasClearedCartRef.current) {
+      hasClearedCartRef.current = true;
+      clearCart();
+      try { localStorage.removeItem("hod-pending-order"); } catch {}
+
+      // Clear WooCommerce cart session so MailPoet doesn't send
+      // an abandoned-cart email for a completed purchase.
+      fetch("/api/cart/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items: [] }),
+      }).catch(() => {}); // Fire-and-forget
+    }
+
     if (orderId && !hasTrackedOrderRef.current) {
       hasTrackedOrderRef.current = true;
       const numericOrderId = parseInt(orderId, 10);
@@ -30,7 +50,7 @@ function OrderSuccessContent() {
         });
       }
     }
-  }, [orderId, trackPurchase]);
+  }, [orderId, trackPurchase, clearCart]);
 
   if (!isClient) return null;
 

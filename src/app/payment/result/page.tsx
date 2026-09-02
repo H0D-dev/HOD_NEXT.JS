@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Loader2, CheckCircle2, XCircle, AlertCircle, Clock } from "lucide-react";
 import Link from "next/link";
 import { formatPrice } from "@/src/lib/utils/price";
+import { useCartStore } from "@/src/lib/store/useCartStore";
 import "./PaymentResult.css";
 
 type PaymentStatus = "loading" | "processing" | "completed" | "failed" | "cancelled" | "timeout" | "invalid_link" | "expired_link";
@@ -34,6 +35,8 @@ function PaymentResultContent() {
 
   const [status, setStatus] = useState<PaymentStatus>("loading");
   const [paymentData, setPaymentData] = useState<PaymentData | null>(null);
+  const clearCart = useCartStore((s) => s.clearCart);
+  const hasClearedCartRef = useRef(false);
 
   useEffect(() => {
     if (!orderId || !orderKey) {
@@ -105,6 +108,25 @@ function PaymentResultContent() {
       clearTimeout(timeoutId);
     };
   }, [orderId, orderKey]);
+
+  // Clear the frontend cart only on confirmed payment success
+  useEffect(() => {
+    if ((status === "completed" || status === "processing") && !hasClearedCartRef.current) {
+      hasClearedCartRef.current = true;
+      clearCart();
+
+      // Remove pending order reference
+      try { localStorage.removeItem("hod-pending-order"); } catch {}
+
+      // Clear WooCommerce cart session so MailPoet doesn't send
+      // an abandoned-cart email for a completed purchase.
+      fetch("/api/cart/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items: [] }),
+      }).catch(() => {}); // Fire-and-forget
+    }
+  }, [status, clearCart]);
 
   const renderContent = () => {
     switch (status) {
