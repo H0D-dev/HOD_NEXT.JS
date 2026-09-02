@@ -134,7 +134,7 @@ function generateSessionId() {
 
 export default function CheckoutPage() {
   const router = useRouter();
-  const { items, subtotal, clearCart, cartCurrency } = useCartStore();
+  const { items, subtotal, cartCurrency } = useCartStore();
   const { user } = useAuthStore();
   const { trackCheckoutStart, trackPaymentMethodSelect, trackPaymentStart, trackPaymentFailure } = useAnalytics();
   const hasTrackedCheckoutStartRef = useRef(false);
@@ -144,6 +144,7 @@ export default function CheckoutPage() {
   const [formErrors, setFormErrors] = useState<FormErrors>({});
   const [isValidating, setIsValidating] = useState(false);
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
+  const [isRedirecting, setIsRedirecting] = useState(false);
   const [validationErrors, setValidationErrors] = useState<ValidationError[]>([]);
   const [orderError, setOrderError] = useState<string | null>(null);
   const [checkoutSessionId] = useState(() => generateSessionId());
@@ -308,23 +309,28 @@ export default function CheckoutPage() {
         return;
       }
 
-      // Clear cart after successful order
-      clearCart();
-
-      // Also clear the WooCommerce cart session so MailPoet doesn't
-      // send an abandoned-cart email for a completed purchase.
-      fetch("/api/cart/sync", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ items: [] }),
-      }).catch(() => {}); // Fire-and-forget
+      // Save pending order reference so payment result / order-success
+      // pages can clear the cart ONLY after confirmed success.
+      // DO NOT clear the cart here — payment hasn't happened yet.
+      try {
+        localStorage.setItem(
+          "hod-pending-order",
+          JSON.stringify({
+            orderId: orderData.orderId,
+            orderKey: orderData.orderKey,
+            createdAt: Date.now(),
+          })
+        );
+      } catch {}
 
       // Route based on payment method
       if (orderData.paymentUrl) {
+        // Show loading overlay before redirecting to prevent any flash
+        setIsRedirecting(true);
         // Redirect to WooCommerce payment gateway (online payment)
         window.location.href = orderData.paymentUrl;
       } else {
-        // Bank transfer → success page
+        // Bank transfer → success page (cart will be cleared there)
         router.push(`/order-success?id=${orderData.orderId}`);
       }
     } catch (err) {
@@ -337,9 +343,33 @@ export default function CheckoutPage() {
         currency: cartCurrency || "AED",
       });
     }
-  }, [validateForm, items, formData, checkoutSessionId, clearCart, router, subtotal, cartCurrency, trackPaymentStart, trackPaymentFailure]);
+  }, [validateForm, items, formData, checkoutSessionId, router, subtotal, cartCurrency, trackPaymentStart, trackPaymentFailure]);
 
-  if (!isClient) return null;
+  if (!isClient) {
+    return (
+      <div className="pt-24 pb-12 md:pt-32 md:pb-20 min-h-[calc(100vh-200px)] flex flex-col items-center justify-center">
+        <span className="inline-block w-7 h-7 border-2 border-[var(--text-primary)] border-t-transparent rounded-full animate-spin mb-5" />
+        <p className="font-sans text-sm text-[var(--text-secondary)] tracking-wide font-light">
+          Loading checkout…
+        </p>
+      </div>
+    );
+  }
+
+  // Full-screen loading overlay during redirect to WooCommerce payment
+  if (isRedirecting) {
+    return (
+      <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[var(--bg-primary)]" style={{ minHeight: '100vh' }}>
+        <span className="inline-block w-8 h-8 border-2 border-[var(--text-primary)] border-t-transparent rounded-full animate-spin mb-6" />
+        <p className="font-sans text-sm md:text-base text-[var(--text-primary)] tracking-wide font-light">
+          Taking you to secure checkout…
+        </p>
+        <p className="font-sans text-xs text-[var(--text-secondary)] mt-2 tracking-wide">
+          Please do not close this window.
+        </p>
+      </div>
+    );
+  }
 
   if (items.length === 0) {
     return (
@@ -361,7 +391,7 @@ export default function CheckoutPage() {
     );
   }
 
-  const isProcessing = isValidating || isPlacingOrder;
+  const isProcessing = isValidating || isPlacingOrder || isRedirecting;
 
   // Get variant display for summary
   const renderVariantInfo = (item: typeof items[0]) => {
