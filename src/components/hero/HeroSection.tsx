@@ -133,10 +133,19 @@ export default function HeroSection() {
               Premium handwoven rugs crafted for architectural interiors. Where heritage techniques meet modern luxury.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 items-start justify-start mt-4 w-full sm:w-auto">
-              <Link href="/bespoke" className="group relative w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 sm:px-10 sm:py-4 border-[0.5px] border-white/60 overflow-hidden text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-center text-white">
+            <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center justify-start mt-4 w-full sm:w-auto">
+              <Link 
+                href="/products/rugs" 
+                className="group relative inline-flex items-center justify-center px-6 py-3.5 sm:px-10 sm:py-4 bg-[#A38A61] hover:bg-[#8F7752] text-white text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-center transition-all duration-300 shadow-md"
+              >
+                <span>Explore Rugs</span>
+              </Link>
+              <Link 
+                href="/bespoke" 
+                className="group relative inline-flex items-center justify-center px-6 py-3.5 sm:px-10 sm:py-4 border-[0.5px] border-white/60 overflow-hidden text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-center text-white transition-all duration-300 hover:border-white"
+              >
                 <span className="relative z-10 transition-colors duration-[0.6s] group-hover:text-white">Start Your Project</span>
-                <div className="absolute inset-0 bg-[var(--accent-primary)] translate-y-[101%] group-hover:translate-y-0 transition-transform duration-[0.6s] ease-[cubic-bezier(0.22,1,0.36,1)] z-0" />
+                <div className="absolute inset-0 bg-white/10 translate-y-[101%] group-hover:translate-y-0 transition-transform duration-[0.6s] ease-[cubic-bezier(0.22,1,0.36,1)] z-0" />
               </Link>
             </div>
           </div>

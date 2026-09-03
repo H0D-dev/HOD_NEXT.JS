@@ -7,7 +7,7 @@ const MOCK_RUGS_PRODUCTS = [
     id: "r1",
     name: "Persian Heritage",
     category: "Hand Knotted",
-    price: "From ₹24,999",
+    price: "From AED 4,999",
     image: "https://images.unsplash.com/photo-1600166898405-da9535204843?auto=format&fit=crop&q=80&w=800",
     slug: "persian-heritage"
   },
@@ -15,7 +15,7 @@ const MOCK_RUGS_PRODUCTS = [
     id: "r2",
     name: "Oasis Weave",
     category: "Flat Weave",
-    price: "From ₹12,499",
+    price: "From AED 2,499",
     image: "https://images.unsplash.com/photo-1600166898405-da9535204843?auto=format&fit=crop&q=80&w=800",
     slug: "oasis-weave"
   },
@@ -23,7 +23,7 @@ const MOCK_RUGS_PRODUCTS = [
     id: "r3",
     name: "Modern Minimalist",
     category: "Hand Tufted",
-    price: "From ₹18,999",
+    price: "From AED 3,899",
     image: "https://images.unsplash.com/photo-1600166898405-da9535204843?auto=format&fit=crop&q=80&w=800",
     slug: "modern-minimalist"
   },
@@ -31,7 +31,7 @@ const MOCK_RUGS_PRODUCTS = [
     id: "r4",
     name: "Vintage Anatolian",
     category: "Hand Knotted",
-    price: "From ₹32,000",
+    price: "From AED 6,200",
     image: "https://images.unsplash.com/photo-1600166898405-da9535204843?auto=format&fit=crop&q=80&w=800",
     slug: "vintage-anatolian"
   },
@@ -39,7 +39,7 @@ const MOCK_RUGS_PRODUCTS = [
     id: "r5",
     name: "Nomad Tribal",
     category: "Flat Weave",
-    price: "From ₹15,499",
+    price: "From AED 2,999",
     image: "https://images.unsplash.com/photo-1600166898405-da9535204843?auto=format&fit=crop&q=80&w=800",
     slug: "nomad-tribal"
   },
@@ -47,7 +47,7 @@ const MOCK_RUGS_PRODUCTS = [
     id: "r6",
     name: "Silk Cascade",
     category: "Hand Tufted",
-    price: "From ₹45,000",
+    price: "From AED 8,500",
     image: "https://images.unsplash.com/photo-1600166898405-da9535204843?auto=format&fit=crop&q=80&w=800",
     slug: "silk-cascade"
   }
