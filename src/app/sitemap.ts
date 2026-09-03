@@ -61,18 +61,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
       const entries = products
         .filter((p: any) => p && p.slug)
-        .map((p: any) => {
-          const isCurtain = Array.isArray(p.categories) && p.categories.some(
-            (c: any) => c.slug === 'curtains' || c.name?.toLowerCase() === 'curtains'
-          );
-          const categoryFolder = isCurtain ? 'curtains' : 'rugs';
-          return {
-            url: `${baseUrl}/products/${categoryFolder}/${p.slug}`,
-            lastModified: p.date_modified ? new Date(p.date_modified) : new Date(),
-            changeFrequency: 'daily' as const,
-            priority: 0.9,
-          };
-        });
+        .map((p: any) => ({
+          url: `${baseUrl}/products/rugs/${p.slug}`,
+          lastModified: p.date_modified ? new Date(p.date_modified) : new Date(),
+          changeFrequency: 'daily' as const,
+          priority: 0.9,
+        }));
 
       productEntries.push(...entries);
 

@@ -111,11 +111,121 @@ export function generateProductSchema(product: any, categorySlug: string = 'rugs
   const price = product.price || product.regularPrice || 0;
   const productUrl = `${BASE_URL}/products/${categorySlug}/${product.slug}`;
 
+  // 1 year forward price validity
+  const validUntilDate = new Date(Date.now() + 365 * 86400000).toISOString().split('T')[0];
+
+  const returnPolicy = {
+    '@type': 'MerchantReturnPolicy',
+    applicableCountry: 'AE',
+    returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+    merchantReturnDays: 14,
+    returnMethod: 'https://schema.org/ReturnByMail',
+    returnFees: 'https://schema.org/FreeReturn',
+  };
+
+  const shippingDetails = {
+    '@type': 'OfferShippingDetails',
+    shippingRate: {
+      '@type': 'MonetaryAmount',
+      value: '0',
+      currency: 'AED',
+    },
+    shippingDestination: [
+      {
+        '@type': 'DefinedRegion',
+        addressCountry: 'AE',
+      },
+      {
+        '@type': 'DefinedRegion',
+        addressCountry: 'SA',
+      },
+    ],
+    deliveryTime: {
+      '@type': 'ShippingDeliveryTime',
+      handlingTime: {
+        '@type': 'QuantitativeValue',
+        minValue: 1,
+        maxValue: 3,
+        unitCode: 'DAY',
+      },
+      transitTime: {
+        '@type': 'QuantitativeValue',
+        minValue: 3,
+        maxValue: 14,
+        unitCode: 'DAY',
+      },
+    },
+  };
+
+  const isVariable = Array.isArray(product.variations) && product.variations.length > 0;
+  let offersConfig: any;
+  const fallbackPrice = Number(price) > 0 ? Number(price) : 1;
+
+  if (isVariable) {
+    const varPrices = product.variations
+      .map((v: any) => Number(v.price) || Number(v.currencyPrices?.AED) || 0)
+      .filter((p: number) => !isNaN(p) && p > 0);
+    const lowPrice = varPrices.length > 0 ? Math.min(...varPrices) : fallbackPrice;
+    const highPrice = varPrices.length > 0 ? Math.max(...varPrices) : fallbackPrice;
+
+    offersConfig = {
+      '@type': 'AggregateOffer',
+      priceCurrency: 'AED',
+      lowPrice: lowPrice,
+      highPrice: highPrice,
+      offerCount: product.variations.length,
+      offers: product.variations.slice(0, 10).map((v: any) => {
+        const vPrice = Number(v.price) || Number(v.currencyPrices?.AED) || fallbackPrice;
+        return {
+          '@type': 'Offer',
+          name: `${product.name} (${v.label})`,
+          sku: v.sku || `${product.id}-${v.id}`,
+          price: vPrice,
+          priceCurrency: 'AED',
+          priceValidUntil: validUntilDate,
+          availability: mapStockAvailability(v.stockStatus || product.stockStatus),
+          itemCondition: 'https://schema.org/NewCondition',
+          url: productUrl,
+          seller: {
+            '@type': 'Organization',
+            name: 'House of Decór',
+          },
+          hasMerchantReturnPolicy: returnPolicy,
+          shippingDetails: shippingDetails,
+        };
+      }),
+    };
+  } else {
+    offersConfig = {
+      '@type': 'Offer',
+      price: fallbackPrice,
+      priceCurrency: 'AED',
+      priceValidUntil: validUntilDate,
+      availability: mapStockAvailability(product.stockStatus),
+      itemCondition: 'https://schema.org/NewCondition',
+      seller: {
+        '@type': 'Organization',
+        name: 'House of Decór',
+      },
+      url: productUrl,
+      hasMerchantReturnPolicy: returnPolicy,
+      shippingDetails: shippingDetails,
+    };
+  }
+
+  const cleanDescription = (product.description || product.shortDescription || product.name)
+    .replace(/<[^>]*>?/gm, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&#8211;/g, '-')
+    .replace(/&#8212;/g, '—')
+    .replace(/&amp;/g, '&')
+    .trim();
+
   const schema: any = {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: product.name,
-    description: product.description || product.shortDescription || product.name,
+    description: cleanDescription,
     sku: product.sku || product.id,
     brand: {
       '@type': 'Brand',
@@ -124,18 +234,7 @@ export function generateProductSchema(product: any, categorySlug: string = 'rugs
     image: images.length > 0 ? images : undefined,
     url: productUrl,
     category: product.design || (categorySlug === 'curtains' ? 'Bespoke Curtains' : 'Handmade Rugs'),
-    offers: {
-      '@type': 'Offer',
-      price: price,
-      priceCurrency: 'AED',
-      availability: mapStockAvailability(product.stockStatus),
-      itemCondition: 'https://schema.org/NewCondition',
-      seller: {
-        '@type': 'Organization',
-        name: 'House of Decór',
-      },
-      url: productUrl,
-    },
+    offers: offersConfig,
   };
 
   // Only emit rating/review schema when genuine data exists on product object

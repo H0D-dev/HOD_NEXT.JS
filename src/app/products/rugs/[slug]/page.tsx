@@ -14,9 +14,26 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const ogImage = product.colors?.[0]?.lifestyleUrl || product.colors?.[0]?.textureUrl || (product as any).mainImage?.src || "https://houseofdecor.ae/about_hero_desktop.png";
   const canonicalUrl = `/products/rugs/${slug}`;
 
+  const titleKeyword = /rug/i.test(product.name) ? product.name : `${product.name} Luxury Handmade Rug`;
+  const metaTitle = `${titleKeyword} | House of Decór`;
+
+  const rawDesc = product.shortDescription || product.description || "";
+  const cleanedDesc = rawDesc
+    .replace(/<[^>]*>?/gm, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&#8211;/g, '-')
+    .replace(/&#8212;/g, '—')
+    .replace(/&amp;/g, '&')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  const metaDescription = cleanedDesc && cleanedDesc.length > 20
+    ? (cleanedDesc.length > 155 ? `${cleanedDesc.slice(0, 152)}...` : cleanedDesc)
+    : `Discover ${product.name} — a bespoke handcrafted luxury rug tailored for architectural interiors. Complimentary delivery & custom sizing available.`;
+
   return {
-    title: `${product.name} | House of Decór`,
-    description: product.description ? product.description.slice(0, 160) : `${product.name} - Handmade luxury rug by House of Decór.`,
+    title: metaTitle,
+    description: metaDescription,
     alternates: {
       canonical: canonicalUrl,
     },
@@ -25,8 +42,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       follow: true,
     },
     openGraph: {
-      title: `${product.name} | House of Decór`,
-      description: product.description ? product.description.slice(0, 160) : `${product.name} - Handmade luxury rug by House of Decór.`,
+      title: metaTitle,
+      description: metaDescription,
       url: `https://houseofdecor.ae${canonicalUrl}`,
       siteName: "House of Decór",
       images: [
@@ -41,8 +58,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     },
     twitter: {
       card: "summary_large_image",
-      title: `${product.name} | House of Decór`,
-      description: product.description ? product.description.slice(0, 160) : `${product.name} - Handmade luxury rug by House of Decór.`,
+      title: metaTitle,
+      description: metaDescription,
       images: [ogImage],
     },
   };

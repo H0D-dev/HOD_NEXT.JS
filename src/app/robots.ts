@@ -16,6 +16,8 @@ export default function robots(): MetadataRoute.Robots {
           '/payment-failed',
           '/payment/',
           '/api/',
+          '/admin/',
+          '/admin',
         ],
       },
     ],
