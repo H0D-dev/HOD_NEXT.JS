@@ -111,12 +111,48 @@ export default function IntelligentSearchModal({ isOpen, onClose, initialQuery =
           )}
 
           {!loading && query && totalResultsCount === 0 && (
-            <div className="py-12 text-center flex flex-col items-center">
-              <Compass className="w-8 h-8 text-[var(--text-muted)] mb-3" />
-              <p className="text-sm font-sans text-[var(--text-primary)] mb-2">No direct matches found for "{query}"</p>
-              <p className="text-xs text-[var(--text-secondary)] max-w-md">
-                Try searching for <span className="underline">Persian</span>, <span className="underline">Oushak</span>, <span className="underline">Size Guide</span>, or <span className="underline">Silk Care</span>.
+            <div className="py-8 text-center flex flex-col items-center">
+              <Compass className="w-8 h-8 text-[var(--accent-primary)] mb-3 opacity-80" />
+              <p className="text-sm font-sans font-medium text-[var(--text-primary)] mb-1">No direct matches found for "{query}"</p>
+              <p className="text-xs text-[var(--text-secondary)] max-w-md mb-6">
+                Explore popular collections, artisan weaving guides, or commission a bespoke custom piece.
               </p>
+
+              {/* Clickable Quick Suggestion Chips */}
+              <div className="flex flex-wrap justify-center gap-2 mb-6 max-w-lg">
+                {[
+                  { label: "Hand Knotted", term: "Hand Knotted" },
+                  { label: "Silk Rugs", term: "silk" },
+                  { label: "Wool Rugs", term: "wool" },
+                  { label: "Size Guide", term: "Size Guide" },
+                  { label: "Care & Cleaning", term: "Care" },
+                ].map((chip) => (
+                  <button
+                    key={chip.term}
+                    onClick={() => setQuery(chip.term)}
+                    className="px-3 py-1.5 text-xs bg-[var(--surface-secondary,#222)] hover:bg-[var(--accent-primary)] hover:text-black transition-colors rounded-full border border-[var(--border-secondary)] text-[var(--text-primary)]"
+                  >
+                    {chip.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* Bespoke Concierge Card */}
+              <div className="w-full max-w-md p-4 border border-[var(--border-secondary)] bg-[var(--bg-secondary)] rounded-sm text-left flex items-center justify-between gap-4">
+                <div>
+                  <h4 className="text-xs font-semibold uppercase tracking-wider text-[var(--text-primary)] mb-1">Looking for a custom design?</h4>
+                  <p className="text-[11px] text-[var(--text-secondary)] leading-snug">
+                    Commission custom sizes, materials, patterns, and colors tailored to your floorplan.
+                  </p>
+                </div>
+                <Link
+                  href="/bespoke"
+                  onClick={onClose}
+                  className="shrink-0 px-3 py-2 bg-[var(--accent-primary)] text-black text-[10px] uppercase font-semibold tracking-wider hover:opacity-90 transition-opacity"
+                >
+                  Custom Rug
+                </Link>
+              </div>
             </div>
           )}
 

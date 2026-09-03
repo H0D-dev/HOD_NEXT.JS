@@ -111,21 +111,54 @@ export async function performMultiDomainSearch(query: string): Promise<GroupedSe
     p.title.toLowerCase().includes(q) || (p.subtitle && p.subtitle.toLowerCase().includes(q))
   );
 
-  // Search products
+  // Search products with multi-attribute awareness (name, material, construction, colors, categories)
   try {
     const products = await fetchCatalogProducts();
     if (Array.isArray(products)) {
+      const searchTerms = q.split(/\s+/).filter(t => t.length > 1);
+      // Non-generic terms excluding generic filler words like "rug", "rugs", "carpet"
+      const specificTerms = searchTerms.filter(t => !["rug", "rugs", "carpet", "carpets"].includes(t));
+      const termsToMatch = specificTerms.length > 0 ? specificTerms : searchTerms;
+
       results.products = products
-        .filter((p: any) => p.name?.toLowerCase().includes(q) || (p.description && p.description.toLowerCase().includes(q)))
-        .slice(0, 6)
-        .map((p: any) => ({
-          id: `prod-${p.id}`,
-          title: p.name,
-          subtitle: p.categoryName || 'Luxury Product',
-          url: `/products/${p.categorySlug || 'rugs'}/${p.slug}`,
-          type: 'product' as const,
-          image: p.colors?.[0]?.lifestyleUrl || p.colors?.[0]?.textureUrl,
-        }));
+        .filter((p: any) => {
+          const name = (p.name || "").toLowerCase();
+          const desc = (p.description || "").toLowerCase();
+          const categories = Array.isArray(p.categories) ? p.categories.map((c: any) => (c.name || "").toLowerCase()).join(" ") : "";
+          const construction = (p.acf?.construction || "").toLowerCase();
+          const origin = (p.acf?.countryOfOrigin || "").toLowerCase();
+          const productColor = (p.acf?.productColor || "").toLowerCase();
+          const colors = Array.isArray(p.colors) ? p.colors.map((c: any) => (c.name || "").toLowerCase()).join(" ") : "";
+          const attrs = Array.isArray(p.attributes) ? p.attributes.map((a: any) => `${a.name} ${Array.isArray(a.options) ? a.options.join(" ") : ""}`).join(" ").toLowerCase() : "";
+
+          const searchableText = `${name} ${desc} ${categories} ${construction} ${origin} ${productColor} ${colors} ${attrs}`;
+
+          // Direct phrase match
+          if (searchableText.includes(q)) return true;
+
+          // All specific terms must match
+          if (termsToMatch.length > 0 && termsToMatch.every(term => searchableText.includes(term))) {
+            return true;
+          }
+
+          return false;
+        })
+        .slice(0, 8)
+        .map((p: any) => {
+          const categoryFolder = p.categorySlug || 'rugs';
+          const subtitle = p.acf?.construction 
+            ? `${p.acf.construction}${p.acf.countryOfOrigin ? ` • ${p.acf.countryOfOrigin}` : ''}`
+            : (p.categories?.[0]?.name || 'Luxury Handmade Rug');
+
+          return {
+            id: `prod-${p.id}`,
+            title: p.name,
+            subtitle,
+            url: `/products/${categoryFolder}/${p.slug}`,
+            type: 'product' as const,
+            image: p.mainImage?.src || p.colors?.[0]?.lifestyleUrl || p.colors?.[0]?.textureUrl,
+          };
+        });
     }
   } catch (e) {
     // Fallback gracefully

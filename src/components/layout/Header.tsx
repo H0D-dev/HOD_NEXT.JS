@@ -10,8 +10,14 @@ import { useCurrencyStore } from "@/src/lib/store/useCurrencyStore";
 import { Currency } from "@/src/components/product-presentation/ProductPresentation";
 import { useCurrencySwitcher } from "@/src/lib/hooks/useCurrencySwitcher";
 import { useWcCartSync } from "@/src/lib/hooks/useWcCartSync";
+import dynamic from "next/dynamic";
 import toast from "react-hot-toast";
 import "./Header.css";
+
+const IntelligentSearchModal = dynamic(
+  () => import("@/src/components/search/IntelligentSearchModal"),
+  { ssr: false }
+);
 
 /* ── Navigation Links Data ── */
 const NAV_LINKS = [
@@ -33,6 +39,7 @@ export default function Header() {
   const { currency, handleCurrencyChange } = useCurrencySwitcher();
   const [mounted, setMounted] = useState(false);
   const [isCurrencyOpen, setIsCurrencyOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const currencyRef = useRef<HTMLDivElement>(null);
 
   // Close currency dropdown on outside click
@@ -137,6 +144,25 @@ export default function Header() {
                   </svg>
                 </button>
               </div>
+
+              {/* Mobile Search Bar Trigger (hidden on desktop and tablets) */}
+              <div className="md:hidden px-6 py-4 border-b border-[var(--border-secondary)]">
+                <button
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    setIsSearchOpen(true);
+                  }}
+                  className="w-full flex items-center gap-3 px-3.5 py-2.5 bg-[var(--surface-secondary,#f7f7f5)] border border-[var(--border-secondary,#e5e5e0)] text-[var(--text-secondary,#666)] hover:text-[var(--text-primary)] hover:border-[var(--text-primary)] transition-all rounded-[2px] text-left cursor-pointer"
+                  aria-label="Search catalog"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-[var(--text-secondary)] shrink-0">
+                    <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.5" />
+                    <path d="M20 20L16 16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  </svg>
+                  <span className="font-sans text-xs tracking-wider uppercase text-[var(--text-secondary)]">Search Catalog...</span>
+                </button>
+              </div>
+
               <ul className="header__nav-list">
                 {NAV_LINKS.map((link) => (
                   <li key={link.label} className="header__nav-item">
@@ -225,6 +251,21 @@ export default function Header() {
                 )}
               </div>
             )}
+            {/* ── Search Trigger (Desktop only) ── */}
+            <button
+              onClick={() => setIsSearchOpen(true)}
+              className="header__cart-btn !hidden md:!flex"
+              aria-label="Search catalog"
+              title="Search"
+            >
+              <div className="header__cart-icon-wrapper">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1" />
+                  <path d="M20 20L16 16" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
+                </svg>
+              </div>
+            </button>
+
             <button className="header__cart-btn" aria-label="Open cart" onClick={openDrawer}>
               <div className="header__cart-icon-wrapper">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -246,6 +287,13 @@ export default function Header() {
           </div>
         </div>
       </header>
+
+      {isSearchOpen && (
+        <IntelligentSearchModal
+          isOpen={isSearchOpen}
+          onClose={() => setIsSearchOpen(false)}
+        />
+      )}
     </>
   );
 }
