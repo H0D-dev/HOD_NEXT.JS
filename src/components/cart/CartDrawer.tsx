@@ -110,7 +110,7 @@ export default function CartDrawer() {
                   <span className="cart-drawer__summary-label">Subtotal</span>
                   <span className="cart-drawer__summary-value">{formatPrice(subtotal, cartCurrency || "AED")}</span>
                 </div>
-                <p className="cart-drawer__shipping-note">Shipping and taxes calculated at checkout.</p>
+                <p className="cart-drawer__shipping-note text-[#A38A61] font-medium">Complimentary Delivery (Worldwide & UAE) • Taxes Included</p>
                 <div className="cart-drawer__actions">
                   <Link href="/cart" className="cart-drawer__btn cart-drawer__btn--secondary" onClick={closeDrawer}>
                     View Cart

@@ -22,7 +22,7 @@ export default function OrderSummary() {
         </div>
         <div className="flex justify-between items-center font-sans text-sm">
           <span className="text-[var(--text-secondary)] tracking-wide">Shipping</span>
-          <span className="text-[var(--text-primary)] font-sans text-sm">Calculated at checkout</span>
+          <span className="text-[#A38A61] font-sans text-sm font-medium">Complimentary</span>
         </div>
         <div className="flex justify-between items-center font-sans text-sm">
           <span className="text-[var(--text-secondary)] tracking-wide">Tax</span>
