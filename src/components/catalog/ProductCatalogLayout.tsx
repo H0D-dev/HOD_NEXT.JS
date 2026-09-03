@@ -497,7 +497,11 @@ export default function ProductCatalogLayout({ category, initialProducts }: Prod
             ))}
           </div>
         ) : (
-          <ProductGrid products={displayProducts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)} baseRoute={baseRoute} />
+          <ProductGrid 
+            products={displayProducts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)} 
+            baseRoute={baseRoute} 
+            onResetFilters={clearAllFilters}
+          />
         )}
 
         {displayProducts.length > 0 && !loading && (
