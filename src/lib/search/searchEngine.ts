@@ -1,6 +1,3 @@
-import { fetchCatalogProducts } from "../product/getCatalogProducts";
-import { getPosts } from "../../services/Posts";
-
 export interface SearchResultItem {
   id: string;
   title: string;
@@ -10,22 +7,84 @@ export interface SearchResultItem {
   image?: string;
 }
 
-export interface GroupedSearchResults {
-  products: SearchResultItem[];
+export interface CatalogSuggestionResults {
   collections: SearchResultItem[];
   guides: SearchResultItem[];
   blog: SearchResultItem[];
   projects: SearchResultItem[];
 }
 
+let cachedBlogPosts: any[] | null = null;
+let blogFetchPromise: Promise<any[]> | null = null;
+
+async function fetchBlogPosts(): Promise<any[]> {
+  if (cachedBlogPosts) return cachedBlogPosts;
+  if (blogFetchPromise) return blogFetchPromise;
+
+  blogFetchPromise = (async () => {
+    try {
+      if (typeof window !== "undefined") {
+        const res = await fetch("/api/posts");
+        if (!res.ok) return [];
+        const data = await res.json();
+        const posts = Array.isArray(data?.posts) ? data.posts : (Array.isArray(data) ? data : []);
+        cachedBlogPosts = posts;
+        return posts;
+      }
+      const { getPosts } = await import("../../services/Posts");
+      const posts = await getPosts();
+      cachedBlogPosts = Array.isArray(posts) ? posts : [];
+      return cachedBlogPosts;
+    } catch {
+      return [];
+    } finally {
+      blogFetchPromise = null;
+    }
+  })();
+
+  return blogFetchPromise;
+}
+
 const STATIC_COLLECTIONS: SearchResultItem[] = [
+  {
+    id: 'col-capsule',
+    title: 'The Capsule Collection',
+    subtitle: 'Architectural pill-silhouette rugs in 100% hand-knotted wool',
+    url: '/products/rugs?collection=the-capsule',
+    type: 'collection',
+    image: '/collections/capsule.webp',
+  },
+  {
+    id: 'col-terra',
+    title: 'Terra Collection',
+    subtitle: 'Hand-tufted organic earth tones and textured pinstripes',
+    url: '/products/rugs?collection=terra',
+    type: 'collection',
+    image: '/collections/terra.webp',
+  },
+  {
+    id: 'col-chroma',
+    title: 'The Chroma Edit',
+    subtitle: 'Hand-knotted modern geometric designs in wool and bamboo silk',
+    url: '/products/rugs?collection=the-chroma-edit',
+    type: 'collection',
+    image: '/collections/chroma.webp',
+  },
+  {
+    id: 'col-bauhaus',
+    title: 'Bauhaus Blend Collection',
+    subtitle: 'Modernist compositions and architectural geometric rugs',
+    url: '/products/rugs?collection=bauhaus-blend',
+    type: 'collection',
+    image: '/collections/bauhaus.webp',
+  },
   {
     id: 'col-rugs',
     title: 'Handmade Luxury Rugs',
     subtitle: 'Hand-knotted & hand-tufted wool and silk rugs',
     url: '/products/rugs',
     type: 'collection',
-    image: '/banners/rugs_banner.jpg',
+    image: '/products_hero.webp',
   },
   {
     id: 'col-bespoke',
@@ -84,10 +143,13 @@ const STATIC_PROJECTS: SearchResultItem[] = [
   },
 ];
 
-export async function performMultiDomainSearch(query: string): Promise<GroupedSearchResults> {
+/**
+ * Search static catalog suggestions: Collections, Guides, Projects, and Blog posts.
+ * Product search is now handled client-side by MiniSearch (see miniSearchIndex.ts).
+ */
+export async function performCatalogSuggestionSearch(query: string): Promise<CatalogSuggestionResults> {
   const q = query.trim().toLowerCase();
-  const results: GroupedSearchResults = {
-    products: [],
+  const results: CatalogSuggestionResults = {
     collections: [],
     guides: [],
     blog: [],
@@ -111,62 +173,9 @@ export async function performMultiDomainSearch(query: string): Promise<GroupedSe
     p.title.toLowerCase().includes(q) || (p.subtitle && p.subtitle.toLowerCase().includes(q))
   );
 
-  // Search products with multi-attribute awareness (name, material, construction, colors, categories)
-  try {
-    const products = await fetchCatalogProducts();
-    if (Array.isArray(products)) {
-      const searchTerms = q.split(/\s+/).filter(t => t.length > 1);
-      // Non-generic terms excluding generic filler words like "rug", "rugs", "carpet"
-      const specificTerms = searchTerms.filter(t => !["rug", "rugs", "carpet", "carpets"].includes(t));
-      const termsToMatch = specificTerms.length > 0 ? specificTerms : searchTerms;
-
-      results.products = products
-        .filter((p: any) => {
-          const name = (p.name || "").toLowerCase();
-          const desc = (p.description || "").toLowerCase();
-          const categories = Array.isArray(p.categories) ? p.categories.map((c: any) => (c.name || "").toLowerCase()).join(" ") : "";
-          const construction = (p.acf?.construction || "").toLowerCase();
-          const origin = (p.acf?.countryOfOrigin || "").toLowerCase();
-          const productColor = (p.acf?.productColor || "").toLowerCase();
-          const colors = Array.isArray(p.colors) ? p.colors.map((c: any) => (c.name || "").toLowerCase()).join(" ") : "";
-          const attrs = Array.isArray(p.attributes) ? p.attributes.map((a: any) => `${a.name} ${Array.isArray(a.options) ? a.options.join(" ") : ""}`).join(" ").toLowerCase() : "";
-
-          const searchableText = `${name} ${desc} ${categories} ${construction} ${origin} ${productColor} ${colors} ${attrs}`;
-
-          // Direct phrase match
-          if (searchableText.includes(q)) return true;
-
-          // All specific terms must match
-          if (termsToMatch.length > 0 && termsToMatch.every(term => searchableText.includes(term))) {
-            return true;
-          }
-
-          return false;
-        })
-        .slice(0, 8)
-        .map((p: any) => {
-          const categoryFolder = p.categorySlug || 'rugs';
-          const subtitle = p.acf?.construction 
-            ? `${p.acf.construction}${p.acf.countryOfOrigin ? ` • ${p.acf.countryOfOrigin}` : ''}`
-            : (p.categories?.[0]?.name || 'Luxury Handmade Rug');
-
-          return {
-            id: `prod-${p.id}`,
-            title: p.name,
-            subtitle,
-            url: `/products/${categoryFolder}/${p.slug}`,
-            type: 'product' as const,
-            image: p.mainImage?.src || p.colors?.[0]?.lifestyleUrl || p.colors?.[0]?.textureUrl,
-          };
-        });
-    }
-  } catch (e) {
-    // Fallback gracefully
-  }
-
   // Search blog posts
   try {
-    const posts = await getPosts();
+    const posts = await fetchBlogPosts();
     if (Array.isArray(posts)) {
       results.blog = posts
         .filter((post: any) => post.title?.toLowerCase().includes(q) || (post.excerpt && post.excerpt.toLowerCase().includes(q)))
