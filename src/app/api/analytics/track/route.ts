@@ -11,6 +11,11 @@ import { resolveCountry } from "@/src/lib/analytics/geo";
  */
 export async function POST(request: Request) {
   try {
+    // Fast-path bypass in development mode
+    if (process.env.NODE_ENV === "development" && process.env.NEXT_PUBLIC_ENABLE_DEV_ANALYTICS !== "true") {
+      return NextResponse.json({ success: true, message: "Analytics paused in development" });
+    }
+
     const payload: AnalyticsBatchPayload = await request.json();
 
     if (!payload || !payload.session || !Array.isArray(payload.events)) {

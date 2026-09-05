@@ -59,17 +59,29 @@ function decodeHtmlEntities(text) {
 
 export const getPosts = cache(async () => {
     try {
-        const URL = `${API_CONFIG.baseUrl}/wp-json/wp/v2/posts?_embed&per_page=20`;
+        const baseUrl = API_CONFIG.baseUrl || "https://store.houseofdecor.ae";
+        const URL = `${baseUrl}/wp-json/wp/v2/posts?_embed&per_page=20`;
         
         const res = await fetch(URL, {
             next: { revalidate: 3600 },
             signal: AbortSignal.timeout(5000)
         });
+
+        if (!res.ok) {
+            console.warn(`[WordPress API] HTTP ${res.status} for /wp/v2/posts (${baseUrl})`);
+            return [];
+        }
+
+        const contentType = res.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn(`[WordPress API] Non-JSON response for /wp/v2/posts: ${contentType}`);
+            return [];
+        }
         
         const rawPosts = await res.json();
         
         if (!Array.isArray(rawPosts)) {
-             return rawPosts; // might be an error object from WP
+             return [];
         }
 
         const posts = rawPosts.map(post => {
@@ -97,22 +109,32 @@ export const getPosts = cache(async () => {
         return posts;
     } catch (error) {
         if (error?.name === 'TimeoutError' || error?.name === 'AbortError') {
-            console.warn("[WordPress API] Connection timed out for /wp/v2/posts (store.houseofdecor.ae unreachable). Using fallback.");
+            console.warn("[WordPress API] Connection timed out for /wp/v2/posts. Using fallback.");
         } else {
             console.warn("[WordPress API] Fetch failed for /wp/v2/posts:", error?.message || error);
         }
-        return { error: "Failed to fetch posts" };
+        return [];
     }
 }); 
 
 export const getPostBySlug = cache(async (slug) => {
     try {
         if (!slug) return null;
-        const URL = `${API_CONFIG.baseUrl}/wp-json/wp/v2/posts?slug=${encodeURIComponent(slug)}&_embed`;
+        const baseUrl = API_CONFIG.baseUrl || "https://store.houseofdecor.ae";
+        const URL = `${baseUrl}/wp-json/wp/v2/posts?slug=${encodeURIComponent(slug)}&_embed`;
         const res = await fetch(URL, {
             next: { revalidate: 3600 },
             signal: AbortSignal.timeout(5000)
         });
+        if (!res.ok) {
+            console.warn(`[WordPress API] HTTP ${res.status} for slug: ${slug} (${baseUrl})`);
+            return null;
+        }
+        const contentType = res.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn(`[WordPress API] Non-JSON response for slug: ${slug}: ${contentType}`);
+            return null;
+        }
         const rawPosts = await res.json();
         if (!Array.isArray(rawPosts) || rawPosts.length === 0) return null;
 

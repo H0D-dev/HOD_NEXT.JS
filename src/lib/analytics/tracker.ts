@@ -299,6 +299,11 @@ export function trackEvent(
   try {
     if (!isBrowser()) return;
 
+    // Pause telemetry in development mode to prevent terminal log spam and fake metrics
+    if (process.env.NODE_ENV === "development" && process.env.NEXT_PUBLIC_ENABLE_DEV_ANALYTICS !== "true") {
+      return;
+    }
+
     setupUnloadHooks();
 
     const session = getOrCreateSession(options?.userId);

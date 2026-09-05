@@ -6,13 +6,13 @@ export async function GET(request) {
         const posts = await getPosts();
         
         if (!Array.isArray(posts)) {
-             return NextResponse.json({ posts: posts }); // could be an error object
+             return NextResponse.json({ posts: [] });
         }
 
-        return NextResponse.json({ posts })
+        return NextResponse.json({ posts });
     } catch (error) {
         return NextResponse.json(
-            { error: "Failed to fetch posts" },
+            { posts: [], error: "Failed to fetch posts" },
             { status: 500 }
         );
     }
